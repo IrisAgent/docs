@@ -28,7 +28,9 @@
                 "group": "Ticketing systems",
                 "pages": [
                   "data-sources/Zendesk",
-                  "data-sources/Salesforce"
+                  "data-sources/Salesforce",
+                  "data-sources/Intercom",
+                  "data-sources/Freshworks"
                 ]
               },
               {
