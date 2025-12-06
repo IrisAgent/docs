@@ -1,0 +1,55 @@
+---
+title: "Ticket Sentiment"
+description: "Guide to using AI based sentiment analysis of support tickets"
+---
+
+## **Introduction**
+
+\
+IrisAgent provides AI-powered sentiment analysis for actionable ticket sentiment and voice of customer. Our AI Sentiment Analysis solution provides instant visibility into the emotional tone of customer interactions.\
+\
+Leveraging advanced natural language processing algorithms, machine learning, and opinion mining, our solution can identify positive or negative sentiment as they unfold, allowing your support team to respond promptly to customer needs. It adeptly identifies positive and negative sentiments in text data from customer interactions, offering insights that can drive product improvements and enhance customer satisfaction.
+
+## **Leveraging Ticket Sentiment in IrisAgent**
+
+### **View Ticket Sentiment on the Agent Copilot Sidebar app**
+
+\
+Ticket Sentiment will be shown for all tickets in the agent copilot sidebar app that you install in your ticketing systems, like Zendesk, Salesforce, etc. The sentiment score can be any of the following: Positive, Moderate Positive, Neutral, Moderate Negative, or Negative. We allow fine-grained access control, so if you'd like to hide ticket sentiment widget for any agents, please let us know.
+
+<br />
+
+<img
+  style={{ borderRadius:"0.5rem" }}
+  src="/images/ticket-sentiment-widget.png"
+  alt="IrisAgent ticket sentiment widget"
+/>
+
+### **View Ticket Sentiment on IrisAgent Dashboard for Top N Tickets**
+
+\
+Navigate to the \*\*Needs Attention \*\*page on our dashboard. On the \*\*Cases that need attention \*\*table, you can see the sentiment score and overall priority score for the top N problematic tickets. You can sort the tickets based on sentiment score to prioritize the tickets that need immediate attention.
+
+### **Write Ticket Sentiment to your Ticketing System**
+
+\
+For easier access to sentiment data, you can write the sentiment score to the tags field your ticketing system. This will help your agents to understand the customer's sentiment without having to navigate to the IrisAgent dashboard.
+
+1. Go to **Automation** --\> **Triggers** page on the IrisAgent dashboard.
+2. Click on **Create New Trigger** button.
+3. Select a specific condition or add **Ticket Content** condition with empty value to enable for all tickets.
+4. Under **Actions**, select **Write custom tag** action.
+5. Enter the tag name as ticket sentiment (in double curly brackets) in the text box.
+6. Click on **Add New Trigger** button.
+
+<br />
+
+<img
+  style={{ borderRadius:"0.5rem" }}
+  src="/images/ticket-sentiment-trigger.png"
+  alt="IrisAgent writing ticket sentiment into ticket fields"
+/>
+
+This will start writing the numerical value of Sentiment Score (between -100 and 100) to the "Tags" field in your ticketing system.\
+\
+Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or require assistance with product onboarding.
