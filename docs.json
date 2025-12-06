@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "IrisAgent Documentation",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -36,7 +36,7 @@
               },
               {
                 "group": "Knowledge bases",
-                "pages": [                  
+                "pages": [
                   "data-sources/Confluence",
                   "data-sources/Ticketing-Provider-KB",
                   "data-sources/Public-Websites",
@@ -45,13 +45,13 @@
               },
               {
                 "group": "Bug tracking",
-                "pages": [                  
+                "pages": [
                   "data-sources/Jira-Software"
                 ]
               },
               {
                 "group": "CRM",
-                "pages": [                  
+                "pages": [
                   "data-sources/SalesforceCRM"
                 ]
               }
@@ -59,33 +59,11 @@
           },{
             "group": "Deploying IrisAgent",
             "pages": [
-              "deploying-irisagent/Chatbot",
+              "deploying-irisagent/Chatbot-on-Website",
               "deploying-irisagent/Slack",
-              "deploying-irisagent/Microsoft-Teams"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "deploying-irisagent/Microsoft-Teams",
+              "deploying-irisagent/Chatbot-Automation-on-Intercom",
+              "deploying-irisagent/Chatbot-on-Zendesk-Help-Center"
             ]
           }
         ]
