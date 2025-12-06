@@ -17,8 +17,7 @@
             "group": "Getting started",
             "pages": [
               "index",
-              "quickstart",
-              "development"
+              "quickstart"
             ]
           },
           {
@@ -60,6 +59,7 @@
             "group": "Deploying IrisAgent",
             "pages": [
               "deploying-irisagent/Chatbot-on-Website",
+              "deploying-irisagent/Agent-Copilot",
               "deploying-irisagent/Slack",
               "deploying-irisagent/Microsoft-Teams",
               "deploying-irisagent/Chatbot-Automation-on-Intercom",
