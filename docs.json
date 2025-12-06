@@ -80,6 +80,11 @@
               "security-and-compliance/Single-Sign-On-Options",
               "security-and-compliance/Okta-SSO"
             ]
+          },{
+            "group": "Account Management",
+            "pages": [
+              "account-management/Change-Integration-User"
+            ]
           }
         ]
       }
