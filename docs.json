@@ -38,7 +38,9 @@
                 "group": "Knowledge bases",
                 "pages": [                  
                   "data-sources/Confluence",
-                  "data-sources/Ticketing-Provider-KB"
+                  "data-sources/Ticketing-Provider-KB",
+                  "data-sources/Public-Websites",
+                  "data-sources/Upload-Content"
                 ]
               },
               {
@@ -57,6 +59,7 @@
           },{
             "group": "Deploying IrisAgent",
             "pages": [
+              "deploying-irisagent/Chatbot",
               "deploying-irisagent/Slack",
               "deploying-irisagent/Microsoft-Teams"
             ]
