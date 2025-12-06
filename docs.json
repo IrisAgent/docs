@@ -30,7 +30,21 @@
                   "data-sources/Zendesk",
                   "data-sources/Salesforce",
                   "data-sources/Intercom",
+                  "data-sources/Jira-Software-or-Service-Desk",
                   "data-sources/Freshworks"
+                ]
+              }
+              ,
+              {
+                "group": "Knowledge bases",
+                "pages": [                  
+                  "data-sources/Confluence"
+                ]
+              },
+              {
+                "group": "Bug tracking",
+                "pages": [                  
+                  "data-sources/Jira-Software"
                 ]
               },
               {
