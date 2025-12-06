@@ -65,6 +65,11 @@
               "deploying-irisagent/Chatbot-Automation-on-Intercom",
               "deploying-irisagent/Chatbot-on-Zendesk-Help-Center"
             ]
+          },{
+            "group": "Configuring AI and Automation",
+            "pages": [
+              "configuring-ai-and-automation/Ticket-Tagging"
+            ]
           }
         ]
       }
