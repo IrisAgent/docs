@@ -33,12 +33,12 @@
                   "data-sources/Jira-Software-or-Service-Desk",
                   "data-sources/Freshworks"
                 ]
-              }
-              ,
+              },
               {
                 "group": "Knowledge bases",
                 "pages": [                  
-                  "data-sources/Confluence"
+                  "data-sources/Confluence",
+                  "data-sources/Ticketing-Provider-KB"
                 ]
               },
               {
@@ -53,6 +53,12 @@
                   "data-sources/SalesforceCRM"
                 ]
               }
+            ]
+          },{
+            "group": "Deploying IrisAgent",
+            "pages": [
+              "deploying-irisagent/Slack",
+              "deploying-irisagent/Microsoft-Teams"
             ]
           },
           {
