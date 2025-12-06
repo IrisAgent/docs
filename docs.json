@@ -89,11 +89,7 @@
         ]
       },{
         "tab": "API reference",
-        "groups": [{
-          "group": "API reference",
-          "openapi": "/api-reference/openapi.json",
-          "pages": ["introduction", "GET /users", "POST /users"]
-        }]
+        "openapi": "/api-reference/openapi.json"  
       }
     ],
     "global": {
