@@ -1,0 +1,50 @@
+---
+title: "Single Sign On (SSO) Options"
+description: "IrisAgent offers SSO via Google, Microsoft, Salesforce, and Okta"
+---
+
+# **IrisAgent Single Sign On (SSO) Guide**
+
+## **Introduction**
+
+\
+We understand that protection of customer data is one of the top priorities for every company we work with. At IrisAgent, we take privacy and security considerations into every organizational and product decision we make. As a result, we provide SSO options for users to sign in to our product. We do not require or host any login credentials. We authenticate through Google, Microsoft, Salesforce, and Okta.
+
+## **Google SSO**
+
+\
+We use [Google OAuth2 APIs](https://developers.google.com/identity/protocols/oauth2/scopes#oauth2) for powering SSO via Google. The below scopes are requested:
+
+1. [userinfo.email](http://userinfo.email) – View access to your primary Google Account email address
+2. userinfo.profile – View access to your personal info, including any personal info you've made publicly available
+
+## **Salesforce SSO**
+
+\
+Customers that use Salesforce Service Desk as the primary ticketing provider, should use this option. We use [Salesforce OAuth APIs](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_tokens_scopes.htm&type=5) for powering SSO via Salesforce. The below scopes are requested:
+
+1. api – Allows access to the current, logged-in user’s account using APIs, such as REST API and Bulk API 2.0
+2. refresh_token – Permission to generate refresh tokens
+
+## **Azure Active Directory SSO**
+
+\
+We use [Azure OAuth APIs](https://learn.microsoft.com/en-us/azure/active-directory/develop/scopes-oidc) for powering SSO via Azure. The below scopes are requested:
+
+1. [user.read](http://user.read) – Read basic user info
+2. openid – Permission to get tokens for authentication
+3. profile – Access the user's given name, surname, and preferred username
+4. profile – Access the user's given name, surname, and preferred username
+5. email – View the user’s primary email address.
+
+## **Okta SSO**
+
+\
+We use [Okta OpenID Connect and OAuth APIs](https://developer.okta.com/docs/api/oauth2/) for powering SSO via Okta. The below scopes are requested:
+
+1. Openid - openid connect
+2. Email - access to end-users email claims
+3. Profile - access to end-users default profile information
+
+\
+Please [email us](mailto:contact@irisagent.com) if you have any questions or need any more details.
