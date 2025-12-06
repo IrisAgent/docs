@@ -1,43 +1,37 @@
 ---
-title: "Chatbot"
-description: "Deploy IrisAgent as a Chatbot"
+title: "Chatbot on Zendesk Help Center"
+description: "Deploy IrisAgent Chatbot on Zendesk Help Center"
 ---
 
 ## **Introduction**
 
 \
-IrisAgent's customizable chatbot can be deployed on any website to answer support questions. This chatbot is designed to enhance customer support and provide instant assistance to website visitors. Here are the key features and capabilities:
+IrisAgent Chatbot can power search and AI answers on your Zendesk Help Center to deflect customer queries and reduce the number of tickets handled by support agents.
 
-1. **Customizability**: The chatbot can be fully customized to match your brand's identity. You can customize the chatbot's appearance, including its colors, fonts, and overall design, to seamlessly integrate it into your website.
-2. **Branding and Logo**: You have the ability to add your brand's logo to the chatbot interface, ensuring a consistent visual representation of your company's identity throughout the customer experience.
-3. **Welcome Message**: You can create a personalized welcome message that will greet visitors as soon as they initiate a conversation with the chatbot. This message can be tailored to introduce your brand, set expectations, and guide users on how to get the support they need.
-4. **Support Question Handling**: The chatbot is equipped to handle a wide range of support questions and provide relevant answers in real-time. It utilizes natural language processing (NLP) and machine learning techniques to understand user inquiries and respond accurately.
-5. **Analytics and Insights**: The chatbot provides detailed analytics and insights into user interactions, allowing you to understand customer behavior, identify frequently asked questions, and optimize the chatbot's performance over time.
+## **Installation Guide**
 
-## **Getting Started and Integration Guide**
+1. Navigate to the **Customize Design** tab in your Zendesk Help Center. This can be found under Zendesk Guide \> Guide Admin \> Customize Design.
+2. Edit your theme. You can either add a new theme by selecting **Add theme** and making a copy of your Live theme by selecting the three dots \> Copy. If you would like to edit your existing theme directly, click on **Customize** under your Live theme.
 
-1. Go to **Configure** page under **IrisGPT** to configure and embed the IrisAgent chatbot.
+   <br />
 
-<br/>
-  <img
-    style={{ borderRadius: '0.5rem' }}
-    src="/images/chatbot.png"
-    alt="IrisAgent chatbot configure page"
+<img
+  style={{ borderRadius:"0.5rem" }}
+  src="/images/zd-help-theme.png"
+  alt="Zendesk customize theme for AI"
+/>
 
-  />
-
-1. Paste the code snippet shown in the **body** section of your website.
-
-   ```
-
-
-    <script async
-       src="https://chatbot.irisagent.com/web.iife.js"
-       data-token="UNIQUE_IDENTIFIER"
-       data-host="https://api1.irisagent.com"
-      >
-   </script>
-   ```
-2. You can customize the bot logo, brand color, etc. on the same page.
-3. You can see all the conversations that happened on the chatbot on the **"Conversations"** page under "IrisGPT".
-4. That’s it, done! You should be seeing the IrisAgent chatbot on your website.
+ 3. In order to add the IrisGPT Chatbot to your Zendesk Help Center, you will need to edit the code. After clicking on the **Customize** button in the previous step, Click **Edit Code** in the bottom right corner
+ 4. Navigate to the **templates** on the left hand side, click on the footer (footer.hbs) file.
+ 5. Within **footer.hbs** file, add the code snippet from the [Configure page](https://web.irisagent.com/manage-chatbot) on the dashboard just before the closing `</footer>` tag
+ 6. Note: You can also manage your IrisGPT chatbot configuration settings from the same page.
+ 7. Save your work. Click **Save**.
+ 8. If you have Zendesk Messaging Web Widget enabled for your Zendesk account, the messaging widget may block the IrisGPT Chatbot's visibility on the help center pages. To fix this, you can disable the messaging widget from the Zendesk Admin settings.
+    1. Navigate to Zendesk Support Admin Center
+    2. On the left hand side, please find the following section and click on it: **Channels** \> **Messaging and Social** \> **Messaging**
+    3. If you do not have any channel of type **Web Widget**, you may ignore the below steps
+    4. Edit the Web Widget channel settings and scroll down to the **Installation** section
+    5. Ensure that the checkbox named **Automatically embed Web Widget in your help center** is unselected
+    6. Save the changes. Click **Save**.
+ 9. [optional] You can click on the preview button on the left side of the editor to see how the layout looks before deploying it.
+10. That’s it, done! You should be seeing the IrisGPT Chatbot on your help center pages at bottom right.
