@@ -5,4 +5,48 @@ description: 'IrisAgent Installation Guide for Salesforce'
 
 ## Sign up on IrisAgent Dashboard
 
-- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with either GSuite, Microsoft, or Okta SSO.
+- If you are a Salesforce admin, go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in your Salesforce credentials.
+  - If connecting with a production Salesforce account, please select the Continue with Salesforce option.
+  - If connecting with a Salesforce Sandbox account, please select the Continue with Salesforce Sandbox option.
+- Give the OAuth permissions and click on Allow.
+
+## Install the IrisAgent app in Salesforce account
+1. Install the IrisAgent app from the this link.
+2. Select the option Install for All Users (note that you can later restrict access to certain profiles). Click on Install after checking the acknowledgment. After installation, click on Done.
+   <br/>
+  <img 
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/sf-docs-install.png" 
+    alt="IrisAgent app listing for Salesforce"
+  />
+
+## Display the IrisAgent app on the Lightning Salesforce case page
+
+1. Go to Setup – Object Manager. Search for the Case object.
+2. Click on the Lightning Record Pages menu option and edit or create a Lightning page.
+3. Click Edit.
+4. Select IrisAgent Sidebar and set it to the desired location on the page.
+5. Click on Save. If a pop box opens, click on Activate.
+
+## Share the list of custom fields
+
+Salesforce Service Cloud allows use of many custom fields. We would need those field names to perform data ingestion. Please email the API field names for the following entities at [this email address](contact@irisagent.com):
+
+1. Article body in Salesforce Knowledge
+2. Case priority
+3. Any other entity for which you are using a custom field, instead of the default standard field that you would like IrisAgent to access
+
+Permissions accessed by IrisAgent
+
+1. IrisAgent uses [the “api” scope](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_tokens_scopes.htm&type=5).
+2. The token obtained after the OAuth flow will have access to all the objects the logged-in user has access. Hence, a separate service user should be created for IrisAgent with sufficient permissions to access the objects required by IrisAgent.
+3. Below are the objects accessed by IrisAgent
+
+``
+Objects with Read permissions: CaseArticle, CaseSolution, Solution, Account, CaseTag, Contact, EmailMessage, LiveChatTranscript, User, Group, Knowledge__kav, Knowledge__DataCategorySelection
+Objects with Read and Write permissions: Case, CaseComment
+
+``
+
+
+The above steps will complete the installation of IrisAgent. Please [email us](contact@irisagent.com) once these steps are completed, and our team will start setting up the machine learning models for your account.

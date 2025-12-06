@@ -30,6 +30,12 @@
                   "data-sources/Zendesk",
                   "data-sources/Salesforce"
                 ]
+              },
+              {
+                "group": "CRM",
+                "pages": [                  
+                  "data-sources/SalesforceCRM"
+                ]
               }
             ]
           },
