@@ -22,6 +22,18 @@
             ]
           },
           {
+            "group": "Connecting Data Sources",
+            "pages": [
+              {
+                "group": "Ticketing systems",
+                "pages": [
+                  "data-sources/Zendesk",
+                  "data-sources/Salesforce"
+                ]
+              }
+            ]
+          },
+          {
             "group": "Customization",
             "pages": [
               "essentials/settings",
