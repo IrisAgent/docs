@@ -92,7 +92,7 @@
         "groups": [{
           "group": "API reference",
           "openapi": "/api-reference/openapi.json",
-          "pages": ["overview", "GET /users", "POST /users"]
+          "pages": ["introduction", "GET /users", "POST /users"]
         }]
       }
     ],
