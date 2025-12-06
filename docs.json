@@ -89,19 +89,8 @@
         ]
       },{
         "tab": "API reference",
-        "groups":[
-        {
-          "group": "Introduction",
-          "pages": [
-            "/api-reference/introduction",
-            "/api-reference/openapi.json"
-          ]
-        },
-        {
-          "group": "API Reference",
-          "openapi": "/api-reference/openapi.json"  
-        }         
-      ]
+        "href": "/api-reference/introduction",
+        "openapi": "/api-reference/openapi.json"        
       }],
     "global": {
       "anchors": [
