@@ -13,28 +13,22 @@ IrisAgent AI can answer customer queries right within your Intercom chatbot seam
 ### **Step 1: Create a New Private App**
 
 1. Navigate to the [Developer Hub](https://app.intercom.com/a/apps/_/developer-hub).
-2. Select the option to create a new private app.
-
-   <br />
-
-<img
-  style={{ borderRadius:"0.5rem" }}
-  src="/images/IntercomDeveloperHub.png"
-  alt="IrisAgent app for Intercom Chat"
-/>
+2. Select the option to create a new private app.   
+    <img
+      style={{ borderRadius:"0.5rem" }}
+      src="/images/IntercomDeveloperHub.png"
+      alt="IrisAgent app for Intercom Chat"
+    />
 
 Step 2: Set Permissions
 
 1. Access the Authentication menu in your app settings.
-2. Configure the necessary permissions as shown below.
-
-   <br />
-
-<img
-  style={{ borderRadius:"0.5rem" }}
-  src="/images/IntercomPermissions.png"
-  alt="IrisAgent app permissions for Intercom"
-/>
+2. Configure the necessary permissions as shown below.   
+    <img
+      style={{ borderRadius:"0.5rem" }}
+      src="/images/IntercomPermissions.png"
+      alt="IrisAgent app permissions for Intercom"
+    />
 
 ### **Step 3: Configure Webhooks**
 
@@ -43,28 +37,22 @@ Step 2: Set Permissions
    - `conversation.user.created`
    - `conversation.user.replied`
 3. Set the Endpoint URL to: `https://api1.irisagent.com/v1/webhooks/intercom/your_organization_id`. Note that `your_organization_id` can be found in the URL of the home page of your Intercom account as shown below:\
-   `https://app.intercom.com/a/apps/your_organization_id/home`
-
-   <br />
-
-<img
-  style={{ borderRadius:"0.5rem" }}
-  src="/images/IntercomWebhook.png"
-  alt="IrisAgent webhooks for Intercom"
-/>
+   `https://app.intercom.com/a/apps/your_organization_id/home`   
+    <img
+      style={{ borderRadius:"0.5rem" }}
+      src="/images/IntercomWebhook.png"
+      alt="IrisAgent webhooks for Intercom"
+    />
 
 ### **Step 4: Note Your ClientSecret and ClientID**
 
 1. Find these credentials under the `Basic information` menu.
-2. The ClientSecret is vital for validating webhook requests from Intercom.
-
-   <br />
-
-<img
-  style={{ borderRadius:"0.5rem" }}
-  src="/images/IntercomBasicInformation.png"
-  alt="IrisAgent basic information for Intercom"
-/>
+2. The ClientSecret is vital for validating webhook requests from Intercom.   
+    <img
+      style={{ borderRadius:"0.5rem" }}
+      src="/images/IntercomBasicInformation.png"
+      alt="IrisAgent basic information for Intercom"
+    />
 
 ### **Step 5: Note the IrisAgent UserId**
 
