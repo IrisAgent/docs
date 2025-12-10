@@ -1,0 +1,131 @@
+---
+title: "Chatbot Automation on Zendesk Messaging"
+description: "Deploy IrisAgent AI answers to your Zendesk Messaging Chatbot"
+---
+
+This guide walks you through setting up the Zendesk Sunshine Conversations (aka Zendesk Messaging) integration with IrisAgent.
+
+## Prerequisites
+
+Before setting up the Conversations integration, you must have **Messaging for Web** configured in your Zendesk account. This integration requires a functioning Web Widget to communicate with your customers.
+
+### Setting Up Messaging for Web
+
+If you haven't already set up messaging, follow the official Zendesk guide: [Getting started with messaging for your website, help center, and mobile apps](https://support.zendesk.com/hc/en-us/articles/4408827701530-Getting-started-with-messaging-for-your-website-help-center-and-mobile-apps)
+
+![Messaging Setup](messaging.png)
+
+**Key steps:**
+
+1. Create a messaging channel (automatically enabled in your account)
+2. Configure and customize your Web Widget appearance
+3. Install the Web Widget code on your website or help center
+4. Set up ticket routing and agent access
+
+---
+
+## Step 1: Create a Conversations Integration
+
+Create a new Conversations integration to establish a bidirectional connection between Zendesk and IrisAgent.
+
+\*\*Follow the official guide: \*\* [Creating conversations integrations in Admin Center](https://support.zendesk.com/hc/en-us/articles/4576083789850-Creating-conversations-integrations-in-Admin-Center)
+
+### Configuration Steps
+
+1. In Zendesk Admin Center, navigate to **Apps and integrations** \> **Integrations** \> **Conversations integrations**
+2. Click **Create integration** and give it a descriptive name (e.g., "IrisAgent Integration")
+3. Configure the webhook settings:
+
+![Conversations Integration Details](conversations_integrations_details.png)
+
+**Webhook Configuration:**
+
+- **Target URL**: `https://api1.irisagent.com/v1/webhooks/zendesk`
+- **Event Subscriptions**: Select the following events:
+  - ✅ `conversation:create` (Conversation created)
+  - ✅ `conversation:message` (Conversation message)
+
+4. Click **Save** to create the integration
+
+### Record Integration Credentials
+
+After saving, you'll need to collect the following information:
+
+| Credential         | Description                                  | Where to Find                              |
+| ------------------ | -------------------------------------------- | ------------------------------------------ |
+| **App ID**         | Identifies your Zendesk account              | Integration details page                   |
+| **Integration ID** | Unique identifier for this integration       | Integration details page                   |
+| **Webhook ID**     | Identifier for the webhook configuration     | Integration details page                   |
+| **Shared secret**  | Authentication password for webhook requests | Integration details page (shown only once) |
+
+⚠️ **Important:** The shared secret is shown only once. Copy and store it securely before leaving the page.
+
+---
+
+## Step 2: Generate API Keys
+
+API keys provide authentication credentials for making API calls to Sunshine Conversations.
+
+### Creating API Keys
+
+1. In your Conversations integration, navigate to the **API Keys** tab
+2. Click **Create API key** and give it a descriptive name
+3. After creation, click on the key to view the credentials dialog
+
+![API Keys Configuration](conversations_integrations_api_keys.png)
+
+### Record API Credentials
+
+Copy and store the following values:
+
+| Credential     | Description                                     |
+| -------------- | ----------------------------------------------- |
+| **App ID**     | Your Zendesk account identifier (same as above) |
+| **Key ID**     | Used with the secret key for authentication     |
+| **Secret key** | Authentication password for API requests        |
+
+⚠️ **Important:** The secret key is shown only once. Copy and store it securely before closing the dialog.
+
+---
+
+## Step 3: Configure IrisAgent
+
+Now that you have all the required credentials, configure IrisAgent to connect with your Zendesk Sunshine Conversations.
+
+1. Navigate to the IrisAgent account management page: https://web.staging.irisagent.com/manage-accounts
+
+![IrisAgent Manage Accounts](managepage.png)
+
+2. Select **Zendesk Sunshine configs** from the integration options
+3. Enter all the credentials you collected:
+   - App ID
+   - Integration ID
+   - Webhook ID
+   - Shared secret
+   - Key ID
+   - Secret key
+4. Click **Save** to complete the setup
+
+---
+
+## Verification
+
+After completing the setup:
+
+1. Send a test message through your Web Widget
+2. Verify that the conversation appears in your Zendesk Agent Workspace
+3. Confirm that IrisAgent is receiving and processing the conversation events
+
+If you encounter any issues, verify that:
+
+- All credentials are entered correctly
+- The webhook events (`conversation:create` and `conversation:message`) are properly selected
+- Your Zendesk account has the required permissions (Suite Professional plan or above)
+
+---
+
+## Additional Resources
+
+- [Zendesk Messaging Documentation](https://support.zendesk.com/hc/en-us/articles/4408827701530)
+- [Conversations Integrations Guide](https://support.zendesk.com/hc/en-us/articles/4576083789850)
+- [Sunshine Conversations API Documentation](https://developer.zendesk.com/api-reference/conversations/)

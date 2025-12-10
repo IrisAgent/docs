@@ -62,6 +62,7 @@
               "deploying-irisagent/Agent-Copilot",
               "deploying-irisagent/Slack",
               "deploying-irisagent/Microsoft-Teams",
+              "deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging",
               "deploying-irisagent/Chatbot-Automation-on-Intercom",
               "deploying-irisagent/Chatbot-on-Zendesk-Help-Center"
             ]
