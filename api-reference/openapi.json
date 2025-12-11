@@ -1,9 +1,8 @@
 openapi: 3.0.3
 info:
-  title: IrisAgent's IrisGPT AI Answers API
+  title: IrisAgent's API Reference
   description: |
-    IrisGPT AI service can be used as an API to power intelligent conversations on any of your frontend webpages. 
-    It can search through your internal and external knowledge articles, community forums, product documentation, 
+    IrisAgent service can be used as an API to power intelligent conversations and search, index, and connect with your internal and external knowledge articles, tickets, community forums, product documentation, 
     and other informational content.
   version: 1.2.0
 servers:
@@ -13,7 +12,9 @@ paths:
     post:
       operationId: irisgptAsk
       summary: |
-        Generates AI answer with relevant links to any support query
+        Get AI answer to any query
+      description: |
+        Get an AI answer to any support query using the trained information such as knowledge articles, tickets, documentation, and more.
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
         - $ref: '#/components/parameters/ChatIdentifier'
@@ -45,7 +46,8 @@ paths:
   /v1/summary:
     post:
       operationId: summarizeConversation
-      summary: Generates a summary of a conversation or ticket
+      summary: Get summary
+      description: Get an AI-powered summary of your support conversation or ticket
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
       requestBody:
@@ -72,7 +74,8 @@ paths:
   /v1/feedback:
     post:
       operationId: postFeedback
-      summary: You can send user or agent feedback on IrisGPT responses via our APIs. This feedback helps IrisAgent improve the quality of its responses over time.
+      summary: Send user feedback
+      description: Send user or agent feedback on IrisGPT AI answers via this API. This feedback helps IrisAgent improve the quality of its responses over time.
       parameters:
         - $ref: '#/components/parameters/ChatIdentifier'
       requestBody:
@@ -103,7 +106,8 @@ paths:
   /v1/tag:
     post:
       operationId: autoTag
-      summary: Gets AI-powered tags for a conversation using pre-built AI models
+      summary: Get AI-powered tag
+      description: Get AI-powered tag(s) for a support conversation using pre-built AI models
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
       requestBody:
@@ -130,7 +134,8 @@ paths:
   /v1/sentiment:
     post:
       operationId: analyzeSentiment
-      summary: Gets AI-powered sentiment analysis for a conversation
+      summary: Get sentiment
+      description: Get AI-powered sentiment analysis for a support conversation
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
       requestBody:
@@ -156,8 +161,8 @@ paths:
           $ref: '#/components/responses/504'
   /v1/articles:
     post:
-      summary: Upload articles for AI training
-      description: Send knowledge base articles for AI training via this endpoint
+      summary: Upload articles
+      description: Send knowledge base articles for AI training via this API
       requestBody:
         required: true
         content:
@@ -178,7 +183,7 @@ paths:
         '403':
           description: Forbidden - insufficient permissions
     delete:
-      summary: Delete articles for AI training
+      summary: Delete articles
       description: Send a request to delete knowledge base articles for AI training via this endpoint
       requestBody:
         required: true
@@ -201,8 +206,8 @@ paths:
           description: Forbidden - insufficient permissions
   /v1/cases:
     post:
-      summary: Upload cases for AI training
-      description: Send cases for AI training via this endpoint
+      summary: Upload support cases
+      description: Send support cases for AI training via this API
       requestBody:
         required: true
         content:
@@ -224,8 +229,8 @@ paths:
           description: Forbidden - insufficient permissions
   /v1/incidents:
     post:
-      summary: Upload incident for AI training
-      description: Send incident for AI training via this endpoint
+      summary: Upload incidents
+      description: Send engineering, devops, or statuspage incidents for AI training via this endpoint
       requestBody:
         required: true
         content:
@@ -243,8 +248,8 @@ paths:
           description: Forbidden - insufficient permissions
   /v1/search/cases:
     get:
-      summary: Search cases.
-      description: Search cases using a query parameter.
+      summary: Search cases
+      description: Search support cases for any query using AI-powered recommendation
       parameters:
         - name: query
           in: query
@@ -267,8 +272,8 @@ paths:
           description: Forbidden - insufficient permissions
   /v1/community/search/articles:
     get:
-      summary: Search articles.
-      description: Search knowledge base articles using a query parameter.
+      summary: Search articles
+      description: Search knowledge base articles for any query using AI-powered recommendation
       parameters:
         - name: text
           in: query
