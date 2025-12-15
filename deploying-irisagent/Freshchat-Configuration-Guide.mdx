@@ -1,0 +1,96 @@
+---
+title: "Chatbot Automation on Freshchat"
+description: "Deploy IrisAgent AI answers to your Freshchat conversations"
+---
+
+## **Introduction**
+
+\
+IrisAgent AI can answer customer queries right within your Freshchat conversations seamlessly using webhooks. This guide will help you integrate IrisAgent with Freshchat.
+
+## **IrisAgent Portal Configuration**
+
+### **Step 1: Access Freshchat Configuration**
+
+1. Navigate to the **Manage Accounts** section in IrisAgent portal
+2. Open the **Freshchat Configuration** sidebar
+3. Toggle **Enable Chat Automation** to ON
+    <img
+      style={{ borderRadius:"0.5rem" }}
+      src="/images/deploying-irisagent/freshchat/irisagent-config-ui.png"
+      alt="IrisAgent Freshchat Configuration UI"
+    />
+
+### **Step 2: Note Your Webhook URL**
+
+\
+Once enabled, you'll see a **Webhook URL** field that displays your organization-specific endpoint:
+
+```
+https://api1.irisagent.com/v1/webhooks/freshchat/{YourOrganizationID}
+```
+
+**Important:** Keep this configuration page open - you'll need to copy values from Freshchat and paste them here.
+    <img
+      style={{ borderRadius:"0.5rem" }}
+      src="/images/deploying-irisagent/freshchat/irisagent-config-fields.png"
+      alt="IrisAgent Configuration Fields"
+    />
+
+## **Freshchat Admin Settings**
+
+### **Step 3: Access Freshchat Admin Settings**
+
+1. Log in to your Freshchat account
+2. Navigate to: `https://{YourOrganizationID}.myfreshworks.com/crm/sales/settings`
+3. You'll be configuring two sections:
+   - Conversation Webhooks
+   - API Settings
+
+### **Step 4: Set Up Conversation Webhook**
+
+1. In Freshchat Admin Settings, locate **Conversation Webhooks** section
+2. Click **Add Webhook** or **Configure**
+3. Enter the following details:
+   - **Webhook URL**: Paste the webhook URL from IrisAgent configuration
+     ```
+     https://api1.irisagent.com/v1/webhooks/freshchat/{YourOrganizationID}
+     ```
+   - **Authentication**: You'll enter the RSA Public Key in the next step
+4. **Do not save yet** - proceed to Step 5 first
+    <img
+      style={{ borderRadius:"0.5rem" }}
+      src="/images/deploying-irisagent/freshchat/freshchat-webhook-config.png"
+      alt="Freshchat Webhook Configuration"
+    />
+
+### **Step 5: Copy and Configure Authentication Key**
+
+1. Return to the **IrisAgent Freshchat Configuration** page
+2. In the **Authentication Key** field, you'll find your RSA Public Key
+3. Copy this key
+4. Return to Freshchat Webhook configuration
+5. Paste the RSA Public Key in the **Authentication** field
+6. Click **Save**
+7. **Enable** the webhook
+
+### **Step 6: Retrieve Freshchat API Credentials**
+
+1. In Freshchat Admin Settings, locate **API Settings** section
+2. You'll see two important values:
+   - **Your API Key**
+   - **Your chat URL**
+3. Copy both of these values
+    <img
+      style={{ borderRadius:"0.5rem" }}
+      src="/images/deploying-irisagent/freshchat/freshchat-api-settings.png"
+      alt="Freshchat API Settings"
+    />
+
+### **Step 7: Enter Freshchat Credentials in IrisAgent**
+
+1. Return to the **IrisAgent Freshchat Configuration** page
+2. Enter the following values copied from Freshchat:
+   - **Chat URL**: Paste "Your chat URL" from Freshchat API Settings
+   - **API Token**: Paste "Your API Key" from Freshchat API Settings
+3. Click **Save**
