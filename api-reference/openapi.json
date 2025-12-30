@@ -230,7 +230,7 @@ paths:
   /v1/incidents:
     post:
       summary: Upload incidents
-      description: Send engineering, devops, or statuspage incidents for AI training via this endpoint
+      description: 'Send engineering, devops, or statuspage incidents for AI training via this endpoint'
       requestBody:
         required: true
         content:
@@ -255,6 +255,12 @@ paths:
           in: query
           description: The search query string.
           required: true
+          schema:
+            type: string
+        - name: productId
+          in: query
+          description: The product ID to filter cases.
+          required: false
           schema:
             type: string
       responses:
@@ -296,8 +302,8 @@ paths:
           schema:
             type: integer
             format: uint
-            minimum: 1
             default: 25
+            minimum: 1
         - name: X-Business-Id
           in: header
           description: Business ID of the customer.
@@ -909,7 +915,7 @@ components:
           format: int64
           example: 17437722600
         productId:
-          description: Product ID associated with the case, if applicable
+          description: 'Product ID associated with the case, if applicable'
           type: string
       required:
         - id
