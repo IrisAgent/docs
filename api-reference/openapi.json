@@ -249,12 +249,24 @@ paths:
   /v1/search/cases:
     get:
       summary: Search cases
-      description: Search support cases for any query using AI-powered recommendation
+      description: |
+        Search support cases using AI-powered recommendation. You can provide a search query, a conversationId to load ticket content, or both.
+        At least one of query or conversationId must be provided. When both are provided, the ticket content is combined with the query for a richer search.
       parameters:
         - name: query
           in: query
-          description: The search query string.
-          required: true
+          description: |
+            The search query string. Optional if conversationId is provided.
+          required: false
+          schema:
+            type: string
+        - name: conversationId
+          in: query
+          description: |
+            Unique ticket or case ID to load the full ticket content (subject, description, and comments) for searching.
+            Optional if query is provided. The ticket content will be loaded from the database and used as the search query.
+            Note: The case with this conversationId will be excluded from the search results.
+          required: false
           schema:
             type: string
         - name: productId
