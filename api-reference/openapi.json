@@ -275,6 +275,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: numResults
+          in: query
+          description: Maximum number of results to return. Defaults to 4 if not specified.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 4
       responses:
         '200':
           description: Search results
@@ -929,6 +937,10 @@ components:
         productId:
           description: 'Product ID associated with the case, if applicable'
           type: string
+        score:
+          description: 'Similarity score for the case, computed using Manhattan distance. A lower score indicates greater similarity.'
+          type: number
+          format: float
       required:
         - id
         - subject
