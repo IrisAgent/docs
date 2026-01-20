@@ -275,6 +275,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: formId
+          in: query
+          description: The form ID to filter cases.
+          required: false
+          schema:
+            type: string
+        - name: sourceBrandId
+          in: query
+          description: The source brand ID to filter cases.
+          required: false
+          schema:
+            type: string
         - name: numResults
           in: query
           description: |
@@ -490,6 +502,14 @@ components:
           example: high
         type:
           description: 'The type of case, such as Feature Request or Question'
+          type: string
+          x-go-type-skip-optional-pointer: true
+        brand_id:
+          description: 'The brand identifier associated with the case'
+          type: string
+          x-go-type-skip-optional-pointer: true
+        form_id:
+          description: 'The form identifier associated with the case'
           type: string
           x-go-type-skip-optional-pointer: true
         tags:
