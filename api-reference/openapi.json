@@ -287,6 +287,19 @@ paths:
           required: false
           schema:
             type: string
+        - name: filterUrls
+          in: query
+          description: |
+            Array of case URLs to exclude from the search results. Cases with URLs matching any of these URLs will be filtered out.
+            This parameter can be repeated multiple times to specify multiple URLs to exclude.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              format: uri
+          style: form
+          explode: true
         - name: numResults
           in: query
           description: |
