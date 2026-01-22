@@ -37,6 +37,32 @@ https://api1.irisagent.com/v1/webhooks/freshchat/{YourOrganizationID}
       alt="IrisAgent Configuration Fields"
     />
 
+### **Step 2a: Configure Event Filtering (Optional)**
+
+\
+You can optionally enable event filtering to control which Freshchat conversations IrisAgent processes. This allows you to target specific channels or apply custom filtering logic.
+
+#### **Filter Modes**
+
+**Simple Mode:**
+1. Toggle **Enable Filter** to ON
+2. Select **Simple** mode
+3. Choose a **Topic** (Channel) from the dropdown
+4. IrisAgent will only process conversations from the selected channel
+
+**Advanced Mode:**
+1. Toggle **Enable Filter** to ON
+2. Select **Advanced** mode
+3. Enter a custom filter query
+4. IrisAgent will process only conversations matching your query criteria
+
+**Note:** Filtering is optional. If disabled, IrisAgent will process all incoming conversation events.
+    <img
+      style={{ borderRadius:"0.5rem" }}
+      src="/images/deploying-irisagent/freshchat/irisagent-config-filter.png"
+      alt="IrisAgent Event Filter Configuration"
+    />
+
 ## **Freshchat Admin Settings**
 
 ### **Step 3: Access Freshchat Admin Settings**
