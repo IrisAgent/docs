@@ -349,39 +349,39 @@ paths:
         '403':
           description: Forbidden - insufficient permissions
   /v1/community/search/articles:
-    get:
+    post:
       summary: Search articles
       description: Search knowledge base articles for any query using AI-powered recommendation
       parameters:
-        - name: text
-          in: query
-          description: The search query string.
-          required: true
-          schema:
-            type: string
-        - name: offset
-          in: query
-          description: Pagination offset for search results.
-          required: false
-          schema:
-            type: integer
-            format: uint
-            minimum: 0
-        - name: limit
-          in: query
-          description: Maximum number of results to return.
-          required: false
-          schema:
-            type: integer
-            format: uint
-            default: 25
-            minimum: 1
         - name: X-Business-Id
           in: header
           description: Business ID of the customer.
           required: true
           schema:
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: The search query string.
+                offset:
+                  type: integer
+                  format: uint
+                  minimum: 0
+                  description: Pagination offset for search results.
+                limit:
+                  type: integer
+                  format: uint
+                  default: 25
+                  minimum: 1
+                  description: Maximum number of results to return.
+              required:
+                - text
       responses:
         '200':
           description: Search results
