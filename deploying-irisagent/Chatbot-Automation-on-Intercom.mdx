@@ -79,3 +79,33 @@ Configure the Intercom integration in your IrisAgent dashboard:
       src="/images/intercom_config_page.png"
       alt="IrisAgent Intercom configuration page"
     />
+
+### **Step 7: Configure Chat Filter (Optional)**
+
+\
+You can optionally enable chat filtering to control which Intercom conversations IrisAgent processes. This allows you to filter conversations based on tags or apply custom filtering logic.
+
+#### **Filter Modes**
+
+**Simple Mode:**
+1. Toggle **Enable Chat Filter** to ON
+2. Select **Simple** mode
+3. Choose an **Operator**: `OR` or `AND`
+4. Add one or more tags using the **Add Tag** button
+   - With `OR` operator: IrisAgent processes conversations that have ANY of the specified tags
+   - With `AND` operator: IrisAgent processes conversations that have ALL of the specified tags
+5. The generated query is shown in the **Generated Query (Read-only)** field
+
+**Advanced Mode:**
+1. Toggle **Enable Chat Filter** to ON
+2. Select **Advanced** mode
+3. Enter a custom filter query
+4. IrisAgent will process only conversations matching your query criteria
+
+**Note:** Filtering is optional. If disabled, IrisAgent will process all incoming conversation events.
+
+   <img
+     style={{ borderRadius:"0.5rem" }}
+     src="/images/intercom-chat-filter.png"
+     alt="IrisAgent Chat Filter Configuration for Intercom"
+   />
