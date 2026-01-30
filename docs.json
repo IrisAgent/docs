@@ -15,6 +15,20 @@
 
   "favicon": "/favicon.svg",
   "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Documentation",
+          "icon": "book-open-cover",
+          "href": "https://irisagent.mintlify.app/"
+        },
+        {
+          "anchor": "Blog",
+          "icon": "newspaper",
+          "href": "https://irisagent.com/blog/"
+        }
+      ]
+    },
     "tabs": [
       {
         "tab": "Guides",
@@ -61,10 +75,12 @@
                 ]
               }
             ]
-          },{
+          },
+          {
             "group": "Deploying IrisAgent",
             "pages": [
               "deploying-irisagent/Chatbot-on-Website",
+              "deploying-irisagent/Chatbot-on-Website-copied-1",
               "deploying-irisagent/Agent-Copilot",
               "deploying-irisagent/Slack",
               "deploying-irisagent/Microsoft-Teams",
@@ -73,9 +89,11 @@
               "deploying-irisagent/Chatbot-Automation-on-Freshchat",
               "deploying-irisagent/AI-Search-on-Website",
               "deploying-irisagent/Chatbot-on-Zendesk-Help-Center",
-              "deploying-irisagent/AI-Search-on-Zendesk-Ticket-Form"
+              "deploying-irisagent/AI-Search-on-Zendesk-Ticket-Form",
+              "deploying-irisagent/Voice-AI-on-GoTo-Connect"
             ]
-          },{
+          },
+          {
             "group": "Configuring AI and Automation",
             "pages": [
               "configuring-ai-and-automation/Ticket-Tagging",
@@ -85,37 +103,27 @@
               "configuring-ai-and-automation/Revise-Chatbot-Answers",
               "configuring-ai-and-automation/AI-for-Macros"
             ]
-          },{
+          },
+          {
             "group": "Security and Compliance",
             "pages": [
               "security-and-compliance/Single-Sign-On-Options",
               "security-and-compliance/Okta-SSO"
             ]
-          },{
+          },
+          {
             "group": "Account Management",
             "pages": [
               "account-management/Change-Integration-User"
             ]
           }
         ]
-      },{
-        "tab": "API reference",        
-        "openapi": "/api-reference/openapi.json"        
-      }],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://irisagent.mintlify.app/",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://irisagent.com/blog/",
-          "icon": "newspaper"
-        }
-      ]
-    }
+      },
+      {
+        "tab": "API reference",
+        "openapi": "/api-reference/openapi.json"
+      }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
