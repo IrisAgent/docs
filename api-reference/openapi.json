@@ -271,6 +271,8 @@ paths:
           description: Unauthorized - invalid credentials
         '403':
           description: Forbidden - insufficient permissions
+        '404':
+          description: Conversation not found - the specified conversationId does not exist
   /v1/community/search/articles:
     get:
       summary: Search articles
