@@ -14,12 +14,24 @@ IrisAgent provides AI-powered answers to support tickets from internal knowledge
 2. Click on **Manage Integrations** option on the bottom left menu.
 3. If you are using Atlassian cloud instance, click on **Connect with Atlassian/Jira Cloud**. Else, if you are using Atlassian on-prem instance, click on **Connect with Atlassian/Jira Server**. Give the OAuth permissions and click on Allow. This will automatically connect IrisAgent with Jira and Confluence.
 
-   <br />
-
 - If you are connecting with Atlassian Cloud, a follow-on page will show up that asks for the Atlassian cloud token, email address, and base URL. Here are [the steps to create the token](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+  - Create an API token with scope by going to this [api token page](https://id.atlassian.com/manage-profile/security/api-tokens).
+  - Click on **Create an API token**
+  - Select an expiry date 365 days in the future
+  - Select **Confluence** under **Select the app** page
+  - Under **Scope type**, click on **Classic**
+  - Please select the following permissions:
+    - read:confluence-content.all
+    - read:confluence-content.summary
+    - read:confluence-space.summary
+    - read:confluence-props
+    - search:confluence
+  - Save and copy the token and enter it in the "Confluence API token" field on IrisAgent dashboard
+  - Enter your email address that was used to create the token
+  - Get your Confluence URL in the format of `https://api.atlassian.com/ex/confluence/<cloud_id>` where cloud_id is obtained by going to this url in your browser: `https://<your-site-name>.atlassian.net/_edge/tenant_info` .
 - If you are connecting with Atlassian Server, a follow-on page will show up that asks for the Atlassian server token and base URL. Here are [the steps to create the token](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
 
-## Selecting certain Confluence Spaces 
+## Selecting certain Confluence Spaces
 
 1. When creating the token in the step above, ensure you only give permissions to the relevant projects.
 2. After you connect with your Atlassian account, the Atlassian tile on the "Manage Integrations" page should as connected. Click on the Settings gear icon. This is show a side panel where you can select/deselect which projects you want IrisAgent to have access to.
