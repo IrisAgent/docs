@@ -7,19 +7,14 @@ description: "IrisAgent Installation Guide for Jira issues. Use this guide to us
 
 - Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with either GSuite, Microsoft, or Okta SSO.
 
-  <br />
-
   <img
     style={{ borderRadius:"0.5rem" }}
     src="/images/web-login.png"
     alt="IrisAgent web login"
   />
 
-<br />
 
-- Click on **Connect with Jira Service Desk** (same button also works for Jira Software). Obtain a token from your Atlassian account with "write:jira-work" permissions as per the steps [on the official Atlassian docs](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/). Enter the token, email, and subdomain and click on Connect.
-
-  <br />
+- Click on **Connect with Jira Service Desk** (same button also works for Jira Software). Obtain a token from your Atlassian account with `write:jira-work`, `read:jira-work` , and `read:jira-user `permissions as per the steps [on the official Atlassian docs](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/). Enter the token, email, subdomain, cloud id (obtained by navigating to https://your-domain.atlassian.net/\_edge/tenant_info) and click on Connect.
 
   <img
     style={{ borderRadius:"0.5rem" }}
@@ -27,7 +22,6 @@ description: "IrisAgent Installation Guide for Jira issues. Use this guide to us
     alt="IrisAgent platform connection"
   />
 
-<br />
 
 - This step is optional. If you want to connect with more platforms, such as Jira Software, Salesforce, etc., navigate to **Manage Integrations** on the bottom left and connect with the relevant platforms.
 
@@ -35,4 +29,3 @@ description: "IrisAgent Installation Guide for Jira issues. Use this guide to us
 
 1. Navigate to [IrisAgent's listing](https://marketplace.atlassian.com/apps/1229507/irisagent?tab=overview&hosting=cloud) on the Atlassian Marketplace.
 2. Click on Install and follow the next steps.
-
