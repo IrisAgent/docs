@@ -12,17 +12,26 @@ description: "IrisAgent Installation Guide for Jira issues. Use this guide to us
     src="/images/web-login.png"
     alt="IrisAgent web login"
   />
+- Click on **Connect with Jira Service Desk** (same button also works for Jira Software).
+  - Create an API token with scope by going to this [**api token page**](https://id.atlassian.com/manage-profile/security/api-tokens).
+  - Click on **Create an API token**
+  - Select an expiry date 365 days in the future
+  - Select **Jira** under **Select the app** page
+  - Under **Scope type**, click on **Classic**
+  - Please select the following permissions:
+    - `write:jira-work` 
+    - `read:jira-work` 
+    - `read:jira-user`
+  - Save and copy the token and enter it in the “API token” field on IrisAgent dashboard
+  - Enter your email address that was used to create the token
+  - Get your cloud_id by going to this url in your browser: `https://<your-site-name>.atlassian.net/_edge/tenant_info` and enter it in the form.
+  - Click on **Connect**.
 
-
-- Click on **Connect with Jira Service Desk** (same button also works for Jira Software). Obtain a token from your Atlassian account with `write:jira-work`, `read:jira-work` , and `read:jira-user `permissions as per the steps [on the official Atlassian docs](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/). Enter the token, email, subdomain, cloud id (obtained by navigating to https://your-domain.atlassian.net/\_edge/tenant_info) and click on Connect.
-
-  <img
-    style={{ borderRadius:"0.5rem" }}
-    src="/images/zd-connect.png"
-    alt="IrisAgent platform connection"
-  />
-
-
+    <img
+      style={{ borderRadius:"0.5rem" }}
+      src="/images/zd-connect.png"
+      alt="IrisAgent platform connection"
+    />
 - This step is optional. If you want to connect with more platforms, such as Jira Software, Salesforce, etc., navigate to **Manage Integrations** on the bottom left and connect with the relevant platforms.
 
 ## Install the IrisAgent app into your Jira account
