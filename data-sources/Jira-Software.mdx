@@ -12,9 +12,7 @@ IrisAgent provides AI-powered correlations between Jira issues and support ticke
 
 1. Login to the [IrisAgent dashboard](https://web.irisagent.com/). This step assumes that you have already connected IrisAgent to your ticketing provider.
 2. Click on **Manage Integrations** option on the bottom left menu.
-3. If you are using Atlassian cloud instance, click on **Connect with Atlassian/Jira Cloud**. Else, if you are using Atlassian on-prem instance, click on **Connect with Atlassian/Jira Server**. Give the OAuth permissions and click on Allow. This will automatically connect IrisAgent with Jira and Confluence.
-
-   <br />
+3. If you are using Atlassian cloud instance, click on **Connect with Atlassian/Jira Cloud**. Else, if you are using Atlassian on-prem instance, click on **Connect with Atlassian/Jira Server**. 
 
    <img
      style={{ borderRadius:"0.5rem" }}
@@ -22,8 +20,19 @@ IrisAgent provides AI-powered correlations between Jira issues and support ticke
      alt="Atlassian integration"
    />
 
-- If you are connecting with Atlassian Cloud, a follow-on page will show up that asks for the Atlassian cloud token, email address, and base URL. Here are [the steps to create the token](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
-- If you are connecting with Atlassian Server, a follow-on page will show up that asks for the Atlassian server token and base URL. Here are [the steps to create the token](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+- Follow the steps to create token:
+  - Create an API token with scope by going to this [**api token page**](https://id.atlassian.com/manage-profile/security/api-tokens).
+  - Click on **Create an API token**
+  - Select an expiry date 365 days in the future
+  - Select **Jira** under **Select the app** page
+  - Under **Scope type**, click on **Classic**
+  - Please select the following permissions:
+    - `read:jira-work`
+    - `read:jira-user`
+  - Save and copy the token and enter it in the “API token” field on IrisAgent dashboard
+  - Enter your email address that was used to create the token
+  - Get your cloud_id by going to this url in your browser: `https://<your-site-name>.atlassian.net/_edge/tenant_info` and enter it in the form.
+  - Click on **Connect**.
 
 ## \*\*Selecting certain Jira Projects \*\*
 
