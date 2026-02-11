@@ -71,23 +71,26 @@ Select an author who should be used by IrisAgent to send automated messages. Not
 
 Configure the Intercom integration in your IrisAgent dashboard:
 
-1. Navigate to the Intercom Chat configuration page in your IrisAgent account.
+1. Navigate to [the Integrations page](https://web.irisagent.com/manage-accounts) on IrisAgent dashboard and click on the gear icon the Intercom Chat tile.
+1. Toggle on the "Enable Chat Automation" option.
 2. Enter the `ClientSecret` from Step 4.
 3. Enter the `User ID` from Step 5 that IrisAgent will use as the author for automated responses.
-    <img
-      style={{ borderRadius:"0.5rem" }}
-      src="/images/intercom_config_page.png"
-      alt="IrisAgent Intercom configuration page"
-    />
+
+   <img
+     style={{ borderRadius:"0.5rem" }}
+     src="/images/intercom_config_page.png"
+     alt="IrisAgent Intercom configuration page"
+   />
 
 ### **Step 7: Configure Chat Filter (Optional)**
 
 \
-You can optionally enable chat filtering to control which Intercom conversations IrisAgent processes. This allows you to filter conversations based on tags or apply custom filtering logic.
+You can optionally enable chat filtering to control which Intercom conversations IrisAgent processes. This allows you to filter conversations based on tags or apply custom filtering logic. Enable it by clicking on "Chat filter" on the same page.
 
 #### **Filter Modes**
 
 **Simple Mode:**
+
 1. Toggle **Enable Chat Filter** to ON
 2. Select **Simple** mode
 3. Choose an **Operator**: `OR` or `AND`
@@ -97,6 +100,7 @@ You can optionally enable chat filtering to control which Intercom conversations
 5. The generated query is shown in the **Generated Query (Read-only)** field
 
 **Advanced Mode:**
+
 1. Toggle **Enable Chat Filter** to ON
 2. Select **Advanced** mode
 3. Enter a custom filter query
@@ -104,8 +108,8 @@ You can optionally enable chat filtering to control which Intercom conversations
 
 **Note:** Filtering is optional. If disabled, IrisAgent will process all incoming conversation events.
 
-   <img
-     style={{ borderRadius:"0.5rem" }}
-     src="/images/intercom-chat-filter.png"
-     alt="IrisAgent Chat Filter Configuration for Intercom"
-   />
+<img
+  style={{ borderRadius:"0.5rem" }}
+  src="/images/intercom-chat-filter.png"
+  alt="IrisAgent Chat Filter Configuration for Intercom"
+/>
