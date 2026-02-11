@@ -587,11 +587,18 @@ components:
             - customer
         query:
           description: |
-            The user's query or question to be processed by IrisGPT. 
+            The user's query or question to be processed by IrisGPT.
             It is the core input for generating a response.
           type: string
           x-oapi-codegen-extra-tags:
             validate: 'required,gte=1'
+        voiceChannel:
+          description: |
+            Optional flag to indicate if the request is coming from a voice channel.
+            When set to true, the response will not include source article links (links, linksTitle, and urls fields will be omitted).
+            Defaults to false if not provided.
+          type: boolean
+          default: false
       required:
         - query
     AskResponseItem:
