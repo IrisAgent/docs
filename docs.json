@@ -80,7 +80,6 @@
             "group": "Deploying IrisAgent",
             "pages": [
               "deploying-irisagent/Chatbot-on-Website",
-              "deploying-irisagent/Chatbot-on-Website-copied-1",
               "deploying-irisagent/Agent-Copilot",
               "deploying-irisagent/Slack",
               "deploying-irisagent/Microsoft-Teams",
@@ -89,7 +88,8 @@
               "deploying-irisagent/Chatbot-Automation-on-Freshchat",
               "deploying-irisagent/AI-Search-on-Website",
               "deploying-irisagent/Chatbot-on-Zendesk-Help-Center",
-              "deploying-irisagent/AI-Search-on-Zendesk-Ticket-Form"              
+              "deploying-irisagent/AI-Search-on-Zendesk-Ticket-Form",
+              "deploying-irisagent/Chatbot-on-Website-copied-1"
             ]
           },
           {
@@ -103,6 +103,12 @@
               "configuring-ai-and-automation/Revise-Chatbot-Answers",
               "configuring-ai-and-automation/Add-Custom-APIs",
               "configuring-ai-and-automation/AI-for-Macros"
+            ]
+          },
+          {
+            "group": "User Guides",
+            "pages": [
+              "agent-copilot"
             ]
           },
           {
