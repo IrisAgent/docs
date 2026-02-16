@@ -79,7 +79,6 @@
           {
             "group": "Deploying IrisAgent",
             "pages": [
-              "deploying-irisagent/voice-ai-on-8x8",
               "deploying-irisagent/Chatbot-on-Website",
               "deploying-irisagent/Agent-Copilot",
               "deploying-irisagent/Slack",
@@ -90,6 +89,7 @@
               "deploying-irisagent/AI-Search-on-Website",
               "deploying-irisagent/Chatbot-on-Zendesk-Help-Center",
               "deploying-irisagent/AI-Search-on-Zendesk-Ticket-Form",
+              "deploying-irisagent/voice-ai-on-8x8",
               "deploying-irisagent/Voice-AI-on-GoTo-Connect"
             ]
           },
