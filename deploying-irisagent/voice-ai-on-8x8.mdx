@@ -1,0 +1,62 @@
+---
+title: "Voice AI on 8x8"
+description: "This guide walks you through deploying IrisAgent Voice AI with 8x8, enabling intelligent call automation for your customer service operations."
+---
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- An 8x8 account with admin access to the 8x8 Admin Console
+- A phone number or extension in 8x8 that will receive customer calls
+- A valid license assigned to the extension (call forwarding rules are not available without an assigned license)
+
+## Step 1: Sign Up for IrisAgent
+
+You can sign up for IrisAgent in one of two ways: by connecting your ticketing platform or using public website as knowledge source.
+
+## Step 2: Set Up Call Forwarding in 8x8
+
+Next, configure 8x8 to route incoming calls to your IrisAgent Voice AI.
+
+### Access Call Forwarding Settings
+
+1. Sign in to the [8x8 Admin Console](https://admin.8x8.com)
+2. Navigate to **Users** from the left-hand menu
+3. Click the **Edit** (pencil icon) to the right of the extension you wish to configure
+4. Select **Call forwarding rules**
+
+### Configure Call Forwarding to IrisAgent
+
+1. Click the **Edit** (pencil icon) next to the **Forward all calls** rule to enable it
+2. Select **Selected Users or External Numbers** as the forwarding destination
+3. Enter the **external phone number** provided by the IrisAgent team
+4. Click **Add to the List** to add the number to the forwarding rule
+5. Configure ring options:
+   - Set the number of seconds the call should ring before moving to the next option
+   - Select **Sequentially** or **Simultaneously** depending on your preference
+6. Click **Save** to save the forwarding rule
+7. Click **Save** again to save the user profile
+
+> **Note:** When entering the IrisAgent phone number, include the full country code (e.g., +1 for US numbers).
+
+### (Optional) Set Up Time-Based Forwarding
+
+If you want IrisAgent Voice AI to handle calls only during specific hours (e.g., after business hours), you can create a custom forwarding rule instead:
+
+1. In the **Call forwarding rules** section, click **Add New Rule**
+2. Give the rule a descriptive name (e.g., "IrisAgent Voice AI")
+3. Under **When to Apply this Rule**, select **Recurring Schedule** and set the days and time range when the rule should be active
+4. Under **Forward Calls to**, select **Selected Users or External Numbers**
+5. Enter the **external phone number** provided by the IrisAgent team and click **Add to the List**
+6. Click **Save** to save the rule, then save the user profile
+
+## Step 3: Test Your Integration
+
+After completing the setup, verify that calls are routing correctly to IrisAgent Voice AI.
+
+### Make a Test Call
+
+1. Call the phone number you configured from an external phone (not an 8x8 line)
+2. You should hear the IrisAgent Voice AI greeting
+3. Test a few common customer queries to ensure responses are working as expected

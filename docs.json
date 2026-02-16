@@ -79,6 +79,7 @@
           {
             "group": "Deploying IrisAgent",
             "pages": [
+              "deploying-irisagent/voice-ai-on-8x8",
               "deploying-irisagent/Chatbot-on-Website",
               "deploying-irisagent/Agent-Copilot",
               "deploying-irisagent/Slack",
