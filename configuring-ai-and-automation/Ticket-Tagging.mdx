@@ -21,15 +21,17 @@ There are three ways to automate tagging and you can choose any number of them: 
 \
 This is enabled by default. IrisAgent automatically predicts tags for incoming tickets based on historical data and trends from your ticketing system. No additional setup is required. You will start seeing tags under the Categories page on the [IrisAgent dashboard](https://web.irisagent.com/overview).
 
-### **Using Existing Tags or Fields**
-
-\
-If your ticketing platform already has the tags or custom fields that your team is manually adding and you'd like to automate, IrisAgent can train an AI model to automatically predict the same tags and write them back into your ticketing system. To do this, please let us know by [sending us an email](mailto:contact@irisagent.com?subject=Existing%20tags%20to%20automate). Include the names of these tags or custom fields in your message.
-
 ### **Configuring Tagging in plain English**
 
 \
 You can configure new tags by describing them in plain English and some examples. IrisAgent will train an AI model to automatically predict these tags and write them back into your ticketing system. To do this, follow these steps:
 
-1. Navigate to the **Automations -\> Training** page on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories) and click on the **\+ Create New Intent** button on the top.
-2. Enter the name, short description, and a couple of examples for the Tags you want to automate. Click on **Create**
+1. Navigate to the **AI Agents -\> Train** page on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories) and click on the **\+ Create New SmartOp** button on the top.
+2. Enter the Scenario to act on. 
+   3. If you want to create a tag for this intent, enable the toggle **Write intent to tags field** under the Settings gear icon. 
+   3. Optionally, you can also add training examples to match this scenario
+
+### **Using Existing Tags or Fields**
+
+\
+If your ticketing platform already has the tags or custom fields that your team is manually adding and you'd like to automate, IrisAgent can train an AI model to automatically predict the same tags and write them back into your ticketing system. To do this, please let us know by [sending us an email](mailto:contact@irisagent.com?subject=Existing%20tags%20to%20automate). Include the names of these tags or custom fields in your message.
