@@ -47,6 +47,7 @@
                 "group": "Ticketing systems",
                 "pages": [
                   "data-sources/Zendesk",
+                  "data-sources/Hubspot",
                   "data-sources/Salesforce",
                   "data-sources/Intercom",
                   "data-sources/Jira-Software-or-Service-Desk",
