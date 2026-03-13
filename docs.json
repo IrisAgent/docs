@@ -51,7 +51,8 @@
                   "data-sources/Intercom",
                   "data-sources/Jira-Software-or-Service-Desk",
                   "data-sources/Freshworks",
-                  "data-sources/Hubspot"
+                  "data-sources/Hubspot",
+                  "data-sources/Outlook"
                 ]
               },
               {
