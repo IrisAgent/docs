@@ -74,6 +74,12 @@
                 "pages": [
                   "data-sources/SalesforceCRM"
                 ]
+              },
+              {
+                "group": "Email providers",
+                "pages": [
+                  "outlook"
+                ]
               }
             ]
           },
