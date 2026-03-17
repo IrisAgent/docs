@@ -14,6 +14,7 @@ paths:
       operationId: irisgptAsk
       summary: |
         Generates AI answer with relevant links to any support query
+      description: Use the IrisGPT API to generate AI-powered answers to support queries, with relevant knowledge base article links and source references.
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
         - $ref: '#/components/parameters/ChatIdentifier'
@@ -46,6 +47,7 @@ paths:
     post:
       operationId: summarizeConversation
       summary: Generates a summary of a conversation or ticket
+      description: Get an AI-powered summary of your support conversation or ticket using IrisAgent's summarization API. Supports markdown and HTML output formats.
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
       requestBody:
@@ -72,7 +74,8 @@ paths:
   /v1/feedback:
     post:
       operationId: postFeedback
-      summary: You can send user or agent feedback on IrisGPT responses via our APIs. This feedback helps IrisAgent improve the quality of its responses over time.
+      summary: Send user feedback
+      description: Send user or agent feedback on IrisGPT AI answers via this API. This feedback helps IrisAgent improve the quality of its responses over time.
       parameters:
         - $ref: '#/components/parameters/ChatIdentifier'
       requestBody:
@@ -104,6 +107,7 @@ paths:
     post:
       operationId: autoTag
       summary: Gets AI-powered tags for a conversation using pre-built AI models
+      description: Get AI-powered tag(s) for a support conversation using pre-built AI models. Automatically classify and label tickets by topic, intent, or category.
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
       requestBody:
@@ -131,6 +135,7 @@ paths:
     post:
       operationId: analyzeSentiment
       summary: Gets AI-powered sentiment analysis for a conversation
+      description: Get AI-powered sentiment analysis for a support conversation. Returns a granular sentiment score from -100 (very negative) to 100 (very positive).
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
       requestBody:
