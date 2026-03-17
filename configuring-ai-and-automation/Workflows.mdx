@@ -19,6 +19,26 @@ You can [configure workflows by describing them in plain English](https://irisag
 1. Navigate to the **Automations -\> Training** page on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories) and click on the **\+ Create New SmartOp** button on the top.
 2. Enter the name, short description, a couple of examples, and actions for AI Agent you want to automate. Click on **Create**
 
+### Using Custom APIs in plain-English workflows
+
+IrisAgent can call your own external APIs mid-conversation to look up live data — such as order status, account tier, or subscription details — and present the result to the customer in natural language, without any agent involvement.
+
+**How it works:**
+
+1. A customer asks a question that requires real-time data (e.g. "What is the status of my order?").
+2. IrisAgent's AI identifies the relevant workflow and determines what information it needs to collect (e.g. the order number).
+3. The AI asks the customer follow-up questions, one at a time, until it has all required fields.
+4. IrisAgent automatically calls your configured API with the collected data and the ticket's context.
+5. The API response is handed back to the AI, which formats it into a natural-language answer for the customer.
+
+**Prerequisites:** You must first configure the API under [Custom APIs](/data-sources/Custom-API). During setup, any `{{variableName}}` placeholder you add to the URL or request body that is not a built-in ticket variable (e.g. `{{orderId}}`, `{{email}}`) is automatically treated as a field to collect from the customer.
+
+**Example:** A SmartOp for order status lookup might be described as:
+
+> "When a customer asks about the status of their order, collect their order ID and look it up using the Order Status API."
+
+IrisAgent maps "Order Status API" to the configured Custom API, collects `{{orderId}}` from the customer, calls the endpoint, and replies with the result — all without leaving the chat.
+
 ## Enable AI insights as a private note in your ticketing system
 
 \
