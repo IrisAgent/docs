@@ -15,7 +15,7 @@ Custom APIs let you connect IrisAgent to any external HTTP endpoint — your int
 ## Step 1: Open the Custom APIs configuration
 
 1. Log in to the [IrisAgent dashboard](https://web.irisagent.com/).
-2. Click on **Manage Accounts** in the left navigation.
+2. Click on **Data Sources** in the left navigation.
 3. Scroll to the **Development** section and click **Configure** on the **Custom APIs** card.
 
 This opens a side panel with two tabs: **APIs** and **Credentials**.
@@ -29,17 +29,15 @@ Skip this step if your API is publicly accessible or uses URL-based tokens.
 1. In the side panel, click the **Credentials** tab.
 2. Click **Add Credential**.
 3. Fill in the fields:
-
    | Field | Description |
-   |-------|-------------|
+   | --- | --- |
    | **Credential Name** | A human-readable label, e.g. `Production Bearer Token` |
    | **Header Name** | The HTTP header to send, e.g. `Authorization` or `X-API-Key` |
    | **Header Value** | The secret value, e.g. `Bearer sk-abc123` |
-
 4. Click **Create & Select**.
 
 <Note>
-Credential values are stored securely and cannot be viewed after saving. Store them in a safe location before saving.
+  Credential values are stored securely and cannot be viewed after saving. Store them in a safe location before saving.
 </Note>
 
 ---
@@ -52,14 +50,14 @@ Credential values are stored securely and cannot be viewed after saving. Store t
 ### Basic information
 
 | Field | Description |
-|-------|-------------|
+| --- | --- |
 | **Name** | A descriptive name shown in the trigger builder, e.g. `Customer Premium Check API` |
-| **API Credential** | Select a credential from Step 2, or leave as *None* for unauthenticated requests |
+| **API Credential** | Select a credential from Step 2, or leave as _None_ for unauthenticated requests |
 
 ### HTTP configuration
 
 | Field | Description |
-|-------|-------------|
+| --- | --- |
 | **Method** | `GET`, `POST`, `PUT`, or `DELETE` |
 | **URL** | The full endpoint URL. Supports template variables (see below) |
 | **Headers** | Any additional headers beyond the credential. Add as many key/value rows as needed |
@@ -72,7 +70,7 @@ Use `{{variableName}}` placeholders in the URL, headers, or body to inject live 
 **Built-in variables (always available):**
 
 | Variable | Value injected |
-|----------|---------------|
+| --- | --- |
 | `{{ticketId}}` | The unique identifier of the ticket |
 | `{{priority}}` | The priority level of the ticket |
 | `{{status}}` | The current status of the ticket |
@@ -80,13 +78,14 @@ Use `{{variableName}}` placeholders in the URL, headers, or body to inject live 
 | `{{accountId}}` | The account/company ID associated with the ticket |
 
 **Example URL using a built-in variable:**
-```
+
+```text
 https://api.yourcompany.com/customers/check?ticketId={{ticketId}}&accountId={{accountId}}
 ```
 
 **Custom variables** — for FAQ workflows that collect information from the customer (such as an order number or email address), you can define your own placeholder names:
 
-```
+```text
 https://api.yourcompany.com/orders/{{orderId}}
 ```
 
@@ -103,6 +102,7 @@ Define the fields you expect back from your API. This tells IrisAgent how to int
 3. Add one field per value you want to use in an expression or surface to the customer.
 
 **Example** — for a response like `{"isPremium": true, "tier": "enterprise"}`:
+
 - Field `isPremium` → Boolean
 - Field `tier` → String
 
@@ -112,7 +112,7 @@ Write a condition that evaluates the API response. IrisAgent uses this expressio
 
 Access response fields using `response.fieldName`:
 
-```
+```text
 response.isPremium == true && response.tier == "enterprise"
 ```
 
@@ -132,6 +132,7 @@ After saving, reopen the API in edit mode to use the built-in test tool.
 4. Click **Run Test**.
 
 IrisAgent will call your API with the provided values and show:
+
 - The expression result
 - The execution time in milliseconds
 - Any error message if the call failed
@@ -145,7 +146,7 @@ Iterate on the URL, expression, or schema until the test returns the expected re
 ### As a trigger condition (drag-and-drop builder)
 
 1. Go to **Automations → Triggers** on the [IrisAgent dashboard](https://web.irisagent.com/triggers).
-2. Click **+ Create New Trigger** and add a **Condition**.
+2. Click **\+ Create New Trigger** and add a **Condition**.
 3. In the condition picker, scroll to the **API** section — your Custom APIs appear listed as `API: <name>`.
 4. Select your API. Depending on its return type, you will be prompted to enter a comparison value (e.g. `true` for a Boolean, or a string to match).
 5. Save and activate the trigger.
