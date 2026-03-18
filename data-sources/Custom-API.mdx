@@ -143,7 +143,11 @@ Iterate on the URL, expression, or schema until the test returns the expected re
 
 ## Using Custom APIs in Workflows
 
-### As a trigger condition (drag-and-drop builder)
+### \[Recommended\] As a live data source in AI FAQ workflows for chats and cases
+
+See [Workflows — Using Custom APIs in plain-English workflows](/configuring-ai-and-automation/Workflows#using-custom-apis-in-plain-english-workflows) for how to wire a Custom API into an AI-driven multi-turn conversation.
+
+### As a trigger condition (drag-and-drop builder) for cases
 
 1. Go to **Automations → Triggers** on the [IrisAgent dashboard](https://web.irisagent.com/triggers).
 2. Click **\+ Create New Trigger** and add a **Condition**.
@@ -152,10 +156,6 @@ Iterate on the URL, expression, or schema until the test returns the expected re
 5. Save and activate the trigger.
 
 When a ticket arrives, IrisAgent automatically calls your API with the ticket's context, evaluates the expression, and runs the trigger actions only if the condition is met.
-
-### As a live data source in AI FAQ workflows
-
-See [Workflows — Using Custom APIs in plain-English workflows](/configuring-ai-and-automation/Workflows#using-custom-apis-in-plain-english-workflows) for how to wire a Custom API into an AI-driven multi-turn conversation.
 
 ---
 
