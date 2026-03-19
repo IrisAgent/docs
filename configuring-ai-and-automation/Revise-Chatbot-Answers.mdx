@@ -1,0 +1,170 @@
+---
+title: "Revise Chatbot Answers"
+description: "Learn how to update and refine AI answers provided by IrisGPT using the dashboard"
+---
+
+## Revise Chatbot Answers
+
+Train your chatbot to give better responses by revising AI answers directly from the IrisAgent dashboard. When the chatbot provides an answer that could be improved, you can update it in just a few clicks—no code required.
+
+## Overview
+
+The **Revise** feature allows you to:
+
+- Review chatbot conversations in real-time
+- Edit AI responses that need improvement
+- Train the chatbot to provide your revised answer for similar future questions
+- Maintain consistent, on-brand messaging across all customer interactions
+
+<Info>
+  Revised answers are applied immediately. The next time a customer asks a similar question, the chatbot will use your updated response.
+</Info>
+
+## How It Works
+
+When you revise an answer, you're creating a training rule that tells IrisGPT how to respond to specific types of questions. You can either provide a **Direct Answer** (the exact response you want) or give **Instructions for AI Agent** (guidelines for how the AI should formulate its response).
+
+---
+
+## Step 1: Ask a Question in the Chatbot
+
+Start by identifying an AI response that needs improvement. You can do this by:
+
+- Testing the chatbot yourself with sample questions
+- Reviewing recent customer conversations
+
+For example, type a question like "What is AutoKB?" into the IrisAgent chatbot and observe the response you receive.
+
+![Image](/images/image-1.png)
+
+---
+
+## Step 2: Open the Conversations Tab
+
+In the IrisAgent dashboard, navigate to **IrisGPT → Conversations** where recent chatbot interactions are listed.
+
+![Image](/images/image-2.png)
+
+Locate the conversation containing the question you want to revise (e.g., "What is AutoKB?"). Click on the conversation to view the full exchange.
+
+---
+
+## Step 3: Open the Revise Answer View
+
+Within the conversation detail view, you'll see the question and the AI's response. Look for the **Revise** button in the bottom-right corner of the AI answer.
+
+Click **Revise** to open the answer editor.
+
+---
+
+## Step 4: Edit and Save the New Answer
+
+You'll now see the revision editor with two tabs:
+
+<Tabs>
+  <Tab title="Direct Answer">
+    Use this option to provide the exact response you want the chatbot to give. This is best for:
+
+    - Specific factual information
+    - Standard responses with precise wording
+    - Answers that should always be consistent
+
+    Simply type your improved answer in the text editor. You can use formatting options like **bold**, _italic_, links, and lists.
+
+    ![Image](/images/image-2.png)
+  </Tab>
+  <Tab title="Instructions for AI Agent">
+    Use this option to give the AI guidelines on how to respond. This is best for:
+
+    - Answers that may need slight variations
+    - Responses that should incorporate real-time context
+    - Guidelines on tone, length, or structure
+  </Tab>
+</Tabs>
+
+**Optional:** Add training examples by entering additional query text or ticket IDs. This helps the AI recognize variations of the same question.
+
+When you're satisfied with your changes, click **Save** to apply the revision.
+
+---
+
+## Step 5: Test the Updated Answer in the Chatbot
+
+Return to the chatbot interface and ask the same question again (e.g., "What is AutoKB?").
+
+Confirm that the chatbot now responds with exactly the revised answer you configured.
+
+<Check>
+  **Success!** Your chatbot is now trained to provide the improved response for this type of question.
+</Check>
+
+---
+
+## Managing Revised Answers
+
+All your revisions are saved as training rules. To view or edit existing revisions:
+
+1. Navigate to **Automation → Training** in the sidebar
+2. Browse your list of training rules
+3. Click any rule to edit or delete it
+
+<Tip>
+  Regularly review your training rules to ensure they stay up-to-date with your product and policies.
+</Tip>
+
+---
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Keep answers concise and helpful">
+    Customers prefer clear, direct answers. Aim for responses that quickly address the question without unnecessary filler.
+  </Accordion>
+  <Accordion title="Include links to documentation">
+    When appropriate, link to relevant help center articles so customers can learn more.
+  </Accordion>
+  <Accordion title="Match your brand voice">
+    Ensure revised answers align with your company's tone and communication style.
+  </Accordion>
+  <Accordion title="Add training examples for variations">
+    If customers ask the same question in different ways, add those variations as training examples to improve matching.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How quickly do revisions take effect?">
+    Revisions are applied immediately after you click Save. The next matching question will receive your updated response.
+  </Accordion>
+  <Accordion title="Can I revert a revision?">
+    Yes. Navigate to **Automation → Training**, find the rule, and either edit it or delete it to restore the AI's default behavior.
+  </Accordion>
+  <Accordion title="What's the difference between Direct Answer and Instructions?">
+    **Direct Answer** provides a word-for-word response. **Instructions for AI Agent** gives the AI guidelines to formulate its own response based on your criteria.
+  </Accordion>
+  <Accordion title="Will revisions affect all channels?">
+    Yes, revisions apply to IrisGPT across all deployed channels (website chatbot, help center, etc.).
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Related Articles
+
+<CardGroup cols={2}>
+  <Card title="Chatbot on Website" icon="browser" href="/deploying-irisagent/Chatbot-on-Website">
+    Deploy IrisGPT on your website
+  </Card>
+  <Card title="Workflows" icon="diagram-project" href="/configuring-ai-and-automation/Workflows">
+    Create automated workflows with AI
+  </Card>
+  <Card title="AI for Macros" icon="bolt" href="/configuring-ai-and-automation/AI-for-Macros">
+    Use AI to enhance agent macros
+  </Card>
+  <Card title="Ticket Deflection" icon="shield-check" href="/configuring-ai-and-automation/Ticket-Deflection">
+    Automatically resolve common tickets
+  </Card>
+</CardGroup>

@@ -1,0 +1,106 @@
+---
+title: "Add Custom APIs"
+description: "Custom APIs allow you to connect IrisAgent with your internal systems and third-party services. You can use API responses as conditions in triggers and include dynamic data in automated actions."
+---
+
+## Step 1: Add and Configure Your API
+
+### Access Custom API Settings
+
+1. Go to **Integrations**
+2. Find the **Custom APIs** card and click **Configure**
+
+### Add Your API
+
+1. Click **Add API** to create a new custom API connection
+2. Enter the API details:
+   - **Name**: A descriptive name for this API
+   - **Endpoint URL**: The full URL of your API endpoint
+   - **Method**: Select GET, POST, PUT, or DELETE
+   - **Headers**: Add any required authentication headers or content-type specifications
+
+### Use Dynamic Variables
+
+You can include dynamic variables from the ticket in your API request. These variables are replaced with actual ticket data when the API is called:
+
+| Variable               | Description                           |
+| ---------------------- | ------------------------------------- |
+| `{{ticket.id}}`        | The ticket ID                         |
+| `{{ticket.subject}}`   | The ticket subject line               |
+| `{{ticket.priority}}`  | The ticket priority                   |
+| `{{ticket.status}}`    | The ticket status                     |
+| `{{ticket.accountId}}` | The customer account id on the ticket |
+
+Insert these variables in your endpoint URL, headers, or request body as needed.
+
+### Add Expressions
+
+Expressions let you extract specific values from API responses to use as conditions in triggers and workflows.
+
+1. Click **Add Expression**
+2. Enter an expression using the format `response.<fieldName>`
+   - Example: `response.accountStatus` to extract the account status field
+   - Example: `response.subscription.tier` to access nested fields
+3. Give the expression a descriptive name that will appear in the trigger builder
+
+### Define Response Schema
+
+Specify which fields from the API response you want to use in trigger actions:
+
+1. Click **Add Field** under Response Schema
+2. Enter the field path (e.g., `customerName`, `orderStatus`, `accountBalance`)
+3. Select the field type (string, number, boolean)
+4. Repeat for each field you want available in actions
+
+### Save Your Configuration
+
+Click **Save** to store your API configuration. The API is now available for use in triggers and workflows.
+
+## Step 2: Use the APIs in Triggers
+
+### Create a New Trigger
+
+1. Go to **Automation** → **Triggers**
+2. Click **Create New Trigger**
+3. Give your trigger a name and description
+
+### Add API Conditions
+
+Your custom API expressions appear as condition cards in the trigger builder:
+
+1. Under **Conditions**, find your API expression cards
+2. Click to add a condition based on your API response
+3. Set the comparison operator and value
+   - Example: "Account Status equals active"
+   - Example: "Subscription Tier is not free"
+
+You can combine multiple API conditions with other ticket conditions using AND/OR logic.
+
+### Use API Data in Actions
+
+The response fields you defined are available in these trigger actions:
+
+- **Auto-respond to customer**: Include API response data in automated replies using merge fields
+- **Create Private Note**: Add API data to internal notes for agent reference
+
+To insert API response data, use the field picker in the action editor to select from your defined response schema fields.
+
+### Save and Activate
+
+1. Review your trigger configuration
+2. Click **Save** to create the trigger
+3. Toggle the trigger to **Active** to enable it
+
+## Example Use Case
+
+**Scenario**: Automatically prioritize tickets from enterprise customers.
+
+1. **Configure API**: Create an API that checks your CRM for customer account tier
+2. **Add Expression**: `response.accountTier` to extract the tier value
+3. **Create Trigger**:
+   - Condition: `response.accountTier equals enterprise`
+   - Action: Set ticket priority to High and add a private note with account details
+
+## Need Help?
+
+For assistance with custom API configuration, contact [support@irisagent.com](mailto:support@irisagent.com).

@@ -1,0 +1,177 @@
+---
+title: "Agent Assist / Copilot App"
+---
+
+IrisAgent Agent Assist is an AI-powered sidebar that works directly inside your ticketing system. It gives support agents real-time context, AI-generated answers, and productivity tools without leaving the conversation. Agent Assist is available for Zendesk, Salesforce, Intercom, Freshworks, and other ticketing systems.
+
+This guide covers each feature of the Agent Assist sidebar, how to use it, and tips for getting the most out of it.
+
+---
+
+## Getting Started
+
+Once your administrator has connected IrisAgent to your ticketing system, the Agent Assist sidebar appears automatically when you open a support ticket or conversation. No additional setup is needed on the agent side.
+
+The sidebar loads relevant AI insights for the current ticket as soon as you open it. Each section can be configured by your administrator to match your team's workflow, so the sections you see may differ from what's described below.
+
+---
+
+## Sidebar Features
+
+### IrisGPT Chat
+
+The IrisGPT chat input appears at the top of the sidebar. Think of it as having a knowledgeable coworker available to answer any question about the current ticket or your product in general.
+
+**How to use it:**
+
+Type a natural language question into the text field and press Enter. IrisGPT searches your knowledge base, past tickets, and connected documentation to generate an answer. Responses include links to source articles so you can verify and share them with the customer.
+
+**Example questions:**
+
+- "How do I reset a customer's password?"
+- "What is our refund policy for annual subscriptions?"
+- "Has this customer reported this issue before?"
+
+---
+
+### Suggested Resolution
+
+The Suggested Resolution section shows an AI-generated answer for the current ticket, created automatically when the ticket is first loaded. IrisAgent analyzes the ticket content, matches it against your knowledge base and historical tickets, and produces a ready-to-use response.
+
+**What you'll see:**
+
+- A formatted resolution text that you can copy and send to the customer
+- Links to the knowledge base articles and documentation that informed the answer
+- Thumbs up/down buttons to rate the quality of the suggestion
+
+**Tips:**
+
+- Use the suggested resolution as a starting point and personalize it before sending
+- Rating suggestions helps IrisAgent improve over time
+- If the suggestion references articles, review them for additional context the customer may need
+
+---
+
+### Dynamic Resolution
+
+Dynamic Resolution generates a fresh AI answer on demand, using all comments and updates on the ticket up to the current moment. Unlike the Suggested Resolution (which is generated when the ticket first loads), Dynamic Resolution captures the full context of an ongoing conversation.
+
+**How to use it:**
+
+1. Click the **Get Dynamic Resolution** button in the Dynamic Resolution section
+2. IrisAgent reads through all ticket comments and conversation history
+3. A new resolution is generated and displayed with supporting links
+4. If you've already generated one, the button changes to **Refresh Resolution** so you can regenerate it after new comments are added
+
+**When to use Dynamic Resolution vs. Suggested Resolution:**
+
+- **Suggested Resolution** is best for new or simple tickets where the initial question is clear
+- **Dynamic Resolution** is best for tickets that have evolved through multiple back-and-forth exchanges, where the latest context matters most
+
+---
+
+### Case Summary
+
+The Case Summary provides a concise, AI-generated overview of the current ticket. It distills the key points from the ticket description and any conversation history into a quick-read summary.
+
+This is especially useful when picking up a ticket that another agent started, or when returning to a ticket after some time. Instead of reading through the entire thread, you can get up to speed in seconds.
+
+---
+
+### Case Priority
+
+The Case Priority section shows a computed priority score (0-100) along with a priority label (Critical, High, Medium, or Low). It also displays how long the ticket has been open.
+
+Use this to quickly triage your queue and identify which tickets need immediate attention.
+
+---
+
+### Case Sentiment
+
+Case Sentiment uses AI to analyze the tone of the customer's messages and displays a color-coded indicator ranging from Negative to Positive. This helps you gauge the customer's mood before responding, so you can adjust your tone accordingly.
+
+The five sentiment levels are: Negative, Moderately Negative, Neutral, Moderately Positive, and Positive.
+
+---
+
+### Customer Overview
+
+The Customer Overview section gives you a snapshot of the customer behind the current ticket, including the number of open and total cases they have, their health score, and their average sentiment across all interactions.
+
+Click **Check full details** to open the full customer profile in the IrisAgent dashboard, where you can see their complete ticket history and engagement patterns.
+
+---
+
+### Similar Cases
+
+The Similar Cases section lists historically similar tickets to this ticket's domain. Each entry shows the case subject and links directly to the original ticket in your ticketing system.
+
+This is one of the most powerful features for resolving tickets quickly. If a similar issue was resolved before, you can see exactly how it was handled and apply the same approach.
+
+---
+
+### Overall Search
+
+The search bar lets you search across your entire knowledge base, past tickets, and connected issue trackers (like Jira) from one place. Type at least three characters to search.
+
+**Results are grouped into:**
+
+- **Articles** from your knowledge base and documentation
+- **Cases** from your historical tickets
+- **Issues** from your connected issue tracker (Jira, etc.)
+
+Each result includes a title, relevance score, and a direct link.
+
+---
+
+### Jira / Issue Tracking
+
+If your organization has connected Jira (or another issue tracker), this section shows Jira issues that are linked to the current ticket and AI-suggested issues that may be related.
+
+**What you can do:**
+
+- **View linked issues** to understand if there's an ongoing engineering effort related to this ticket
+- **Link a suggested issue** to associate the ticket with an existing Jira issue
+- **Create a new Jira issue** directly from the sidebar by selecting a project, issue type, and filling in a summary
+
+This bridges the gap between support and engineering without requiring agents to switch to Jira.
+
+---
+
+### Macro Resolution (Zendesk only)
+
+For Zendesk users, the Macro Resolution section shows AI-recommended macros that may apply to the current ticket. Click to apply them directly.
+
+---
+
+## Providing Feedback
+
+Most sections include thumbs up and thumbs down buttons. Your feedback directly improves IrisAgent's AI accuracy over time. If a suggested resolution was helpful, give it a thumbs up. If it missed the mark, a thumbs down helps the system learn.
+
+---
+
+## Configuration
+
+Administrators can configure which sections appear in the sidebar and in what order from the IrisAgent dashboard under Agent Assist settings. Sections can also be customized per agent role, so different teams can see the sections most relevant to their workflow.
+
+For setup instructions specific to your ticketing system, see:
+
+- [Zendesk Setup Guide](https://irisagent.com/zd-docs/)
+- [Intercom Integration](https://irisagent.com/intercom/)
+- [Salesforce Integration](https://irisagent.com/salesforce/)
+- [Freshworks Integration](https://docs.irisagent.com/data-sources/Freshworks)
+- [Jira Integration](https://docs.irisagent.com/data-sources/Jira-Software-or-Service-Desk)
+
+---
+
+## FAQ
+
+**Does the sidebar slow down my ticketing system?** No. The sidebar loads asynchronously and does not affect the performance of your ticketing platform.
+
+**Can I hide sections I don't use?** Yes. Ask your administrator to customize the sidebar sections from the IrisAgent dashboard.
+
+**How current is the Suggested Resolution?** The Suggested Resolution is generated when the ticket loads. For the latest context after multiple comments, use Dynamic Resolution instead.
+
+**What data does IrisAgent use to generate answers?** IrisAgent uses your knowledge base, historical tickets, connected documentation (Confluence, Notion, etc.), and any integrated issue trackers. It never uses data from other customers.
+
+**Is my data secure?** IrisAgent is SOC 2 Type II certified and GDPR compliant. All data is encrypted at rest and in transit.

@@ -1,0 +1,39 @@
+---
+title: "AI Search On Zendesk Ticket Form"
+description: "Integrate IrisAgent AI Search into your Zendesk Ticket Submission Form to automatically suggest AI answers and reduce ticket volume"
+---
+
+A lightweight, drop-in JavaScript widget that adds AI-powered ticket deflection to your Zendesk Help Center. It listens to user input on the "Submit a Request" page and suggests relevant answers from your knowledge base before a ticket is created.
+
+## Prerequisites
+
+1. Admin access to your Zendesk Help Center
+2. Access to IrisAgent dashboard
+
+## Edit the Zendesk theme template
+
+Upload your Zendesk Guide them to load the widget:
+
+1. Log in to the Zendesk Admin Center
+2. Navigate to the **Customize Design** tab in your Zendesk Help Center. This can be found under Zendesk Guide \> Guide Admin \> Customize Design.
+3. Select your theme and click on **Edit code**.
+4. Open `new_request_page.hbs`  (the "New request" form template) and paste the following code snippet inside the form (commonly near the bottom):
+
+```javascript
+<script
+  src="https://chatbot.irisagent.com/irisagent-deflector.js"
+  data-api-key="YOUR_IRIS_AGENT_API_KEY"
+  defer>
+</script>
+```
+
+5. Replace `YOUR_IRIS_AGENT_API_KEY`in the above code with your key by going to the [Configure page](https://web.irisagent.com/manage-chatbot) on IrisAgent dashboard
+6. Now that the IrisAgent search bar is going to be displayed, the default Zendesk search bar can be deleted from the code. To make the deletion, remove the entire `<div class="search-container">` and all the code inside the div.
+
+## Save, preview, and verify
+
+After adding the script, confirm that the deflector behaves correctly before publishing:
+
+1. Click Save in the theme editor, then use the Zendesk preview to load the new request page
+2. Enter a test subject and description; the deflector should surface suggested answers before the ticket is actually submitted
+3. Once you are satisfied with the behavior and styling, click Publish changes so the deflector goes live on your production support form

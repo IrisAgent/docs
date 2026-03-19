@@ -7,6 +7,11 @@
     "light": "#07C983",
     "dark": "#15803D"
   },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-9H3XJBPW9E"
+    }
+  },
   "favicon": "/favicon.svg",
   "seo": {
     "metatags": {
@@ -35,7 +40,8 @@
                   "data-sources/Salesforce",
                   "data-sources/Intercom",
                   "data-sources/Jira-Software-or-Service-Desk",
-                  "data-sources/Freshworks"
+                  "data-sources/Freshworks",
+                  "data-sources/Hubspot"
                 ]
               },
               {
@@ -75,16 +81,28 @@
               "deploying-irisagent/Microsoft-Teams",
               "deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging",
               "deploying-irisagent/Chatbot-Automation-on-Intercom",
-              "deploying-irisagent/Chatbot-on-Zendesk-Help-Center"
+              "deploying-irisagent/Chatbot-Automation-on-Freshchat",
+              "deploying-irisagent/AI-Search-on-Website",
+              "deploying-irisagent/Chatbot-on-Zendesk-Help-Center",
+              "deploying-irisagent/AI-Search-on-Zendesk-Ticket-Form",
+              "deploying-irisagent/voice-ai-on-8x8",
+              "deploying-irisagent/Voice-AI-on-GoTo-Connect"
             ]
           },{
             "group": "Configuring AI and Automation",
             "pages": [
+              "guides/configuring-ai-and-automation/add-custom-apis",
               "configuring-ai-and-automation/Ticket-Tagging",
               "configuring-ai-and-automation/Workflows",
               "configuring-ai-and-automation/Ticket-Deflection",
               "configuring-ai-and-automation/Ticket-Sentiment",
+              "configuring-ai-and-automation/Revise-Chatbot-Answers",
               "configuring-ai-and-automation/AI-for-Macros"
+            ]
+          },{
+            "group": "User Guides",
+            "pages": [
+              "agent-copilot"
             ]
           },{
             "group": "Security and Compliance",
