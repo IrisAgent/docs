@@ -66,6 +66,12 @@
                 ]
               },
               {
+                "group": "Email providers",
+                "pages": [
+                  "outlook"
+                ]
+              },
+              {
                 "group": "Custom APIs",
                 "pages": [
                   "data-sources/Custom-API"
