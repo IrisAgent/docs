@@ -1,0 +1,79 @@
+---
+title: "AutoKB"
+description: "Automatically generate knowledge base articles from support cases and publish them to Zendesk Guide or KnowledgeOwl"
+---
+
+## **Overview**
+
+AutoKB uses AI to automatically generate knowledge base articles from your resolved support cases. Instead of manually writing documentation for common issues, AutoKB analyzes case data and creates draft articles that you can review, edit, and publish directly to your customer-facing knowledge base.
+
+Key capabilities:
+- **Automatic article generation** from resolved support cases
+- **One-click publishing** to Zendesk Guide or KnowledgeOwl
+- **Download articles** as Markdown or PDF for offline review
+- **Track published articles** with direct links back to your knowledge base
+
+## **Viewing AutoKB Articles**
+
+Navigate to the **AutoKB** page on the [IrisAgent dashboard](https://web.irisagent.com). You will see a table of AI-generated article drafts with the following columns:
+
+- **Name** -- the article title
+- **Source Case ID** -- the support case the article was generated from
+- **Created At** -- when the article was generated
+- **Published Provider** -- the knowledge base it was published to (if applicable)
+- **Published Article ID** -- a link to the published article (if applicable)
+
+Click on any article to open a preview of the full content in a side panel. You can also search articles by title using the search bar.
+
+### **Downloading Articles**
+
+Each article row has actions to download the content:
+- **Download as Markdown** -- exports the raw markdown content
+- **Download as PDF** -- generates a styled PDF version
+
+You can also mark articles as read using the checkmark icon to keep track of which drafts you have already reviewed.
+
+## **Publishing Articles to Your Knowledge Base**
+
+To publish AutoKB drafts directly into your knowledge base, you first need to configure the destination, then use the publish action on individual articles.
+
+### **Configuring Zendesk Guide**
+
+If your ticketing system is Zendesk, you can push AutoKB articles directly into Zendesk Guide.
+
+1. Go to the **Data Sources** page on the [IrisAgent dashboard](https://web.irisagent.com).
+2. In the **Knowledge Bases** section, find the **Zendesk** card and click the **settings icon**.
+3. Toggle the **Enable AutoKB** switch to on.
+4. Configure the following required fields:
+   - **Section** -- select the Zendesk Guide section where articles will be published. This dropdown lists all available sections from your Zendesk Guide.
+   - **Locale** -- select the language for published articles (e.g., `en-us`). Available locales update based on the selected section.
+   - **User Segment** -- choose who can view the published articles (e.g., "Signed-in users" or "Staff").
+   - **Permission Group** -- choose which team members can manage the articles (e.g., "Admins" or "Agents and admins").
+5. Click **Save** to apply the configuration.
+
+<Info>All four fields (Section, Locale, User Segment, and Permission Group) are required when AutoKB is enabled for Zendesk Guide. If you change the section, the locale selection will reset automatically.</Info>
+
+### **Configuring KnowledgeOwl**
+
+If you have KnowledgeOwl connected, you can push AutoKB articles into a KnowledgeOwl project.
+
+1. Go to the **Data Sources** page on the [IrisAgent dashboard](https://web.irisagent.com).
+2. In the **Knowledge Bases** section, find the **KnowledgeOwl** card and click the **settings icon**.
+3. Under the **AutoKB** section labeled "Configure project for automatic article generation":
+   - **Project ID** -- select or search for the KnowledgeOwl project where articles should be published. This field autocompletes from your existing KnowledgeOwl projects.
+4. Click **Save** to apply the configuration.
+
+You can also configure content ingestion settings separately in the **Ingestion** section of the same sidebar, which controls which KnowledgeOwl projects IrisAgent reads from to generate responses.
+
+### **Publishing an Article**
+
+Once your knowledge base destination is configured:
+
+1. Navigate to the **AutoKB** page.
+2. Find the article you want to publish and click the **Publish** action on its row.
+3. A dialog will appear listing your configured knowledge base providers. Select the destination.
+4. The article will be published and the table will update to show the **Published Provider** and a clickable **Published Article ID** linking to the live article.
+
+<Info>The publish option only appears for articles that have not yet been published and only if at least one knowledge base provider is configured and connected.</Info>
+
+If you need assistance setting up AutoKB, reach out by [sending us an email](mailto:contact@irisagent.com?subject=AutoKB%20Setup).
