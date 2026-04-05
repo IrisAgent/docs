@@ -126,8 +126,19 @@
           }
         ]
       },{
-        "tab": "API reference",        
-        "openapi": "/api-reference/openapi.json"        
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Endpoints",
+            "openapi": "/api-reference/openapi.json"
+          }
+        ]
       }],
     "global": {
       "anchors": [
