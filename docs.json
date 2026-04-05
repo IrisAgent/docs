@@ -92,7 +92,8 @@
               "deploying-irisagent/Chatbot-on-Zendesk-Help-Center",
               "deploying-irisagent/AI-Search-on-Zendesk-Ticket-Form",
               "deploying-irisagent/voice-ai-on-8x8",
-              "deploying-irisagent/Voice-AI-on-GoTo-Connect"
+              "deploying-irisagent/Voice-AI-on-GoTo-Connect",
+              "deploying-irisagent/Voice-AI-on-Ozonetel"
             ]
           },{
             "group": "Configuring AI and Automation",

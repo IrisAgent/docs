@@ -1,0 +1,64 @@
+---
+title: "Voice AI on Ozonetel"
+description: "This guide walks you through deploying IrisAgent Voice AI with Ozonetel CloudAgent, enabling intelligent call automation for your customer service operations."
+---
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- An Ozonetel CloudAgent account with admin access
+- A DID (phone number) configured in your Ozonetel account that will receive customer calls
+- Access to the CloudAgent Admin Console to modify campaigns and IVR settings
+
+## Step 1: Sign Up for IrisAgent
+
+You can sign up for IrisAgent in one of two ways: by connecting your ticketing platform or using public website as knowledge source.
+
+## Step 2: Set Up Call Routing in Ozonetel CloudAgent
+
+Next, configure Ozonetel CloudAgent to route incoming calls to your IrisAgent Voice AI. Ozonetel uses **Inbound Campaigns** with DIDs and IVR flows to manage how incoming calls are handled.
+
+### Create an IVR Flow to Route Calls to IrisAgent
+
+1. Sign in to the [Ozonetel CloudAgent Admin Console](https://admin.ozonetel.com)
+2. Navigate to **Admin > Configurations > IVR Flows**
+3. Click **New IVR Flow** in the top right corner
+4. Enter a **Flow Name** (e.g., "IrisAgent Voice AI")
+5. Set the **Flow Type** to **IVR**
+6. Enable the **Transfer** option so the flow can route calls to an external number
+7. Configure the IVR flow to transfer incoming calls to the **external phone number** provided by the IrisAgent team
+8. Click **Save** to save the IVR flow
+
+> **Note:** When entering the IrisAgent phone number, include the full country code (e.g., +91 for India or +1 for US numbers).
+
+### Set Up an Inbound Campaign with the IVR Flow
+
+1. Navigate to **Campaigns** from the main menu
+2. Click **Create Campaign** and select **Inbound Campaign** from the popup list
+3. Enter a **Campaign Name** (e.g., "IrisAgent Voice AI")
+4. Select the **DID** — this is the phone number your customers dial to reach this campaign
+5. Under **IVR Flows**, select the IVR flow you created in the previous step (e.g., "IrisAgent Voice AI")
+6. Configure **Dispositions** and **Wrap-up Time** as needed
+7. Click **Save** to create the campaign
+8. Click the **Start/Stop** button to activate the campaign — the status will change from "READY" to "RUNNING"
+
+### (Optional) Add the IrisAgent Phone Number to Manage Numbers
+
+If the IrisAgent number needs to be registered in Ozonetel for routing:
+
+1. Navigate to **Admin > Configurations > Manage Numbers**
+2. Select **Phone Numbers** from the left menu
+3. Click the **New Number** icon in the top right corner
+4. Enter the **external phone number** provided by the IrisAgent team (with country code, e.g., +1 for US)
+5. Click **Save**
+
+## Step 3: Test Your Integration
+
+After completing the setup, verify that calls are routing correctly to IrisAgent Voice AI.
+
+### Make a Test Call
+
+1. Call the DID number associated with your inbound campaign from an external phone
+2. You should hear the IrisAgent Voice AI greeting
+3. Test a few common customer queries to ensure responses are working as expected
