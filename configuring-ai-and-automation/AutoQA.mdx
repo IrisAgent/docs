@@ -1,0 +1,112 @@
+---
+title: "AutoQA"
+description: "Automatically evaluate support conversations for quality, compliance, and process adherence"
+---
+
+## **Overview**
+
+AutoQA uses AI to automatically review and score support conversations against quality rules you define in plain English. Instead of manually auditing a sample of tickets, AutoQA evaluates every conversation and flags violations, giving you full visibility into agent and AI performance.
+
+Key capabilities:
+- **Natural language rules** -- describe what to monitor in plain English and AutoQA handles the rest
+- **Automatic evaluation** -- every conversation is scored against your active rules without manual effort
+- **Configurable severity** -- classify violations as Critical, Warning, or Info to prioritize what matters most
+- **Conversation-level scoring** -- each conversation receives a QA score from 0 to 5
+- **Detailed review reports** -- see which rules passed or failed, with explanations and flagged messages
+
+## **Managing QA Rules**
+
+Navigate to the **AutoQA Rules** page on the [IrisAgent dashboard](https://web.irisagent.com/auto-qa/rules). You will see a summary of your QA program at the top:
+
+- **Active Rules** -- number of rules currently being evaluated
+- **Cases Scored** -- total conversations evaluated
+- **Avg Pass Rate** -- percentage of evaluations that passed across all rules
+- **Rules Below 90%** -- number of rules with a pass rate under 90%, flagged as critical
+
+Below the summary is a table of all your rules. You can filter by **All**, **Active**, or **Inactive** tabs, and use the search bar to find rules by description or category.
+
+### **Creating a Rule**
+
+1. Click **Create New Rule** on the AutoQA Rules page.
+2. Fill in the following fields:
+   - **Rule Description** -- describe what you want to monitor in plain English. AutoQA will evaluate every conversation against this rule. For example: *"Flag conversations where the agent did not verify the customer's identity before making account changes."*
+   - **Category** -- group this rule for reporting and filtering. Options are:
+     - **Compliance** -- security, identity verification, data handling
+     - **Tone & Empathy** -- customer interaction quality
+     - **Resolution Quality** -- accuracy and correctness of responses
+     - **Process Adherence** -- procedural requirements
+     - **Escalation** -- escalation triggers and requirements
+     - **Custom** -- any other category you define
+   - **Severity** -- how critical is a violation of this rule:
+     - **Critical** -- high-impact violations that need immediate attention
+     - **Warning** -- moderate issues to address
+     - **Info** -- low-priority or informational findings
+3. Click **Create Rule**.
+
+Once created, the rule is active by default and will be applied to all new conversations.
+
+### **Example Rules**
+
+Here are some examples to help you write effective QA rules:
+
+| Category | Example Rule |
+|---|---|
+| Compliance | Agent must verify customer identity before making any account changes |
+| Tone & Empathy | Agent must maintain a professional and empathetic tone throughout the conversation |
+| Process Adherence | Agent should offer a follow-up or ask if the customer needs anything else before closing |
+| Resolution Quality | AI agent must not fabricate or hallucinate product features, pricing, or policies |
+
+### **Editing a Rule**
+
+Click the **edit icon** on any rule row, or select **Edit** from the actions menu. You can update the description, category, and severity. When editing, you will also see performance stats for the rule:
+
+- **Pass Rate (30d)** -- percentage of conversations that passed this rule over the last 30 days
+- **Cases Evaluated** -- total conversations scored against this rule
+- **Status** -- whether the rule is active or inactive
+- **Created by** -- the user who originally created the rule
+
+Click **Save Changes** when done.
+
+### **Enabling or Disabling a Rule**
+
+Click the **actions menu** (three dots) on any rule row and select **Disable** or **Enable**. Inactive rules are not evaluated against new conversations but are preserved for future use.
+
+### **Deleting a Rule**
+
+Click the **actions menu** on any rule row and select **Delete**. This permanently removes the rule and its evaluation history.
+
+## **Reviewing QA Results**
+
+Navigate to the **QA Reviews** page on the [IrisAgent dashboard](https://web.irisagent.com/auto-qa/reviews) to see evaluation results. The summary cards at the top show:
+
+- **Reviewed (7d)** -- total conversations reviewed in the last 7 days
+- **Failures** -- number of conversations that failed at least one rule
+- **Critical Failures** -- failures involving a Critical severity rule
+- **Avg QA Score** -- average score across all reviewed conversations (out of 5)
+
+### **Filtering Reviews**
+
+Use the filter controls to narrow down results:
+
+- **Result** -- filter by All, Pass, or Fail
+- **Rule** -- filter by a specific rule
+- **Severity** -- filter by Critical, Warning, or Info
+- **Search** -- search by case ID, subject, or agent name
+
+### **Review Details**
+
+Click on any review row to expand it and see the full evaluation:
+
+- **QA Scorecard** -- lists every rule that was evaluated, showing whether the conversation passed or failed each one. Failed rules include an explanation of the violation.
+- **Conversation Excerpt** -- shows the relevant messages from the conversation. Messages that triggered a violation are highlighted so you can quickly see the problem area.
+
+### **Understanding Scores and Pass Rates**
+
+AutoQA uses color coding to help you quickly identify issues:
+
+| Metric | Green | Orange | Red |
+|---|---|---|---|
+| Pass Rate | 90% or above | 75% -- 89% | Below 75% |
+| QA Score | 4.0 or above | 3.0 -- 3.9 | Below 3.0 |
+
+If you need help setting up AutoQA rules for your team, reach out by [sending us an email](mailto:contact@irisagent.com?subject=AutoQA%20Setup).
