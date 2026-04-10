@@ -1,0 +1,141 @@
+---
+title: "Voice AI on Puzzel"
+description: "This guide walks you through deploying the IrisAgent Call Summary widget inside the Puzzel Contact Centre agent application, giving agents AI-generated post-call summaries that can be copied directly into wrap-up notes."
+---
+
+## Overview
+
+The IrisAgent Call Summary widget runs as an external widget inside the Puzzel Agent Application. After every handled call, the widget displays an AI-generated summary covering the customer's issue, key talking points, resolution, and a suggested wrap-up note. Agents can copy the summary into Puzzel's wrap-up fields with a single click, eliminating manual note-taking and producing consistent, structured records across the team.
+
+This guide covers the **v1 (post-call summary)** integration. In v1, IrisAgent fetches the call recording from the Puzzel Archive after the call ends, transcribes and summarizes it, and pushes the result back into the widget — typically within a few seconds of the call ending.
+
+## How it works
+
+```
+┌──────────────────────────┐
+│ Puzzel Agent Application │
+│  ┌─────────────────────┐ │
+│  │ IrisAgent Widget    │ │  ← iframe, postMessage to Puzzel core
+│  │ (post-call summary) │ │
+│  └──────────┬──────────┘ │
+└─────────────┼────────────┘
+              │ websocket (callId, agentId, customerId)
+              ▼
+      ┌───────────────┐
+      │   IrisAgent   │
+      │    Backend    │
+      └───────┬───────┘
+              │ PAWS REST API
+              ▼
+      ┌───────────────┐
+      │ Puzzel Archive│  → recording → transcription → summary
+      └───────────────┘
+```
+
+1. The widget loads as an iframe inside the Puzzel agent desktop and opens a `postMessage` channel with the Puzzel Agent Application core.
+2. The widget subscribes to call lifecycle events via the Puzzel Widget API and waits for a `call.ended` event.
+3. On call end, the widget sends the call ID and agent context to the IrisAgent backend over an authenticated websocket.
+4. The IrisAgent backend fetches the recording from the Puzzel Archive via the Puzzel Agent Web Services (PAWS) REST API.
+5. IrisAgent transcribes the audio, generates a structured summary using your configured summary template, and pushes the result back to the widget.
+6. The agent reviews the summary in the widget and clicks **Copy to wrap-up** to populate Puzzel's wrap-up fields.
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- A Puzzel Contact Centre tenant with admin access to the **Administration Portal**
+- Permission to add widgets in **Administration → Widgets → Widget Administration**
+- A Puzzel service account with **PAWS API access** and read access to the **Archive** (recordings and call metadata)
+- Recording enabled on the queues you want IrisAgent to summarize
+- An IrisAgent account with **Voice AI** enabled (contact your IrisAgent representative if you don't see it in the dashboard)
+
+## Step 1: Sign Up for IrisAgent
+
+You can sign up for IrisAgent in one of two ways: by connecting your ticketing platform or by using a public website as a knowledge source. Once signed up, ask your IrisAgent representative to enable **Voice AI** on your tenant.
+
+## Step 2: Generate IrisAgent widget credentials
+
+In the IrisAgent dashboard:
+
+1. Navigate to **Settings → Voice AI → Puzzel Integration**
+2. Click **Generate Widget Credentials**. This produces:
+   - A **Tenant ID** unique to your IrisAgent workspace
+   - A **Widget API Key** (shown once — copy it immediately)
+3. Note the IrisAgent widget URL: `https://widgets.irisagent.com/puzzel/summary`
+4. Keep these values handy — you'll paste them into Puzzel in Step 4
+
+## Step 3: Provision a PAWS service account in Puzzel
+
+The IrisAgent backend needs read access to the Puzzel Archive to fetch recordings.
+
+1. Sign in to the [Puzzel Administration Portal](https://admin.puzzel.com)
+2. Navigate to **Users → Administrators** and create a new administrator dedicated to the integration (e.g. `irisagent-integration`)
+3. Grant the following permissions:
+   - **Archive** — read access to recordings and call metadata
+   - **Real-time** — read access to queue and call information
+4. Generate API credentials for the account and save the **Customer Number**, **Username**, and **Password**
+5. In the IrisAgent dashboard, go to **Settings → Voice AI → Puzzel Integration → PAWS Credentials** and paste the values
+
+> **Tip:** Use a dedicated administrator account for the integration so you can audit IrisAgent's activity separately from human admin actions.
+
+## Step 4: Add the IrisAgent widget to the Puzzel Agent Application
+
+1. In the Puzzel Administration Portal, navigate to **Widgets → Widget Administration**
+2. Click **Add Widget**
+3. Configure the widget:
+   - **Name:** `IrisAgent Call Summary`
+   - **URL:** `https://widgets.irisagent.com/puzzel/summary`
+   - **Tab title:** `AI Summary`
+   - **Default tab:** Off (the widget activates automatically when a call ends)
+4. Add the following **Widget Properties**:
+
+| Property name      | Type     | Value                                       |
+| ------------------ | -------- | ------------------------------------------- |
+| `irisTenantId`     | String   | Tenant ID from Step 2                       |
+| `irisApiKey`       | Password | Widget API Key from Step 2                  |
+| `irisEnvironment`  | Dropdown | `production`                                |
+
+5. Under **Feature Policy**, allow the following permissions for the iframe:
+   - `clipboard-write` — required for the **Copy to wrap-up** action
+6. Save the widget
+
+## Step 5: Assign the widget to agent profiles
+
+1. Navigate to **Widgets → Widget Configuration**
+2. Select the agent user group(s) that should see the IrisAgent summary widget (typically all support agents)
+3. Enable the **IrisAgent Call Summary** widget for those groups
+4. Save the configuration
+
+## Step 6: Configure your summary template (optional)
+
+By default, IrisAgent generates summaries with the following sections:
+
+- **Customer issue** — what the customer was calling about
+- **Key points discussed** — bullet points of the conversation
+- **Resolution** — what was done to resolve the issue
+- **Wrap-up note** — a one-paragraph summary suitable for the ticket
+
+To customize the template:
+
+1. Go to **Settings → Voice AI → Summary Template** in the IrisAgent dashboard
+2. Edit the prompt to match your team's wrap-up conventions (e.g. include sentiment, product name, escalation flag)
+3. Click **Save** — changes apply to the next call
+
+## Step 7: Test the integration
+
+1. Sign in to the Puzzel Agent Application as a test agent
+2. Confirm the **AI Summary** tab appears in the agent UI
+3. Place a test call into a recorded queue and answer it as the test agent
+4. End the call. Within a few seconds, the **AI Summary** tab should populate with the generated summary
+5. Click **Copy to wrap-up** and verify the summary appears in Puzzel's wrap-up fields
+
+If the summary does not appear:
+
+- Check that recording is enabled on the test queue
+- Verify the PAWS service account in IrisAgent **Settings → Voice AI → Puzzel Integration** shows a green status
+- Open the browser console in the agent application and look for `[IrisAgent]` log messages
+- Contact `support@irisagent.com` with the call ID for assistance
+
+## What's next
+
+The v1 integration delivers post-call summaries within seconds of a call ending. If your team also needs **live, in-call summarization** (summary streaming as the call progresses), contact your IrisAgent representative about enabling the v2 integration, which uses a SIPREC media fork from Puzzel.
