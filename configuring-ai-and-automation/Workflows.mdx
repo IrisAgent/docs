@@ -5,10 +5,33 @@ description: "Set up automated workflows using plain English or drag and drop in
 
 ### Create Workflows or Procedures using plain English
 
-You can [configure standard operating procedures by describing them in plain English](https://irisagent.com/smart-operating-procedures/). IrisAgent will train an AI model to automatically trigger and act on these workflows. To do this, follow these steps:
+<Note>
+  Plain-English procedures power IrisAgent's **AI Agent for chat and voice** — the AI Agent uses them at runtime to decide when to trigger a workflow and what steps to follow. This is the fastest way to automate customer-facing conversations without building flowcharts or writing code.
+</Note>
+
+<Warning>
+  **Procedures take precedence over answers from your trained knowledge base.** When an incoming query matches a procedure's scenario, the AI Agent will follow the procedure's steps instead of generating an answer from your trained articles or past tickets. Use procedures whenever you want to enforce a specific flow (e.g. collect required fields, call an API, or hand off to a team) rather than relying on a free-form AI response.
+</Warning>
+
+You can [configure standard operating procedures by describing them in plain English](https://irisagent.com/smart-operating-procedures/) — also called **SmartOps**. Instead of designing a rigid decision tree, you simply describe the scenario and the steps the AI Agent should take, and IrisAgent trains a model to automatically recognize when the scenario applies and execute the workflow end-to-end.
+
+**Common use cases:**
+
+- **Order status lookups:** "When a customer asks about the status of their order, collect their order ID and look it up using the Order Status API."
+- **Refund and cancellation handling:** "If a customer requests a refund, verify the order is within the 30-day window, confirm the reason, and create a refund ticket in Zendesk."
+- **Password reset and account unlocks:** "When a user says they are locked out, verify their email, trigger a password reset link, and confirm once it has been sent."
+- **Subscription upgrades or downgrades:** "If a customer wants to change their plan, confirm the new tier, check eligibility, and hand off to billing if manual approval is needed."
+- **Appointment scheduling:** "When a customer asks to book a demo, collect their preferred date, time, and timezone, then create the calendar event."
+- **Troubleshooting known issues:** "If the customer reports login errors on the mobile app, ask for their app version and OS, then walk them through the standard fix."
+
+**To create a plain-English procedure:**
 
 1. Navigate to the **Procedures -\> All Procedures** page on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories) and click on the **\+ Create New Procedure** button on the top.
-2. Enter the name, short scenario description, and actions for AI Agent you want to automate. Click on **Save**
+2. Enter the **name**, a **short scenario description** (when the AI Agent should trigger this procedure), and the **actions** the AI Agent should take (the steps, questions to ask, and any APIs or systems to call). Click on **Save**.
+
+<Tip>
+  Write scenario descriptions the way you would brief a new agent — focus on the customer intent ("when a customer asks about…") rather than exact phrasing. IrisAgent's AI handles the wording variations, so you don't need to list every possible way a customer might phrase the request.
+</Tip>
 
 ### Using Custom APIs in plain-English procedures
 
