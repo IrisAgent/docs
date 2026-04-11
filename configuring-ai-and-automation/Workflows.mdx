@@ -32,12 +32,31 @@ IrisAgent maps "Order Status API" to the configured Custom API, collects `{{orde
 
 ### Create Workflows using drag and drop interface (only for cases)
 
-Agents and supervisors spend manual effort in triaging and resolving issues that may already be known or solved previously. IrisAgent solves this by automated workflows based on AI-powered tagging, AI-based answers to known issues, and configurable actions for ticket assignment and notifications.
+<Note>
+  This workflow builder applies to **cases (tickets)** only. For chat and voice automation, use the plain-English procedures described above.
+</Note>
+
+Agents and supervisors spend manual effort in triaging and resolving cases that may already be known or solved previously. IrisAgent solves this with automated case workflows built on AI-powered tagging, AI-based answers to known issues, and configurable actions for ticket assignment and notifications. Using the drag and drop trigger builder, you can combine any number of **Conditions** (such as AI category, AI sentiment, keywords in the subject or description, priority, channel, or customer attributes) with **Actions** (such as assigning to a team, adding tags, setting priority, posting an internal note, or sending a notification) — no code required.
+
+**Common use cases:**
+
+- **Auto-tagging cases by AI category:** Automatically apply tags like `billing`, `refund`, or `outage` when IrisAgent's AI classifies an incoming case, so reports and views stay consistent without agent effort.
+- **Routing based on AI categories or keywords:** Send all cases tagged as `billing` to the Finance queue, or route any case mentioning "cancel my subscription" to a retention specialist.
+- **Priority escalation:** Automatically set priority to **Urgent** and notify a supervisor on Slack when a case is classified as an `outage` or contains churn-risk language.
+- **Known-issue auto-response:** When a case matches a known issue (e.g. a recurring bug), post IrisAgent's AI-generated answer as a private note so the agent can reply in one click.
+- **VIP handling:** Route cases from enterprise or high-ARR customers to a dedicated team and add a "VIP" tag.
+- **Sentiment-based escalation:** Flag cases with negative sentiment for supervisor review or auto-assign them to a senior agent.
+
+**To create a new case workflow:**
 
 1. Go to the **Automations -\> Triggers** page on the [IrisAgent dashboard](https://web.irisagent.com/triggers) and click on the **\+ Create New Trigger** button on the top-right.
-2. Select any number of **Conditions** and **Actions** to be included in your trigger automation.
+2. Drag and drop any number of **Conditions** (e.g. AI category equals `billing`, subject contains `refund`) and **Actions** (e.g. assign to team, add tag, set priority, send notification) into your trigger. Conditions are evaluated with AND logic, so the trigger fires only when all conditions are met.
 3. Give your trigger a name by clicking on the pencil icon.
-4. Click on the **Add New Trigger** button to save the trigger.
+4. Click on the **Add New Trigger** button to save the trigger. The workflow will start running on new incoming cases immediately.
+
+<Tip>
+  Start with a narrow condition set (for example, one AI category plus one keyword) and review the first few cases it fires on before broadening the rule. This helps you validate the behavior without mis-routing a large volume of cases.
+</Tip>
 
 ## Enable AI insights as a private note in your ticketing system
 
