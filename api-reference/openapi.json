@@ -1,27 +1,27 @@
 openapi: 3.0.3
 info:
-  title: IrisAgent's IrisGPT AI Answers API
+  title: IrisAgent's API Reference
   description: |
-    IrisGPT AI service can be used as an API to power intelligent conversations on any of your frontend webpages. 
-    It can search through your internal and external knowledge articles, community forums, product documentation, 
+    IrisAgent service can be used as an API to power intelligent conversations and search, index, and connect with your internal and external knowledge articles, tickets, community forums, product documentation,
     and other informational content.
   version: 1.2.0
 servers:
-  - url: 'https://api1.irisagent.com/'
+  - url: 'https://api1.irisagent.com'
 paths:
   /v1/irisgpt/ask:
     post:
       operationId: irisgptAsk
       summary: |
-        Generates AI answer with relevant links to any support query
-      description: Use the IrisGPT API to generate AI-powered answers to support queries, with relevant knowledge base article links and source references.
+        Get AI answer to any query
+      description: |
+        Get an AI answer to any support query using the trained information such as knowledge articles, tickets, documentation, and more.
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
         - $ref: '#/components/parameters/ChatIdentifier'
       requestBody:
         description: |
-          The `requestBody` contains the information sent to IrisGPT for processing. 
-          The main component is the `query`, representing the user's input or question. 
+          The `requestBody` contains the information sent to IrisGPT for processing.
+          The main component is the `query`, representing the user's input or question.
           This body must be sent in JSON format.
         required: true
         content:
@@ -46,8 +46,8 @@ paths:
   /v1/summary:
     post:
       operationId: summarizeConversation
-      summary: Generates a summary of a conversation or ticket
-      description: Get an AI-powered summary of your support conversation or ticket using IrisAgent's summarization API. Supports markdown and HTML output formats.
+      summary: Get summary
+      description: Get an AI-powered summary of your support conversation or ticket
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
       requestBody:
@@ -106,8 +106,8 @@ paths:
   /v1/tag:
     post:
       operationId: autoTag
-      summary: Gets AI-powered tags for a conversation using pre-built AI models
-      description: Get AI-powered tag(s) for a support conversation using pre-built AI models. Automatically classify and label tickets by topic, intent, or category.
+      summary: Get AI-powered tag
+      description: Get AI-powered tag(s) for a support conversation using pre-built AI models
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
       requestBody:
@@ -134,8 +134,8 @@ paths:
   /v1/sentiment:
     post:
       operationId: analyzeSentiment
-      summary: Gets AI-powered sentiment analysis for a conversation
-      description: Get AI-powered sentiment analysis for a support conversation. Returns a granular sentiment score from -100 (very negative) to 100 (very positive).
+      summary: Get sentiment
+      description: Get AI-powered sentiment analysis for a support conversation
       parameters:
         - $ref: '#/components/parameters/LanguageIsoCode'
       requestBody:
@@ -161,8 +161,9 @@ paths:
           $ref: '#/components/responses/504'
   /v1/articles:
     post:
-      summary: Upload articles for AI training
-      description: Send knowledge base articles for AI training via this endpoint
+      operationId: uploadArticles
+      summary: Upload articles
+      description: Send knowledge base articles for AI training via this API
       requestBody:
         required: true
         content:
@@ -183,7 +184,8 @@ paths:
         '403':
           description: Forbidden - insufficient permissions
     delete:
-      summary: Delete articles for AI training
+      operationId: deleteArticles
+      summary: Delete articles
       description: Send a request to delete knowledge base articles for AI training via this endpoint
       requestBody:
         required: true
@@ -206,8 +208,9 @@ paths:
           description: Forbidden - insufficient permissions
   /v1/cases:
     post:
-      summary: Upload cases for AI training
-      description: Send cases for AI training via this endpoint
+      operationId: uploadCases
+      summary: Upload support cases
+      description: Send support cases for AI training via this API
       requestBody:
         required: true
         content:
@@ -216,7 +219,7 @@ paths:
               $ref: '#/components/schemas/CasesUploadRequest'
       responses:
         '200':
-          description: Articles uploaded successfully
+          description: Cases uploaded successfully
           content:
             application/json:
               schema:
@@ -229,8 +232,9 @@ paths:
           description: Forbidden - insufficient permissions
   /v1/incidents:
     post:
-      summary: Upload incident for AI training
-      description: Send incident for AI training via this endpoint
+      operationId: uploadIncidents
+      summary: Upload incidents
+      description: 'Send engineering, devops, or statuspage incidents for AI training via this endpoint'
       requestBody:
         required: true
         content:
@@ -247,16 +251,18 @@ paths:
         '403':
           description: Forbidden - insufficient permissions
   /v1/search/cases:
-    get:
-      summary: Search cases.
-      description: Search cases using a query parameter.
-      parameters:
-        - name: query
-          in: query
-          description: The search query string.
-          required: true
-          schema:
-            type: string
+    post:
+      operationId: searchCases
+      summary: Search cases
+      description: |
+        Search support cases using AI-powered recommendation. You can provide a search query, a conversationId to load ticket content, or both.
+        At least one of query or conversationId must be provided. When both are provided, the ticket content is combined with the query for a richer search.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CasesSearchRequest'
       responses:
         '200':
           description: Search results
@@ -270,10 +276,13 @@ paths:
           description: Unauthorized - invalid credentials
         '403':
           description: Forbidden - insufficient permissions
+        '404':
+          description: Conversation not found - the specified conversationId does not exist
   /v1/community/search/articles:
     get:
-      summary: Search articles.
-      description: Search knowledge base articles using a query parameter.
+      operationId: searchArticles
+      summary: Search articles
+      description: Search knowledge base articles for any query using AI-powered recommendation
       parameters:
         - name: text
           in: query
@@ -296,8 +305,8 @@ paths:
           schema:
             type: integer
             format: uint
-            minimum: 1
             default: 25
+            minimum: 1
         - name: X-Business-Id
           in: header
           description: Business ID of the customer.
@@ -324,7 +333,7 @@ components:
       in: header
       description: |
         The `Chat-Identifier` is an optional header used to track the conversation session.
-        If not provided, a new chat session will automatically be created.  
+        If not provided, a new chat session will automatically be created.
         While not required for single request/response interactions, it is necessary for maintaining continuity in ongoing conversations.
       required: false
       schema:
@@ -439,6 +448,14 @@ components:
           description: 'The type of case, such as Feature Request or Question'
           type: string
           x-go-type-skip-optional-pointer: true
+        brand_id:
+          description: The brand identifier associated with the case
+          type: string
+          x-go-type-skip-optional-pointer: true
+        form_id:
+          description: The form identifier associated with the case
+          type: string
+          x-go-type-skip-optional-pointer: true
         tags:
           type: array
           items:
@@ -470,7 +487,9 @@ components:
           x-go-type-skip-optional-pointer: true
         kb_links:
           type: array
-          items: {}
+          items:
+            type: string
+            format: uri
         source:
           type: string
           example: email
@@ -576,11 +595,18 @@ components:
             - customer
         query:
           description: |
-            The user's query or question to be processed by IrisGPT. 
+            The user's query or question to be processed by IrisGPT.
             It is the core input for generating a response.
           type: string
           x-oapi-codegen-extra-tags:
             validate: 'required,gte=1'
+        voiceChannel:
+          description: |
+            Optional flag to indicate if the request is coming from a voice channel.
+            When set to true, the response will not include source article links (links, linksTitle, and urls fields will be omitted).
+            Defaults to false if not provided.
+          type: boolean
+          default: false
       required:
         - query
     AskResponseItem:
@@ -599,6 +625,15 @@ components:
             The intent tag associated with the response, if applicable.
           type: string
           nullable: true
+        procedure:
+          description: |
+            The name of the matched FAQ/procedure flow, if the response was generated by an FAQ match.
+          type: string
+          nullable: true
+        escalate:
+          description: |
+            Whether this response is an escalation to a human agent, triggered by a FAQ procedure's [ESCALATE] marker.
+          type: boolean
         htmltext:
           description: |
             The HTML-formatted response from IrisGPT, including links and titles sourced from relevant articles.
@@ -667,7 +702,7 @@ components:
           nullable: true
     Link:
       description: |
-        The `Link` schema defines the structure for each link object included in IrisGPT's response. 
+        The `Link` schema defines the structure for each link object included in IrisGPT's response.
         Each link consists of a title (or text) and its corresponding URL.
       type: object
       properties:
@@ -874,7 +909,6 @@ components:
       type: object
       properties:
         incident:
-          type: object
           $ref: '#/components/schemas/Incident'
         components:
           items:
@@ -909,13 +943,72 @@ components:
           format: int64
           example: 17437722600
         productId:
-          description: Product ID associated with the case, if applicable
+          description: 'Product ID associated with the case, if applicable'
           type: string
+        score:
+          description: 'Similarity score for the case, computed using Manhattan distance. A lower score indicates greater similarity.'
+          type: number
+          format: float
       required:
         - id
         - subject
         - url
         - timeOfCreation
+    CasesSearchRequest:
+      type: object
+      properties:
+        query:
+          description: |
+            The search query string. Optional if conversationId is provided.
+          type: string
+        conversationId:
+          description: |
+            Unique ticket or case ID to load the full ticket content (subject, description, and comments) for searching.
+            Optional if query is provided. The ticket content will be loaded from the database and used as the search query.
+            Note: The case with this conversationId will be excluded from the search results.
+          type: string
+        productId:
+          description: The product ID to filter cases.
+          type: string
+        formId:
+          description: The form ID to filter cases.
+          type: string
+        sourceBrandId:
+          description: The source brand ID to filter cases.
+          type: string
+        filterUrls:
+          description: |
+            Array of case URLs to exclude from the search results. Cases with URLs matching any of these URLs will be filtered out.
+          type: array
+          items:
+            type: string
+            format: uri
+        numResults:
+          description: |
+            (Legacy) Maximum number of results to return. Defaults to 4 if not specified.
+            Prefer using offset and limit parameters for pagination.
+          type: integer
+          default: 4
+          maximum: 100
+          minimum: 1
+        offset:
+          description: |
+            Number of results to skip for pagination. Used with limit parameter.
+            If offset or limit is provided, pagination mode is used and numResults is ignored.
+          type: integer
+          format: uint
+          default: 0
+          minimum: 0
+        limit:
+          description: |
+            Maximum number of results to return per page. Defaults to 25 in pagination mode.
+            If offset or limit is provided, pagination mode is used and numResults is ignored.
+            Note: offset + limit cannot exceed 200 due to external API constraints.
+          type: integer
+          format: uint
+          default: 25
+          maximum: 100
+          minimum: 1
     CasesSearchResponse:
       type: object
       properties:
@@ -994,7 +1087,7 @@ components:
             $ref: '#/components/schemas/Error'
     AskResponse:
       description: |
-        The `AskResponse` represents the structure of the response returned by IrisGPT. 
+        The `AskResponse` represents the structure of the response returned by IrisGPT.
         It is formatted in JSON and contains the AI-generated answer to the user's query.
       content:
         application/json:
