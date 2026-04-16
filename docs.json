@@ -117,6 +117,7 @@
           },{
             "group": "User Guides",
             "pages": [
+              "guides/onboarding",
               "agent-copilot"
             ]
           },{
