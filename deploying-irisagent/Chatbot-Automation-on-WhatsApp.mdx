@@ -1,0 +1,284 @@
+---
+title: "Chatbot Automation on WhatsApp"
+description: "Deploy IrisAgent AI answers on WhatsApp through Zendesk Sunshine Conversations or Salesforce Service Cloud Messaging"
+---
+
+This guide walks you through putting an IrisAgent AI customer service agent on WhatsApp.
+
+There are three architectural paths to WhatsApp. This guide covers all three, with the **CRM-routed path** (Zendesk or Salesforce) recommended for most teams because it requires no new WhatsApp Business Account, no Business Solution Provider (BSP) contract, and no Meta re-verification.
+
+## Choose your deployment path
+
+| Path | Use when | Time to live |
+| --- | --- | --- |
+| **Zendesk Sunshine Conversations** | You already run Zendesk and have (or can provision) a WhatsApp channel inside it | Hours |
+| **Salesforce Service Cloud Messaging** | You already run Salesforce Service Cloud with Digital Engagement | Hours to days |
+| **Direct WhatsApp Cloud API** | You are not on Zendesk or Salesforce, or you need custom flows that the CRM does not expose | 2 to 4 weeks |
+
+The setup for the CRM-routed paths is largely the same as the existing [Chatbot Automation on Zendesk Messaging](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging) flow, with one extra step on the CRM side to provision WhatsApp itself.
+
+---
+
+## Path A: WhatsApp via Zendesk Sunshine Conversations
+
+### Prerequisites
+
+Before you start:
+
+- A Zendesk Suite Professional plan or above with **Messaging** enabled
+- Admin access to the Zendesk Admin Center
+- A WhatsApp Business Account (WABA), or willingness to provision one through Zendesk
+
+### Step 1: Provision the WhatsApp channel in Zendesk
+
+If WhatsApp is not yet a channel in your Zendesk account, follow the official Zendesk guide: [Adding the WhatsApp channel to messaging](https://support.zendesk.com/hc/en-us/articles/4408840960282).
+
+Key actions:
+
+1. In the Zendesk Admin Center, navigate to **Channels** \> **Messaging and social** \> **Messaging**
+2. Click **Add channel** and select **WhatsApp**
+3. Connect a Meta Business Account and verify the phone number Zendesk should send and receive WhatsApp messages on
+4. Wait for Meta verification to complete (typically 1 to 3 business days)
+5. Confirm the WhatsApp channel shows as **Active** in your Zendesk Messaging admin
+
+Once active, every WhatsApp message a customer sends to your verified number will land as a Zendesk conversation.
+
+### Step 2: Create a Conversations integration
+
+This step is identical to the Zendesk Messaging setup. If you already have an IrisAgent Conversations integration configured for web messaging, you can reuse it; the same integration carries WhatsApp, Instagram, Facebook Messenger, and SMS once those channels are added in Zendesk.
+
+If you do not yet have an IrisAgent Conversations integration:
+
+1. In the Zendesk Admin Center, navigate to **Apps and integrations** \> **Integrations** \> **Conversations integrations**
+2. Click **Create integration** and give it a descriptive name (e.g., "IrisAgent Integration")
+3. Configure the webhook:
+   - **Target URL**: `https://api1.irisagent.com/v1/webhooks/zendesk`
+   - **Event Subscriptions**:
+     - ✅ `conversation:create` (Conversation created)
+     - ✅ `conversation:message` (Conversation message)
+4. Click **Save**
+
+Record the following values from the integration detail page:
+
+| Credential | Description |
+| --- | --- |
+| **App ID** | Identifies your Zendesk account |
+| **Integration ID** | Unique identifier for this integration |
+| **Webhook ID** | Identifier for the webhook configuration |
+| **Shared secret** | Authentication password for webhook requests |
+
+⚠️ **Important:** The shared secret is shown only once. Copy and store it before leaving the page.
+
+Then create an API key in the **API Keys** tab and record:
+
+| Credential | Description |
+| --- | --- |
+| **Key ID** | Used with the secret key for authentication |
+| **Secret key** | Authentication password for API requests |
+
+⚠️ **Important:** The secret key is shown only once. Copy and store it before closing the dialog.
+
+### Step 3: Configure IrisAgent
+
+1. Navigate to the [IrisAgent account management page](https://web.irisagent.com/manage-accounts)
+2. Select **Zendesk Sunshine configs** from the integration options
+3. Enter the credentials from Step 2:
+   - App ID
+   - Integration ID
+   - Webhook ID
+   - Shared secret
+   - Key ID
+   - Secret key
+4. Under **Channels**, ensure **WhatsApp** is enabled
+5. Click **Save**
+
+IrisAgent now answers inbound WhatsApp messages for your Zendesk-connected number. Replies are sent back through the Sunshine Conversations API and delivered to the customer on WhatsApp.
+
+---
+
+## Path B: WhatsApp via Salesforce Service Cloud Messaging
+
+### Prerequisites
+
+- Service Cloud with **Digital Engagement** licenses
+- A WhatsApp Business Account (WABA) connected to Salesforce, or willingness to provision one
+- A Salesforce admin who can create Connected Apps and assign API permissions
+
+### Step 1: Provision the WhatsApp channel in Salesforce
+
+Follow the official Salesforce guide: [Set Up WhatsApp Messaging](https://help.salesforce.com/s/articleView?id=sf.messaging_whatsapp_setup.htm).
+
+Key actions:
+
+1. In Salesforce Setup, navigate to **Service** \> **Messaging Settings**
+2. Click **New Channel** and choose **WhatsApp**
+3. Authenticate with Meta and select the WABA and phone number
+4. Configure routing rules under **Omni-Channel** to assign Messaging Sessions to a queue
+5. Confirm the channel shows as **Active** under Messaging Settings
+
+Note the **Channel Address Identifier** for the WhatsApp channel; IrisAgent uses it to route replies.
+
+### Step 2: Create a Connected App for IrisAgent
+
+1. In Salesforce Setup, search for **App Manager** and click **New Connected App**
+2. Name it `IrisAgent WhatsApp Integration`
+3. Enable **OAuth Settings** and configure:
+   - **Callback URL**: `https://api1.irisagent.com/v1/webhooks/salesforce/oauth`
+   - **Selected OAuth Scopes**:
+     - `Manage user data via APIs (api)`
+     - `Access the Salesforce API Platform (sfap_api)`
+     - `Access Messaging APIs (chatbot_api)`
+     - `Perform requests at any time (refresh_token, offline_access)`
+4. Save and wait approximately 10 minutes for the app to propagate
+5. Record the **Consumer Key** (Client ID) and **Consumer Secret** (Client Secret)
+
+### Step 3: Subscribe IrisAgent to MessagingSession events
+
+1. In Setup, navigate to **Platform Events** and confirm `MessagingSession` and `ConversationEntry` events are accessible (these are standard in Service Cloud Digital Engagement)
+2. Assign the IrisAgent integration user a permission set with:
+   - **Read** on `MessagingSession`, `MessagingEndUser`, `ConversationEntry`
+   - **Create** on `ConversationEntry`
+   - **API Enabled**
+
+### Step 4: Configure IrisAgent
+
+1. Navigate to the [IrisAgent account management page](https://web.irisagent.com/manage-accounts)
+2. Select **Salesforce Service Cloud configs**
+3. Enter:
+   - **Salesforce Org ID** (find under Setup \> Company Information)
+   - **Connected App Client ID** (Consumer Key from Step 2)
+   - **Connected App Client Secret** (Consumer Secret from Step 2)
+   - **WhatsApp Channel Address Identifier** (from Step 1)
+4. Authorize IrisAgent through the OAuth handshake when prompted
+5. Click **Save**
+
+IrisAgent now reads inbound WhatsApp Messaging Sessions, generates grounded answers using your KB and any Case, Account, or Contact context tied to the end user, and posts replies through the `ConversationEntry` API back to the customer on WhatsApp.
+
+---
+
+## Path C: Direct WhatsApp Cloud API
+
+If you are not on Zendesk or Salesforce, IrisAgent supports the Meta WhatsApp Cloud API directly. This path requires:
+
+- A verified Meta Business Account
+- A WhatsApp Business Account (WABA) and a registered phone number
+- A System User access token with `whatsapp_business_messaging` and `whatsapp_business_management` scopes
+
+To configure:
+
+1. Navigate to the [IrisAgent account management page](https://web.irisagent.com/manage-accounts)
+2. Select **WhatsApp Cloud API configs**
+3. Enter:
+   - **WABA ID**
+   - **Phone Number ID**
+   - **System User Access Token**
+   - **App Secret** (from your Meta App settings)
+   - **Webhook Verify Token** (any string; use the same value when configuring the Meta webhook)
+4. In your Meta App, configure the webhook callback to `https://api1.irisagent.com/v1/webhooks/whatsapp` and subscribe to the `messages` field
+5. Save
+
+This path gives you the most flexibility but you are responsible for template approval, quality rating, and Meta business verification on your own.
+
+---
+
+## Configure escalation and handoff
+
+IrisAgent supports two escalation triggers on WhatsApp:
+
+- **Confidence-based**: when grounded confidence falls below the configured threshold (default 0.80), the conversation transfers to a human queue
+- **Intent-based**: when the customer types `agent`, `human`, `representative`, or an equivalent phrase in any supported language
+
+To configure:
+
+1. In the IrisAgent dashboard, navigate to **Workflows** \> **Escalation Rules**
+2. Set the **Confidence Threshold** for the WhatsApp channel
+3. Add intent-based triggers under **Customer Intent Patterns**
+4. Map escalation targets:
+   - **Zendesk path**: a Zendesk messaging queue or group
+   - **Salesforce path**: an Omni-Channel queue with appropriate skills
+
+When the human agent closes the Zendesk ticket or Salesforce Messaging Session, control returns to IrisAgent for the next inbound message from that customer.
+
+---
+
+## Multilingual setup
+
+WhatsApp customer support volume is heavily non-English in many regions. IrisAgent auto-detects the customer's language from each inbound message and replies in the same language, against your existing knowledge base.
+
+To enable:
+
+1. In the IrisAgent dashboard, navigate to **Settings** \> **Languages**
+2. Enable **Auto-detect inbound language**
+3. Add your supported reply languages (default behavior responds in any of the 100+ supported languages once auto-detect is on)
+4. Optionally upload language-specific KB articles under **Knowledge Sources** if you have native-language documentation; otherwise IrisAgent generates grounded translations from the source-language KB
+
+Code-switched conversations (Spanglish, Hinglish, Arabic-English) are handled natively without additional configuration.
+
+---
+
+## Templates and the 24-hour customer service window
+
+Meta enforces a 24-hour customer service window. Inside it, IrisAgent can send free-form text, media, buttons, and lists. Outside it, IrisAgent can only send pre-approved templates.
+
+To prepare templates:
+
+1. Author and submit your Utility templates through Meta Business Manager (or through Zendesk / Salesforce template management UIs, which proxy to Meta)
+2. Common templates to submit on day one:
+   - Order confirmation
+   - Shipping update
+   - Appointment reminder
+   - Password / verification code
+   - Post-resolution CSAT
+3. Once Meta approves, the templates appear in the IrisAgent dashboard under **Channels** \> **WhatsApp** \> **Templates**
+4. Map each template to the workflow that should trigger it (e.g., "Send Shipping Update template when shipment status changes to In Transit")
+
+IrisAgent will not attempt to send free-form messages outside the 24-hour window. Outbound communication must use approved templates.
+
+---
+
+## Verification
+
+After completing setup, run an end-to-end test:
+
+1. From a personal WhatsApp account, send a message to your business WhatsApp number with one of your documented top inbound questions (e.g., "What is your refund policy?")
+2. Confirm IrisAgent replies within ~5 seconds with a grounded answer
+3. In the IrisAgent dashboard, verify the conversation appears under **Conversations** with the WhatsApp channel tag
+4. Trigger an escalation by replying with `talk to a human` and confirm the conversation routes to your configured queue in Zendesk or Salesforce
+5. Confirm the human agent sees the full thread and the AI's reasoning trail
+
+---
+
+## Troubleshooting
+
+**WhatsApp messages are not reaching IrisAgent**
+
+- Confirm the WhatsApp channel is **Active** in Zendesk or Salesforce
+- For Zendesk, verify the Conversations integration webhook subscriptions include `conversation:create` and `conversation:message`
+- For Salesforce, verify the IrisAgent integration user has read access to `MessagingSession` and `ConversationEntry`
+
+**IrisAgent is replying but the customer does not see the message on WhatsApp**
+
+- For Zendesk, confirm the Sunshine Conversations API key (Key ID + Secret) is valid and has not been revoked
+- For Salesforce, confirm the Connected App OAuth tokens are valid and the integration user has create permission on `ConversationEntry`
+- Check the WhatsApp number's **Quality Rating** in Meta Business Manager; a Red rating throttles or blocks outbound
+
+**Outbound template not delivering**
+
+- Confirm the template is **Approved** in Meta Business Manager
+- Confirm the recipient's last inbound message was more than 24 hours ago (free-form replies inside the 24-hour window do not need a template; templates are only for outside the window or for opt-in initiations)
+- Confirm the template's variable placeholders are populated; Meta rejects templates with empty variables
+
+**Replies are in the wrong language**
+
+- Confirm **Auto-detect inbound language** is enabled in IrisAgent settings
+- Verify the source-language KB has coverage for the requested topic; if not, IrisAgent may fall back to escalation
+
+---
+
+## Additional Resources
+
+- [Zendesk: Adding the WhatsApp channel to messaging](https://support.zendesk.com/hc/en-us/articles/4408840960282)
+- [Salesforce: Set Up WhatsApp Messaging](https://help.salesforce.com/s/articleView?id=sf.messaging_whatsapp_setup.htm)
+- [Meta: WhatsApp Cloud API documentation](https://developers.facebook.com/docs/whatsapp/cloud-api)
+- [IrisAgent WhatsApp landing page](https://irisagent.com/whatsapp-ai-agent/)
+- [IrisAgent WhatsApp deployment guide (blog pillar)](https://irisagent.com/blog/whatsapp-ai-customer-service-guide-2026/)

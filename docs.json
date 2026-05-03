@@ -86,6 +86,7 @@
               "deploying-irisagent/Slack",
               "deploying-irisagent/Microsoft-Teams",
               "deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging",
+              "deploying-irisagent/Chatbot-Automation-on-WhatsApp",
               "deploying-irisagent/Chatbot-Automation-on-Intercom",
               "deploying-irisagent/Chatbot-Automation-on-Freshchat",
               "deploying-irisagent/AI-Search-on-Website",
