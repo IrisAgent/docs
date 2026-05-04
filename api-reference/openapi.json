@@ -968,7 +968,10 @@ components:
             Note: The case with this conversationId will be excluded from the search results.
           type: string
         productId:
-          description: The product ID to filter cases.
+          description: |
+            Product ID to filter cases. To filter across multiple products, pass a
+            comma-separated list (e.g. "prod-a,prod-b"); results are searched per
+            product and merged. Whitespace around commas is trimmed.
           type: string
         formId:
           description: The form ID to filter cases.
