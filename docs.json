@@ -119,7 +119,8 @@
             "group": "User Guides",
             "pages": [
               "guides/onboarding",
-              "agent-copilot"
+              "agent-copilot",
+              "support-analyst"
             ]
           },{
             "group": "Security and Compliance",

@@ -1,0 +1,150 @@
+---
+title: "Support Analyst"
+description: "Ask questions about your tickets in plain English. Support Analyst is IrisAgent's AI analyst for support data — natural-language search, sentiment, deep dives, analytics, and proactive alerts across your ticketing system."
+---
+
+Support Analyst is an AI-powered analyst that sits on top of your ticket data. Instead of building dashboards or writing queries, support leaders and agents ask questions in plain English ("show me all open negative-sentiment tickets from last week") and get structured answers — tables, summaries, timelines, and trends — in seconds.
+
+It works on top of the ticket data IrisAgent has already ingested from Zendesk, Salesforce, Intercom, Freshworks, HubSpot, or Jira Service Desk. No additional configuration is required to start using it.
+
+---
+
+## How It Works
+
+1. **Ask a question** in plain English from the Support Analyst chat surface.
+2. **Support Analyst plans** which tools to call — search, aggregate, fetch, evaluate — and runs them against your live ticket data.
+3. **A structured answer** is returned: a summary, a table, a list of tickets, or a chart, with links back to the underlying tickets in your ticketing system.
+
+You can ask follow-up questions in the same conversation. Support Analyst keeps context across turns, so you can drill from a high-level trend down to a single ticket without re-stating the question.
+
+---
+
+## Capabilities
+
+### Natural Language Search
+
+Search tickets across any combination of keyword, status, priority, assignee, account, sentiment, category, and date range — using plain English. Examples:
+
+- "Find all open tickets from Acme Corp where the customer is frustrated."
+- "Show tickets created in the last 7 days mentioning 'rate limit' that are still unresolved."
+- "Which tickets did Jordan close yesterday?"
+
+Search runs against the full ticket text, comment thread, subject, tags, and metadata that IrisAgent has indexed for your account.
+
+### Ticket Deep Dives
+
+Pull up a single ticket and ask for the full story — the conversation timeline, who replied when, what the customer said, what the agent said, the current status, and how the ticket evolved. Support Analyst distinguishes agent replies from customer replies and surfaces the most relevant turns first.
+
+Useful when picking up a long-running ticket, briefing a manager before an escalation call, or auditing how a specific case was handled.
+
+### Sentiment Analysis
+
+Every ticket carries a sentiment score (Negative, Moderately Negative, Neutral, Moderately Positive, Positive) computed from customer messages. Support Analyst lets you query by sentiment directly:
+
+- "Top 10 negative-sentiment tickets opened this month"
+- "Which accounts have the worst average sentiment in the last 30 days?"
+- "Has Acme's sentiment trended down since their renewal date?"
+
+Sentiment is the fastest way to surface at-risk customers before churn.
+
+### Instant Analytics
+
+Get aggregate views without building a dashboard. Support Analyst can group, count, and break down ticket data on demand:
+
+- Volume by status, priority, assignee, account, sentiment, or category
+- Trends over time (this week vs. last week, month-over-month)
+- Top N accounts, top N categories, response-time distributions
+- Team and individual agent performance
+
+Results come back as tables or summaries, with the option to drill into any row.
+
+### Account Overview
+
+For any account you ask about, Support Analyst can produce a snapshot: open ticket count, total tickets, recent activity, top categories, average sentiment, and a health indicator. Useful before QBRs, executive escalations, or churn-risk reviews.
+
+### Conversation QA
+
+Run an AI quality-assurance evaluation against any ticket conversation using your customer-configured QA rules (greeting, tone, resolution, policy adherence, etc.). Support Analyst returns per-rule pass/fail and flags the specific comments that failed. This lets QA leads spot-check tickets the way they would manually, but in seconds.
+
+### Audio Transcript Support
+
+Submit an audio transcript along with your query (for voice-channel tickets), and Support Analyst will analyze it as primary context — including auto-translation for non-English transcripts before evaluation.
+
+### Proactive Alerts
+
+Identify recurring or emerging issues before they become incidents. Ask Support Analyst to look across recent tickets for:
+
+- Spikes in a specific category or keyword
+- New issue patterns appearing in the last N hours
+- Recurring complaints across multiple accounts
+
+This is how teams catch outages, regressions, or policy gaps from inside the ticket stream.
+
+### Multi-Turn Conversation
+
+Support Analyst keeps conversation state per session. Ask a broad question, then narrow down without repeating context:
+
+> "How many tickets did we close last week?"
+> "Of those, how many had negative sentiment?"
+> "Show me the top 5 by ticket age."
+
+Conversation memory persists for 24 hours per session.
+
+### Multilingual Support
+
+Support Analyst handles non-English ticket content. Audio transcripts and ticket text in other languages are translated before analysis, so you can run QA and search across a global support operation from a single English-language interface.
+
+---
+
+## Where You Can Use It
+
+Support Analyst is available:
+
+- **In the IrisAgent web dashboard** — a dedicated chat surface for support leads, QA, and operations.
+- **As an API** — `POST /v1/ticket/query` for programmatic access. Useful for embedding analyst answers into Slack bots, internal dashboards, or scheduled reports. See the [API reference](https://docs.irisagent.com/api-reference/introduction) for details.
+- **With audio uploads** — `POST /v1/ticket/query/audio` for voice-channel transcripts.
+
+---
+
+## Data Sources
+
+Support Analyst answers questions over the data IrisAgent has indexed for your account. The richer the connected sources, the more questions it can answer:
+
+- **Ticketing systems**: [Zendesk](/data-sources/Zendesk), [Salesforce](/data-sources/Salesforce), [Intercom](/data-sources/Intercom), [Freshworks](/data-sources/Freshworks), [HubSpot](/data-sources/Hubspot), [Jira Service Desk](/data-sources/Jira-Software-or-Service-Desk)
+- **Knowledge bases**: [Confluence](/data-sources/Confluence), [Public websites](/data-sources/Public-Websites), [Uploaded content](/data-sources/Upload-Content)
+- **CRM**: [Salesforce CRM](/data-sources/SalesforceCRM)
+
+---
+
+## Security and Privacy
+
+- All queries are scoped to your customer account; Support Analyst never returns data from other customers.
+- IrisAgent is SOC 2 Type II certified and GDPR compliant.
+- Data is encrypted at rest and in transit.
+- Conversation history is retained for 24 hours per session and is not used for cross-customer model training.
+
+---
+
+## FAQ
+
+**Do I need to configure anything to use Support Analyst?**
+No. As soon as IrisAgent has ingested ticket data from your ticketing system, Support Analyst is ready to use. There is no separate setup step.
+
+**Can Support Analyst take actions on tickets — reply, change status, escalate?**
+Today, Support Analyst is read-only. It analyzes and reports on tickets but does not modify them. Action capabilities are on the roadmap.
+
+**How recent is the ticket data Support Analyst sees?**
+Support Analyst queries the same indexed data IrisAgent uses everywhere else. Sync cadence depends on your ticketing-system integration; in most cases, new tickets and comments are reflected within minutes.
+
+**Which AI model powers Support Analyst?**
+Support Analyst uses a tool-use loop with a configurable underlying LLM (OpenAI, Anthropic, or Google). The default model is GPT-4o. Customers on enterprise plans can request a model preference.
+
+**Can I query my voice tickets the same way?**
+Yes. Submit the audio transcript with your query, or call the audio endpoint directly. Non-English transcripts are auto-translated before analysis.
+
+**Does Support Analyst hallucinate?**
+Every answer is grounded in your indexed ticket data. Support Analyst returns ticket IDs and links so you can verify answers against the source. If the underlying data is missing, Support Analyst will say so rather than guess.
+
+---
+
+If you would like a walkthrough or help getting started, [email us](mailto:contact@irisagent.com).
