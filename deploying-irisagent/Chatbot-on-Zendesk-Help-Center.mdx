@@ -7,6 +7,11 @@ description: "Deploy IrisAgent Chatbot on Zendesk Help Center"
 
 IrisAgent Chatbot can power search and AI answers on your Zendesk Help Center to deflect customer queries and reduce the number of tickets handled by support agents.
 
+## Prerequisites
+
+1. Admin access to your Zendesk Help Center (Suite Growth or above, or Guide Professional or above)
+2. Access to IrisAgent dashboard
+
 ## Installation Guide
 
 1. Log in to Zendesk and click the **Zendesk Products** icon in the top bar, then select **Knowledge**
@@ -20,17 +25,15 @@ IrisAgent Chatbot can power search and AI answers on your Zendesk Help Center to
 
 4. After clicking **Customize** in the previous step, click **Edit code** to open the code editor
 5. Navigate to the **Templates** on the left hand side, click on the footer (`footer.hbs`) file.
-6. Within `footer.hbs`, add the code snippet from the [Configure page](https://web.irisagent.com/manage-chatbot) on the dashboard just before the closing `</footer>` tag
-
-<Note>You can also manage your IrisGPT chatbot configuration settings from the same Configure page.</Note>
-
+6. Within `footer.hbs`, add the code snippet from the [Configure page](https://web.irisagent.com/manage-chatbot) on the dashboard just before the closing `</footer>` tag.
+    <Note>You can also manage your chatbot configuration settings from the same Configure page.</Note>
 7. Click **Save**.
 8. (Optional) Click the **Preview** button to see how the layout looks before deploying it.
-9. If you have Zendesk Messaging Web Widget enabled for your Zendesk account, the messaging widget may block the IrisGPT Chatbot’s visibility on the help center pages. To fix this, you can disable the messaging widget from the Zendesk Admin settings.
+9. If you edited a copy of the theme, return to the Themes page and click **Set as live theme** to publish your changes.
+10. If you have Zendesk Messaging Web Widget enabled for your Zendesk account, the messaging widget may block the chatbot’s visibility on the help center pages. To fix this, you can disable the messaging widget from the Zendesk Admin settings.
     1. Navigate to Zendesk Support Admin Center
     2. On the left hand side, please find the following section and click on it: **Channels** \> **Messaging and Social** \> **Messaging**
     3. If you do not have any channel of type **Web Widget**, you may ignore the below steps
     4. Edit the Web Widget channel settings and scroll down to the **Installation** section
     5. Ensure that the checkbox named **Automatically embed Web Widget in your help center** is unselected
     6. Save the changes. Click **Save**.
-10. Done! You should see the IrisGPT Chatbot on your help center pages at bottom right.

@@ -17,7 +17,7 @@ Edit your Zendesk Help Center theme to load the widget:
 1. Log in to Zendesk and click the **Zendesk Products** icon in the top bar, then select **Knowledge**
 2. In **Knowledge admin**, click the **Customize design** icon in the sidebar to open the Themes page
 3. Click **Customize** on your theme, then click **Edit code**
-4. Select `new_request_page.hbs` from the **Templates** section and paste the following code snippet after the closing `</div>` of the main container:
+4. Select `new_request_page.hbs` from the **Templates** section and paste the following code snippet after the last closing `</div>` tag (outside `<div class="container">`):
 
 ```html
 <script
@@ -30,7 +30,7 @@ Edit your Zendesk Help Center theme to load the widget:
 5. Replace `YOUR_IRIS_AGENT_API_KEY` in the above code with your key by going to the [Configure page](https://web.irisagent.com/manage-chatbot) on IrisAgent dashboard
 6. Since the IrisAgent search bar replaces the built-in one, remove the entire `<div class="search-container">` element and everything inside it.
 
-<Accordion title="Full example of new_request_page.hbs">
+<Accordion title="Full example of new_request_page.hbs (with search-container removed)">
 ```html
 <div class="container-divider"></div>
 <div class="container">
