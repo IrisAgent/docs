@@ -1,0 +1,84 @@
+---
+title: "Case Deflector on Salesforce Case Submission Page"
+description: "Integrate the IrisAgent Case Deflector into your Salesforce Experience Cloud Help Center to automatically suggest AI answers on the Contact Support page and reduce case volume"
+---
+
+A Lightning Web Component that adds AI-powered case deflection to your Salesforce Experience Cloud Help Center. It listens to user input on the **Contact Support** page, calls IrisGPT and your knowledge base in parallel through a secure Apex proxy, and suggests relevant answers before a case is created.
+
+## Prerequisites
+
+1. Admin access to a Salesforce org with an Experience Cloud Help Center site
+2. The IrisAgent Salesforce package installed (see the [Salesforce data source guide](/data-sources/Salesforce) for the initial install)
+3. Access to IrisAgent dashboard
+
+## Install or upgrade the IrisAgent Salesforce package
+
+The Case Deflector ships in **IrisAgent Sidebar v1.3.0+**. If you already have an older version installed, upgrade to the latest package version. If this is a fresh install, follow the [Salesforce data source guide](/data-sources/Salesforce) first, then upgrade.
+
+Please [email us](mailto:contact@irisagent.com) to receive the latest installation URL for your org.
+
+## Grant Guest User permissions
+
+Anonymous Help Center visitors run as the site's Guest User, so that profile needs access to the Apex proxy used by the deflector:
+
+1. In Salesforce **Setup**, go to **Digital Experiences** → **All Sites**
+2. Click **Workspaces** next to your Help Center site, then open **Administration** → **Pages** → **Go to Force.com**
+3. Click **Public Access Settings** to open the Guest User profile
+4. Scroll to **Enabled Apex Class Access**, click **Edit**, and add `IrisAgentAPIClient` (or `irisagentsf.IrisAgentAPIClient` if your org uses the namespaced package)
+5. Click **Save**
+
+Also confirm the Remote Site Setting for `https://frontend-api-server-v2.api.irisagent.com` is active under **Setup** → **Remote Site Settings**.
+
+## Add the Case Deflector to the Contact Support page
+
+1. In Salesforce **Setup**, go to **Digital Experiences** → **All Sites**
+2. Find your Help Center site (for example, **Default Help Center**) and click **Builder**
+3. In **Experience Builder**, navigate to the **Contact Support** page
+4. Remove the existing **Contact Support Form** component — the IrisAgent Case Deflector replaces it
+5. From the **Components** panel, drag **IrisAgent Case Deflector** onto the page where the form used to be
+6. (Optional) Tune the component properties in the right-hand panel:
+
+   | Property          | Default           | Description                                                                  |
+   | ----------------- | ----------------- | ---------------------------------------------------------------------------- |
+   | `minCharCount`    | 15                | Minimum combined Subject + Description characters before searching           |
+   | `debounceMs`      | 800               | Delay (ms) after the user stops typing before the API call fires             |
+   | `maxArticles`     | 5                 | Maximum number of related articles shown                                     |
+   | `showPoweredBy`   | true              | Show the "Powered by IrisGPT" badge                                          |
+   | `contactPageName` | `Contact_Support` | Experience Cloud page API name to navigate to on "No, I still need help"     |
+
+7. Click **Publish** to deploy the change to your live Help Center
+
+## How it works
+
+1. The visitor starts typing in the **Subject** and **Description** fields on the deflector
+2. Once the combined text exceeds `minCharCount`, the deflector waits `debounceMs` after the last keystroke before calling the API
+3. Two parallel requests fire through the Apex proxy — one for an AI-generated answer with source citations, one for related knowledge articles
+4. Results appear inline:
+   - **AI Guidance** — a rich-text answer
+   - **Source links** — clickable citation chips
+   - **Related Articles** — up to `maxArticles` entries with title, link, and snippet
+5. The visitor chooses:
+   - **Yes, this helped** — the deflector disappears and no case is created
+   - **No, I still need help** — the user is navigated to `contactPageName`, which loads the standard Contact Support Form
+
+## Verify the deployment
+
+1. Open the published Help Center URL in an incognito or private window so you load it as an anonymous Guest User
+2. Navigate to **Contact Support**
+3. Type at least 15 combined characters across Subject and Description
+4. Confirm the deflector renders AI guidance and related articles
+5. In browser DevTools → **Network**, confirm there are no direct calls to `frontend-api-server-v2.api.irisagent.com` from the browser — all traffic should go through `/services/data/...` (the Apex proxy)
+
+## Troubleshooting
+
+**Deflector doesn't appear on the Contact Support page**
+
+- Verify the component was published in Experience Builder, not just saved as a draft
+- Confirm the IrisAgent Sidebar package version is **1.3.0 or higher**
+
+**API calls fail or no results show up**
+
+- Confirm the **Remote Site Setting** for `https://frontend-api-server-v2.api.irisagent.com` is active
+- Confirm the Guest User profile has Apex Class Access to `IrisAgentAPIClient`
+
+For any other issues, [email us](mailto:contact@irisagent.com) and our team will help you get the deflector live.

@@ -91,7 +91,8 @@
               "deploying-irisagent/Chatbot-Automation-on-Freshchat",
               "deploying-irisagent/AI-Search-on-Website",
               "deploying-irisagent/Chatbot-on-Zendesk-Help-Center",
-              "deploying-irisagent/AI-Search-on-Zendesk-Ticket-Form",
+              "deploying-irisagent/Ticket-Deflector-on-Zendesk",
+              "deploying-irisagent/Case-Deflector-on-Salesforce",
               {
                 "group": "Voice AI",
                 "pages": [

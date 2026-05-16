@@ -1,6 +1,6 @@
 ---
-title: "AI Search on Zendesk Ticket Form"
-description: "Integrate IrisAgent AI Search into your Zendesk Ticket Submission Form to automatically suggest AI answers and reduce ticket volume"
+title: "Ticket Deflector on Zendesk"
+description: "Integrate the IrisAgent Ticket Deflector into your Zendesk Ticket Submission Form to automatically suggest AI answers and reduce ticket volume"
 ---
 
 A lightweight, drop-in JavaScript widget that adds AI-powered ticket deflection to your Zendesk Help Center. It listens to user input on the "Submit a Request" page and suggests relevant answers from your knowledge base before a ticket is created.
@@ -28,7 +28,7 @@ Edit your Zendesk Help Center theme to load the widget:
 ```
 
 5. Replace `YOUR_IRIS_AGENT_API_KEY` in the above code with your key by going to the [Configure page](https://web.irisagent.com/manage-chatbot) on IrisAgent dashboard
-6. Since the IrisAgent search bar replaces the built-in one, remove the entire `<div class="search-container">` element and everything inside it.
+6. Since the IrisAgent Ticket Deflector replaces the built-in search bar, remove the entire `<div class="search-container">` element and everything inside it.
 
 <Accordion title="Full example of new_request_page.hbs (with search-container removed)">
 ```html
