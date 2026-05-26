@@ -15,7 +15,10 @@
   "favicon": "/favicon.svg",
   "seo": {
     "metatags": {
-      "canonical": "https://docs.irisagent.com"
+      "canonical": "https://docs.irisagent.com",
+      "og:url": "https://docs.irisagent.com",
+      "og:site_name": "IrisAgent Documentation",
+      "og:type": "website"
     }
   },
   "navigation": {
