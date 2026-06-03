@@ -131,6 +131,23 @@ For a full walkthrough, see [AutoQA](/configuring-ai-and-automation/AutoQA).
 
 ---
 
+## 10. (Optional) Segment tickets and articles by product
+
+If your account supports more than one product, you can tell IrisAgent which knowledge belongs to which product so that each ticket only retrieves articles for its own product. A billing ticket pulls from billing articles, a shipping ticket from shipping articles, and so on. If you have a single product, skip this step.
+
+**What to do:**
+
+Go to **Settings → Ingestion** and configure the two product classifiers so they use the same product labels:
+
+- **Article Product Classifier:** map knowledge base articles to a product using URL patterns.
+- **Case Product Classifier:** map incoming tickets to a product using tags, keywords, or regex on the ticket subject and description.
+
+Keep the product labels identical across both so a ticket assigned to a product finds the articles tagged with that same product.
+
+For the full setup, precedence rules, and examples, see [Segmenting Tickets and Articles by Product](/configuring-ai-and-automation/Product-Segmentation).
+
+---
+
 ## What's next
 
 Once you've completed the onboarding checklist, explore the rest of the platform:

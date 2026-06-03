@@ -111,6 +111,7 @@
             "pages": [
               "guides/configuring-ai-and-automation/add-custom-apis",
               "configuring-ai-and-automation/Ticket-Tagging",
+              "configuring-ai-and-automation/Product-Segmentation",
               "configuring-ai-and-automation/Workflows",
               "configuring-ai-and-automation/Ticket-Deflection",
               "configuring-ai-and-automation/Ticket-Sentiment",

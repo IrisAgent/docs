@@ -1,0 +1,82 @@
+---
+title: "Segmenting Tickets and Articles by Product"
+description: "Map tickets and knowledge base articles to specific products so each ticket only retrieves the knowledge that belongs to its product."
+---
+
+If your account supports more than one product, you usually want IrisAgent to answer a ticket using only the knowledge that belongs to that product. A billing question should pull from billing articles, a shipping question from shipping articles, and so on. Product segmentation lets you do exactly that.
+
+It works in two halves that need to agree with each other:
+
+1. **Article Product Classifier** tags each knowledge base article with a product.
+2. **Case Product Classifier** tags each incoming ticket with a product.
+
+When a ticket comes in, IrisAgent matches the ticket's product to articles carrying the same product, so only the relevant knowledge is considered. If you only have a single product, you can skip this entirely.
+
+<Info>Both classifiers live in the portal under **Settings** in the **Ingestion** section. They are optional. With no configuration, every ticket can retrieve from your full knowledge base.</Info>
+
+## How matching works
+
+A ticket and an article are connected when they resolve to the **same product value**. The product value is just a label you choose (for example, `billing` or `shipping`). Use the same label in both classifiers so the two sides line up.
+
+- The **Article Product Classifier** decides an article's product from its URL.
+- The **Case Product Classifier** decides a ticket's product from its tags, keywords, or text.
+
+Get the labels consistent across both and the right articles surface for the right tickets automatically.
+
+## Configure the Article Product Classifier
+
+This maps knowledge base articles to products using patterns matched against each article's URL.
+
+1. Go to **Settings** in the portal and open the **Ingestion** section.
+2. Click **Configure** on the **Article Product Classifier** card.
+3. Click **Add Group** and enter a **Product Category** (the product label, for example `billing`).
+4. Add one or more **URL patterns** (regular expressions) that match the article URLs for that product. For example, `^https://help\.example\.com/billing/.*`.
+5. Repeat for each product, then click **Save**.
+
+When an article URL matches a group's pattern, that article is tagged with the group's product.
+
+## Configure the Case Product Classifier
+
+This maps incoming tickets to products. A ticket can be matched in three ways, and you can use any combination:
+
+1. **Tags** that were applied to the ticket at creation time (for example, a `billing` tag).
+2. **Keywords** found in the ticket subject or description. Keyword matching is whole word and case insensitive, so `bill` matches `Bill` but not `billing`.
+3. **Regex patterns** matched against the ticket subject and description.
+
+To set it up:
+
+1. Go to **Settings** in the portal and open the **Ingestion** section.
+2. Click **Configure** on the **Case Product Classifier** card.
+3. Click **Add Group** and enter a **Product ID** (use the same label you used in the Article Product Classifier, for example `billing`).
+4. Add any combination of **Tags**, **Keywords**, and **Regex Patterns** that identify that product.
+5. Repeat for each product, then click **Save**.
+
+### Match precedence
+
+When a ticket could match more than one product, IrisAgent decides by signal type in this order:
+
+1. A **regex** match wins first.
+2. If no regex matches, a **keyword** match wins.
+3. If neither matches, a **tag** match wins.
+
+Within a single signal type, groups are evaluated in the order you arranged them, so the first matching group wins the tie.
+
+<Note>The Case Product Classifier is config first. Once a group is configured, it fully owns how that account's tickets are assigned to products.</Note>
+
+## Example
+
+A two-product account selling billing and shipping might configure:
+
+**Article Product Classifier**
+
+- Product Category `billing`, URL pattern `^https://help\.example\.com/billing/.*`
+- Product Category `shipping`, URL pattern `^https://help\.example\.com/shipping/.*`
+
+**Case Product Classifier**
+
+- Product ID `billing`: keyword `invoice`, regex `(?i)\b(invoice|payment)\b`
+- Product ID `shipping`: tag `shipping`, keyword `ship`
+
+A ticket reading "my payment failed" matches the `billing` regex, so IrisAgent answers it using only the billing articles.
+
+<Tip>Keep the product labels identical across the two classifiers. A typo (for example `billing` versus `Billing`) breaks the link and the ticket will not find its articles.</Tip>
