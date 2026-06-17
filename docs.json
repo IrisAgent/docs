@@ -84,18 +84,19 @@
           },{
             "group": "Deploying IrisAgent",
             "pages": [
-              "deploying-irisagent/Chatbot-on-Website",
-              "deploying-irisagent/Agent-Copilot",
-              "deploying-irisagent/Slack",
-              "deploying-irisagent/Microsoft-Teams",
-              "deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging",
-              "deploying-irisagent/Chatbot-Automation-on-WhatsApp",
-              "deploying-irisagent/Chatbot-Automation-on-Intercom",
-              "deploying-irisagent/Chatbot-Automation-on-Freshchat",
-              "deploying-irisagent/AI-Search-on-Website",
-              "deploying-irisagent/Chatbot-on-Zendesk-Help-Center",
-              "deploying-irisagent/Ticket-Deflector-on-Zendesk",
-              "deploying-irisagent/Case-Deflector-on-Salesforce",
+              {
+                "group": "Chat",
+                "pages": [
+                  "deploying-irisagent/Chatbot-on-Website",
+                  "deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging",
+                  "deploying-irisagent/Chatbot-Automation-on-WhatsApp",
+                  "deploying-irisagent/Chatbot-Automation-on-Intercom",
+                  "deploying-irisagent/Chatbot-Automation-on-Freshchat",
+                  "deploying-irisagent/Slack",
+                  "deploying-irisagent/Microsoft-Teams",
+                  "deploying-irisagent/Chatbot-on-Zendesk-Help-Center"
+                ]
+              },
               {
                 "group": "Voice AI",
                 "pages": [
@@ -103,6 +104,25 @@
                   "deploying-irisagent/Voice-AI-on-GoTo-Connect",
                   "deploying-irisagent/Voice-AI-on-Ozonetel",
                   "deploying-irisagent/Voice-AI-on-Puzzel"
+                ]
+              },
+              {
+                "group": "AI Search",
+                "pages": [
+                  "deploying-irisagent/AI-Search-on-Website"
+                ]
+              },
+              {
+                "group": "Agent Copilot",
+                "pages": [
+                  "deploying-irisagent/Agent-Copilot"
+                ]
+              },
+              {
+                "group": "Ticket Deflection",
+                "pages": [
+                  "deploying-irisagent/Ticket-Deflector-on-Zendesk",
+                  "deploying-irisagent/Case-Deflector-on-Salesforce"
                 ]
               }
             ]
