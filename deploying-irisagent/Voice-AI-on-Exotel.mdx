@@ -1,0 +1,53 @@
+---
+title: "Voice AI on Exotel"
+description: "This guide walks you through deploying IrisAgent Voice AI with Exotel, enabling intelligent call automation for your customer service operations."
+---
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- An Exotel account with admin access to the dashboard
+- An Exophone (virtual number) configured in your Exotel account that will receive customer calls
+- Access to App Bazaar to create and edit call flows
+
+## Step 1: Sign Up for IrisAgent
+
+You can sign up for IrisAgent in one of two ways: by connecting your ticketing platform or using public website as knowledge source.
+
+## Step 2: Set Up Call Routing in Exotel
+
+Next, configure Exotel to route incoming calls to your IrisAgent Voice AI. Exotel uses **call flows** built in **App Bazaar** and assigned to an **Exophone** to manage how incoming calls are handled. The **Connect applet** within a call flow routes calls to an external number.
+
+### Create a Call Flow to Route Calls to IrisAgent
+
+1. Sign in to your [Exotel dashboard](https://my.exotel.com/)
+2. Navigate to **App Bazaar** and click **Create** under **Custom Apps** to open the app builder
+3. Enter a name for the call flow (e.g., "IrisAgent Voice AI")
+4. Drag the **Connect** applet onto the call flow canvas
+5. In the **Dial Whom** section of the Connect applet, choose the option to dial a number and enter the **external phone number** provided by the IrisAgent team
+6. Click **Save** to save the call flow
+
+> **Note:** When entering the IrisAgent phone number, use the full E.164 format with country code (e.g., +91 for India or +1 for US numbers).
+
+> **Tip:** You can adjust the Connect applet's **Ring Duration** and **Call Duration** settings, and configure a fallback if needed.
+
+### Assign the Call Flow to Your Exophone
+
+1. From the Exotel dashboard, click **ExoPhones** in the left panel of the **Admin** section
+2. Locate the Exophone (virtual number) that your customers will dial
+3. In the **Installed App** column for that Exophone, click the app icon to open the drop-down list
+4. Select the call flow you created in the previous step (e.g., "IrisAgent Voice AI")
+5. Save your changes
+
+> **Note:** You can assign multiple Exophones to a single call flow.
+
+## Step 3: Test Your Integration
+
+After completing the setup, verify that calls are routing correctly to IrisAgent Voice AI.
+
+### Make a Test Call
+
+1. Call the Exophone associated with your call flow from an external phone
+2. You should hear the IrisAgent Voice AI greeting
+3. Test a few common customer queries to ensure responses are working as expected

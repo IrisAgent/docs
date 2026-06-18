@@ -14,6 +14,12 @@ The integration user of IrisAgent is used as an author for private notes and for
 3. When you connect your platform, sign in as the user you actually want IrisAgent to act as in your ticketing platform (for example, Zendesk). Whoever is signed in during the connection becomes the integration user.
 4. Follow the instructions relevant to your selected platform.
 
+## **Salesforce: refreshing the integration token**
+
+If you connect IrisAgent to Salesforce, the self-serve "Change Integration User" page above does not apply. Signing in again with Salesforce will not replace your stored integration token on its own.
+
+To rotate the integration user or refresh the token for a Salesforce connection, contact your IrisAgent point of contact or email [contact@irisagent.com](mailto:contact@irisagent.com) and ask them to add the `salesforceTokenRefresh` flag on your admin user. Once that flag is set, sign in again with Salesforce as the user you want IrisAgent to act as, and the integration token will be updated.
+
 ## **Use a dedicated user for IrisAgent activity**
 
 We recommend connecting as a dedicated user (for example, one named "IrisAgent AI") rather than a personal account. This way, private notes and AI-generated insights are clearly attributed to that designated user, so your team immediately knows the insights are coming from IrisAgent.
