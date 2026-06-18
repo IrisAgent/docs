@@ -130,17 +130,38 @@
           },{
             "group": "Configuring AI and Automation",
             "pages": [
-              "guides/configuring-ai-and-automation/add-custom-apis",
-              "configuring-ai-and-automation/Ticket-Tagging",
-              "configuring-ai-and-automation/Product-Segmentation",
-              "configuring-ai-and-automation/Workflows",
-              "configuring-ai-and-automation/Ticket-Deflection",
-              "configuring-ai-and-automation/Ticket-Sentiment",
-              "configuring-ai-and-automation/Revise-Chatbot-Answers",
-              "configuring-ai-and-automation/Case-Response-Settings",
-              "configuring-ai-and-automation/AI-for-Macros",
-              "configuring-ai-and-automation/AutoKB",
-              "configuring-ai-and-automation/AutoQA"
+              {
+                "group": "AI Answers",
+                "pages": [
+                  "configuring-ai-and-automation/AI-Response-Style",
+                  "configuring-ai-and-automation/Search-Term-Rewrites",
+                  "configuring-ai-and-automation/Revise-Chatbot-Answers",
+                  "configuring-ai-and-automation/AI-for-Macros"
+                ]
+              },
+              {
+                "group": "Knowledge and Quality",
+                "pages": [
+                  "configuring-ai-and-automation/AutoKB",
+                  "configuring-ai-and-automation/AutoQA"
+                ]
+              },
+              {
+                "group": "Ticket Intelligence",
+                "pages": [
+                  "configuring-ai-and-automation/Ticket-Tagging",
+                  "configuring-ai-and-automation/Product-Segmentation",
+                  "configuring-ai-and-automation/Ticket-Sentiment"
+                ]
+              },
+              {
+                "group": "Automation and Routing",
+                "pages": [
+                  "configuring-ai-and-automation/Workflows",
+                  "configuring-ai-and-automation/Ticket-Deflection",
+                  "guides/configuring-ai-and-automation/add-custom-apis"
+                ]
+              }
             ]
           },{
             "group": "User Guides",
