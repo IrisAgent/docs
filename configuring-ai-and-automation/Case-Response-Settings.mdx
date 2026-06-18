@@ -1,0 +1,72 @@
+---
+title: "AI Response Style & Query Term Rewrites"
+description: "Customize the tone of AI case responses and rewrite query terms so they match your knowledge base"
+---
+
+## **Overview**
+
+The **Cases** page (under **Deploy**) lets you fine-tune how IrisAgent generates answers without touching your underlying knowledge base. It has two settings:
+
+- **AI Response Style** -- custom instructions that shape the tone, phrasing, and formatting of AI-generated case responses.
+- **Query Term Rewrites** -- rules that rewrite terms in the user's question (or case text) so they match your knowledge base before the AI searches it.
+
+To configure either setting, open the [IrisAgent dashboard](https://web.irisagent.com), go to **Deploy** in the left navigation, and select **Cases**.
+
+## **AI Response Style**
+
+AI Response Style lets you give the AI custom instructions for how it should respond to cases. These guidelines control tone, phrasing, and formatting, and apply to all AI-generated case responses for your account.
+
+### **Setting Answer Guidelines**
+
+1. On the **Cases** page, find the **AI Response Style** section.
+2. In the **Answer Guidelines** box, describe how you want the AI to respond. You can use up to 2000 characters.
+3. Click **Save Guidelines**.
+
+Some examples of guidelines you can set:
+
+- *"Use a friendly and empathetic tone. Begin responses with a greeting."*
+- *"Avoid step-by-step instructions when a support article link can be provided instead."*
+- *"Keep responses concise and avoid technical jargon."*
+- *"Always close by inviting the customer to reply if they need anything else."*
+
+Guidelines affect only the wording and presentation of the answer. They do not change which knowledge base content the AI draws from, and they will not cause the AI to fabricate information that is not in your knowledge base.
+
+## **Query Term Rewrites**
+
+Query Term Rewrites rewrite terms in the user's question (or case text) so they match your knowledge base before the AI searches it. This is useful when customers use abbreviations, slang, or internal shorthand that differs from the wording in your articles.
+
+For example, if your articles use the word "account" but customers often type "acct", you can add a rule that rewrites "acct" to "account" so the right articles are retrieved.
+
+<Note>
+Query Term Rewrites apply to **both chat and case answers**. They only affect retrieval (which articles the AI finds). They do **not** change the answer text shown to the customer.
+</Note>
+
+### **Adding a Rewrite Rule**
+
+1. On the **Cases** page, find the **Query Term Rewrites** section.
+2. Check **Enable query term rewrites**.
+3. Click **+ Add rule**.
+4. Fill in the rule:
+   - **From** -- the term as the customer might type it (for example, `acct`).
+   - **To** -- the term your knowledge base uses (for example, `account`).
+   - **Whole word** -- when checked, the rule only matches the term as a complete word, not as part of a larger word. For example, with "Whole word" on, a rule for `acct` will not match inside `accts`.
+   - **Ignore case** -- when checked, the rule matches regardless of capitalization (so `Acct`, `ACCT`, and `acct` are all rewritten).
+5. Add more rules as needed by clicking **+ Add rule** again. Remove a rule with the **×** button.
+6. Click **Save Rewrites**.
+
+Both **Whole word** and **Ignore case** are enabled by default for new rules.
+
+### **Example Rules**
+
+| From | To | Notes |
+|---|---|---|
+| acct | account | Common abbreviation |
+| pw | password | Shorthand |
+| icloud | invoicecloud | Maps a misheard or shortened term to your product name |
+| cancel sub | cancel subscription | Expands shorthand to match article wording |
+
+### **Validation**
+
+When you save, IrisAgent checks that every rule has a **From** term and that the **From** and **To** values are different. If a rule is missing a **From** term or has identical **From** and **To** values, you will see an error and the rules will not be saved.
+
+If you need help configuring case response settings, reach out by [sending us an email](mailto:contact@irisagent.com?subject=Case%20Response%20Settings).
