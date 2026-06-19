@@ -63,6 +63,18 @@ Within a single signal type, groups are evaluated in the order you arranged them
 
 <Note>The Case Product Classifier is config first. Once a group is configured, it fully owns how that account's tickets are assigned to products.</Note>
 
+## Segment the chatbot by product
+
+You can scope a chatbot to a single product so it only answers from that product's knowledge. This is set on the chatbot configuration rather than on a ticket.
+
+1. Go to **Manage Chatbot** in the portal and open the chatbot configuration you want to scope.
+2. In the **Product ID** section, enter the product label you want this chatbot to use (for example, `billing`).
+3. Click **Update Configuration**.
+
+The chatbot now retrieves only from articles that the **Article Product Classifier** tagged with that same product label.
+
+<Warning>Only set a **Product ID** on the chatbot if you have a matching product configured in the **Article Product Classifier**. The label must match exactly (a typo like `billing` versus `Billing` breaks the link). If the chatbot's Product ID does not match any classified articles, every chat returns no answer because no knowledge is in scope. Leave the field empty to let the chatbot retrieve from your full knowledge base.</Warning>
+
 ## Example
 
 A two-product account selling billing and shipping might configure:
