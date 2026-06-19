@@ -143,14 +143,14 @@
                 "group": "Knowledge and Quality",
                 "pages": [
                   "configuring-ai-and-automation/AutoKB",
-                  "configuring-ai-and-automation/AutoQA"
+                  "configuring-ai-and-automation/AutoQA",
+                  "configuring-ai-and-automation/Product-Segmentation"
                 ]
               },
               {
                 "group": "Ticket Intelligence",
                 "pages": [
                   "configuring-ai-and-automation/Ticket-Tagging",
-                  "configuring-ai-and-automation/Product-Segmentation",
                   "configuring-ai-and-automation/Ticket-Sentiment"
                 ]
               },
