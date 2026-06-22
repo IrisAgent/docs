@@ -7,15 +7,21 @@ Welcome to IrisAgent. This guide walks you through the important steps to get yo
 
 ---
 
-## 1. Connect your account
+## 1. Connect your account with the onboarding wizard
 
-The first step is connecting IrisAgent to your ticketing system so we can start learning from your support data.
+The onboarding wizard launches automatically the first time you log in to [web.irisagent.com](https://web.irisagent.com). It walks you through connecting your first data source, adding training content, customizing your AI agent, and deploying it — all in one guided flow.
 
 **What to do:**
 
-Go to **Platforms** in the portal and pick your ticketing provider. Follow the OAuth prompts to authorize the connection.
+Choose the path that matches your use case:
 
-Provider-specific setup guides:
+- **Ticketing system** — connect Zendesk, Freshdesk, HubSpot, Jira, Zoho, or Outlook via OAuth. IrisAgent imports your tickets, macros, and knowledge base articles and starts training.
+- **Website link** — paste your URL and IrisAgent builds an AI chat agent trained on your public site and help docs.
+- **Speak to a human** — book a 20-minute demo if you'd prefer a guided walkthrough with the team.
+
+Once connected, IrisAgent kicks off a backfill of your historical tickets (ticketing path) or indexes your help content (website path). Depending on volume this can take a few minutes to a few hours. You can continue with the rest of the onboarding steps while it runs.
+
+If you need to connect an additional ticketing system later, or connect Salesforce or Intercom (which use a separate OAuth sign-in flow), go to **Platforms** in the portal. Provider-specific setup guides:
 
 - [Zendesk](/data-sources/Zendesk)
 - [Salesforce](/data-sources/Salesforce)
@@ -23,8 +29,6 @@ Provider-specific setup guides:
 - [Freshworks](/data-sources/Freshworks)
 - [Jira Software or Service Desk](/data-sources/Jira-Software-or-Service-Desk)
 - [HubSpot](/data-sources/Hubspot)
-
-Once connected, IrisAgent kicks off a backfill of your historical tickets. Depending on volume, this can take anywhere from a few minutes to a few hours. You can continue with the rest of the onboarding steps while it runs — the checklist will flip "Account connected" to done as soon as the backfill completes.
 
 ---
 
