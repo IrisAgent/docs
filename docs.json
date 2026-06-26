@@ -174,7 +174,10 @@
             "group": "Security and Compliance",
             "pages": [
               "security-and-compliance/Single-Sign-On-Options",
-              "security-and-compliance/Okta-SSO"
+              "security-and-compliance/Okta-SSO",
+              "security-and-compliance/Private-Deployment-Overview",
+              "security-and-compliance/Reference-Architecture-Customer-VPC",
+              "security-and-compliance/Reference-Architecture-On-Prem-Air-Gapped"
             ]
           },{
             "group": "Account Management",
