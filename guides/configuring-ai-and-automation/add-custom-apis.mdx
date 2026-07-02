@@ -52,6 +52,15 @@ Specify which fields from the API response you want to use in trigger actions:
 3. Select the field type (string, number, boolean)
 4. Repeat for each field you want available in actions
 
+### (Optional) Run Another API First
+
+If this API needs data from a different Custom API, use the **Prerequisite** section at the bottom of the form to chain them:
+
+1. Under **Run this action first**, select the Custom API to run before this one.
+2. Under **Store its result as**, enter a variable name (letters, numbers, and underscores).
+
+IrisAgent runs the prerequisite first and injects its Expression result under that name, so you can reference it as `{{yourName}}` in this API's URL, headers, or body. For example, upsert a HubSpot contact to get its `id`, then create a ticket linked to `{{contactId}}`. See [Custom APIs: chaining two APIs](/data-sources/Custom-API#example-chain-two-apis-to-link-a-hubspot-contact-to-a-ticket) for a full walkthrough.
+
 ### Save Your Configuration
 
 Click **Save** to store your API configuration. The API is now available for use in triggers and workflows.

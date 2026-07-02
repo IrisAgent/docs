@@ -118,6 +118,23 @@ response.isPremium == true && response.tier == "enterprise"
 
 Set the **Return Type** to match what your expression evaluates to (`Boolean`, `String`, `Integer`, or `Float`).
 
+### Prerequisite (optional): run another API first
+
+Some workflows need to call one API and then feed its result into a second call. A common case: HubSpot requires a contact's record ID to link it to a ticket, so you have to create or look up the contact **before** creating the ticket.
+
+The **Prerequisite** section, at the bottom of the form, lets this Custom API run another Custom API first and reuse its result:
+
+| Field | Description |
+| --- | --- |
+| **Run this action first** | Select another Custom API to run before this one. Its Expression result is captured. Leave as _None_ to disable chaining |
+| **Store its result as** | A variable name (letters, numbers, and underscores). The prerequisite's result becomes available to this API as `{{yourName}}` in the URL, headers, and body |
+
+At call time IrisAgent runs the prerequisite first, evaluates its Expression, and injects the value under the name you chose. You then reference it like any other template variable, for example `{{contactId}}`.
+
+<Note>
+  The injected value comes from the prerequisite API's own **Expression**, so make sure that API's Expression returns the single value you want (for example, the new record's `id`). The prerequisite dropdown never lists the API you are currently editing, so an API cannot depend on itself.
+</Note>
+
 3. Click **Create API** to save.
 
 ---
@@ -138,6 +155,74 @@ IrisAgent will call your API with the provided values and show:
 - Any error message if the call failed
 
 Iterate on the URL, expression, or schema until the test returns the expected result.
+
+---
+
+## Example: chain two APIs to link a HubSpot Contact to a ticket
+
+When a chatbot handoff creates a HubSpot ticket, HubSpot will not automatically link the person to it just because their email appears in the ticket text. To show up under the ticket's **Contacts** panel, the ticket has to be created with an association to the contact's record ID. That takes two calls: first resolve the contact, then create the ticket linked to it. Use a **Prerequisite** to chain them.
+
+### API 1: Upsert HubSpot contact
+
+This creates the contact if it is new, or returns the existing one, and outputs its ID.
+
+| Field | Value |
+| --- | --- |
+| **Name** | `Upsert Hubspot contact` |
+| **API Credential** | Your HubSpot credential (the private app token must include the `crm.objects.contacts.write` scope) |
+| **Method** | `POST` |
+| **URL** | `https://api.hubapi.com/crm/v3/objects/contacts/batch/upsert` |
+| **Request Body** | see below |
+| **Expression** | `response.results[0].id` |
+| **Return Type** | `String` |
+
+Request body:
+
+```json
+{
+  "inputs": [
+    {
+      "idProperty": "email",
+      "id": "{{email}}",
+      "properties": { "email": "{{email}}", "firstname": "{{name}}" }
+    }
+  ]
+}
+```
+
+`{{email}}` and `{{name}}` are custom variables IrisAgent collects from the customer during the conversation.
+
+### API 2: Create HubSpot ticket
+
+This creates the ticket and links it to the contact from API 1.
+
+| Field | Value |
+| --- | --- |
+| **Name** | `Create Hubspot ticket` |
+| **Method** | `POST` |
+| **URL** | `https://api.hubapi.com/crm/v3/objects/tickets` |
+| **Request Body** | see below |
+| **Prerequisite → Run this action first** | `Upsert Hubspot contact` |
+| **Prerequisite → Store its result as** | `contactId` |
+
+Request body (the `associations` block references `{{contactId}}` from the prerequisite; association type ID `16` is HubSpot's Ticket-to-Contact type):
+
+```json
+{
+  "properties": {
+    "subject": "Support: {{issue}}",
+    "content": "Issue: {{issue}}\nName: {{name}}\nEmail: {{email}}"
+  },
+  "associations": [
+    {
+      "to": { "id": "{{contactId}}" },
+      "types": [ { "associationCategory": "HUBSPOT_DEFINED", "associationTypeId": 16 } ]
+    }
+  ]
+}
+```
+
+Now when the handoff runs, IrisAgent upserts the contact, captures its ID as `{{contactId}}`, and creates the ticket already linked to that contact.
 
 ---
 
