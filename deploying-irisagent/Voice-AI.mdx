@@ -1,0 +1,52 @@
+---
+title: "Voice AI"
+description: "Enable IrisAgent Voice AI, try it from the dashboard or over the phone, and configure what it does using procedures"
+---
+
+IrisAgent Voice AI answers customer calls, understands what the caller needs, and resolves the request using your knowledge base, past tickets, and the procedures you define. This page covers getting Voice AI turned on and running your first conversation. To route calls from a number you already own, see the provider-specific guides listed at the end.
+
+## Enable Voice AI
+
+Voice AI is enabled for your account by the IrisAgent team. Reach out to your IrisAgent point of contact, or [email us](mailto:contact@irisagent.com), and we will turn it on and provision a phone number for you.
+
+## Run Voice AI
+
+Once Voice AI is enabled, go to the **Voice AI** page on the [IrisAgent dashboard](https://web.irisagent.com/voice-ai). You have two ways to start a conversation:
+
+- **Click "Start Conversation"** to talk to the AI agent directly from your browser. This is the quickest way to test changes.
+- **Call the phone number shown on the page** to reach the same AI agent over a normal phone call.
+
+<Tip>
+You can give the provided phone number to your customers so they can reach the AI agent directly, without any additional setup on your side.
+</Tip>
+
+## Configure what Voice AI does
+
+Voice AI answers from your knowledge base and past tickets out of the box. To handle a specific scenario a particular way, such as collecting an order ID and looking it up, verifying eligibility before a refund, or handing off to a team, create a procedure.
+
+1. Go to the **Create Procedure** page on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories).
+2. Select **Voice** as the channel so the procedure applies to voice conversations.
+3. Enter a **name**, a **short scenario description** (when the AI agent should use this procedure), and the **actions** it should take.
+4. Click **Save**.
+
+You describe procedures in plain English rather than building a flowchart, and IrisAgent recognizes when the scenario applies and runs the steps end to end. See [Workflows](/configuring-ai-and-automation/Workflows) for how to write them, including how to call your own APIs mid-conversation to pull in live data.
+
+<Note>
+Procedures take precedence over answers from your trained knowledge base. When a caller's request matches a procedure's scenario, the AI agent follows the procedure's steps instead of generating a free-form answer.
+</Note>
+
+## Review conversations
+
+Every call is logged under **Chat and Voice Logs** on the dashboard, where you can listen back, read the transcript, and see which procedures ran.
+
+## Route your existing phone number
+
+To have IrisAgent answer calls to a number your customers already dial, connect your telephony provider:
+
+- [Voice AI on 8x8](/deploying-irisagent/voice-ai-on-8x8)
+- [Voice AI on GoTo Connect](/deploying-irisagent/Voice-AI-on-GoTo-Connect)
+- [Voice AI on Ozonetel](/deploying-irisagent/Voice-AI-on-Ozonetel)
+- [Voice AI on Exotel](/deploying-irisagent/Voice-AI-on-Exotel)
+- [Voice AI on Puzzel](/deploying-irisagent/Voice-AI-on-Puzzel)
+
+Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or require assistance with product onboarding.

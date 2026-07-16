@@ -1,0 +1,106 @@
+---
+title: "IrisAgent Sidebar on Experience Cloud"
+description: "Add the IrisAgent Sidebar to a Case record page in an Experience Cloud site so members working cases in a community get suggested resolutions, similar cases, sentiment, and summaries"
+---
+
+The IrisAgent Sidebar gives agents suggested resolutions, similar cases, ticket sentiment, summaries, and Jira actions on a Case. This guide covers running it inside an **Experience Cloud site** (for example, an Employee Community) rather than the internal Lightning console.
+
+<Note>
+  This is the agent-assist sidebar for people **working** cases. If you want to deflect cases before they are created, on the Contact Support page of a Help Center, use the [Case Deflector](/deploying-irisagent/Case-Deflector-on-Salesforce) instead. The two are complementary.
+</Note>
+
+## Prerequisites
+
+1. Admin access to a Salesforce org with an Experience Cloud site
+2. The IrisAgent Salesforce package installed (see the [Salesforce data source guide](/data-sources/Salesforce) for the initial install)
+3. Access to IrisAgent dashboard
+
+## Where the sidebar can go
+
+The sidebar answers questions about **one specific, already-saved Case**. It needs that Case's Id in page context, so it belongs on a **Case record page** in your site.
+
+| Page | Supported | Why |
+| --- | --- | --- |
+| Case record page | Yes | The Case exists and its Id is in page context |
+| Case creation / Contact Support page | No | No Case exists yet. Use the [Case Deflector](/deploying-irisagent/Case-Deflector-on-Salesforce) |
+| Home or a generic page | No | No Case Id in context, so the sidebar has nothing to load |
+
+## Install or upgrade the IrisAgent Salesforce package
+
+Experience Cloud support for the sidebar ships in **IrisAgent Sidebar v1.4.0+**. If you have an older version, upgrade to the latest package version. If this is a fresh install, follow the [Salesforce data source guide](/data-sources/Salesforce) first, then upgrade.
+
+Please [email us](mailto:contact@irisagent.com) to receive the latest installation URL for your org.
+
+## Grant community members permissions
+
+Unlike the Case Deflector, which runs as the site's anonymous Guest User, the sidebar runs as **authenticated members** of your site. Assign them the packaged permission set:
+
+1. In Salesforce **Setup**, go to **Users** → **Permission Sets**
+2. Open **IrisAgent Sidebar Community**
+3. Click **Manage Assignments** → **Add Assignment**
+4. Select the community members (or use a permission set group assigned to their profile) and click **Assign**
+
+This grants access to the Apex proxy the sidebar calls. Your members also need to be able to read the case data itself, which is governed by your own site configuration rather than by our package:
+
+- **Case read access** through their profile and your sharing settings or sharing sets. The sidebar reads Subject, Status, Priority, Case Number, Description, and Account Name.
+- **Knowledge read access** (`Knowledge__kav`) if you want article hover previews. Without it, previews fall back to showing the article title and link, and answers are unaffected.
+
+Also confirm the Remote Site Setting for `https://frontend-api-server-v2.api.irisagent.com` is active under **Setup** → **Remote Site Settings**. The sidebar calls our API server-side through Apex, so no browser-side CSP change is needed for the API itself.
+
+## Check the site security level
+
+Experience Cloud blocks custom Lightning Web Components on stricter security levels. If the sidebar does not appear in the Components panel, or you see a "components are blocked due to the site's security level setting" warning:
+
+1. In **Experience Builder**, go to **Settings** → **Security & Privacy**
+2. Set the security level to one that permits custom components (**Relaxed CSP** is typical)
+3. Publish the site
+
+## Add the sidebar to the Case record page
+
+1. In Salesforce **Setup**, go to **Digital Experiences** → **All Sites**
+2. Find your site and click **Builder**
+3. In **Experience Builder**, navigate to the **Case** record page
+4. From the **Components** panel, drag **IrisAgent Sidebar (Experience Cloud)** onto the page, typically into a right-hand column
+5. Leave the **Record Id** property set to its default of `{!recordId}` so the sidebar follows whichever Case the page is showing
+
+   <Warning>
+     Experience Builder does not pass the record Id to components automatically the way an internal Lightning record page does. If **Record Id** is blank, the sidebar shows "No record ID available." Set it back to `{!recordId}`.
+   </Warning>
+
+6. Click **Publish** to deploy the change to your live site
+
+## Verify the deployment
+
+1. Open the published site as a member who has the **IrisAgent Sidebar Community** permission set (not as an admin previewing from Builder)
+2. Open a real Case that IrisAgent has processed
+3. Confirm the sidebar loads suggested resolution, similar cases, sentiment, and summary
+4. Click a link in the sidebar and confirm it opens without error
+5. Hover an article link and confirm you get either the full preview or a title and link
+
+## Differences from the internal console
+
+The sidebar behaves the same in a community with two exceptions, both cosmetic:
+
+- **Links open in the same tab.** Experience Cloud has no console, so there are no subtabs to open into.
+- **Article hover previews may show only a title and link** if members cannot read Knowledge records. Answer content is generated server-side and is unaffected.
+
+## Troubleshooting
+
+**The sidebar isn't in the Components panel**
+
+- Confirm the package version is **1.4.0 or higher**
+- Check the site security level, as described above
+- Confirm you are on a **Case record page**, not a Home or case creation page
+
+**The sidebar shows "No record ID available"**
+
+- Set the component's **Record Id** property to `{!recordId}`
+- Confirm the component is on a Case record page, so there is a record in context
+
+**The sidebar loads but shows an error or no data**
+
+- Confirm the member has the **IrisAgent Sidebar Community** permission set
+- Confirm the member can open the same Case directly, which rules out sharing and profile issues
+- Confirm the **Remote Site Setting** for `https://frontend-api-server-v2.api.irisagent.com` is active
+
+For any other issues, [email us](mailto:contact@irisagent.com) and our team will help you get the sidebar live.
