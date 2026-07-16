@@ -120,6 +120,18 @@
                 ]
               },
               {
+                "group": "Email",
+                "pages": [
+                  "deploying-irisagent/Outlook"
+                ]
+              },
+              {
+                "group": "Tickets",
+                "pages": [
+                  "deploying-irisagent/Tickets"
+                ]
+              },
+              {
                 "group": "Ticket Deflection",
                 "pages": [
                   "deploying-irisagent/Ticket-Deflector-on-Zendesk",

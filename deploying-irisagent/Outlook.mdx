@@ -1,0 +1,98 @@
+---
+title: "Outlook"
+description: "Automatically reply to incoming Outlook emails with AI answers, either on every email or only on the ones that match conditions you define"
+---
+
+Once your Outlook mailbox is connected, IrisAgent can reply to incoming customer emails automatically with an AI answer generated from your knowledge base and past tickets. The reply goes out on the same email thread, from the same mailbox your customers already write to, so it reads like a normal response from your support team.
+
+You can turn this on for every email that has an AI answer, or scope it down to a specific slice of your email volume using conditions.
+
+<Note>
+Outlook uses the same **Rules & Triggers** engine as your ticketing system, so conditions, actions, and variables work the way they do on tickets. See [Tickets](/deploying-irisagent/Tickets) for the full set.
+</Note>
+
+## Prerequisites
+
+1. Your Outlook mailbox is connected as a data source. See the [Outlook connection guide](/outlook) for the initial setup.
+2. The OAuth connection includes the `Mail.Send` scope. This is requested during the standard Outlook connection flow, so no extra step is needed.
+3. Access to the IrisAgent dashboard as an admin. Enabling deflection is admin-only.
+
+## How Outlook emails become tickets
+
+IrisAgent groups your mailbox into conversations:
+
+- A **new inbound email** (the start of a conversation) becomes a ticket.
+- A **reply on an existing conversation** becomes a comment on that ticket.
+
+Triggers run on tickets, which means IrisAgent responds to the email that opens a conversation, not to every back-and-forth reply within it.
+
+## Option 1: Auto-respond to all emails
+
+Use this when you want every email with an AI answer to receive an automatic reply.
+
+1. On the dashboard, go to **Automation** -\> **Rules & Triggers**.
+2. Toggle on the **Enable Case Deflection** switch.
+
+This creates a trigger named **System: Case Deflection using AI** that fires on every ticket where the AI produced an answer. There are no other conditions on it. Emails where the AI has no answer are left alone for your agents.
+
+You can turn this off anytime with the same switch, and you can review every email that received an auto-response, plus the associated deflection metrics, by clicking into the **System: Case Deflection using AI** trigger.
+
+<Note>
+We recommend starting with Option 2 below. Scoping deflection to a known-safe slice of email first, for example password resets or billing questions, lets you validate answer quality on real traffic before opening it up to the whole mailbox.
+</Note>
+
+## Option 2: Auto-respond only to emails matching conditions
+
+This is the recommended way to roll out auto-response on email.
+
+1. On the dashboard, go to **Automation** -\> **Rules & Triggers**, and click **Create New Trigger**.
+2. Click **Add conditions** and add the conditions that decide which emails get a reply. See the table below for what works on Outlook.
+3. From the **Actions** panel, add the action **Auto-respond to customer**.
+4. In the text box, add `{{irisgpt.case.answer}}`. This is replaced with the AI answer and its source links when the email goes out. You can write your own text before and after it, such as a greeting or a line about how to reach a human.
+5. Name the trigger using the pencil icon at the top.
+6. Click **Add New Trigger** to save.
+
+Emails that match the conditions **and** have an AI answer get the reply. Emails that match but have no AI answer are skipped, and IrisAgent will retry them if an answer is generated later.
+
+### Conditions on Outlook
+
+| Condition | What it maps to in Outlook |
+| --- | --- |
+| Topics | The topic IrisAgent's AI assigns to the email |
+| Tags | The **categories** applied to the email |
+| Subject | The email subject line |
+| Ticket Content | The email body, with formatting stripped |
+| Ticket Priority | The email **importance** flag, so the values are `low`, `normal`, and `high` |
+| API conditions | Live data from your own systems, same as on tickets |
+
+## What the customer receives
+
+- The reply is sent as a **reply on the existing email thread**, so it keeps the subject line and threading intact.
+- It is sent **from the connected mailbox**, not from an IrisAgent address.
+- The body is **HTML formatted**: the AI answer, followed by a bulleted list of the source links it drew from.
+- Any text you added around `{{irisgpt.case.answer}}` in the trigger is rendered alongside it.
+
+## Guardrails
+
+- **An AI answer is required.** No answer means no email goes out.
+- **One reply per email, per action.** Once a trigger action has run on a conversation, it will not run again on that same conversation, so customers do not receive duplicate replies.
+- **Recent email only.** IrisAgent evaluates triggers against a recent window of activity rather than reprocessing your entire mailbox history.
+
+## Other variables you can use
+
+Besides `{{irisgpt.case.answer}}`, the following are available in the auto-response text:
+
+| Variable | Value |
+| --- | --- |
+| `{{agent.name}}` | The name of the agent assigned to the ticket |
+| `{{ticket.sentiment}}` | The sentiment IrisAgent detected on the ticket |
+
+If you have [Custom APIs](/data-sources/Custom-API) configured, you can also call them inline using `{{action_name()}}` to pull live data into the reply.
+
+## Related pages
+
+- [Outlook connection guide](/outlook) covers connecting the mailbox in the first place.
+- [Tickets](/deploying-irisagent/Tickets) covers the full set of trigger conditions and actions.
+- [Ticket Deflection](/configuring-ai-and-automation/Ticket-Deflection) walks through auto-response setup in more detail.
+
+Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or require assistance setting up auto-response on Outlook.

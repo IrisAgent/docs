@@ -1,0 +1,94 @@
+---
+title: "Tickets"
+description: "Use Rules & Triggers to automate incoming tickets: auto-respond with AI answers, route to the right team, tag, update fields, and post internal notes"
+---
+
+Once your ticketing system is connected, IrisAgent can act on incoming tickets automatically through **Rules & Triggers**. A trigger is a set of **Conditions** (which tickets it applies to) paired with **Actions** (what IrisAgent does to them). Conditions are evaluated with AND logic, so a trigger fires only when every condition matches.
+
+This lets you go well beyond auto-responding. The same trigger engine handles routing, triage, tagging, and enrichment.
+
+Rules & Triggers work across your connected ticketing systems, including Zendesk, Freshdesk, Salesforce, Jira, HubSpot, Intercom, and Zoho, as well as your [Outlook](/deploying-irisagent/Outlook) inbox.
+
+## Prerequisites
+
+1. Your ticketing system is connected as a data source. See [Connecting Data Sources](/data-sources/Zendesk) for setup.
+2. IrisAgent has ingested enough tickets and knowledge base content for its AI to tag tickets and generate answers.
+3. Access to the IrisAgent dashboard. Enabling deflection across all tickets is admin-only.
+
+## What you can automate
+
+### Reply to the customer
+
+**Auto-respond to customer** sends IrisAgent's AI answer, generated from your knowledge base and past tickets, straight to the customer without waiting for an agent. This is the same answer your agents see in the **Suggested Resolution** widget.
+
+You can enable this on every ticket with a single toggle, or scope it to specific tickets with conditions. Both approaches are covered step by step on the [Ticket Deflection](/configuring-ai-and-automation/Ticket-Deflection) page.
+
+### Route and assign
+
+- **Assign agent** routes the ticket to a specific agent.
+- **Assign team** routes the ticket to a team, for example sending everything IrisAgent tags as `billing` to your Finance queue.
+
+### Triage
+
+- **Change case status** updates the ticket status.
+- **Apply macro** applies one of your existing ticketing system macros.
+
+### Tag and enrich
+
+- **Write tags to case** applies IrisAgent's AI-generated tags so your views and reports stay consistent without agent effort.
+- **Write custom tags to case** applies tags you define yourself.
+- **Write custom field to case** writes a value into a custom field on the ticket.
+
+### Help your agents
+
+- **Write private note** posts an internal comment visible only to your team. This is a good first step when rolling out AI answers, since the agent reviews the answer and sends it in one click rather than the AI replying to the customer directly.
+
+<Note>
+IrisAgent can also surface AI insights as a private note on every ticket without building a trigger. See [Workflows](/configuring-ai-and-automation/Workflows) for that toggle.
+</Note>
+
+## Conditions
+
+| Condition | What it matches |
+| --- | --- |
+| Topics | The topic or category IrisAgent's AI assigns to the ticket |
+| Tags | Tags on the ticket |
+| Custom Field | A value in one of your ticketing system's custom fields |
+| Subject | Text in the ticket subject |
+| Ticket Content | Text in the ticket body |
+| Ticket Priority | The ticket priority |
+| Account Name | The account the ticket belongs to |
+| API conditions | Live data from your own systems |
+
+**API conditions** appear once you have [Custom APIs](/data-sources/Custom-API) configured, listed as `API: <your_api_name>`. They let a trigger branch on real-time data, such as whether the customer has an active subscription or which segment they belong to, rather than only on what is already written on the ticket.
+
+## Create a trigger
+
+1. Go to **Automation** -\> **Rules & Triggers** on the [IrisAgent dashboard](https://web.irisagent.com/triggers) and click **Create New Trigger**.
+2. Click **Add conditions** and add the conditions you want from the **Conditions** panel on the right.
+3. Add one or more actions from the **Actions** panel.
+4. Name the trigger using the pencil icon.
+5. Click **Add New Trigger** to save. It starts running on new incoming tickets immediately.
+
+Once it is live, the **Trigger Activity** panel on the trigger shows how many cases were auto-responded to and how many had their status auto-updated, over a 1 day, 7 day, or 14 day window.
+
+<Tip>
+Start with a narrow condition set, such as one topic plus one keyword, and review the first few tickets it fires on before broadening the rule. This validates the behavior without mis-routing a large volume of tickets.
+</Tip>
+
+## Common use cases
+
+- **Known-issue auto-response:** when a ticket matches a known issue, send the AI answer directly, or post it as a private note for the agent to review first.
+- **Routing by AI topic:** send everything the AI classifies as `billing` to Finance, or anything mentioning "cancel my subscription" to a retention specialist.
+- **Auto-tagging:** apply tags like `refund` or `outage` as the AI classifies incoming tickets, so reporting stays consistent.
+- **VIP handling:** use an API condition to check the customer's segment, then route enterprise tickets to a dedicated team and tag them.
+- **Entitlement checks:** use an API condition on subscription status to decide whether to auto-respond or route to sales.
+
+## Related pages
+
+- [Ticket Deflection](/configuring-ai-and-automation/Ticket-Deflection) walks through enabling auto-response on all tickets or on specific tickets.
+- [Workflows](/configuring-ai-and-automation/Workflows) covers the drag-and-drop trigger builder, plain-English procedures for chat and voice, and the AI insights private note toggle.
+- [Custom APIs](/data-sources/Custom-API) covers configuring the APIs that power API conditions.
+- [Outlook](/deploying-irisagent/Outlook) covers what changes when your tickets are emails.
+
+Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or require assistance with product onboarding.
