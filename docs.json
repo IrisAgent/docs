@@ -120,15 +120,15 @@
                 ]
               },
               {
-                "group": "Email",
-                "pages": [
-                  "deploying-irisagent/Outlook"
-                ]
-              },
-              {
                 "group": "Tickets",
                 "pages": [
                   "deploying-irisagent/Tickets"
+                ]
+              },
+              {
+                "group": "Email",
+                "pages": [
+                  "deploying-irisagent/Outlook"
                 ]
               },
               {
