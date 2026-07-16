@@ -100,6 +100,7 @@
               {
                 "group": "Voice AI",
                 "pages": [
+                  "deploying-irisagent/Voice-AI",
                   "deploying-irisagent/voice-ai-on-8x8",
                   "deploying-irisagent/Voice-AI-on-GoTo-Connect",
                   "deploying-irisagent/Voice-AI-on-Ozonetel",
@@ -116,7 +117,8 @@
               {
                 "group": "Agent Copilot",
                 "pages": [
-                  "deploying-irisagent/Agent-Copilot"
+                  "deploying-irisagent/Agent-Copilot",
+                  "deploying-irisagent/Sidebar-on-Experience-Cloud"
                 ]
               },
               {
