@@ -66,6 +66,26 @@ For any account you ask about, Support Analyst can produce a snapshot: open tick
 
 Run an AI quality-assurance evaluation against any ticket conversation using your customer-configured QA rules (greeting, tone, resolution, policy adherence, etc.). Support Analyst returns per-rule pass/fail and flags the specific comments that failed. This lets QA leads spot-check tickets the way they would manually, but in seconds.
 
+### Answer Grounding QA
+
+Grade an AI answer you have already delivered against the knowledge-base articles it cited. Ask Support Analyst "check the grounding of the AI answer for case 12345" (or use the **QA AI answer** skill), and it audits the answer the customer actually received, on two independent axes:
+
+- **Retrieval relevance** — were the cited articles actually about the question?
+- **Grounding faithfulness** — is every claim in the answer supported by those article bodies?
+
+It returns a single verdict (correct or defect) and, when it fails, the failure type:
+
+- **Hallucination** — a claim not found in any cited article. A generation problem.
+- **Wrong article** — the answer is faithful to an article that does not address the question. A retrieval problem, not a pass.
+- **Incomplete** — grounded and relevant, but missing a critical step present in the cited article.
+- **KB gap** — no cited article contains the answer. A knowledge-base coverage problem.
+
+<Note>
+An answer can be perfectly faithful to the wrong article: the AI quotes a real document word for word and still answers the wrong question. Support Analyst treats that as a retrieval defect, not a pass, so you can tell a retrieval problem (tune your knowledge base) apart from a hallucination (fix the model) per answer.
+</Note>
+
+Works on both case answers and chat answers. Provide a case number, a source case ID, or a chat ID (exactly one). This is the on-demand check; an always-on grounding audit across every AI answer is on the roadmap.
+
 ### Audio Transcript Support
 
 Submit an audio transcript along with your query (for voice-channel tickets), and Support Analyst will analyze it as primary context — including auto-translation for non-English transcripts before evaluation.
@@ -144,6 +164,9 @@ Yes. Submit the audio transcript with your query, or call the audio endpoint dir
 
 **Does Support Analyst hallucinate?**
 Every answer is grounded in your indexed ticket data. Support Analyst returns ticket IDs and links so you can verify answers against the source. If the underlying data is missing, Support Analyst will say so rather than guess.
+
+**Can Support Analyst tell me whether a specific AI answer was correct?**
+Yes. Use Answer Grounding QA (the "QA AI answer" skill, or ask "check the grounding of the AI answer for case 12345"). It grades the delivered answer against the articles it cited on two axes, retrieval relevance and grounding faithfulness, and returns a verdict with a failure type (hallucination, wrong article, incomplete, or KB gap). It distinguishes a retrieval problem from a model hallucination, so you know where the fix belongs.
 
 ---
 
