@@ -105,6 +105,90 @@ Now that you have all the required credentials, configure IrisAgent to connect w
 
 ---
 
+## Step 4: Limit IrisAgent to Specific Widgets or Brands (Optional)
+
+By default, the Conversations integration is **account-wide**. Zendesk sends `conversation:create` and `conversation:message` events for every messaging conversation in your account, across every brand and every Web Widget. That means IrisAgent will answer in all of your messaging widgets.
+
+If you run more than one Web Widget and want IrisAgent active on only some of them (for example, on a billing product but not on a separate website product), use the **chat filter**.
+
+<Note>
+  You do not need a second Conversations integration, webhook, or API key for this. One integration serves your whole account, and the filter controls which conversations IrisAgent responds to.
+</Note>
+
+### How the Filter Behaves
+
+The chat filter is an **allow-list**. When it is enabled, IrisAgent responds only to conversations that match it and ignores everything else. Any widget you do not include is silently skipped.
+
+This is useful when rolling out a new widget: configure the filter to match only your existing widgets, and a newly launched widget will not receive AI answers until you deliberately add it.
+
+### Choose a Matching Method
+
+Pick based on how your widgets are separated in Zendesk.
+
+| Your setup                                 | Match on                     | Filter mode |
+| ------------------------------------------ | ---------------------------- | ----------- |
+| Widgets are on **separate Zendesk brands**  | Brand ID                     | Simple      |
+| Widgets share a **single brand**            | Messaging integration ID     | Advanced    |
+
+Every Web Widget is its own messaging integration, so the integration ID always distinguishes them, even when the brand does not.
+
+### Configure the Filter
+
+1. In the IrisAgent dashboard, open **Deploy** \> **Chat**
+2. On the **Zendesk Sunshine** card, click **Configure** to open the **Zendesk Sunshine Configuration** panel
+3. Scroll to the **Chat Filter** section and turn the toggle on
+4. Choose a **Filter Mode**:
+   - **Simple**: enter the **Brand ID** of the brand IrisAgent should respond to. The read-only **Generated Query** field below shows the expression this produces.
+   - **Advanced**: enter a match expression in the **Query** field (see below)
+5. Click **Save**
+
+<Tip>
+  The **Chat Filter** section is independent of the **Enable Chat Automation** toggle, so you can set your filter up before turning chat automation on. This lets you launch with the correct scope from the very first conversation.
+</Tip>
+
+### Advanced Match Expressions
+
+Advanced mode accepts an expression that is evaluated against each incoming message. The expression must return true or false, and it is validated by the backend when you save, so an invalid expression is rejected rather than silently blocking answers.
+
+Respond only to one widget:
+
+```
+Message.Source.IntegrationID == "YOUR_INTEGRATION_ID"
+```
+
+Respond to several widgets:
+
+```
+Message.Source.IntegrationID in ["FIRST_INTEGRATION_ID", "SECOND_INTEGRATION_ID"]
+```
+
+Combine a brand and a widget:
+
+```
+Conversation.BrandID == "YOUR_BRAND_ID" and Message.Source.IntegrationID == "YOUR_INTEGRATION_ID"
+```
+
+Fields available in an expression:
+
+| Field                                              | Description                                      |
+| -------------------------------------------------- | ------------------------------------------------ |
+| `Conversation.BrandID`                              | Zendesk brand the conversation belongs to        |
+| `Conversation.ActiveSwitchboardIntegration.IntegrationID` | Integration currently handling the conversation |
+| `Message.Source.IntegrationID`                      | Messaging integration the message arrived on (the Web Widget) |
+| `Message.Source.Type`                               | Message source type, for example `web`           |
+| `Message.Content.Text`                              | Text of the incoming message                     |
+
+<Warning>
+  A ticket field cannot be used to filter messaging conversations. IrisAgent replies to the visitor in real time, before a ticket has been created and populated, so ticket fields and tags are not available at that point. Use the brand or the messaging integration ID instead.
+</Warning>
+
+### Finding Your Brand and Integration IDs
+
+- **Brand ID**: in Zendesk Admin Center, go to **Account** \> **Brands** and open the brand. The numeric ID appears in the page URL.
+- **Messaging integration ID**: the simplest way is to send one test message through each Web Widget, then contact IrisAgent support. Because IrisAgent already receives every messaging event, we can read the exact brand and integration ID each of your widgets reports and confirm the correct filter values with you.
+
+---
+
 ## Verification
 
 After completing the setup:
@@ -118,6 +202,7 @@ If you encounter any issues, verify that:
 - All credentials are entered correctly
 - The webhook events (`conversation:create` and `conversation:message`) are properly selected
 - Your Zendesk account has the required permissions (Suite Professional plan or above)
+- If you configured a chat filter in Step 4, the widget you are testing from actually matches it. A filter that matches no conversations will silently stop all AI answers
 
 ---
 
