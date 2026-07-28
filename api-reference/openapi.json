@@ -607,8 +607,34 @@ components:
             Defaults to false if not provided.
           type: boolean
           default: false
+        images:
+          description: |
+            Optional screenshots attached to the query. Their text is OCR'd by a vision
+            model and folded into the query before answering. At most 3 are accepted.
+          type: array
+          maxItems: 3
+          items:
+            $ref: '#/components/schemas/ChatScreenshotImage'
       required:
         - query
+    ChatScreenshotImage:
+      description: |
+        A single screenshot attached to a chat query. Provide exactly one of url
+        (https URL or data: URI) or base64 (raw base64 with mimeType).
+      type: object
+      properties:
+        url:
+          description: |
+            Image URL (https) or a data URI. Mutually exclusive with base64.
+          type: string
+        base64:
+          description: |
+            Raw base64-encoded image bytes (no data URI prefix). Requires mimeType.
+          type: string
+        mimeType:
+          description: |
+            MIME type for base64 bytes, e.g. image/png.
+          type: string
     AskResponseItem:
       description: |
         The `AskResponseItem` schema defines the structure of IrisGPT's response, including both the formatted and plain text versions of the answer, along with relevant links and URLs.
