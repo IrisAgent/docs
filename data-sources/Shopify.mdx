@@ -7,15 +7,17 @@ description: "Connect a Shopify store to IrisAgent and add your existing chatbot
 
 The Shopify integration connects a Shopify store to an IrisAgent account and records which existing chatbot is associated with that store. In the initial release, you install the chatbot on the storefront by copying its JavaScript embed code into the Shopify theme.
 
-In the initial release, the integration supports:
+The integration supports:
 
 - Connecting one Shopify store to an IrisAgent account
 - Associating an existing IrisAgent chatbot with the Shopify connection
 - Viewing the connected store and granted Shopify permissions
 - Changing the associated chatbot or disconnecting the store later
+- Answering live product, pricing, and inventory questions
+- Looking up order status and shipment tracking after matching an order number and email address
 
 <Note>
-  A Shopify theme app embed is not included in the initial release. Connecting Shopify does not add the chatbot JavaScript to the storefront automatically. Product catalog synchronization and authenticated customer order lookup are also not included.
+  Product and order information is read live from Shopify and is not synchronized into the IrisAgent knowledge base. Refunds, cancellations, returns, and other write actions are not included.
 </Note>
 
 ## Before you begin
@@ -40,6 +42,23 @@ During the private rollout, the Shopify app can be installed only on approved de
 7. Review and approve the requested permissions in Shopify.
 
 After authorization, Shopify returns you to IrisAgent and the connection status shows the store name and granted permissions.
+
+<Note>
+  Stores connected before read-only order lookup was introduced must click **Reconnect Shopify** and approve the `read_orders` permission. Without that permission, product search remains available but order status and shipment tracking are disabled.
+</Note>
+
+## Configure commerce capabilities
+
+After connecting the store, use **Read-only commerce capabilities** on the Shopify configuration page to enable or disable:
+
+- **Product search, pricing, and inventory availability**
+- **Order status and shipment tracking**
+
+These capabilities apply only to the chatbot selected under **Chatbot shown on this store**.
+
+For product questions, the chatbot searches current Shopify product data and returns up to five matching products. For order questions, the chatbot collects both the order number and the email used on the order. IrisAgent returns order details only when both values match the same Shopify order.
+
+Shopify's standard `read_orders` permission covers orders from the most recent 60 days. Access to older orders requires Shopify's separately approved `read_all_orders` permission, which this integration does not request by default.
 
 ## Add the chatbot to the storefront
 
@@ -103,4 +122,4 @@ A Shopify store can belong to only one IrisAgent account. Disconnect it from the
 
 ## Permissions and customer data
 
-The initial integration requests the Shopify permissions displayed during installation. IrisAgent stores the shop connection and encrypted Shopify access token. It does not store Shopify customer profiles or order history in this release.
+The integration requests the Shopify permissions displayed during installation. IrisAgent stores the shop connection, capability settings, and encrypted Shopify access token. Product and order information is requested from Shopify only when the chatbot needs it. IrisAgent does not synchronize or persist Shopify customer profiles or order history.
