@@ -5,17 +5,17 @@ description: "Connect a Shopify store to IrisAgent and add your existing chatbot
 
 ## Overview
 
-The Shopify integration lets you deploy an existing IrisAgent chatbot on your Shopify storefront. IrisAgent uses a Shopify theme app embed, so you do not need to paste or maintain a separate chatbot script in your theme code.
+The Shopify integration connects a Shopify store to an IrisAgent account and records which existing chatbot is associated with that store. In the initial release, you install the chatbot on the storefront by copying its JavaScript embed code into the Shopify theme.
 
 In the initial release, the integration supports:
 
 - Connecting one Shopify store to an IrisAgent account
-- Selecting which existing IrisAgent chatbot appears on the storefront
-- Opening the Shopify theme editor to enable the chatbot app embed
-- Changing the selected chatbot or disconnecting the store later
+- Associating an existing IrisAgent chatbot with the Shopify connection
+- Viewing the connected store and granted Shopify permissions
+- Changing the associated chatbot or disconnecting the store later
 
 <Note>
-  Product catalog synchronization and authenticated customer order lookup are not included in the initial release.
+  A Shopify theme app embed is not included in the initial release. Connecting Shopify does not add the chatbot JavaScript to the storefront automatically. Product catalog synchronization and authenticated customer order lookup are also not included.
 </Note>
 
 ## Before you begin
@@ -41,17 +41,26 @@ During the private rollout, the Shopify app can be installed only on approved de
 
 After authorization, Shopify returns you to IrisAgent and the connection status shows the store name and granted permissions.
 
-## Enable the chatbot on the storefront
+## Add the chatbot to the storefront
 
-Connecting the store does not automatically publish the chatbot. Shopify requires a merchant to enable and save app embeds in the theme editor.
+Connecting Shopify does not publish the chatbot. Install it using the embed code available from the chatbot configuration in IrisAgent.
 
-1. On the Shopify configuration page in IrisAgent, click **Enable chatbot in Shopify**.
-2. In the Shopify theme editor, open **App embeds** if it is not already visible.
-3. Turn on **IrisAgent Chatbot**.
-4. Click **Save**.
-5. Open the storefront and confirm that the IrisAgent chat widget appears.
+1. In IrisAgent, open **Manage Chatbot → Configurations**.
+2. Open the chatbot configuration that you want to install.
+3. Click **Get Code**.
+4. Click **Reveal API Key**, then copy the complete embed-code snippet.
+5. In Shopify Admin, open **Online Store → Themes**.
+6. For the published theme, click the **…** menu and select **Edit code**.
+7. Under **Layout**, open `theme.liquid`.
+8. Paste the copied IrisAgent snippet immediately before the closing `</body>` tag.
+9. Click **Save**.
+10. Open the storefront and confirm that the IrisAgent chat widget appears.
 
-The app embed loads the same chatbot widget used on other websites. Widget appearance and behavior continue to come from the selected chatbot configuration in IrisAgent.
+<Warning>
+  Add the snippet only once and only to themes where the chatbot should appear. Manual theme-code changes might need to be reapplied when you replace or update a theme.
+</Warning>
+
+The snippet loads the same chatbot widget used on other websites. Its token identifies the chatbot configuration, while its appearance and behavior continue to come from IrisAgent.
 
 ## Change the chatbot
 
@@ -59,24 +68,27 @@ To use a different chatbot on the connected store:
 
 1. Open **Data Sources → E-commerce → Shopify** in IrisAgent.
 2. Select another option under **Chatbot shown on this store**.
+3. Open that chatbot under **Manage Chatbot → Configurations** and copy its code using **Get Code**.
+4. In the published Shopify theme's `layout/theme.liquid` file, replace the previous IrisAgent snippet with the new snippet and click **Save**.
 
-The storefront uses the new chatbot configuration without requiring another Shopify installation. Only IrisAgent administrators can change this setting.
+Changing the selection on the Shopify configuration page does not update a manually installed snippet. The storefront changes chatbots only after its embed code is replaced. Only IrisAgent administrators can change the Shopify association.
 
 ## Disconnect Shopify
 
 1. Open **Data Sources → E-commerce → Shopify**.
 2. Click **Disconnect** and confirm the action.
 
-Disconnecting revokes the Shopify access token and stops the storefront from loading the IrisAgent widget. Shopify might continue to display the disabled app embed in the theme editor until the app is removed from the store.
+Disconnecting revokes the Shopify access token and removes the store association from IrisAgent. Because the initial release installs the widget manually, disconnecting Shopify does not remove its JavaScript from the theme or stop the widget by itself. To remove the chatbot from the storefront, also delete the IrisAgent `<script>` snippet from `layout/theme.liquid` and save the theme.
 
 ## Troubleshooting
 
 ### The chatbot does not appear
 
-- Confirm that **IrisAgent Chatbot** is enabled under **App embeds** for the published theme.
-- Confirm that you clicked **Save** in the Shopify theme editor.
-- Verify that the connected chatbot is active and configured in IrisAgent.
-- Test in a storefront tab rather than only inside the theme editor preview.
+- Confirm that the complete IrisAgent `<script>` snippet appears immediately before `</body>` in `layout/theme.liquid`.
+- Confirm that you edited and saved the published theme.
+- Confirm that the snippet contains the token revealed for the intended chatbot configuration.
+- Make sure the snippet was added only once.
+- Test the published storefront in a new browser tab.
 
 ### The Connect Shopify button is disabled
 
