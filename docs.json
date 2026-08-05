@@ -79,6 +79,12 @@
                 "pages": [
                   "data-sources/Custom-API"
                 ]
+                },
+                {
+                  "group": "E-commerce",
+                  "pages": [
+                    "data-sources/Shopify"
+                  ]
               }
             ]
           },{
