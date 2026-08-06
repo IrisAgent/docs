@@ -74,6 +74,15 @@ articles (under **Settings → Article Product Classifier**). Otherwise, chats m
 return no answer. See [Product Segmentation](/configuring-ai-and-automation/Product-Segmentation).
 </Warning>
 
+<Note>
+Setting **Agent handoff** to **Open a ticket** requires a ticketing or CRM data
+source to be connected first, so IrisAgent has somewhere to create the ticket.
+If your account was set up from a website link only, connect a source such as
+[Salesforce](/data-sources/Salesforce) before selecting this option. Connecting
+Salesforce uses its own Salesforce sign-in and is separate from your original
+website signup.
+</Note>
+
 ### Advanced theming
 
 For full control over the chatbot's appearance and behavior, pass a theme object to the embed snippet using the `data-theme` attribute. The value is your theme JSON, **Base64-encoded**.
