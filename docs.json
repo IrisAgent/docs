@@ -94,6 +94,7 @@
                 "group": "Chat",
                 "pages": [
                   "deploying-irisagent/Chatbot-on-Website",
+                  "deploying-irisagent/Salesforce-Live-Chat",
                   "deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging",
                   "deploying-irisagent/Chatbot-Automation-on-WhatsApp",
                   "deploying-irisagent/Chatbot-Automation-on-Intercom",

@@ -1,0 +1,118 @@
+---
+title: "Salesforce Live Chat Handoff"
+description: "Let customers continue chatting in the IrisGPT website widget while support agents reply from Salesforce Messaging"
+---
+
+Salesforce live chat handoff lets IrisGPT answer questions first and transfer the conversation to a human when needed. The customer stays in the same IrisGPT website widget, while the support agent accepts and replies to the conversation from Salesforce Service Cloud.
+
+## Before you begin
+
+You need:
+
+- A Salesforce Service Cloud org with **Enhanced Chat** (formerly Messaging for In-App and Web) and the required Digital Engagement entitlements
+- Salesforce administrator access
+- Omni-Channel configured for the agents who receive messaging sessions
+- An IrisGPT chatbot installed on your website
+- Access to the IrisAgent dashboard
+
+<Note>
+This integration uses a Salesforce **Enhanced Chat custom client deployment**. It does not display Salesforce's standard embedded chat widget and does not require customers to leave the IrisGPT widget.
+</Note>
+
+## 1. Prepare Salesforce routing
+
+If your organization already routes Enhanced Chat sessions to support agents, continue to [Create a custom client deployment](#2-create-a-custom-client-deployment).
+
+Otherwise, in Salesforce Setup:
+
+1. Enable **Omni-Channel**.
+2. Create a service channel for the **Messaging Session** object.
+3. Create a queue and add the support agents who should receive IrisGPT handoffs.
+4. Create the presence statuses agents use to become available for messaging.
+5. Create and activate an Omni-Channel flow that routes the `recordId` input to the queue, agent, or skills used by your support team.
+6. Add Enhanced Chat to the Salesforce Service Console so agents can accept and reply to sessions.
+
+See Salesforce's [Prepare a Salesforce Org for Enhanced Chat](https://help.salesforce.com/s/articleView?id=sf.miaw_prepare_org_1.htm&type=5) guide for the complete routing setup.
+
+## 2. Create a custom client deployment
+
+1. In Salesforce Setup, search for **Messaging Settings**.
+2. Create or open an **Enhanced Chat** messaging channel.
+3. Select the Omni-Channel flow and fallback queue that should receive IrisGPT handoffs.
+4. Create an **Enhanced Chat custom client deployment** for the website where IrisGPT is installed.
+5. Add your website's top-level domain to the deployment. Add a deployment for each website domain that hosts the IrisGPT widget.
+6. Publish the deployment and enable the **Enhanced Chat REST API**.
+
+For Salesforce's full setup flow, see [Create Your First Enhanced Chat Channel and Deployment](https://help.salesforce.com/s/articleView?id=service.miaw_quick_start.htm&type=5).
+
+## 3. Connect the deployment in IrisAgent
+
+From the custom client deployment's configuration or generated code snippet, copy these values:
+
+| Salesforce value | Example | IrisAgent field |
+| --- | --- | --- |
+| **Enhanced Chat REST API base URL** | `https://your-instance.salesforce-scrt.com` | **Service URL** |
+| **Salesforce Organization ID** | `00D000000000000EAA` | **Organization ID** |
+| **Deployment developer name** | `IrisGPT_Live_Chat` | **Deployment Name** |
+
+Then configure the connection:
+
+1. Sign in to the [IrisAgent dashboard](https://web.irisagent.com/).
+2. Go to **Deploy** → **Chat**.
+3. On the **Salesforce Messaging** card, click **Configure**.
+4. Turn on **Enable Salesforce Messaging**.
+5. Enter the **Service URL**, **Organization ID**, and **Deployment Name** from the table above.
+6. Optional: enter the message IrisGPT should display when no Salesforce agent is available.
+7. Click **Save**. The card displays **Connected** when Salesforce Messaging is enabled.
+
+These settings apply to all IrisGPT website chatbot configurations for your account, including configurations created later.
+
+<Warning>
+Do not enter Salesforce passwords, access tokens, session IDs, or client secrets. The three deployment values above identify the public Enhanced Chat deployment and are sufficient for this connection.
+</Warning>
+
+Salesforce also documents these values under [Create an Enhanced Chat Deployment](https://help.salesforce.com/s/articleView?id=mktg.persnl_agentforce_embedded_service.htm&type=5).
+
+## 4. Enable live chat in IrisAgent
+
+After the **Salesforce Messaging** card displays **Connected**:
+
+1. Sign in to the [IrisAgent dashboard](https://web.irisagent.com/).
+2. Go to **IrisGPT** → **Configure**.
+3. Open the chatbot configuration used by your website.
+4. Under **Agent Handoff**, select **Start a live chat**.
+5. Save the configuration.
+
+Make sure the `data-token` in your website's IrisGPT embed snippet belongs to the same chatbot configuration. See [Chatbot on Website](/deploying-irisagent/Chatbot-on-Website) for installation instructions.
+
+## 5. Test the handoff
+
+1. Have a Salesforce agent open the Service Console and set their Omni-Channel presence to the messaging status configured for the queue.
+2. Open IrisGPT on your website and ask to speak with a human agent.
+3. Confirm that IrisGPT displays a waiting or queue status.
+4. Accept the Messaging Session in Salesforce.
+5. Send a reply from Salesforce and confirm that it appears in the IrisGPT widget.
+6. Reply from IrisGPT and confirm that the message appears in the same Salesforce session.
+7. Reload the website and confirm that the conversation and live-agent connection are restored.
+
+During a live-agent conversation, IrisGPT supports text messages. File and image attachments are not currently available in Salesforce handoff mode.
+
+## Troubleshooting
+
+### The widget says that no agents are available
+
+- Confirm at least one assigned agent is online with the correct Omni-Channel presence status.
+- Confirm the messaging channel's flow and fallback queue are active.
+- Confirm the agent is a member of the selected queue and has capacity for another Messaging Session.
+
+### The handoff remains in a waiting state
+
+- In Salesforce, verify that the Omni-Channel flow routes the **Messaging Session** service channel.
+- Confirm that the flow's input variable is named exactly `recordId`, is text, and is available for input.
+- Check that the deployment is published and the Enhanced Chat REST API is enabled.
+
+### Messages do not appear in IrisGPT
+
+- Confirm the Salesforce deployment includes the exact top-level domain where the IrisGPT widget is running.
+- Confirm the **Organization ID**, **Service URL**, and **Deployment Name** saved under **Deploy** → **Chat** → **Salesforce Messaging** match the published deployment.
+- If the Salesforce deployment was replaced or renamed, update the values on the **Salesforce Messaging** card and save again.
