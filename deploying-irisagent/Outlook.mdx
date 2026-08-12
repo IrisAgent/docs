@@ -9,7 +9,7 @@ Once your Outlook mailbox is connected, IrisAgent can reply to incoming customer
 You can turn this on for every email that has an AI answer, or scope it down to a specific slice of your email volume using conditions.
 
 <Note>
-Outlook uses the same **Rules & Triggers** engine as your ticketing system, so conditions, actions, and variables work the way they do on tickets. See [Tickets](/deploying-irisagent/Tickets) for the full set.
+Outlook uses the same **Case Triggers** engine as your ticketing system, so conditions, actions, and variables work the way they do on tickets. See [Tickets](/deploying-irisagent/Tickets) for the full set.
 </Note>
 
 ## Prerequisites
@@ -31,7 +31,7 @@ Triggers run on tickets, which means IrisAgent responds to the email that opens 
 
 Use this when you want every email with an AI answer to receive an automatic reply.
 
-1. On the dashboard, go to **Automation** -\> **Rules & Triggers**.
+1. On the dashboard, go to **Automate** → **Case Triggers**.
 2. Toggle on the **Enable Case Deflection** switch.
 
 This creates a trigger named **System: Case Deflection using AI** that fires on every ticket where the AI produced an answer. There are no other conditions on it. Emails where the AI has no answer are left alone for your agents.
@@ -46,7 +46,7 @@ We recommend starting with Option 2 below. Scoping deflection to a known-safe sl
 
 This is the recommended way to roll out auto-response on email.
 
-1. On the dashboard, go to **Automation** -\> **Rules & Triggers**, and click **Create New Trigger**.
+1. On the dashboard, go to **Automate** → **Case Triggers**, and click **Create New Trigger**.
 2. Click **Add conditions** and add the conditions that decide which emails get a reply. See the table below for what works on Outlook.
 3. From the **Actions** panel, add the action **Auto-respond to customer**.
 4. In the text box, add `{{irisgpt.case.answer}}`. This is replaced with the AI answer and its source links when the email goes out. You can write your own text before and after it, such as a greeting or a line about how to reach a human.

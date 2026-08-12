@@ -15,7 +15,7 @@ IrisAgent's customizable chatbot can be deployed on any website to answer suppor
 
 ## **Getting Started and Integration Guide**
 
-1. Go to the **Configure** page under **IrisGPT** to configure and embed the IrisAgent chatbot.
+1. Go to **AI Products** → **Chatbot** and click **Configure and deploy**. The default chatbot configuration opens automatically; use the **Configuration** selector to switch configurations or **New configuration** to create one.
     <img
       style={{ borderRadius: '0.5rem' }}
       src="/images/chatbot.png"
@@ -24,7 +24,7 @@ IrisAgent's customizable chatbot can be deployed on any website to answer suppor
 
 2. Customize the chatbot (brand color, logo, welcome message, behavior, and more) using the settings described in [Configuration options](#configuration-options) below.
 
-3. Click **Get Code** and paste the snippet into the **body** section of your website.
+3. Click **Deploy**, then **Reveal API Key**, and paste the snippet into the **body** section of your website.
 
    ```html
     <script async
@@ -35,7 +35,7 @@ IrisAgent's customizable chatbot can be deployed on any website to answer suppor
    </script>
    ```
 
-4. You can see all the conversations that happened on the chatbot on the **Conversations** page under **IrisGPT**.
+4. You can see chatbot conversations under **Activity** → **Conversations**.
 
 5. That's it, done! You should be seeing the IrisAgent chatbot on your website.
 
@@ -43,21 +43,21 @@ IrisAgent's customizable chatbot can be deployed on any website to answer suppor
 
 You can configure the chatbot in two ways:
 
-- **From the Configure page** (recommended for most users): edit the common settings through the dashboard UI. No code required.
+- **From the chatbot configuration editor** (recommended for most users): edit the common settings through the dashboard UI. No code required.
 - **From the embed snippet** (advanced): pass a full theme object via a `data-theme` attribute to control every visual detail. See [Advanced theming](#advanced-theming).
 
-### Settings on the Configure page
+### Settings in the configuration editor
 
-These options are available on the chatbot **Configure** page in the dashboard.
+These options are organized into **Instructions**, **Behavior**, **Appearance**, **Handoff**, **Localization**, and **Advanced** tabs in the chatbot configuration editor.
 
 | Setting | Description | Default |
 | --- | --- | --- |
-| **Configuration name** | Internal name for this chatbot configuration. | — |
+| **Configuration name** | Name shown in the chatbot header and used by your team to identify the configuration. | — |
 | **Banner color** | Primary brand color used for the launcher button and accents. | `#0cb49e` |
 | **Brand logo** | Your logo, shown in the chat window header. Upload a PNG/SVG/JPG (max 2&nbsp;MB) or provide a URL. | IrisAgent logo |
 | **Welcome message** | The first message visitors see when they open the chat. | `Hello! 👋 Welcome to our support thread. How can I assist you today?` |
 | **Auto-open chat window** | When **on**, the chat window expands automatically on page load. When **off**, visitors see only the collapsed launcher button until they click it. | On |
-| **Agent handoff** | What happens when a visitor needs a human: send the support team's contact details, open a support ticket, or start a live chat. Includes an optional handoff message. | None |
+| **Agent handoff** | What happens when a visitor needs a human: send the support team's contact details, open a support ticket, or start a live chat. Includes an optional handoff message. | Send contact details |
 | **AI response style** | Custom guidelines for how the AI should respond (tone, phrasing, formatting). Up to 2,000 characters. | — |
 | **Language** | Force a fixed conversation language. If unset, the chatbot translates dynamically. | Auto (dynamic translation) |
 | **Product ID** | Optionally scope this chatbot to a specific product. | — |

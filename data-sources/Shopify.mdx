@@ -64,9 +64,9 @@ Shopify's standard `read_orders` permission covers orders from the most recent 6
 
 Connecting Shopify does not publish the chatbot. Install it using the embed code available from the chatbot configuration in IrisAgent.
 
-1. In IrisAgent, open **Manage Chatbot → Configurations**.
-2. Open the chatbot configuration that you want to install.
-3. Click **Get Code**.
+1. In IrisAgent, go to **AI Products** → **Chatbot** and click **Configure and deploy**.
+2. Use the **Configuration** selector to choose the chatbot that you want to install.
+3. Click **Deploy**.
 4. Click **Reveal API Key**, then copy the complete embed-code snippet.
 5. In Shopify Admin, open **Online Store → Themes**.
 6. For the published theme, click the **…** menu and select **Edit code**.
@@ -87,7 +87,7 @@ To use a different chatbot on the connected store:
 
 1. Open **Data Sources → E-commerce → Shopify** in IrisAgent.
 2. Select another option under **Chatbot shown on this store**.
-3. Open that chatbot under **Manage Chatbot → Configurations** and copy its code using **Get Code**.
+3. Go to **AI Products** → **Chatbot**, click **Configure and deploy**, select that chatbot, and copy its code using **Deploy**.
 4. In the published Shopify theme's `layout/theme.liquid` file, replace the previous IrisAgent snippet with the new snippet and click **Save**.
 
 Changing the selection on the Shopify configuration page does not update a manually installed snippet. The storefront changes chatbots only after its embed code is replaced. Only IrisAgent administrators can change the Shopify association.

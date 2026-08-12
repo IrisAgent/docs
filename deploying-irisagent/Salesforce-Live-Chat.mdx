@@ -58,7 +58,7 @@ From the custom client deployment's configuration or generated code snippet, cop
 Then configure the connection:
 
 1. Sign in to the [IrisAgent dashboard](https://web.irisagent.com/).
-2. Go to **Deploy** → **Chat**.
+2. Go to **Deploy** → **Chat channels**.
 3. On the **Salesforce Messaging** card, click **Configure**.
 4. Turn on **Enable Salesforce Messaging**.
 5. Enter the **Service URL**, **Organization ID**, and **Deployment Name** from the table above.
@@ -78,8 +78,8 @@ Salesforce also documents these values under [Create an Enhanced Chat Deployment
 After the **Salesforce Messaging** card displays **Connected**:
 
 1. Sign in to the [IrisAgent dashboard](https://web.irisagent.com/).
-2. Go to **IrisGPT** → **Configure**.
-3. Open the chatbot configuration used by your website.
+2. Go to **AI Products** → **Chatbot** and click **Configure and deploy**.
+3. Select the chatbot configuration used by your website.
 4. Under **Agent Handoff**, select **Start a live chat**.
 5. Save the configuration.
 
@@ -114,5 +114,5 @@ During a live-agent conversation, IrisGPT supports text messages. File and image
 ### Messages do not appear in IrisGPT
 
 - Confirm the Salesforce deployment includes the exact top-level domain where the IrisGPT widget is running.
-- Confirm the **Organization ID**, **Service URL**, and **Deployment Name** saved under **Deploy** → **Chat** → **Salesforce Messaging** match the published deployment.
+- Confirm the **Organization ID**, **Service URL**, and **Deployment Name** saved under **Deploy** → **Chat channels** → **Salesforce Messaging** match the published deployment.
 - If the Salesforce deployment was replaced or renamed, update the values on the **Salesforce Messaging** card and save again.
