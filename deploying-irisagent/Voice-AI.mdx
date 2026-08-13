@@ -20,6 +20,35 @@ Once Voice AI is enabled, go to the **Voice AI** page on the [IrisAgent dashboar
 You can give the provided phone number to your customers so they can reach the AI agent directly, without any additional setup on your side.
 </Tip>
 
+## Configure the voice assistant
+
+After IrisAgent enables and provisions Voice AI, administrators can change how the assistant sounds and handles calls without asking IrisAgent to provision it again.
+
+1. Go to **Manage Chatbot** in the [IrisAgent dashboard](https://web.irisagent.com/manage-chatbot/voice).
+2. Select **Voice AI**.
+3. Update the settings described below.
+4. Click **Save voice settings**.
+
+| Setting | What it controls |
+| --- | --- |
+| **Voice** | The voice callers hear. Choose one of the supported voices in the list. |
+| **Language** | Use **English** for English-only calls, or **Multilingual (auto-detect)** to detect the caller's language, reply in that language, and follow the caller when they switch languages. Product names, URLs, and identifiers are preserved. |
+| **Allow callers to interrupt the greeting** | Lets a caller begin speaking before the initial greeting finishes. |
+| **Initial greeting** | The first message spoken at the start of a call. It is required and can contain up to 1,000 characters. |
+| **Response timing** | Controls how quickly the assistant replies after the caller stops speaking. Choose **Fast**, **Balanced**, or **Patient**. |
+| **Interruption sensitivity** | Controls how easily callers can speak over the assistant. Choose **Easy to interrupt**, **Balanced**, or **Resistant**. |
+| **End call after silence** | Ends an inactive call after 10–600 seconds. |
+| **Maximum call duration** | Ends a call after 1–720 minutes. |
+| **Record calls** | Stores call recordings for quality review and training. Make sure your use complies with applicable notice and consent laws. |
+
+Changes apply to new calls as soon as they are saved. The settings page reads the current configuration from the provisioned voice assistant, so changes made after initial setup do not require the Voice AI setup command to be run again.
+
+<Warning>
+If the assistant was configured outside IrisAgent with a custom voice or another voice provider, the page labels that voice as unsupported. The existing configuration remains visible, but you must select a supported IrisAgent voice before saving other voice settings.
+</Warning>
+
+If another administrator or an external Vapi update changes the assistant while you are editing, IrisAgent does not overwrite the newer configuration. The page reloads the latest settings; review them, reapply your changes, and save again.
+
 ## Configure what Voice AI does
 
 Voice AI answers from your knowledge base and past tickets out of the box. To handle a specific scenario a particular way, such as collecting an order ID and looking it up, verifying eligibility before a refund, or handing off to a team, create a procedure.
