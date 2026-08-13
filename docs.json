@@ -141,6 +141,12 @@
                 ]
               },
               {
+                "group": "Text messaging",
+                "pages": [
+                  "deploying-irisagent/Outbound-SMS"
+                ]
+              },
+              {
                 "group": "Ticket Deflection",
                 "pages": [
                   "deploying-irisagent/Ticket-Deflector-on-Zendesk",

@@ -1,0 +1,130 @@
+---
+title: "Outbound SMS"
+description: "Set up a dedicated US text number, complete carrier registration, and create outbound SMS campaigns from a CSV contact list"
+---
+
+IrisAgent Outbound lets you prepare SMS campaigns for customers who have explicitly opted in to receive text messages from your business. Each IrisAgent workspace receives a dedicated US phone number, and each campaign keeps its message, audience, and delivery results together.
+
+<Note>
+Outbound SMS is being released in phases. The current release supports number setup, carrier registration, CSV contact import, and draft campaigns. Sending remains unavailable until both carrier approval and the sending phase of the product are enabled for your workspace.
+</Note>
+
+## Before you begin
+
+You need:
+
+- IrisAgent administrator access
+- A notification email for registration updates
+- Your company's legal and tax information for carrier registration
+- A description of how customers opt in to receive your messages
+- A CSV file containing only contacts who have explicitly opted in
+
+IrisAgent currently provisions **US local SMS numbers**. Carrier registration generally takes **one to two weeks**, although timing is controlled by carriers and can vary.
+
+## Set up your text channel
+
+1. In IrisAgent, open **Deploy → Text channels**.
+2. Enter a preferred three-digit US area code.
+3. Click **Get number**.
+
+IrisAgent immediately provisions a dedicated number for your workspace. The number cannot send application-to-person messages until registration is approved.
+
+### Register your business
+
+After your number is provisioned:
+
+1. Enter the email address that should receive registration updates.
+2. Click **Start registration**.
+3. Complete the secure embedded registration form. Provide accurate company, tax, and messaging-use-case information.
+4. Describe how recipients opt in. The opt-in description should match the actual experience customers see.
+5. Submit the form for carrier review.
+
+The Text channels page shows the current activation state:
+
+| Status | Meaning |
+| --- | --- |
+| **Action required** | Complete or correct the business registration form. |
+| **Carrier review** | Registration was submitted and is awaiting review. |
+| **Needs attention** | The registration needs additional information or corrections. |
+| **Active** | The number is approved for outbound messaging. |
+
+<Warning>
+Purchasing a number and completing business-profile verification do not by themselves authorize outbound application-to-person SMS. The number must also complete the applicable carrier registration.
+</Warning>
+
+## Prepare a contacts CSV
+
+Create a CSV with a `phone_number` column. You can optionally add `first_name` for personalization.
+
+```csv
+phone_number,first_name
++14155550123,Ada
+(212) 555-0199,Grace
+```
+
+CSV requirements:
+
+- `phone_number` is required. IrisAgent also recognizes `phone`, `mobile`, and `mobile_number` as phone-column headings.
+- `first_name` is optional. `first name`, `firstname`, and `name` are also recognized.
+- Numbers must be valid US numbers. Formatting characters are allowed; IrisAgent normalizes accepted numbers to E.164 format.
+- Duplicate phone numbers are included once.
+- Invalid rows are skipped and reported after import.
+- A campaign can contain up to **1,000 unique recipients** in the initial release.
+
+<Warning>
+Upload only recipients who explicitly agreed to receive texts from your business. A prior purchase, support interaction, or possession of a phone number is not automatically SMS consent. Maintain your own consent records and honor opt-out requests.
+</Warning>
+
+## Create a campaign
+
+1. Open **Outbound** from the IrisAgent sidebar.
+2. Click **Create campaign**.
+3. Enter a campaign name. This is visible only to your team.
+4. Write the message recipients should receive.
+5. Upload the contacts CSV.
+6. Review the number of valid and skipped contacts.
+7. Confirm that every recipient has explicitly opted in.
+8. Click **Save draft**.
+
+Click any campaign row to review its message, audience size, consent confirmation, and delivery metrics. Use **Configure** at the top of the Outbound page to return to **Deploy → Text channels**.
+
+### Personalize a message
+
+Use `{{first_name}}` wherever the recipient's first name should appear:
+
+```text
+Hi {{first_name}}, your subscription renews tomorrow. Reply STOP to opt out.
+```
+
+The campaign preview substitutes a sample name so you can check the finished message. Contacts without a first name should be reviewed before sending a personalized campaign.
+
+## Message length and opt-out language
+
+The editor shows the message length and an estimated SMS segment count. Messages longer than a single segment may be split by the carrier and can cost more to deliver. Non-GSM characters can also change segment length.
+
+Include clear sender identification and opt-out language appropriate for your program, such as `Reply STOP to opt out`. Carrier and legal requirements vary by use case and jurisdiction; your organization is responsible for ensuring its campaign and consent process comply with applicable requirements.
+
+## Troubleshooting
+
+### I received a number, but sending is not available
+
+Number provisioning is immediate, but carrier registration is separate. Open **Deploy → Text channels** and check whether the status is **Action required**, **Carrier review**, or **Needs attention**.
+
+### My CSV was rejected
+
+Confirm that the file:
+
+- is saved as CSV
+- includes a recognized phone-number heading
+- contains valid US phone numbers
+- contains no more than 1,000 unique valid recipients
+
+### Some rows were skipped
+
+IrisAgent skips rows with missing or invalid phone numbers and removes duplicates. Correct the source file and upload it again if those contacts should be included.
+
+### Registration is taking longer than expected
+
+Carrier review commonly takes one to two weeks but can take longer. Monitor the notification email supplied during registration and the status shown under **Deploy → Text channels**. If the status changes to **Needs attention**, reopen registration and provide the requested information.
+
+For help, [contact IrisAgent support](mailto:contact@irisagent.com).
