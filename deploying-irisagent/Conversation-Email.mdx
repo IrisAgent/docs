@@ -1,0 +1,90 @@
+---
+title: "Conversation Email"
+sidebarTitle: "Conversation Email"
+description: "Configure a customer-owned sender domain for email replies sent from IrisAgent Conversations"
+---
+
+Conversation Email lets agents reply to a customer from the IrisAgent Conversations inbox. Messages use an address on a domain your company controls instead of an IrisAgent-owned sender.
+
+IrisAgent automates sender-domain creation with the email provider and checks its verification status. Your DNS administrator still needs to publish the generated records because only your organization or DNS provider can authorize changes to your domain.
+
+## Before you begin
+
+You need:
+
+- IrisAgent dashboard administrator access
+- A **From address** on a domain your company owns
+- A **Reply-To address** on that same domain
+- Access to update the domain's DNS records, or help from the person who manages its DNS
+
+The From and Reply-To addresses can use different mailboxes, but their domains must match exactly. For example, `support@acme.com` and `help@acme.com` are valid together. `support@acme.com` and `help@example.com` are not.
+
+<Note>
+Adding the verification records does not replace or modify your existing inboxes or email hosting. It authorizes IrisAgent's email provider to send using the configured domain.
+</Note>
+
+## Configure the sender
+
+1. In IrisAgent, open **Deploy → Email channels**.
+2. Enter the **From address** customers should see as the sender.
+3. Optionally enter a **Sender name**, such as `Acme Support`. Leave it blank to use the default account name shown below the field.
+4. Enter the **Reply-To address** where customer responses should be delivered.
+5. Click **Save**.
+
+When you save matching addresses, IrisAgent automatically creates the sender domain with the email provider and displays the DNS records required for verification. You do not need to create the domain separately in the provider dashboard.
+
+## Verify the domain
+
+1. Copy each displayed DNS record into your DNS provider. Use the copy button next to an individual value, or click **Copy all**.
+2. Preserve the displayed record type, name or host, value, and priority where one is provided.
+3. Save the DNS changes at your provider.
+4. Return to **Deploy → Email channels** and click **Check DNS verification**.
+
+IrisAgent also refreshes a pending domain's status while the settings panel remains open. DNS changes can take time to propagate, so a domain may remain **pending** for a while after the records are added.
+
+<Warning>
+Do not remove or replace existing mail-delivery records unless your DNS administrator has confirmed that the change is safe. Add only the records shown by IrisAgent.
+</Warning>
+
+## Enable conversation emails
+
+After the domain status changes to **verified**:
+
+1. Select **Enable conversation emails**.
+2. Click **Save**.
+
+Agents can now send email replies from Conversations when the conversation has a captured customer email address. Customer replies are delivered to the configured Reply-To mailbox.
+
+Changing either email address disables sending until the new sender domain is provisioned and verified. If you only change the mailbox portion while keeping the same domain, save the settings and follow the status shown in the panel.
+
+## Configuration reference
+
+| Setting | Purpose |
+| --- | --- |
+| **From address** | The authenticated address customers see as the sender. Required. |
+| **Sender name** | The display name customers see in their inbox. Optional; the account default is used when blank. |
+| **Reply-To address** | The mailbox that receives customer replies. Required and must use the same domain as the From address. |
+| **Enable conversation emails** | Allows agents to send after the sender domain is verified. |
+
+## Troubleshooting
+
+### DNS records do not appear
+
+If domain setup did not complete, confirm that both addresses are valid and use the same domain, then click **Retry domain setup**. IrisAgent retains the saved settings so you can retry without re-entering them.
+
+### The domain remains pending
+
+- Confirm that every displayed record was added to the correct domain.
+- Check the record type, name or host, value, and priority for transcription errors.
+- If your DNS provider automatically appends the domain name, enter only the host portion shown by its interface.
+- Allow time for DNS propagation, then click **Check DNS verification** again.
+
+### The enable checkbox is unavailable
+
+Conversation emails cannot be enabled until the provider reports the sender domain as verified. Complete the DNS steps and check verification again.
+
+### The settings are read-only
+
+Only IrisAgent dashboard administrators can change the sender configuration. Ask an administrator to complete the setup.
+
+For help, [contact IrisAgent support](mailto:contact@irisagent.com).

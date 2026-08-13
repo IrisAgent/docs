@@ -137,6 +137,7 @@
               {
                 "group": "Email",
                 "pages": [
+                  "deploying-irisagent/Conversation-Email",
                   "deploying-irisagent/Outlook"
                 ]
               },
