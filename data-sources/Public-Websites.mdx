@@ -1,12 +1,50 @@
 ---
 title: "Public Websites"
-description: "IrisAgent can scrape your public websites for AI training"
+description: "Crawl your public documentation, tutorials, and blogs so IrisAgent can answer from content already published on your site"
 ---
 
-IrisAgent provides a specialized web scraper designed for extracting data from public websites. It allows you to ingest documentation, tutorials, blogs, and other web content into IrisAgent.
+## Overview
 
-## Upload Custom Content
+A large share of the answers your customers need is already published: product
+documentation, getting-started tutorials, release notes, and blog posts. IrisAgent
+provides a specialized web scraper designed for extracting data from public
+websites, so that content can be ingested and used in answers without being
+duplicated into a knowledge base first.
 
-1. Go to **Data Sources** → **Website** on the IrisAgent dashboard.
+This is a good fit for public-facing content. For knowledge that sits behind a
+login or inside an internal wiki, use [Confluence](/data-sources/Confluence) or
+[Upload Content](/data-sources/Upload-Content) instead.
+
+## Add a website
+
+1. Go to **Data Sources** → **Website** on the [IrisAgent dashboard](https://web.irisagent.com/).
 2. Open the **Website Content** card.
 3. Add the top-level URL to your website. This page and its subpages will be crawled and indexed.
+
+Because the crawler follows subpages from the URL you provide, point it at the
+most specific root that covers the content you want. Giving it a documentation
+root rather than your marketing homepage keeps the index focused on pages that
+actually answer support questions.
+
+## Keeping crawled content current
+
+The crawler re-visits your site so that newly published and updated pages are
+picked up over time. If you publish a page and need it reflected sooner, you can
+re-run the crawl from the same **Website Content** card.
+
+## Related data sources
+
+- [Ticketing System KB](/data-sources/Ticketing-Provider-KB) for the knowledge base in your ticketing system
+- [Confluence](/data-sources/Confluence) for internal Atlassian knowledge
+- [Upload Content](/data-sources/Upload-Content) for CSV and PDF files
+
+## Data governance and security
+
+Data between customer environments and IrisAgent's systems is always encrypted at
+rest and during transmission, authenticated at each endpoint, monitored for
+integrity, and protected by enterprise-grade security protocols.
+
+- IrisAgent only crawls pages that are publicly reachable on the URL you provide.
+- IrisAgent removes PII data and does not store any PII data on our servers.
+- IrisAgent does not share any data with third parties.
+- IrisAgent is SOC 2 Type II compliant and GDPR compliant.

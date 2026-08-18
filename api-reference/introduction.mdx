@@ -1,20 +1,78 @@
 ---
 title: "IrisAgent API Overview"
-description: "Welcome to the IrisAgent API documentation. This guide details the public endpoints available for integrating kapa.ai into your application."
+description: "Reference for the public IrisAgent API endpoints used to ask questions, ingest content, and retrieve tags, sentiment, and summaries"
 ---
 
 ## Welcome
 
-We are following the OpenAPI specification and are using the following OpenAPI specification file.
+The IrisAgent API lets you use IrisAgent as a service from your own application.
+You can power intelligent conversations and search, and index and connect your
+internal and external knowledge articles, tickets, community forums, product
+documentation, and other informational content.
+
+We follow the OpenAPI specification, and the full machine-readable definition is
+published alongside these docs.
 
 <Card title="IrisAgent API Specification" icon="leaf" href="https://github.com/IrisAgent/docs/blob/main/api-reference/openapi.json">
   View the OpenAPI specification file
 </Card>
 
+## Base URL
+
+All requests are made against:
+
+```
+https://api1.irisagent.com
+```
+
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and are provided by your IrisAgent point of contact.
+All API endpoints are authenticated using Bearer tokens, which are provided by
+your IrisAgent point of contact. Pass the token in the `Authorization` header on
+every request:
 
 ```
 Authorization: Bearer YOUR_API_KEY
 ```
+
+Treat the key as a secret. Send it from your backend rather than from browser or
+mobile client code, and rotate it through your IrisAgent contact if it is ever
+exposed.
+
+## What the API covers
+
+The endpoints fall into three broad groups.
+
+### Asking and answering
+
+- `POST /v1/irisgpt/ask` returns a grounded answer to a customer or agent question
+- `POST /v1/summary` returns a summary
+- `POST /v1/feedback` records user feedback on an answer
+
+### Classification and analysis
+
+- `POST /v1/tag` returns an AI-generated tag for a ticket
+- `POST /v1/sentiment` returns sentiment for a ticket
+
+### Ingesting and searching content
+
+- `POST /v1/articles` uploads knowledge articles, and `DELETE /v1/articles` removes them
+- `POST /v1/cases` uploads support cases
+- `POST /v1/incidents` uploads incidents
+- `POST /v1/search/cases` searches across cases
+- `GET /v1/community/search/articles` searches articles
+
+Full request and response schemas for each endpoint are in the API reference
+pages generated from the specification.
+
+## Choosing the API or an integration
+
+The API is the right choice when your content or your support workflow lives in a
+system IrisAgent does not integrate with directly, or when you are embedding
+IrisAgent inside your own product surface.
+
+If your content already lives in a supported platform, a native integration is
+usually less work and stays in sync automatically. See
+[Ticketing System KB](/data-sources/Ticketing-Provider-KB),
+[Public Websites](/data-sources/Public-Websites), and
+[Custom API](/data-sources/Custom-API) for those options.

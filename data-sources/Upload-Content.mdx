@@ -1,11 +1,50 @@
 ---
 title: "Upload Content"
-description: "Upload any content for training IrisAgent"
+description: "Upload CSV and PDF files to IrisAgent so the AI can answer from content that does not live in a connected system"
 ---
 
-You can upload CSV and PDF files on the IrisAgent dashboard to training the AI model on this content.
+## Overview
+
+Not every piece of useful support knowledge lives in a ticketing system or a
+knowledge base. Product one-pagers, internal runbooks, policy documents, and
+exported FAQ spreadsheets are often scattered across drives and wikis.
+
+File upload lets you bring that content into IrisAgent directly. Once uploaded,
+it is indexed alongside your other data sources and used to suggest articles and
+resolutions that match an incoming support case, for both support agents and
+customers.
+
+Use this option when the content is not already reachable through one of the
+connected integrations. If the content does live in a connected system, prefer
+that integration instead, because it stays in sync automatically as the source
+is updated.
 
 ## Upload Custom Content
 
-1. Go to **Data Sources** → **Files** on the IrisAgent dashboard.
+1. Go to **Data Sources** → **Files** on the [IrisAgent dashboard](https://web.irisagent.com/).
 2. Open **CSV Articles** or **PDF Documents**, select your file, and click the corresponding upload button.
+
+Uploaded files are processed and indexed after upload. Once indexing completes,
+the content becomes available to IrisAgent's answers and article suggestions.
+
+## Keeping uploaded content current
+
+Uploaded files are a point-in-time snapshot. They do not re-sync on their own, so
+re-upload the file whenever the underlying document changes materially. For
+content that changes often, a live integration is a better fit than a file upload.
+
+## Related data sources
+
+- [Ticketing System KB](/data-sources/Ticketing-Provider-KB) for the knowledge base built into your ticketing system
+- [Public Websites](/data-sources/Public-Websites) for documentation, tutorials, and blogs published on your site
+- [Confluence](/data-sources/Confluence) for internal knowledge held in Atlassian
+
+## Data governance and security
+
+Data between customer environments and IrisAgent's systems is always encrypted at
+rest and during transmission, authenticated at each endpoint, monitored for
+integrity, and protected by enterprise-grade security protocols.
+
+- IrisAgent removes PII data and does not store any PII data on our servers.
+- IrisAgent does not share any data with third parties.
+- IrisAgent is SOC 2 Type II compliant and GDPR compliant.
