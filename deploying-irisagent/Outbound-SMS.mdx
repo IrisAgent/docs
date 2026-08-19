@@ -1,31 +1,89 @@
 ---
 title: "Outbound SMS"
-description: "Set up a dedicated US text number, complete carrier registration, and create outbound SMS campaigns from a CSV contact list"
+description: "Connect a Twilio number or set up an IrisAgent-managed number, then create outbound SMS campaigns from a CSV contact list"
 ---
 
-IrisAgent Outbound lets you prepare SMS campaigns for customers who have explicitly opted in to receive text messages from your business. Each IrisAgent workspace receives a dedicated US phone number, and each campaign keeps its message, audience, and delivery results together.
+IrisAgent Outbound lets you send SMS campaigns to customers who have explicitly opted in to receive text messages from your business. You can connect an existing Twilio number or request a dedicated IrisAgent-managed US number. Each campaign keeps its message, audience, and sending results together.
 
 <Note>
-Outbound SMS is being released in phases. The current release supports number setup, carrier registration, CSV contact import, and draft campaigns. Sending remains unavailable until both carrier approval and the sending phase of the product are enabled for your workspace.
+For a customer-owned Twilio number, IrisAgent verifies the credentials, SMS capability, Messaging Service, and sender-pool membership. You are responsible for the number's carrier registration, campaign approval, consent, and Twilio billing.
 </Note>
 
 ## Before you begin
 
-You need:
+For either setup method, you need:
 
 - IrisAgent administrator access
-- A notification email for registration updates
-- Your company's legal and tax information for carrier registration
-- A description of how customers opt in to receive your messages
 - A CSV file containing only contacts who have explicitly opted in
 
-IrisAgent currently provisions **US local SMS numbers**. Carrier registration generally takes **one to two weeks**, although timing is controlled by carriers and can vary.
+If you request an IrisAgent-managed number, you also need a notification email, your company's legal and tax information, and a description of how recipients opt in.
+
+If you connect your own Twilio number, you also need:
+
+- The Twilio Account SID for the account or subaccount that owns the number
+- An SMS-capable US phone number in that same account or subaccount
+- A Twilio Messaging Service whose sender pool contains that number
+- A restricted Twilio API key SID and secret created in that same account or subaccount
+- The applicable approved carrier registration associated with that Messaging Service
 
 ## Set up your text channel
 
-1. In IrisAgent, open **Deploy → Text channels**.
-2. Enter a preferred three-digit US area code.
-3. Click **Get number**.
+In IrisAgent, open **Deploy → Text channels**, then choose one of the following setup methods.
+
+## Connect your existing Twilio number
+
+Use this option when your company already owns a Twilio number and manages its Twilio registration and billing.
+
+### 1. Confirm the Twilio resources use the same account
+
+The phone number, Messaging Service, and restricted API key must belong to the Twilio account or subaccount identified by the Account SID you enter in IrisAgent. Credentials created in a parent account cannot automatically access resources owned by a subaccount, and the reverse is also true.
+
+In the Twilio Console:
+
+1. Select the account or subaccount that owns the phone number.
+2. Copy its **Account SID**, which begins with `AC`.
+3. Under **Phone Numbers**, confirm the number is SMS capable.
+
+### 2. Configure the Messaging Service
+
+1. Open **Messaging → Messaging Services** in Twilio.
+2. Create a Messaging Service or select the service you want IrisAgent to use.
+3. Copy its **Messaging Service SID**, which begins with `MG`.
+4. Open the service's **Senders** tab.
+5. Add the phone number to the sender pool if it is not already listed.
+
+<Warning>
+An approved Twilio Business Profile or Brand does not by itself register a number for application-to-person messaging. For a US local 10DLC number, open the Messaging Service's **Compliance → 10DLC** tab and ensure the service is associated with an approved A2P campaign that covers the messages you intend to send. If the page says **Start 10DLC A2P campaign registration**, the service is not registered.
+</Warning>
+
+For other sender types, such as toll-free numbers, complete the applicable Twilio verification shown under the Messaging Service's **Compliance** tab.
+
+### 3. Create a restricted API key
+
+1. In the same Twilio account or subaccount, open **Settings → API keys and tokens**.
+2. Create a restricted API key following [Twilio's restricted API key documentation](https://www.twilio.com/docs/iam/api-keys/restricted-api-keys).
+3. Grant the least privileges needed to read the owned phone number and Messaging Service, read its sender pool, and create outbound messages.
+4. Copy the **API Key SID**, which begins with `SK`, and the secret.
+
+<Warning>
+Twilio displays an API key secret only when the key is created. Store it securely. Do not send it through email or chat. IrisAgent stores the submitted secret encrypted, and you can revoke the key in Twilio at any time.
+</Warning>
+
+### 4. Connect the number in IrisAgent
+
+1. Open **Deploy → Text channels**.
+2. Select **Use your Twilio number**, then click **Connect Twilio**.
+3. Enter the **Account SID**, **Restricted API Key SID**, **Restricted API Key secret**, **US phone number**, and **Messaging Service SID**.
+4. Click **Connect number**.
+
+IrisAgent confirms that it can access the number and Messaging Service, that the number supports SMS, and that the number belongs to the Messaging Service sender pool. A successful connection does not independently confirm A2P campaign approval or that the approved use case covers the campaign you create in IrisAgent.
+
+## Get an IrisAgent-managed number
+
+1. Open **Deploy → Text channels**.
+2. Select **Get an IrisAgent number**.
+3. Enter a preferred three-digit US area code.
+4. Click **Get number**.
 
 IrisAgent immediately provisions a dedicated number for your workspace. The number cannot send application-to-person messages until registration is approved.
 
@@ -109,6 +167,27 @@ Include clear sender identification and opt-out language appropriate for your pr
 ### I received a number, but sending is not available
 
 Number provisioning is immediate, but carrier registration is separate. Open **Deploy → Text channels** and check whether the status is **Action required**, **Carrier review**, or **Needs attention**.
+
+### Twilio connection fails
+
+Confirm that:
+
+- The Account SID begins with `AC`, the API Key SID begins with `SK`, and the Messaging Service SID begins with `MG`.
+- The restricted API key was created in the same account or subaccount that owns the number and Messaging Service.
+- The phone number is SMS capable.
+- The phone number appears under the selected Messaging Service's **Senders** tab.
+- The restricted API key has permission to read those resources and create outbound messages.
+
+### Twilio reports error 30034, but IrisAgent shows the message as sent
+
+[Twilio error 30034](https://www.twilio.com/docs/api/errors/30034) means a US local 10DLC message was sent from an unregistered number. Open **Messaging → Messaging Services**, select the service connected to IrisAgent, and check **Compliance → 10DLC**. Associate the service with the applicable approved A2P campaign or complete its registration before sending again.
+
+Activating an outbound campaign in IrisAgent does not create or enable a Twilio A2P campaign. They are separate:
+
+- An **IrisAgent campaign** defines the message and recipients and starts the send operation.
+- A **Twilio A2P campaign registration** tells US carriers who is sending, the approved use case, and which Messaging Service is authorized.
+
+Twilio may initially accept an API request and later mark the message **Undelivered** after receiving a carrier response. During the initial release, consult **Twilio → Messaging → Logs** for the provider's final delivery state and error code when troubleshooting a recipient-level failure.
 
 ### My CSV was rejected
 
