@@ -1,0 +1,66 @@
+---
+title: 'Helpshift'
+description: 'IrisAgent Installation Guide for Helpshift'
+---
+
+## Overview
+
+IrisAgent connects to Helpshift using a scoped API key that your Helpshift admin generates. Unlike Zendesk, Helpshift does not use OAuth: you stay in full control of the key, its permissions (read-only or read and write), and can revoke it at any time from your Helpshift dashboard.
+
+Once connected, IrisAgent ingests your Helpshift issues, messages, tags, and custom issue fields to power agent assist, AI tagging and routing, trending incident detection, AutoQA, and AutoKB.
+
+## Generate an API key in Helpshift
+
+You need a Helpshift **Admin** role for this step.
+
+1. In your Helpshift dashboard, navigate to **Settings > APIs**.
+2. Under **REST APIs**, click **Add partner**.
+3. Enter the partner email address provided by the IrisAgent team.
+4. Select the permission level:
+   - **Read-only**: recommended to get started. Enables ingestion, agent assist, tagging suggestions, incident detection, AutoQA, and AutoKB.
+   - **Read & Write**: additionally lets IrisAgent write tags, custom issue fields, and notes back onto your Helpshift issues.
+5. Click the **VIEW API KEY** option to reveal the key and copy it.
+
+<Note>
+Keys are scoped per partner, so IrisAgent's key is separate from any other integration you run (Power BI, Slack, Jira). You can change its permissions or delete it at any time from the same page.
+</Note>
+
+## Sign up on IrisAgent Dashboard
+
+- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with either GSuite, Microsoft, or Okta SSO.
+  <br/>
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/web-login.png"
+    alt="IrisAgent web app login"
+
+  />
+<br/>
+- Click on **Connect with Helpshift**.
+- Enter your **Helpshift domain** (the `<domain>` in `<domain>.helpshift.com`) and paste the **API key** generated above, then click **Connect**. IrisAgent validates the key and starts ingesting your issues.
+<br/>
+- This step is optional. If you want to connect with more platforms, such as Jira, Confluence, Salesforce, etc., navigate to **Manage Integrations** on the bottom left and connect with the relevant platforms.
+
+## Connect your knowledge base
+
+IrisAgent grounds AI answers in your existing knowledge content:
+
+- **Helpshift FAQs**: ingested automatically through the same API connection.
+- **Public help center or website**: add the URL under **Manage Integrations > Website Content** and IrisAgent will ingest the main page and all sub-pages.
+- **Other sources**: Confluence, uploaded documents, and [custom knowledge APIs](/data-sources/Custom-API) are also supported.
+
+## Agent copilot inside Helpshift
+
+Helpshift does not provide an embeddable app framework in its agent dashboard, so IrisAgent's copilot is delivered through:
+
+- **IrisAgent browser extension**: overlays AI-suggested resolutions, similar cases, and knowledge directly alongside the Helpshift issue view. No Helpshift configuration required.
+- **Native write-back** (requires a Read & Write key): IrisAgent posts suggested tags and custom issue field values onto the issue so agents see them in the Helpshift UI they already use.
+- **IrisAgent dashboard**: triage analytics, trending incident alerts, AutoQA reviews, and AutoKB drafts live in the IrisAgent web app side by side with Helpshift.
+
+## Real-time updates
+
+For lower-latency ingestion, your Helpshift admin can additionally configure a webhook from **Settings > APIs > Partners webhooks** pointing at the endpoint provided by the IrisAgent team. Webhooks push issue activity to IrisAgent as it happens; otherwise IrisAgent polls the REST API at regular intervals.
+
+## Questions?
+
+Reach out to us at [contact@irisagent.com](mailto:contact@irisagent.com) and we will help you get set up.
