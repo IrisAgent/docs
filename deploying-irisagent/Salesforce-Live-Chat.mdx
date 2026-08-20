@@ -39,21 +39,40 @@ See Salesforce's [Prepare a Salesforce Org for Enhanced Chat](https://help.sales
 1. In Salesforce Setup, search for **Messaging Settings**.
 2. Create or open an **Enhanced Chat** messaging channel.
 3. Select the Omni-Channel flow and fallback queue that should receive IrisGPT handoffs.
-4. Create an **Enhanced Chat custom client deployment** for the website where IrisGPT is installed.
-5. Add your website's top-level domain to the deployment. Add a deployment for each website domain that hosts the IrisGPT widget.
-6. Publish the deployment and enable the **Enhanced Chat REST API**.
+4. In Salesforce Setup, search for **Embedded Service Deployments**, then click **New Deployment**.
+5. Select **Enhanced Chat**, click **Next**, select **Custom Client**, and click **Next** again.
+6. Name the deployment and review its generated **API Name**. IrisAgent uses this API name as the deployment developer name.
+7. Select the Enhanced Chat messaging channel from step 2 and save the deployment.
+8. Create and publish the deployment. Do not navigate away while Salesforce is publishing it.
+9. Enable the **Enhanced Chat REST API** for the Salesforce org if it is not already enabled.
 
-For Salesforce's full setup flow, see [Create Your First Enhanced Chat Channel and Deployment](https://help.salesforce.com/s/articleView?id=service.miaw_quick_start.htm&type=5).
+Salesforce normally publishes a custom client deployment within a few minutes. Allow up to 10 minutes for the published configuration to become available because Salesforce caches deployment changes.
+
+<Warning>
+Select **Custom Client**, not **Web**. A Web deployment produces an `embeddedservice_bootstrap.init(...)` JavaScript snippet and cannot be used by IrisAgent's Enhanced Chat REST API integration. Salesforce does not let you convert that Web deployment into the required API deployment; create a new Custom Client deployment instead.
+</Warning>
+
+For Salesforce's full setup flow, see [Configure a Custom Client Deployment for Enhanced Chat](https://help.salesforce.com/s/articleView?id=sf.miaw_deployment_custom.htm&type=5).
 
 ## 3. Connect the deployment in IrisAgent
 
-From the custom client deployment's configuration or generated code snippet, copy these values:
+From the published custom client deployment's configuration, copy these values:
+
+```json
+{
+  "OrganizationId": "00D000000000000EAA",
+  "DeveloperName": "IrisGPT_Live_Chat_API",
+  "Url": "https://your-instance.salesforce-scrt.com"
+}
+```
 
 | Salesforce value | Example | IrisAgent field |
 | --- | --- | --- |
 | **Enhanced Chat REST API base URL** | `https://your-instance.salesforce-scrt.com` | **Service URL** |
 | **Salesforce Organization ID** | `00D000000000000EAA` | **Organization ID** |
-| **Deployment developer name** | `IrisGPT_Live_Chat` | **Deployment Name** |
+| **Deployment API/Developer Name** | `IrisGPT_Live_Chat_API` | **Deployment Name** |
+
+Copy all three values from the same Salesforce org and custom client deployment. Copy the raw URL only: it must start with exactly one `https://`, contain no Markdown brackets, and have no path after the Salesforce hostname.
 
 Then configure the connection:
 
@@ -66,6 +85,10 @@ Then configure the connection:
 7. Click **Save**. The card displays **Connected** when Salesforce Messaging is enabled.
 
 These settings apply to all IrisGPT website chatbot configurations for your account, including configurations created later.
+
+<Note>
+**Connected** confirms that the values were saved and Salesforce Messaging is enabled. It does not verify that Salesforce has finished publishing the deployment or that the selected deployment is a Custom Client/API deployment. Complete the handoff test below before treating the connection as ready.
+</Note>
 
 <Warning>
 Do not enter Salesforce passwords, access tokens, session IDs, or client secrets. The three deployment values above identify the public Enhanced Chat deployment and are sufficient for this connection.
@@ -110,6 +133,15 @@ During a live-agent conversation, IrisGPT supports text messages. File and image
 - In Salesforce, verify that the Omni-Channel flow routes the **Messaging Session** service channel.
 - Confirm that the flow's input variable is named exactly `recordId`, is text, and is available for input.
 - Check that the deployment is published and the Enhanced Chat REST API is enabled.
+
+### The widget displays “There was an error processing your request”
+
+- Wait up to 10 minutes after Salesforce reports that the deployment is published, then test again.
+- Confirm the deployment type is **Custom Client**, not **Web**.
+- Copy the exact **DeveloperName** from the Custom Client deployment. Do not use the deployment's display label or the developer name from a standard Web deployment.
+- Confirm the **Organization ID**, **Service URL**, and **DeveloperName** all came from the same Salesforce org and deployment.
+- If Salesforce reports that the developer name is invalid, verify that the API name was copied exactly and that publication completed.
+- If Salesforce reports that the deployment type is not supported or must be set to `api`, create and publish a new Custom Client deployment and use its developer name.
 
 ### Messages do not appear in IrisGPT
 
