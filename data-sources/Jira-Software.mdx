@@ -1,64 +1,144 @@
 ---
 title: "Jira Software"
-description: "IrisAgent Installation Guide for Jira Software to sync your engineering bugs. Please note that the steps to connect with Confluence and Jira Software are the same, just the scope of the token provided below are different."
+description: "Connect one or more Jira Software accounts to IrisAgent for issue ingestion, product-aware routing, and support-case correlation."
 ---
 
-## **Introduction**
+## Overview
 
-\
-IrisAgent provides AI-powered correlations between Jira issues and support tickets using the Atlassian Jira integration. It enables cross-functional teams to better prioritize product issues based on support and business impact.
+IrisAgent correlates Jira issues with support cases so support, engineering, and product teams can identify related bugs and understand their customer impact. Jira Software can be connected as an issue provider even when your primary ticketing system is Zendesk, Salesforce, Intercom, Freshworks, HubSpot, or another supported platform.
 
-## **Connect with Atlassian**
+You can connect multiple Jira accounts or sites. Each Jira account has independent credentials, project scope, product routing, comment settings, and ingestion state.
 
-1. Login to the [IrisAgent dashboard](https://web.irisagent.com/). This step assumes that you have already connected IrisAgent to your ticketing provider.
-2. Click on **Manage Integrations** option on the bottom left menu.
-3. If you are using Atlassian cloud instance, click on **Connect with Atlassian/Jira Cloud**. Else, if you are using Atlassian on-prem instance, click on **Connect with Atlassian/Jira Server**. Give the OAuth permissions and click on Allow. This will automatically connect IrisAgent with Jira and Confluence.
+<Note>
+  If Jira Service Management is your primary ticketing system, start with the [Jira Service Desk/Jira Software setup guide](/data-sources/Jira-Software-or-Service-Desk). Use the instructions on this page for additional Jira accounts used as issue providers.
+</Note>
 
-   <br />
+## Before you begin
 
-   <img
-     style={{ borderRadius:"0.5rem" }}
-     src="/images/atlassian-docs.png"
-     alt="Atlassian integration"
-   />
+For each Jira account, use an Atlassian service user with access only to the projects that IrisAgent should ingest. The API token has the same Jira permissions as the user who creates it.
 
-- If you are connecting with Atlassian Cloud, a follow-on page will show up that asks for the Atlassian cloud token, email address, and base URL. Here are [the steps to create the token](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
-- If you are connecting with Atlassian Server, a follow-on page will show up that asks for the Atlassian server token and base URL. Here are [the steps to create the token](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+The service user needs:
 
-## \*\*Selecting certain Jira Projects \*\*
+- Read access to the Jira projects and issues that IrisAgent should ingest.
+- Read access to comments if you enable **Ingest comments**.
+- Write access to comments if you enable **Post comments to cases**.
+- Access to the `/issue/createmeta` endpoint if agents will create Jira issues from the IrisAgent Copilot app.
 
-1. When creating the token in the step above, ensure you only give permissions to the relevant projects.
-2. After you connect with your Atlassian account, the Atlassian tile on the "Manage Integrations" page should as connected. Click on the Settings gear icon. This is show a side panel where you can select/deselect which projects you want IrisAgent to have access to.
+Create an API token by following [Atlassian's API token instructions](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
 
-## **Details on IrisAgent's Atlassian Connection**
+## Connect your first Jira account
 
-IrisAgent only ingests data from Atlassian from the last 3 months (can be configured). It make POST and GET API calls to fetch data while ensuring that the Atlassian's rate limits are not exceeded. The frequency of API call can be configured based on customer's preference.
+1. Sign in to the [IrisAgent dashboard](https://web.irisagent.com/).
+2. Open **Data Sources** and select **Development**.
+3. Choose **Atlassian/Jira Cloud** for Jira Cloud or **Atlassian/Jira Server** for an on-premises Jira instance.
+4. Enter the Jira email, site subdomain, and API token.
+5. For Jira Cloud, enter the part of the site URL before `.atlassian.net`. For example, enter `acme` for `https://acme.atlassian.net`.
+6. If you use a scoped Atlassian API token, also enter the Cloud ID. You can obtain it from `https://<your-domain>.atlassian.net/_edge/tenant_info`.
+7. Select **Connect Jira**.
 
-### **Permissions of the Atlassian Token**
+<img
+  style={{ borderRadius: "0.5rem" }}
+  src="/images/atlassian-docs.png"
+  alt="Atlassian integration in the IrisAgent dashboard"
+/>
 
-The Atlassian token generated by a user has the same access level as that user’s permissions within jira. It is recommended that a service user be created and that user’s token be entered in the IrisAgent dashboard, so that permissions can be easily granted/revoked as and when new functionality is introduced.
+A successful connection verifies the credentials and stores the Jira account. Project selection controls when issue ingestion begins.
 
-### **OAuth permissions needed for Jira Software**
+## Connect a second Jira account
 
-IrisAgent uses this integration to correlate Jira Software bugs with support cases automatically, prioritize open bugs using business and support impact and provides visibility to customer support, engineering, and product management teams. The token needs to have the following permissions in Jira:
+1. On **Data Sources > Development**, open **Configure Jira providers** from the Atlassian/Jira card.
+2. Select **Add Jira instance**.
+3. Complete the connection fields:
 
-1. Read for all Jira issues (and comments). If you'd like to sign up for the **optional** trigger features to write comments and tags on Jira, please include write permissions too.
-2. Read all Jira projects
-3. Access to the /issue/createmeta endpoint to discover the project and issue types while creating a new Jira issue from the IrisAgent app. This is another **optional** feature to be able to create Jira issues from your ticketing system.
+   - **Provider ID**: A unique internal key, such as `support`, `payments`, or `acme_jira`. It does not come from Jira and cannot be changed later. Use 1–64 letters, numbers, underscores, or hyphens.
+   - **Display name**: A recognizable name shown in the dashboard.
+   - **Product IDs**: Optional comma-separated case product IDs that should route to this Jira account. Product IDs must be unique across enabled Jira providers.
+   - **Jira email**: The service user's Atlassian email address.
+   - **Jira subdomain**: The part before `.atlassian.net` for Jira Cloud.
+   - **Cloud ID**: Required for scoped Atlassian API tokens; otherwise optional.
+   - **API token**: The service user's Jira API token.
+   - **Default provider**: Handles cases whose product ID does not match another enabled provider.
 
-### **Granting Access only to either Jira/Confluence**
+4. Select **Connect Jira**.
 
-1. Create a service user who has access only to the feature you want to use. E.g. : A service user with access restricted only to Confluence.
-2. If the service user has access to one of Jira/conlfluence, please ensure that all permissions required within that section are met.
-3. Generate a token for this service user and follow the same connection procedure by visiting the “Manage Integrations” section as mentioned above.s
+You can repeat these steps for additional Jira accounts. Every connected account must use a different Provider ID.
 
-### **Data Governance and Security**
+## Configure and enable a Jira provider
 
-Data between customer environments and IrisAgent’s systems is always encrypted at rest and during transmission, authenticated at each endpoint, monitored for integrity, and protected by enterprise-grade security protocols and operational best practices.
+New Jira providers start **Disabled**. This is intentional: an empty project selection can otherwise mean every project, so IrisAgent waits for an administrator to choose an explicit project scope before the first ingestion.
 
-- IrisAgent removes PII data and does not store any PII data on our servers.
-- Data is encrypted in transit and at rest. IrisAgent uses industry-standard encryption protocols to ensure that your data is secure.
-- You can ensure that the integration with Atlassian is only for specific projects and spaces, so that no data is shared outside of the scope of your support operations.
-- IrisAgent only ingests data from Atlassian from the last 3 months (can be configured). It makes API calls safely to fetch data while ensuring that the Atlassian's rate limits are not exceeded. The frequency of API call can be configured based on customer's preference.
-- IrisAgent does not share any data with third parties.
-- IrisAgent is SOC 2 Type II compliant and GDPR compliant.
+After connecting an account:
+
+1. Open **Configure Jira providers**.
+2. In the provider card, open **Jira projects** and select at least one project.
+3. Enter the case **Product IDs** that should route to this provider. Use the exact values stored in your ticketing system's case `productId` field.
+4. For every selected Jira project, set its **Project product mapping**. This value is stored on ingested Jira issues and lets product-aware Jira search match them to cases with the same product ID.
+5. Optionally enable **Ingest comments** or **Post comments to cases**.
+6. Turn on the **Enabled** toggle.
+7. Select **Save settings**.
+
+<Warning>
+  Select a Jira project before enabling a new provider. IrisAgent rejects an enabled provider with no selected projects to prevent accidental ingestion of every project.
+</Warning>
+
+### Product routing and the default provider
+
+When IrisAgent needs a Jira provider for a case, it compares the case's `productId` with the Product IDs configured on each enabled provider.
+
+- A matching Product ID routes the case to that Jira provider.
+- The enabled **Default provider** handles a case when no configured Product ID matches.
+- Product IDs and selected Jira project keys cannot overlap across enabled providers because the route would be ambiguous.
+- Keep one enabled provider as the default unless every possible case product ID has an explicit provider route.
+
+The provider-level **Product IDs** route cases to the correct Jira account. **Project product mapping** stamps ingested Jira issues with a product ID so Jira search and case-answer retrieval can constrain results to the case's product.
+
+### Example: two Jira accounts
+
+| Setting | Support Jira | Payments Jira |
+| --- | --- | --- |
+| Provider ID | `support` | `payments` |
+| Product IDs | `Support`, `Customer Care` | `Payments`, `Billing` |
+| Selected projects | `SUP`, `CSM` | `PAY` |
+| Project product mapping | `SUP` → `Support`; `CSM` → `Customer Care` | `PAY` → `Payments` |
+| Default provider | Yes | No |
+
+With this configuration, a case whose `productId` is `Payments` or `Billing` uses the Payments Jira account. A case whose product ID does not match either provider uses Support Jira because it is the default.
+
+## Ingestion behavior
+
+After you enable and save a provider, the next scheduled ingestion run imports issues from its selected projects. This happens asynchronously and may not be visible immediately after saving.
+
+Each Jira account maintains its own credentials, selected projects, ingestion cursor, and provider identity. Issues from different Jira accounts remain distinguishable even if those accounts use the same issue key.
+
+By default, IrisAgent ingests recent Jira data. The lookback window and ingestion frequency can be configured for your deployment. API requests respect Atlassian rate limits.
+
+## Troubleshooting
+
+### “Select at least one Jira project before enabling this provider”
+
+Leave the provider disabled, choose at least one value from **Jira projects**, then enable the provider and save the settings.
+
+### Jira projects are missing
+
+Confirm that the service user can browse the expected Jira projects and that the token has permission to read projects. Reconnect the provider if its permissions or token changed.
+
+### A scoped token requires a Cloud ID
+
+Open `https://<your-domain>.atlassian.net/_edge/tenant_info`, copy the Cloud ID, and reconnect the provider with that value.
+
+### Product-aware search returns no Jira issues
+
+Confirm both parts of the routing configuration:
+
+1. The provider's **Product IDs** include the case product ID.
+2. Each selected Jira project has a **Project product mapping** with the corresponding product ID.
+
+New mappings apply as Jira issues are ingested or updated.
+
+## Data governance and security
+
+- Data is encrypted in transit and at rest.
+- Jira access is limited by the permissions of the service user and the projects selected in IrisAgent.
+- IrisAgent makes authenticated API requests and observes Atlassian rate limits.
+- IrisAgent does not share customer Jira data with third parties.
+- IrisAgent is SOC 2 Type II and GDPR compliant.
