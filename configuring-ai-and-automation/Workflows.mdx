@@ -6,11 +6,11 @@ description: "Set up automated workflows using plain English or drag and drop in
 ### Create Workflows or Procedures using plain English
 
 <Note>
-  Plain-English procedures power IrisAgent's **AI Agent for chat and voice** — the AI Agent uses them at runtime to decide when to trigger a workflow and what steps to follow. This is the fastest way to automate customer-facing conversations without building flowcharts or writing code.
+  Plain-English procedures power IrisAgent's **AI Agent and Agent Assist**. The same procedures run for chat, voice, ticket auto-respond, and the copilot sidebar (Suggested Resolution and Dynamic Resolution). This is the fastest way to automate customer conversations and agent replies without building flowcharts or writing code.
 </Note>
 
 <Warning>
-  **Procedures take precedence over answers from your trained knowledge base.** When an incoming query matches a procedure's scenario, the AI Agent will follow the procedure's steps instead of generating an answer from your trained articles or past tickets. Use procedures whenever you want to enforce a specific flow (e.g. collect required fields, call an API, or hand off to a team) rather than relying on a free-form AI response.
+  **Procedures take precedence over answers from your trained knowledge base.** When a query matches a procedure's scenario, the AI Agent and Agent Assist follow the procedure's steps instead of generating a free-form answer from trained articles or past tickets. Use procedures whenever you want to enforce a specific flow (e.g. collect required fields, call an API, or hand off to a team).
 </Warning>
 
 You can [configure standard operating procedures by describing them in plain English](https://irisagent.com/smart-operating-procedures/) — also called **SmartOps**. Instead of designing a rigid decision tree, you simply describe the scenario and the steps the AI Agent should take, and IrisAgent trains a model to automatically recognize when the scenario applies and execute the workflow end-to-end.
@@ -56,7 +56,7 @@ IrisAgent maps "Order Status API" to the configured Custom API, collects `{{orde
 ### Create Workflows using drag and drop interface (only for cases)
 
 <Note>
-  This workflow builder applies to **cases (tickets)** only. For chat and voice automation, use the plain-English procedures described above.
+  This workflow builder applies to **cases (tickets)** only. For chat, voice, ticket auto-respond, and agent assist, use the plain-English procedures described above.
 </Note>
 
 Agents and supervisors spend manual effort in triaging and resolving cases that may already be known or solved previously. IrisAgent solves this with automated case workflows built on AI-powered tagging, AI-based answers to known issues, and configurable actions for ticket assignment and notifications. Using the drag and drop trigger builder, you can combine any number of **Conditions** (such as AI category, AI sentiment, keywords in the subject or description, priority, channel, or customer attributes) with **Actions** (such as assigning to a team, adding tags, setting priority, posting an internal note, or sending a notification) — no code required.

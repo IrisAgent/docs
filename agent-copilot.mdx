@@ -37,17 +37,23 @@ Type a natural language question into the text field and press Enter. IrisGPT se
 
 ### Suggested Resolution
 
-The Suggested Resolution section shows an AI-generated answer for the current ticket, created automatically when the ticket is first loaded. IrisAgent analyzes the ticket content, matches it against your knowledge base and historical tickets, and produces a ready-to-use response.
+The Suggested Resolution section shows an AI-generated answer for the current ticket, created automatically when the ticket is first loaded. IrisAgent analyzes the ticket, matches it against your knowledge base, historical tickets, and any matching [SmartOps procedures](/configuring-ai-and-automation/Workflows), and produces a ready-to-use response. When a procedure matches, the suggestion follows that procedure (including Custom API steps) instead of a free-form knowledge-base answer.
 
 **What you'll see:**
 
-- A formatted resolution text that you can copy and send to the customer
+- A formatted resolution text
 - Links to the knowledge base articles and documentation that informed the answer
+- **Refine** and **Send to Draft** (Zendesk)
 - Thumbs up/down buttons to rate the quality of the suggestion
+
+**Refine:** Opens a **Refine Resolution** dialog. Type how you want the answer changed (for example, "make this shorter" or "more polite") and submit. The card updates in place. Refine starts from the original suggestion, not a previous refinement.
+
+**Send to Draft:** Inserts the current resolution (including any refinement) into the Zendesk ticket reply editor so you can edit and send it from the ticket. This uses Zendesk's draft composer and is not available on Salesforce or Jira Service Management.
 
 **Tips:**
 
-- Use the suggested resolution as a starting point and personalize it before sending
+- Refine the tone or length first, then **Send to Draft** so the composer gets the version you want
+- You can still copy the text if you prefer not to use the draft composer
 - Rating suggestions helps IrisAgent improve over time
 - If the suggestion references articles, review them for additional context the customer may need
 
@@ -63,6 +69,8 @@ Dynamic Resolution generates a fresh AI answer on demand, using all comments and
 2. IrisAgent reads through all ticket comments and conversation history
 3. A new resolution is generated and displayed with supporting links
 4. If you've already generated one, the button changes to **Refresh Resolution** so you can regenerate it after new comments are added
+5. Use **Refine** to rewrite the answer from instructions (same dialog as Suggested Resolution)
+6. Use **Send to Draft** to drop the current answer into the Zendesk reply editor (Zendesk only)
 
 **When to use Dynamic Resolution vs. Suggested Resolution:**
 
@@ -173,6 +181,6 @@ For setup instructions specific to your ticketing system, see:
 
 **How current is the Suggested Resolution?** The Suggested Resolution is generated when the ticket loads. For the latest context after multiple comments, use Dynamic Resolution instead.
 
-**What data does IrisAgent use to generate answers?** IrisAgent uses your knowledge base, historical tickets, connected documentation (Confluence, Notion, etc.), and any integrated issue trackers. It never uses data from other customers.
+**What data does IrisAgent use to generate answers?** IrisAgent uses your knowledge base, historical tickets, connected documentation (Confluence, Notion, etc.), integrated issue trackers, and any matching SmartOps procedures. It never uses data from other customers.
 
 **Is my data secure?** IrisAgent is SOC 2 Type II certified and GDPR compliant. All data is encrypted at rest and in transit.
