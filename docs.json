@@ -45,7 +45,8 @@
                   "data-sources/Jira-Software-or-Service-Desk",
                   "data-sources/Freshworks",
                   "data-sources/Hubspot",
-                  "data-sources/Helpshift"
+                  "data-sources/Helpshift",
+                  "data-sources/Zoho"
                 ]
               },
               {

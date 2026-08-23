@@ -1,0 +1,57 @@
+---
+title: "Zoho Desk"
+description: "Connect Zoho Desk so IrisAgent can import tickets and knowledge base articles"
+---
+
+IrisAgent connects to **Zoho Desk** as a primary ticketing source. Once connected, it imports your tickets and knowledge base articles to power suggested resolutions, SmartOps procedures (chat, voice, ticket auto-respond, and agent assist), AutoQA, AutoKB, and [Case Triggers](/deploying-irisagent/Tickets).
+
+You connect with a Zoho OAuth client that you create. IrisAgent does not use a Zoho marketplace app for this step.
+
+## Create a Zoho OAuth client
+
+You need access to the [Zoho API Console](https://api-console.zoho.com/).
+
+1. Go to [https://api-console.zoho.com/](https://api-console.zoho.com/).
+2. Click **Add Client**.
+3. Select **Server Based Applications**.
+4. In the **Client Details** tab, enter:
+   - **Client Name:** `IrisAgent`
+   - **Homepage URL:** `https://irisagent.com`
+   - **Authorized Redirect URIs:** `https://frontend-api-server-v2.api.irisagent.com/v1/oauth/zoho/callback`
+5. Click **Create**. Zoho generates a Client ID and Client Secret.
+6. Open the **Settings** tab and enable **Use the same OAuth credentials for all data centers**.
+7. Open the **Client Secret** tab and copy the Client ID and Client Secret. You will paste these into IrisAgent next.
+
+<Note>
+  The redirect URI must match exactly, including `https` and the `/v1/oauth/zoho/callback` path. A mismatch is the most common reason the Zoho consent screen fails.
+</Note>
+
+## Sign in to IrisAgent and connect Zoho
+
+1. Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
+2. On first login, the onboarding wizard lists **Zoho Desk** under ticketing systems (tickets and knowledge base articles). Choose it there, or later go to **Manage Integrations** and click **Connect with Zoho**.
+3. Paste the **Client ID** and **Client Secret** from the Zoho API Console.
+4. Click **Connect**. IrisAgent sends you to Zoho to approve access, then returns you to the dashboard and starts importing tickets and articles.
+
+You can change the connected Zoho integration user later from the same integrations screen. Zoho is one of the sources that supports that flow.
+
+## What gets imported
+
+- **Tickets** from Zoho Desk
+- **Knowledge base articles** from Zoho Desk (same connection, no second integration)
+
+There is no separate Zoho Guide-style connect step. See [Ticketing System KB](/data-sources/Ticketing-Provider-KB).
+
+## Agent assist
+
+IrisAgent does not ship a native Zoho Desk marketplace sidebar. After you connect Zoho Desk, agents use suggested resolutions and procedures from the [IrisAgent dashboard](https://web.irisagent.com/), and the same SmartOps procedures apply to chat, voice, and ticket auto-respond. For a native sidebar inside the ticket view, see the [Agent Copilot](/deploying-irisagent/Agent-Copilot) apps for Zendesk, Salesforce, Intercom, Freshworks, and Jira.
+
+## Optional next steps
+
+- Add more knowledge (Confluence, a public website, or uploaded files) from **Manage Integrations**.
+- Create or enable [SmartOps procedures](/configuring-ai-and-automation/Workflows) so assist and the AI Agent follow the same flows.
+- Use [Case Triggers](/deploying-irisagent/Tickets) to auto-respond or route Zoho tickets.
+
+## Questions?
+
+Email [contact@irisagent.com](mailto:contact@irisagent.com).
