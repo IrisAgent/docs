@@ -33,6 +33,24 @@ You can [configure standard operating procedures by describing them in plain Eng
   Write scenario descriptions the way you would brief a new agent — focus on the customer intent ("when a customer asks about…") rather than exact phrasing. IrisAgent's AI handles the wording variations, so you don't need to list every possible way a customer might phrase the request.
 </Tip>
 
+### Author the fields the AI should collect
+
+The procedure editor has an **Information to collect** list. That is how you author the required fields the AI asks for, one at a time, before it calls an API or continues the steps.
+
+- Add, reorder, or remove fields. Labels become stable snake_case keys.
+- The list applies only to **Instructions for AI Agent** procedures (order ID, email, reason). A **Direct Answer** never interviews the customer, and the editor is hidden for that type.
+
+Custom API placeholders like `{{orderId}}` are still collected automatically if you do not list them here. Authoring the list is how you control the questions and their order.
+
+### Scope a procedure to a product and a channel
+
+On the same procedure:
+
+- **Product ID (optional)** pins the procedure to one or more products. Separate multiple product IDs with commas. When a case or chat has a product scope, IrisAgent serves procedures that share any of those product IDs, plus every unscoped procedure. A case or chat with no product runs every procedure, scoped or not. Leave the field empty to run for all products.
+- The Procedures table **filters by channel**: Chat, Email, and Voice, with per-channel counts. A procedure with no channel scope runs on every channel. **Agent Assist uses the Email channel** (the copilot sidebar is served as email). Unchecking Email to keep a procedure out of ticket auto-replies also removes it from the agent sidebar.
+
+**Ticket Agent can prefill the product.** When you create a procedure from a Support Analyst recommendation, the Product ID field is filled from the source tickets so you do not retype it.
+
 ### Using Custom APIs in plain-English procedures
 
 IrisAgent can call your own external APIs mid-conversation to look up live data — such as order status, account tier, or subscription details — and present the result to the customer in natural language, without any agent involvement.

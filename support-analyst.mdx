@@ -52,11 +52,16 @@ Sentiment is the fastest way to surface at-risk customers before churn.
 Get aggregate views without building a dashboard. Support Analyst can group, count, and break down ticket data on demand:
 
 - Volume by status, priority, assignee, account, sentiment, or category
+- **Module and tag breakdowns** — group counts by the ticket `Module` attribute and by tags. Missing values are reported as an unset count, not ranked as their own group. If Module is not populated on your tickets, the answer says it is unavailable instead of inventing a breakdown. Counts can exceed the ticket total because a ticket can carry several tags, so they do not convert to percentages. Only the top groups are shown.
 - Trends over time (this week vs. last week, month-over-month)
 - Top N accounts, top N categories, response-time distributions
 - Team and individual agent performance
 
 Results come back as tables or summaries, with the option to drill into any row.
+
+<Note>
+**Status questions use the ticket's current status, not status-transition history.** "How many tickets are on hold this month?" means tickets **created** in that period whose **current** status is hold (or your exact customer label). There is no queryable history of when a ticket moved into a status. Date ranges apply to ticket creation time. Agent filters match display name, email, or a full-name email alias, and only resolve a partial name when it matches exactly one agent.
+</Note>
 
 ### Account Overview
 

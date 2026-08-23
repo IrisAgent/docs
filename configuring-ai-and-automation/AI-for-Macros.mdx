@@ -1,19 +1,13 @@
 ---
 title: "AI for Macros"
-description: "AI Recommendation Engine for Zendesk Macros"
+description: "AI-recommended Zendesk macros, ranked from macros your agents actually applied on similar tickets"
 ---
 
-## **Introduction**
+## Introduction
 
-\
-[Macros in Zendesk](https://support.zendesk.com/hc/en-us/articles/4408844187034-Creating-macros-for-repetitive-ticket-responses-and-actions) are a great way to help agents address repetitive customer queries and automate workflows. Utilizing agent tools within Zendesk's administrative features allows for the creation, customization, and management of macros, which significantly reduces the need for agents to manually respond to repetitive queries. However, as [support operations](https://irisagent.com/blog/five-ways-to-improve-customer-support-operations/) scale and complexity increases, the number of macros also grows. IrisAgent has worked with companies that have large support operations and understand the frustration this causes for agents, namely,
+[Macros in Zendesk](https://support.zendesk.com/hc/en-us/articles/4408844187034-Creating-macros-for-repetitive-ticket-responses-and-actions) let agents apply a saved reply and a set of ticket actions in one click. As the macro list grows, picking the right one is the hard part.
 
-- Which macro to select? Wrong selections lead to incorrect troubleshooting, longer handle times and poort customer service.
-- Newer agents find navigating macros very difficult.
-- Hard to train on all macros and select the right one in real-time.
-
-\
-IrisAgent solves this with AI - IrisAgent AI powered macro auto-selection help agents pick the right macro real-time with very high accuracy. Check out the screenshot below to see how IrisAgent recommends the right macro to apply to a ticket within Zendesk.
+IrisAgent recommends the macro to apply on a Zendesk ticket from the Copilot sidebar. Suggestions turn on automatically once Zendesk tickets are connected.
 
 <img
   style={{ borderRadius:"0.5rem" }}
@@ -21,29 +15,32 @@ IrisAgent solves this with AI - IrisAgent AI powered macro auto-selection help a
   alt="AI to recommend and apply the right Zendesk macro"
 />
 
-## **Prerequisites**
+## How ranking works
 
-### **Step 1: Specific Macro Settings in Zendesk**
+1. **Audit events first.** IrisAgent reads Zendesk `MacroReference` and `AgentMacroReference` events on the tickets it already pulls. Those exact macro applications are stored on the case. Suggestions rank macros that were actually applied on similar tickets.
+2. **Tags as fallback.** For older tickets that have no audit evidence, IrisAgent uses matching tags. Unique per-macro tags improve that fallback. They are not required for suggestions to run.
+3. **No extra LLM call.** Macro ranking does not add a model request.
 
-1. Ensure that each relevant macro has an action to add tags to the ticket. This is important for IrisAgent to understand the context of the ticket and recommend the right macro.
+Only **active**, non-suppressed macros with enough content are candidates. On the tag fallback, the macro must have been used at least once in the last 30 days. Votes come from **solved or closed** similar cases.
 
-   <img
-     style={{ borderRadius:"0.5rem" }}
-     src="/images/macro_add_tag.png"
-     alt="Add tags to enable macro AI"
-   />
-2. The tag mentioned above should be unique per macro.
+## Optional: unique tags (helps historical tickets)
 
-### **Step 2: Notify IrisAgent**
+If you want better fallback ranking on tickets that predate audit capture:
 
-\
-Let [IrisAgent know](mailto:contact@irisagent.com) that you would like to activate macro recommendation in Zendesk. Managing existing macros is crucial, and you may need to edit macros to keep them up-to-date with evolving workflows. If there are certain macros, that you'd like to exclude from the recommendation, please let us know.
+1. Give each relevant Zendesk macro an action that adds a **unique** tag.
+2. Keep that tag one-to-one with the macro.
 
-## **Conclusion**
+<img
+  style={{ borderRadius:"0.5rem" }}
+  src="/images/macro_add_tag.png"
+  alt="Add a unique tag on a Zendesk macro"
+/>
 
-\
-By integrating Zendesk macros into your workflow, you can streamline your support processes and improve customer satisfaction. Macros can help you automate repetitive tasks, ensure consistency in ticket management, and reduce the chance of mistakes. With the right approach to creating and customizing macros, you can unlock the full potential of this powerful feature and take your customer support to the next level.\
-\
-Remember to keep your macros organized and up-to-date, and to use them in conjunction with other Zendesk features to create a seamless and efficient support experience. By doing so, you can provide faster, more accurate service to your customers and build a reputation for exceptional customer support.\
-\
-Incorporating macros into your Zendesk setup not only enhances efficiency but also empowers your support team to handle support requests with greater precision and speed. Whether you’re dealing with a high volume of tickets or aiming to provide a consistent standard response, macros are an invaluable tool. So, take the time to create a macro that fits your needs, and watch as your support operations become more streamlined and effective.
+## Turning macros off
+
+Macro suggestions stay on by default. If you need them off for your account, ask IrisAgent support.
+
+## Related
+
+- [Agent Assist / Copilot](/agent-copilot)
+- [Zendesk](/data-sources/Zendesk)

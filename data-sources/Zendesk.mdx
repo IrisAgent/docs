@@ -52,3 +52,15 @@ Check out this video for a quick overview of setting up IrisAgent on Zendesk.
     src="/images/zendesk-irisagent-app.png" 
     alt="IrisAgent app listing on Zendesk"
   />
+
+## Knowledge base: every Zendesk brand
+
+Connecting Zendesk imports **tickets and Zendesk Guide**. Help Center articles are requested per brand, not only from the primary subdomain.
+
+Zendesk requires a brand-specific Help Center host. IrisAgent lists every active brand that has a Help Center, then ingests incremental articles from each brand subdomain. Deletion checks search the originating brand first and only drop an article after every brand returns 404.
+
+If a second brand's Help Center looks empty in IrisAgent, check that the brand is active and has a Help Center. You do not need a second Zendesk connection.
+
+If IrisAgent cannot list brands (Zendesk returns 403 or 404), it ingests from the subdomain you configured on the token. Other list errors fail ingest instead of guessing.
+
+After you connect Zendesk, [macro suggestions](/configuring-ai-and-automation/AI-for-Macros) turn on automatically.
