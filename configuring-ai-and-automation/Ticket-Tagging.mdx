@@ -7,29 +7,69 @@ Check out this video for a quick overview of setting up automations on IrisAgent
 
 <iframe width="560" height="315" src="https://player.vimeo.com/video/1112470128" title="IrisAgent automation for tagging and workflows" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{ width:"100%",borderRadius:"0.5rem" }} />
 
-## **Set up Automated Tagging**
+## Set up automated tagging
 
-\
-Tagging tickets is manual, mundane, and error-prone. Tags get obsolete and incorrect tagging results in inaccurate responses and analytics. IrisAgent solves this by AI-driven automated, and self-learning tag management. No manual effort is needed.\
-\
-This document provides a step-by-step overview of configuring tag automations using IrisAgent. The process involves setting up AI intents for automatic predictions and responses, which can enhance efficiency in handling customer queries.\
-\
-There are three ways to automate tagging and you can choose any number of them: Fully Automated, Using Existing Tags or Fields, and Configuring Tagging in plain English.
+Manual ticket classification is time-consuming and inconsistent. IrisAgent can classify incoming tickets from plain-language procedures, write procedure tags back to your ticketing system, and populate custom fields such as Module, Component, Issue Type, or any other field your team uses.
 
-### **Fully Automated**
+There are three complementary ways to automate classification: fully automated trend detection, existing rule-based tags, and procedure-based AI classifications.
 
-\
+### Fully automated
+
 This is enabled by default. IrisAgent automatically predicts tags for incoming tickets based on historical data and trends from your ticketing system. No additional setup is required. You will start seeing tags under the Categories page on the [IrisAgent dashboard](https://web.irisagent.com/overview).
 
-### **Using Existing Tags or Fields**
+### Existing rule-based tags
 
-\
-If your ticketing platform already has the tags or custom fields that your team is manually adding and you'd like to automate, IrisAgent can train an AI model to automatically predict the same tags and write them back into your ticketing system. To do this, please let us know by [sending us an email](mailto:contact@irisagent.com?subject=Existing%20tags%20to%20automate). Include the names of these tags or custom fields in your message.
+Existing regex or rule-based ticket classifications continue to use their configured ticket-tag behavior. Procedure-based classifications can run alongside them.
 
-### **Configuring Tagging in plain English**
+### Procedure-based AI classifications
 
-\
-You can configure new tags by describing them in plain English and some examples. IrisAgent will train an AI model to automatically predict these tags and write them back into your ticketing system. To do this, follow these steps:
+Create a procedure for every value that IrisAgent should classify. For example, `EMR` can be a procedure in the `Module` classification group, while `ePrescribe` can be a procedure in the `Component` group.
 
-1. Go to **Automate** → **Procedures** on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories) and click **Create New Procedure / Q&A**.
-2. Enter the name and scenario to describe ticket intent for the Tags you want to automate. Click on the gear icon and enable the toggle **Write intent to tags field**. Click on **Save**.
+1. Go to **Automate** → **Procedures** on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories).
+2. Create a procedure or edit an existing one.
+3. Enter a clear procedure name, scenario, and representative training examples.
+4. Open the scenario settings and turn on **Use as an AI classification**.
+5. Optionally enter a **Classification group (tagField)**, such as `Module`, `Component`, or `Issue Type`.
+6. Set the procedure status to **Enabled**, then save it.
+
+An eligible procedure is one that is enabled and has **Use as an AI classification** turned on. IrisAgent writes the matched procedure name as the ticket tag by default. You do not need to create a separate tag mapping when the ticket tag should have the same value as the procedure name.
+
+Procedure-level filters still determine which tickets are eligible. For example, product, channel, chatbot, or other procedure filters apply before classification writeback.
+
+## Classification groups
+
+A classification group tells IrisAgent which procedures are alternatives within the same field. IrisAgent evaluates different groups in parallel and returns at most one matching procedure from each group.
+
+For example:
+
+| Classification group | Procedures |
+| --- | --- |
+| Module | EMR, Billing, Scheduling |
+| Component | ePrescribe, Patient Chart, Claims |
+| Issue Type | Bug, Configuration, How-to |
+
+A ticket can therefore receive one Module, one Component, and one Issue Type classification at the same time. Procedures without a classification group remain available as ungrouped classifications.
+
+## Write classifications to custom fields or alternate tags
+
+Use classification output mappings when the destination value differs from the procedure name or when the result should populate a ticket custom field.
+
+1. Go to **Settings** → **Ingestion** → **AI Classification Writeback**.
+2. Click **Add mapping**.
+3. Select an enabled classification procedure. Its classification group is filled automatically.
+4. Configure one or both destination types:
+   - Under **Ticket tags**, click **Add tag** to write an additional or provider-specific tag. The original procedure tag is still written automatically.
+   - Under **Custom fields**, click **Add field**, then enter the ticketing-system field name or stable field ID and the value to write.
+5. Select a write policy for each destination, then save.
+
+Available write policies are:
+
+- **Only if empty**: writes only when IrisAgent can confirm the destination is empty. If the field was not ingested and its current value cannot be verified, IrisAgent leaves it unchanged.
+- **Always replace**: writes the configured value even when the destination already contains a value.
+- **Preview only**: records what IrisAgent would write without changing the ticketing system.
+
+Each mapping can contain multiple ticket-tag and custom-field destinations. A procedure does not need a mapping when its only output is the default same-name ticket tag.
+
+<Note>
+  AI classification writeback is activated per account. If you have configured eligible procedures but do not see values written to your ticketing system, contact IrisAgent Support to confirm activation and provider-field access.
+</Note>
