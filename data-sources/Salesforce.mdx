@@ -13,8 +13,8 @@ description: "IrisAgent Installation Guide for Salesforce"
 ## Install the IrisAgent app in Salesforce account
 
 1. Install the IrisAgent app using the installation link for your org type:
-   - **Production or Developer org:** [Production installation link](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tak000000aea1AAA)
-   - **Sandbox org:** [Sandbox installation link](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tak000000aea1AAA)
+   - **Production or Developer org:** [Production installation link](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tak000000dE9ZAAU)
+   - **Sandbox org:** [Sandbox installation link](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tak000000dE9ZAAU)
 
    Make sure you are logged into the target Salesforce org before opening the link. Sandbox orgs must use the `test.salesforce.com` link above, not the production one.
 2. Select the option Install for All Users (note that you can later restrict access to certain profiles). Click on Install after checking the acknowledgment. After installation, click on Done.
@@ -32,8 +32,9 @@ description: "IrisAgent Installation Guide for Salesforce"
 1. Go to Setup – Object Manager. Search for the Case object.
 2. Click on the Lightning Record Pages menu option and edit or create a Lightning page.
 3. Click Edit.
-4. Select IrisAgent Sidebar and set it to the desired location on the page.
-5. Click on Save. If a pop box opens, click on Activate.
+4. Select **IrisAgent Sidebar: Inline Email** and set it to the desired location on the page. Do not add the standard **IrisAgent Sidebar** component as well.
+5. Make sure the standard **Email** action is visible in the Case Feed publisher when the page loads. This lets agents insert Suggested and Dynamic Resolutions into the inline email composer.
+6. Click on Save. If a pop box opens, click on Activate.
 
 ## Share the list of custom fields
 
