@@ -1,0 +1,93 @@
+---
+title: "Jira Integration Settings"
+description: "Customize Jira issues created from Agent Assist and sync linked Jira data into Zendesk ticket fields."
+---
+
+Use **Jira Integration** settings to control the Jira description that Agent Assist prefills for new issues and, if Zendesk is your ticketing system, keep Zendesk ticket fields synchronized with linked Jira issues.
+
+These settings are available to administrators after Jira is connected. Open **Settings > Agent Assist App > Jira Integration**, then choose **Issue template** or **Field sync**.
+
+## Customize the Jira issue template
+
+The issue template prefills the Jira description when an agent creates an issue from the Agent Assist sidebar. Agents can review and edit the description before creating the issue.
+
+To configure the template:
+
+1. Open **Issue template** from the **Jira Integration** card.
+2. Enter the default description for new Jira issues.
+3. Insert placeholders wherever ticket context should appear:
+
+   | Placeholder | Replaced with |
+   | --- | --- |
+   | `{{ticket_id}}` | The current support ticket ID |
+   | `{{ticket_subject}}` | The current support ticket subject |
+
+4. Review the preview and select **Save**.
+
+The template can combine placeholders with static text. It cannot be blank and can contain up to 10,000 Unicode characters. Select **Use product default** to restore the IrisAgent template.
+
+<Note>
+  Changing the template affects Jira issues created after you save. It does not modify existing Jira issues.
+</Note>
+
+## Sync Jira fields to Zendesk
+
+Field sync is available when Zendesk is your ticketing system. It copies selected Jira values into Zendesk ticket fields for Jira issues linked through the IrisAgent sidebar or the Zendesk Jira integration. The sync is one-way from Jira to Zendesk.
+
+### Supported fields
+
+You can use the following Jira source fields:
+
+- Status
+- Priority
+- Issue type
+- Labels
+- Issue key
+- Summary
+
+You can sync them to compatible, active Zendesk custom ticket fields. You can also sync Jira values to the standard Zendesk **Status** and **Priority** fields.
+
+Common mappings include:
+
+| Jira source | Compatible Zendesk destinations |
+| --- | --- |
+| Status | Status, dropdown, text |
+| Priority | Priority, dropdown, text |
+| Issue type | Dropdown, text |
+| Labels | Multi-select, text |
+| Issue key | Text |
+| Summary | Text, textarea |
+
+The destination list shows only compatible fields. Each Zendesk field can be the destination of one mapping, and the standard Status and Priority fields can each be mapped only once.
+
+### Configure field mappings
+
+1. Open **Field sync** from the **Jira Integration** card.
+2. Turn on **Enable field sync**.
+3. Select **Add mapping**.
+4. Choose a Jira source field and a compatible Zendesk destination field.
+5. For dropdowns and the standard Zendesk Status or Priority field, add at least one **Value mapping** from a Jira value to a Zendesk option.
+6. For supported custom fields, optionally enable **Clear when Jira value is empty**.
+7. Add any additional mappings and select **Save**.
+
+For fields that require value mappings, only mapped Jira values are synchronized. If a Jira value is not mapped, IrisAgent skips that update until the Jira issue changes again. This prevents an unsupported value from being written to Zendesk.
+
+<Warning>
+  Updating the standard Zendesk Status field can run Zendesk triggers and automations, affect SLA timing, send satisfaction surveys, or start ticket auto-close workflows. A Solved update can fail when a ticket is unassigned. Closed is not available as a destination because closing a Zendesk ticket cannot be reversed.
+</Warning>
+
+The standard Status and Priority fields cannot be cleared when the Jira value is empty. If your Zendesk account uses custom ticket statuses, IrisAgent uses the account's default custom status for the mapped status category.
+
+### What happens after you save
+
+IrisAgent starts processing Jira changes ingested after the configuration is saved. Existing linked tickets are not backfilled; their mapped Zendesk fields update the next time the linked Jira issue changes.
+
+Updates run asynchronously after Jira changes are ingested. If a Zendesk ticket has multiple linked Jira issues, the most recently updated Jira issue supplies the synchronized value. IrisAgent skips a Zendesk update when the destination already contains the correct value.
+
+Renaming a mapped Zendesk field does not break the mapping because IrisAgent stores the field ID. If a destination field is deleted or deactivated, update the field-sync configuration and select another destination.
+
+## Related guides
+
+- [Connect Jira Software](/data-sources/Jira-Software)
+- [Set up Zendesk](/data-sources/Zendesk)
+- [Use the Agent Assist sidebar](/agent-copilot)

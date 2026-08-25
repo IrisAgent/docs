@@ -178,6 +178,12 @@
                 ]
               },
               {
+                "group": "Agent Assist",
+                "pages": [
+                  "configuring-ai-and-automation/Jira-Integration-Settings"
+                ]
+              },
+              {
                 "group": "Ticket Intelligence",
                 "pages": [
                   "configuring-ai-and-automation/Ticket-Tagging",
