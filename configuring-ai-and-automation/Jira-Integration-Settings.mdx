@@ -30,6 +30,51 @@ The template can combine placeholders with static text. It cannot be blank and c
   Changing the template affects Jira issues created after you save. It does not modify existing Jira issues.
 </Note>
 
+## Show linked Zendesk tickets in Jira
+
+If Zendesk is your ticketing system, IrisAgent can maintain a list of linked Zendesk tickets directly on each Jira issue. This lets Jira users see the related support conversations without opening the Agent Assist sidebar.
+
+Ask a Jira administrator to create these two custom fields with the exact names and types shown below:
+
+| Jira custom field | Type | Value maintained by IrisAgent |
+| --- | --- | --- |
+| `Iris Zendesk Tickets` | Paragraph (supports rich text) | A bulleted list containing up to 200 ticket IDs, subjects, and links, followed by the number of remaining linked tickets |
+| `Iris Zendesk Ticket Count` | Number | The number of Zendesk tickets currently linked to the Jira issue |
+
+Add both fields to the field context and issue layouts used by the projects connected to IrisAgent. A common layout is to place **Iris Zendesk Ticket Count** in the issue details and **Iris Zendesk Tickets** in the main content area.
+
+The resulting Jira issue can look like this:
+
+<img
+  style={{ borderRadius: "0.5rem" }}
+  src="/images/jira-linked-zendesk-fields.png"
+  alt="Mockup of a Jira issue showing a linked Zendesk ticket list and ticket count maintained by IrisAgent"
+/>
+
+After the Jira administrator creates and places both fields:
+
+1. In IrisAgent, open **Settings > Agent Assist App > Jira Integration**.
+2. Select **Linked tickets**.
+3. Turn on **Write linked tickets to Jira** and select **Save**.
+
+This setting is disabled by default. When enabled, IrisAgent recomputes and overwrites both fields after an agent creates a Jira issue or links an existing Jira issue from the IrisAgent sidebar. Repeating the same link does not add a duplicate ticket. Links created outside these sidebar actions appear the next time an agent creates or links a Jira issue from the sidebar; IrisAgent does not continuously poll Jira for link changes.
+
+The numeric field always contains the total number of linked Zendesk tickets. To stay within Jira field-size limits, the rich-text field shows the first 200 tickets and then a final row with the number of additional linked tickets.
+
+Turning the setting off stops future updates but does not clear values already written to Jira.
+
+The Jira user connected to IrisAgent must be able to browse and edit the target issues, and both fields must be editable for the applicable issue type. IrisAgent does not create these fields automatically because creating global Jira fields requires Jira administrator access.
+
+<Note>
+  If either field is missing, has a different name or type, or is outside the target issue's field context, Jira linking continues to work but IrisAgent does not write the linked-ticket summary. Tickets suggested by IrisAgent are not included until an agent links them to the Jira issue.
+</Note>
+
+You can use the numeric field in Jira Query Language (JQL), for example:
+
+```text
+"Iris Zendesk Ticket Count" > 0
+```
+
 ## Sync Jira fields to Zendesk
 
 Field sync is available when Zendesk is your ticketing system. It copies selected Jira values into Zendesk ticket fields for Jira issues linked through the IrisAgent sidebar or the Zendesk Jira integration. The sync is one-way from Jira to Zendesk.
