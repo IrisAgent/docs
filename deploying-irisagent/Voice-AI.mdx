@@ -56,13 +56,77 @@ Voice AI answers from your knowledge base and past tickets out of the box. To ha
 1. Go to the **Create Procedure** page on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories).
 2. Select **Voice** as the channel so the procedure applies to voice conversations.
 3. Enter a **name**, a **short scenario description** (when the AI agent should use this procedure), and the **actions** it should take.
-4. Click **Save**.
+4. Choose **Instructions for AI Agent** for procedures that collect information or run actions. Add the required fields to **Information to collect**.
+5. Select **Inbound** under **Voice calls** for the inbound assistant, set **Status** to **Enabled**, and click **Save**.
 
 You describe procedures in plain English rather than building a flowchart, and IrisAgent recognizes when the scenario applies and runs the steps end to end. See [Workflows](/configuring-ai-and-automation/Workflows) for how to write them, including how to call your own APIs mid-conversation to pull in live data.
 
 <Note>
 Procedures take precedence over answers from your trained knowledge base. When a caller's request matches a procedure's scenario, the AI agent follows the procedure's steps instead of generating a free-form answer.
 </Note>
+
+## Create tickets from voice conversations
+
+When Zendesk is your active ticketing provider, the procedure editor automatically includes **Create Zendesk ticket** under **Actions → Connected actions**. Use it to turn a caller's collected information into a support ticket without provisioning a Custom API.
+
+Add fields such as **Caller name**, **Caller email**, **Caller phone**, and **Issue summary** to **Information to collect**, then insert `{{Create Zendesk ticket}}` at the step where the ticket should be created. The collected email becomes the requester email, and all collected non-empty values are included in the ticket description.
+
+See [Create Zendesk tickets from a procedure](/configuring-ai-and-automation/Workflows#create-zendesk-tickets-from-a-procedure) for field mapping, example instructions, and testing. This is useful for an answering service that records requests for later follow-up without transferring the caller immediately.
+
+## Transfer calls to a human
+
+Call transfer connects a caller from the inbound Voice AI assistant to your support team when IrisAgent requests escalation. This can happen because a procedure calls for a human handoff or because IrisAgent cannot answer. It does not transfer every call just because the setting is enabled.
+
+### Enable call transfer
+
+1. Open the [inbound Voice AI settings](https://web.irisagent.com/manage-chatbot/voice) and select the **Call transfer** tab.
+2. Turn **Human handoff** on. Check that the switch shows **Enabled**.
+3. Enter the **Transfer phone number** in international format, including `+` and the country code, such as `+14155550188`.
+4. If needed, enter an **Extension** of 1–10 digits. The extension is dialed after the destination answers.
+5. Enter the **Message before transfer**. This is what the caller hears when the transfer starts. The default is “I'll connect you with a human agent now.” The message can contain up to 1,000 characters.
+6. Click **Save transfer settings** and wait for the save confirmation. Start a new call to use the saved configuration.
+
+<Warning>
+  Saving a phone number and message while **Human handoff** is disabled does not enable transfers. To turn transfers off later, switch **Human handoff** to **Disabled** and save again.
+</Warning>
+
+Use a direct agent, ring group, or contact-center number. Do not use the Voice AI inbound number, or another number whose routing sends the caller back to Voice AI. This can create a call loop.
+
+These settings apply to the **inbound** assistant. Outbound Voice AI uses a separate assistant managed by IrisAgent.
+
+### Request handoff in a procedure
+
+In a procedure with **Instructions for AI Agent**, place the cursor where handoff should occur and click **Actions → Agent actions → Escalate to human**. The button inserts `escalate` as plain text, without curly brackets. Explain the condition under which the AI should take that step.
+
+For example:
+
+```text
+1. Ask the caller what they need help with.
+2. If they ask to speak with a person, escalate.
+3. Otherwise, follow the troubleshooting steps for their issue.
+4. If the issue remains unresolved and the caller wants human help, escalate.
+```
+
+Make sure the procedure includes **Voice** and **Inbound** in **Availability**, set **Status** to **Enabled**, and save it. The transfer setting supplies the destination and announcement; the procedure supplies the condition for requesting handoff. A sentence saying “I'll transfer you” alone is not a transfer action.
+
+### What happens during transfer
+
+IrisAgent uses an **immediate transfer**, also called a blind transfer. The assistant announces the transfer using your saved message and connects the caller to the configured destination. It does not first speak privately with a human agent or check that one is available.
+
+- Unanswered calls may go to the destination's voicemail, depending on your phone-system routing.
+- Configure business hours, queues, and unanswered-call handling in the destination phone system.
+- Additional telephony charges may apply.
+- Transferring a call does not automatically create a Zendesk ticket. If you need both, include **Create Zendesk ticket** before `escalate` in the procedure.
+
+### Verify call transfer
+
+1. Reopen the **Call transfer** tab and check that **Human handoff** is **Enabled** and the saved destination is correct.
+2. After saving, place a new phone call to the Voice AI number. Use a real phone call to verify the full telephone route; a browser conversation alone is not an end-to-end phone-transfer check.
+3. Trigger the handoff condition in your enabled procedure, for example by asking to speak with a person.
+4. Confirm that you hear the saved announcement and that the destination rings. If you configured an extension, verify that it reaches the intended recipient.
+5. Review the call in **Chat and Voice Logs**.
+
+If no transfer occurs, check the saved toggle state, the procedure's status and inbound voice availability, and whether its escalation condition was reached. If the transfer starts but does not reach a person, check the destination number, extension, queue, and voicemail routing.
 
 ## Review conversations
 

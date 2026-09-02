@@ -51,6 +51,66 @@ On the same procedure:
 
 **Ticket Agent can prefill the product.** When you create a procedure from a Support Analyst recommendation, the Product ID field is filled from the source tickets so you do not retype it.
 
+### Create Zendesk tickets from a procedure
+
+The built-in **Create Zendesk ticket** action creates a ticket in your connected Zendesk account using the information collected during the procedure. It is available automatically when Zendesk is your account's active ticketing provider. You do not need to create a Custom API, configure an endpoint, or add separate credentials.
+
+#### Add the ticket action
+
+1. Open or create a procedure under **Automate → Procedures**.
+2. In **Availability**, choose the channels that should use it. For inbound calls, select **Voice** and **Inbound** under **Voice calls**.
+3. Choose **Instructions for AI Agent** in the **Action** section. Do not use **Direct Answer** for a procedure that needs follow-up questions or action execution.
+4. Add the fields you need to **Information to collect**. For a callback request, for example, add **Caller name**, **Caller email**, **Caller phone**, and **Issue summary**. Add other business-specific fields as needed and put them in the order you want the AI to ask for them.
+5. Place the cursor at the appropriate step in your instructions. Under **Actions → Connected actions**, click **Create Zendesk ticket**. This inserts `{{Create Zendesk ticket}}` into the instructions.
+6. Describe when to run the action and what the AI should do after it succeeds. The action can be a step in the conversation; it is not limited to the end of a procedure.
+7. Set **Status** to **Enabled** and save the procedure before testing it.
+
+<Note>
+  The built-in action does not impose a fixed list of required fields. Your procedure defines what to collect. If the action is missing, ask an administrator to verify that Zendesk is the active ticketing provider for your account.
+</Note>
+
+#### What goes into the ticket
+
+| Ticket value | How it is populated |
+| --- | --- |
+| **Requester name** | From **Caller name**, **Requester name**, **Customer name**, **Full name**, or **Name**, in that order. Defaults to `IrisAgent customer` if none is collected. |
+| **Requester email** | From **Caller email**, **Requester email**, **Customer email**, **Email address**, or **Email**, in that order. |
+| **Subject** | From **Ticket subject**, **Issue summary**, **Subject**, **Summary**, or **Reason**, in that order. Otherwise, it uses `Customer request from` followed by the requester name. |
+| **Description** | Every non-empty field collected by the procedure, with its label and value. |
+
+Field labels are normalized to keys such as `caller_email` and `issue_summary`. Use one of the recognized labels above when you want a value to populate the requester or subject. Other collected values, such as account number or service address, are included in the description.
+
+<Warning>
+  Add **Caller email** or another recognized email field if the ticket needs the customer's email address. The action uses the email collected by the procedure; it does not substitute the connected administrator's email when that value is missing.
+</Warning>
+
+Collected fields are not automatically mapped to Zendesk custom ticket fields, and the action does not automatically attach the full conversation transcript. If you need custom-field IDs or a different ticket payload, use a [Custom API](/data-sources/Custom-API) action instead.
+
+After a successful call, the action returns `status: created` and `ticket_id`. Later instructions can use that result to confirm creation and share the ticket number. Only tell the customer that a ticket was created after the action succeeds.
+
+#### Example: collect a request for follow-up
+
+Add **Caller name**, **Caller email**, **Caller phone**, and **Issue summary** to **Information to collect**, then use instructions such as:
+
+```text
+1. Greet the caller and explain that you can record their request for the support team.
+2. Collect the listed information one item at a time. Reuse information the caller has already provided.
+3. Confirm the issue summary and callback details with the caller.
+4. Run {{Create Zendesk ticket}} with the collected information.
+5. If creation succeeds, give the caller the returned ticket number and explain the team's follow-up process.
+6. If creation fails, do not claim that a ticket was created. Explain the problem and offer the configured alternative contact method.
+```
+
+To create a ticket only when a human is needed, put the action inside that condition in the instructions. If you also want a live handoff, run the ticket action first, then use **Escalate to human**. That button inserts the plain keyword `escalate`, without curly brackets.
+
+<Note>
+  Ticket creation and escalation are separate actions. Creating a ticket does not automatically transfer a call, and `escalate` does not automatically run **Create Zendesk ticket**. For phone handoff, also configure [Voice AI call transfer](/deploying-irisagent/Voice-AI#transfer-calls-to-a-human).
+</Note>
+
+#### Verify the ticket flow
+
+Save the procedure with **Status: Enabled**, then start a conversation on a selected channel using the scenario you defined. Confirm that the AI collects the requested fields, runs the action at the intended step, and only reports success after creation. Open the resulting ticket in Zendesk and check its requester, subject, and description. A test that reaches this action creates a real ticket in the connected account; use appropriate test details.
+
 ### Using Custom APIs in plain-English procedures
 
 IrisAgent can call your own external APIs mid-conversation to look up live data — such as order status, account tier, or subscription details — and present the result to the customer in natural language, without any agent involvement.

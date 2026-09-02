@@ -53,6 +53,12 @@ Check out this video for a quick overview of setting up IrisAgent on Zendesk.
     alt="IrisAgent app listing on Zendesk"
   />
 
+## Create tickets from procedures
+
+When Zendesk is your active ticketing provider, **Create Zendesk ticket** is automatically available in the procedure editor under **Actions → Connected actions**. It uses this Zendesk connection, so you do not need to provision a separate Custom API or credential.
+
+Add the information you want the AI to collect, including a caller email if you need it as the ticket's requester email, and insert `{{Create Zendesk ticket}}` at the appropriate step. See [Create Zendesk tickets from a procedure](/configuring-ai-and-automation/Workflows#create-zendesk-tickets-from-a-procedure) for setup, supported requester and subject fields, and a voice answering-service example.
+
 ## Knowledge base: every Zendesk brand
 
 Connecting Zendesk imports **tickets and Zendesk Guide**. Help Center articles are requested per brand, not only from the primary subdomain.
