@@ -16,7 +16,13 @@ For either setup method, you need:
 - IrisAgent administrator access
 - A CSV file containing only contacts who have explicitly opted in
 
-If you request an IrisAgent-managed number, you also need a notification email, your company's legal and tax information, and a description of how recipients opt in.
+If you request an IrisAgent-managed number, prepare:
+
+- A notification email and your company's legal, tax, address, and authorized-contact information
+- A description of the messages you plan to send and representative message samples
+- An explanation of how recipients opt in, with supporting evidence and relevant website links
+
+Business registration and messaging-use-case registration are separate steps. You do not need to create your own Twilio account for an IrisAgent-managed number.
 
 If you connect your own Twilio number, you also need:
 
@@ -81,33 +87,80 @@ IrisAgent confirms that it can access the number and Messaging Service, that the
 ## Get an IrisAgent-managed number
 
 1. Open **Deploy → Text channels**.
-2. Select **Get an IrisAgent number**.
+2. Under **Get an IrisAgent number**, click **Get a new number**.
 3. Enter a preferred three-digit US area code.
 4. Click **Get number**.
 
-IrisAgent immediately provisions a dedicated number for your workspace. The number cannot send application-to-person messages until registration is approved.
+IrisAgent provisions a dedicated number for your workspace in a customer-specific Twilio subaccount. Number provisioning is separate from carrier approval: receiving a number does not mean it is ready to send.
 
-### Register your business
+<Note>
+The managed registration experience below requires the updated Text channels feature to be enabled for your workspace. If you do not see these controls, contact IrisAgent support. Connecting your own Twilio number remains a separate setup option.
+</Note>
+
+### 1. Register your business
 
 After your number is provisioned:
 
 1. Enter the email address that should receive registration updates.
-2. Click **Start registration**.
-3. Complete the secure embedded registration form. Provide accurate company, tax, and messaging-use-case information.
-4. Describe how recipients opt in. The opt-in description should match the actual experience customers see.
-5. Submit the form for carrier review.
+2. Click **Start / resume registration**.
+3. Complete the secure embedded business registration form with accurate company and tax information.
+4. Submit the form and wait for brand review.
 
-The Text channels page shows the current activation state:
+If you close an unfinished form, use **Start / resume registration** to continue. Submitting the form does not activate sending. Recently submitted information can take a few minutes to appear in the status shown by IrisAgent.
+
+### 2. Register your messaging use case
+
+After the brand is approved:
+
+1. Click **Register messaging use case** on Text channels.
+2. Complete the separate embedded campaign-registration form, including the purpose of your messages, representative samples, and opt-in information.
+3. Ensure the opt-in description matches the actual experience recipients see.
+4. Submit the form for campaign review.
+
+You do not need to enter the business notification email again to open this step. An approved brand alone is not enough to send messages.
+
+<Note>
+A **messaging-use-case registration** is the Twilio A2P registration associated with your Messaging Service. An **Outbound campaign** in IrisAgent is a particular message and CSV audience. Creating an Outbound campaign does not create or approve a carrier registration.
+</Note>
+
+### 3. Wait for number activation
+
+After campaign approval, IrisAgent waits for confirmation that the selected number is registered to that campaign. The managed sender becomes **Active** only after the business, messaging use case, and number have completed the required approvals.
+
+Text channels displays these stages:
+
+| Stage | What to do |
+| --- | --- |
+| **Business registration** | Start or resume the business form. |
+| **Brand review** | Wait for the business review result. |
+| **Messaging use case** | Open the campaign form after brand approval. |
+| **Campaign review** | Wait for the messaging-use-case review result. |
+| **Number registration** | Wait for carrier activation of the selected number. |
+| **Ready to send** | Create or open an Outbound campaign and review it before sending. |
+
+The status banner summarizes the current state:
 
 | Status | Meaning |
 | --- | --- |
-| **Action required** | Complete or correct the business registration form. |
-| **Carrier review** | Registration was submitted and is awaiting review. |
-| **Needs attention** | The registration needs additional information or corrections. |
-| **Active** | The number is approved for outbound messaging. |
+| **Action required** | Complete the business form or, after brand approval, register the messaging use case. |
+| **Carrier review** | Business, campaign, or number registration is still pending. Check the stage for details. |
+| **Needs attention** | Read the explanation. Use **Correct registration** when available, or contact support. |
+| **Active** | All required approvals for the managed sender have been confirmed. |
+
+Click **Refresh status** to retrieve the latest registration state. The page also refreshes approximately every 30 seconds while no registration form or setup action is open. You do not need to leave the page open for provider updates to be processed.
+
+### Correct a rejected registration
+
+If a brand or campaign is rejected, IrisAgent shows the available rejection reason. Click **Correct registration** to reopen the appropriate form and address the requested changes. Registrations awaiting review cannot be edited. For number-registration problems or a status without a correction button, contact support.
+
+### Get help with registration
+
+When a registration action is available, use **View required details** to review [Twilio's business-information checklist](https://www.twilio.com/docs/messaging/compliance/a2p-10dlc/collect-business-info), or **Email us details** to open a prefilled email to IrisAgent support. You can also [email support directly](mailto:support@irisagent.com).
+
+Share general business and messaging details by email. Do not email API secrets, tax identifiers, or identity documents; ask support for a secure way to provide sensitive information.
 
 <Warning>
-Purchasing a number and completing business-profile verification do not by themselves authorize outbound application-to-person SMS. The number must also complete the applicable carrier registration.
+Purchasing a number, approving a Business Profile, approving a Brand, or enabling Twilio Compliance Embeddable access does not by itself authorize outbound SMS. Embeddable access only enables the registration forms; each managed customer's brand, campaign, and number still need the applicable approvals. Mock/demo approvals do not authorize real messages.
 </Warning>
 
 ## Prepare a contacts CSV
@@ -146,6 +199,16 @@ Upload only recipients who explicitly agreed to receive texts from your business
 
 Click any campaign row to review its message, audience size, consent confirmation, and delivery metrics. Use **Configure** at the top of the Outbound page to return to **Deploy → Text channels**.
 
+### Send and monitor a campaign
+
+1. Open the saved campaign and review its message, audience, and consent confirmation.
+2. Ensure your text channel is active, then click **Send campaign**.
+3. Monitor the delivery metrics and any recipient-level failures on the campaign details page.
+
+For managed numbers, IrisAgent rechecks registration before dispatching a campaign. If registration cannot be confirmed, sending is blocked. For customer-owned Twilio numbers, you remain responsible for registration and use-case approval even when the connection is active.
+
+API acceptance or a sent message is not proof of delivery. Twilio can report a later carrier failure. The campaign details page displays reported delivery errors with recipient information, a failure description, and a Twilio error-code link when available. A completed send operation does not mean every recipient received the message.
+
 ### Personalize a message
 
 Use `{{first_name}}` wherever the recipient's first name should appear:
@@ -166,7 +229,19 @@ Include clear sender identification and opt-out language appropriate for your pr
 
 ### I received a number, but sending is not available
 
-Number provisioning is immediate, but carrier registration is separate. Open **Deploy → Text channels** and check whether the status is **Action required**, **Carrier review**, or **Needs attention**.
+Number provisioning and carrier registration are separate. Open **Deploy → Text channels**, click **Refresh status**, and check the current stage. After brand approval, you must complete **Register messaging use case**. Campaign approval is followed by number registration; sending remains unavailable until the managed sender is **Active**.
+
+### My business was approved, but I still cannot send
+
+Check which approval you received. A Twilio Business Profile approval or Compliance Embeddable enrollment is not a completed customer campaign registration. Brand approval unlocks the messaging-use-case form; it does not activate the number. Follow the remaining stages in Text channels.
+
+### I submitted a form, but the page still offers registration
+
+Submission is not approval, and provider records may take a few minutes to appear. Click **Refresh status** before retrying. If the form is still a draft, the registration action resumes it. If the discrepancy persists, contact support rather than creating a new number.
+
+### Status refresh or registration is unavailable
+
+Read the inline error and retry shortly. If the error says embedded registration is not enabled, contact IrisAgent support to confirm access for the managed account. Do not purchase another number or assume that an existing business-profile approval resolves this error.
 
 ### Twilio connection fails
 
@@ -178,7 +253,7 @@ Confirm that:
 - The phone number appears under the selected Messaging Service's **Senders** tab.
 - The restricted API key has permission to read those resources and create outbound messages.
 
-### Twilio reports error 30034, but IrisAgent shows the message as sent
+### Twilio reports error 30034 or an undelivered message
 
 [Twilio error 30034](https://www.twilio.com/docs/api/errors/30034) means a US local 10DLC message was sent from an unregistered number. Open **Messaging → Messaging Services**, select the service connected to IrisAgent, and check **Compliance → 10DLC**. Associate the service with the applicable approved A2P campaign or complete its registration before sending again.
 
@@ -187,7 +262,7 @@ Activating an outbound campaign in IrisAgent does not create or enable a Twilio 
 - An **IrisAgent campaign** defines the message and recipients and starts the send operation.
 - A **Twilio A2P campaign registration** tells US carriers who is sending, the approved use case, and which Messaging Service is authorized.
 
-Twilio may initially accept an API request and later mark the message **Undelivered** after receiving a carrier response. During the initial release, consult **Twilio → Messaging → Logs** for the provider's final delivery state and error code when troubleshooting a recipient-level failure.
+Twilio may initially accept an API request and later mark the message **Undelivered** after receiving a carrier response. Check the campaign details page in IrisAgent for reported delivery errors. If the final state has not appeared yet, refresh the campaign and compare it with **Twilio → Messaging → Logs**. Contact support if the discrepancy persists; include the campaign and error code, never your API secret.
 
 ### My CSV was rejected
 
@@ -204,6 +279,6 @@ IrisAgent skips rows with missing or invalid phone numbers and removes duplicate
 
 ### Registration is taking longer than expected
 
-Carrier review commonly takes one to two weeks but can take longer. Monitor the notification email supplied during registration and the status shown under **Deploy → Text channels**. If the status changes to **Needs attention**, reopen registration and provide the requested information.
+Business and campaign reviews are separate, and timing varies; the UI does not guarantee an approval date. Monitor the notification email and the current stage under **Deploy → Text channels**. If the status changes to **Needs attention**, read the reason and use **Correct registration** when offered. If the number remains pending after campaign approval, contact support to check number-registration updates rather than retrying campaign sends.
 
-For help, [contact IrisAgent support](mailto:contact@irisagent.com).
+For help, [contact IrisAgent support](mailto:support@irisagent.com).

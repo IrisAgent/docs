@@ -1,0 +1,65 @@
+---
+title: "Internal AI Search in Confluence"
+description: "Embed an authenticated IrisAgent search bar in Confluence so employees can ask questions and follow up with source-backed answers."
+---
+
+Give employees a search bar inside a Confluence page to ask questions about your internal knowledge. The widget uses the Agent Assist answer pipeline and includes source links and follow-up questions.
+
+<Note>
+  This feature requires the IrisAgent employee-search frontend and API release. Ask your IrisAgent contact to confirm availability before adding the widget. It is not enabled by connecting Confluence as a data source alone.
+</Note>
+
+## Before you start
+
+- Use Confluence Cloud on an `https://your-company.atlassian.net` site, with permission to edit the target page and insert an iFrame macro.
+- Give each employee an IrisAgent portal account in the correct organization. A Confluence login alone does not grant access to IrisAgent.
+- Confirm that the internal knowledge employees should search is connected and indexed in IrisAgent. See [Connect Confluence](/data-sources/Confluence) to add Confluence content.
+- Confirm that these employees may access the organization's internal Agent Assist knowledge. This widget uses IrisAgent account access; it does not synchronize each employee's Confluence page restrictions or Zendesk sidebar roles.
+
+## Add the search bar
+
+1. Edit the Confluence page where employees should search.
+2. Insert the **iFrame** macro.
+3. Set the URL to `https://web.irisagent.com/agent-assist.html`.
+4. Set the width to `100%` and start with a height of `700` pixels. Increase the height if your team prefers more space for answers.
+5. Publish the page and open it as an employee who has IrisAgent access.
+
+Use the URL directly in the macro. It contains no API key, employee token, or organization secret. If your IrisAgent contact provides a different portal hostname, use that hostname instead.
+
+See Atlassian's [iFrame macro instructions](https://support.atlassian.com/confluence-cloud/docs/insert-the-iframe-macro/) for the macro's available settings.
+
+## Connect your account and search
+
+1. Click **Connect IrisAgent account** inside the widget. A connection window opens.
+2. If prompted, click **Sign in to IrisAgent**. Complete your usual IrisAgent sign-in in the new tab, return to the connection window, and click **I've signed in — continue**.
+3. Click **Connect to Confluence**. The connection window closes and the search bar becomes available.
+4. Enter a question and click **Ask**. Open the source links to review the supporting content.
+5. Ask follow-up questions in the same conversation, or select **New search** to start a separate conversation.
+
+The embedded session stays in memory. Refreshing the Confluence page requires reconnecting. **Disconnect** clears the displayed conversation and the widget's session; it does not sign you out of the main IrisAgent portal. Conversations may still be retained in IrisAgent under your organization's existing policies.
+
+## What employees can ask
+
+The widget searches the knowledge available to the signed-in IrisAgent organization. It does not automatically read the Confluence page hosting it or receive the context of an open Zendesk ticket. Include the relevant product, error message, or situation in your question.
+
+This experience provides question answering and follow-ups. It does not include the Zendesk sidebar's ticket summary, ticket field updates, or other ticket-specific controls.
+
+## Troubleshooting
+
+### The page refuses to display the widget
+
+Confirm that the URL ends in `/agent-assist.html`, that the employee-search release is deployed, and that your Confluence site uses an `atlassian.net` hostname. The regular IrisAgent dashboard URL is not the embed URL.
+
+Confluence Data Center and custom Confluence domains require an explicit framing-policy change for your site's HTTPS origin. Contact IrisAgent with your exact site URL before rollout. You can use a link to open the search page in a new tab in the meantime.
+
+### The connection window does not open or cannot connect
+
+Allow popups for this page. If your browser or Confluence configuration blocks the connection flow, use **Open search in a new tab** and sign in there. The new-tab experience supports the same search and follow-up questions.
+
+### The widget asks me to reconnect
+
+Reconnect after a page refresh or an expired session. If access is still unavailable, ask your IrisAgent administrator to check your account membership and the organization's access status. Connecting the widget does not grant additional permissions.
+
+### An answer is missing or incomplete
+
+Try a more specific question and check that the relevant content has been ingested into the correct IrisAgent organization. Source links retain the original application's access requirements when opened.
