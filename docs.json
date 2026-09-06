@@ -188,7 +188,8 @@
                 "group": "Ticket Intelligence",
                 "pages": [
                   "configuring-ai-and-automation/Ticket-Tagging",
-                  "configuring-ai-and-automation/Ticket-Sentiment"
+                  "configuring-ai-and-automation/Ticket-Sentiment",
+                  "configuring-ai-and-automation/Trending-Incident-Detection"
                 ]
               },
               {

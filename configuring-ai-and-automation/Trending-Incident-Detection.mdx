@@ -1,0 +1,105 @@
+---
+title: "Trending Incident Detection"
+description: "Automatically group support conversations into topics, detect real-time volume spikes, and alert your team before an incident escalates"
+---
+
+## Overview
+
+Trending Incident Detection continuously groups your incoming support conversations into topics and watches each topic for an unusual jump in volume. When a topic spikes, IrisAgent surfaces it as a trending incident on the dashboard and can alert your team over email and Slack.
+
+The goal is to move from a reactive model, where an outage or regression is noticed only after tickets pile up, to a proactive one where the support team sees the pattern within minutes and can respond, message affected customers, and loop in engineering early.
+
+No manual configuration is required to start seeing topics and spikes. Topic clustering is on by default for cases and chat. Alerting is turned on by IrisAgent for your account.
+
+## How detection works
+
+### 1. Topic clustering
+
+IrisAgent reads recent tickets and chat conversations and uses an LLM to group them into meaningful, feature or issue specific clusters (for example "Invoice PDF fails to download" or "SSO redirect to blank page"). Each cluster gets a title, a short description, and the list of matching conversations.
+
+The model is instructed to reuse an existing cluster when a new conversation fits one, so a topic stays stable over time. It is also instructed not to create generic, marketing, spam, or "low information" buckets, and a secondary filter drops automated or notification only streams that slip through.
+
+Clusters are stored in a per customer topic registry. Both support cases and website or in app chat are clustered.
+
+### 2. Baseline learning
+
+For every topic, IrisAgent computes a rolling 30 day baseline: the median and the maximum number of conversations per day. The baseline is zero filled, meaning days where the topic had no conversations count as zero, so the baseline reflects the topic's true typical volume rather than only its busy days.
+
+The baseline is refreshed daily.
+
+### 3. Spike scoring
+
+IrisAgent scores each topic against its baseline on two cadences:
+
+- **Daily.** A preparation job scores every whole calendar day. This is the backstop and always runs when clustering is enabled.
+- **Real time.** When real time detection is enabled for your account, a job runs every minute and scores the current UTC day so far. This is what catches a fast moving incident within minutes.
+
+### 4. Spike confirmation
+
+A topic is confirmed as a spike only when it clears these rules:
+
+| Topic maturity | Rule |
+|---|---|
+| Mature topic (registered more than 4 days) | Spike day volume is at least the **absolute floor** (default 8 conversations) **and** at least **threshold** times the baseline median (default 5x). |
+| Mature topic, high baseline | Escalation path: spike day volume sets a new 30 day high **and** is at least 3x the baseline median, even if it falls short of the 5x bar. This catches large bursts on already busy topics. |
+| New topic (registered 4 days or less) | No reliable baseline yet, so the relative rule is skipped and the topic must clear a higher **new cluster floor** (default 12 conversations) on absolute volume alone. |
+
+Topics on your exclusion denylist are dropped at this stage and never become a trending incident.
+
+When more topics spike on the same run than the per run cap (default 15), IrisAgent keeps the ones with the largest percentage increase over baseline.
+
+### 5. Incident lifecycle
+
+A confirmed spike becomes an **active** trending incident. It carries the topic title, the description, the conversation count, the first spiked time, and sample affected conversations.
+
+When a later detection run no longer sees the topic spiking, the incident is marked **resolved**. The daily job backstops resolution for topics that were only ever caught in real time.
+
+## Where trending incidents appear
+
+- **Categories / Category Insights** on the [IrisAgent dashboard](https://web.irisagent.com/overview). Spiking topics are marked as trending, with the volume trend and a link into the topic's detailed view.
+- **Topic detailed view**, which lists the affected conversations with links back into your ticketing system.
+- **Weekly briefing and weekly digest email**, which call out the week's new and trending topics and suggest investigating them.
+
+## Alerts and notifications
+
+When alerting is enabled for your account, IrisAgent sends a "New and trending issue categories" notification that lists new topics and trending topics together, each with the conversation count, first seen time, and up to five sample conversation links.
+
+| Channel | Detail |
+|---|---|
+| **Email** | Sent to the users configured to receive category notifications for your account. Available cadences are real time, daily, weekly, and monthly. |
+| **Slack** | Posted to your connected Slack channel as a formatted message with a button through to the topic. Slack delivery is best effort and does not block the email. |
+
+To avoid repeat noise, a given trending incident is alerted at most once every 24 hours. Topics on your exclusion denylist are suppressed from alerts as well as from detection.
+
+## Configuration options
+
+These settings live on your account's category cluster configuration and are managed by IrisAgent. Contact [contact@irisagent.com](mailto:contact@irisagent.com) to change them.
+
+| Setting | Default | What it controls |
+|---|---|---|
+| Topic clustering (cases) | On | Cluster incoming support cases into topics. |
+| Topic clustering (chat) | On | Cluster website and in app chat conversations into topics. |
+| Real time detection | Off unless enabled | Run spike detection every minute against the current day. |
+| Batch notifications | Off unless enabled | Send daily, weekly, or monthly new and trending topic emails and Slack posts. |
+| Real time notifications | Off unless enabled | Send an alert as soon as a real time spike is confirmed. |
+| Daily threshold | 5x | Relative multiple over baseline median for the daily job. |
+| Real time threshold | 5x | Relative multiple over baseline median for the real time job. |
+| Absolute volume floor | 8 | Minimum spike day conversation count for a mature topic. |
+| New cluster floor | 12 | Minimum spike day conversation count for a topic too young to have a baseline. |
+| Max spikes per run | 15 | Cap on trending incidents surfaced in a single detection run, ranked by percentage increase. |
+| Excluded categories | Empty | Denylist of topic titles that must never surface as a trending incident or fire an alert. |
+
+## What you can do with a trending incident
+
+- Open the topic's detailed view to see every affected conversation and jump into your ticketing system.
+- Ask [Support Analyst](/support-analyst) about the topic to get a timeline, sentiment, and the affected accounts.
+- Use [AutoKB](/configuring-ai-and-automation/AutoKB) and [procedures](/configuring-ai-and-automation/Ticket-Tagging) to give agents and the AI a correct answer while the incident is live.
+- Track the volume trend on the Categories page to confirm the incident has resolved.
+
+## Notes
+
+- Detection only sees conversations that were successfully clustered into a topic. A burst that lands entirely in unclustered conversations will not surface as a trending topic until clustering catches up.
+- Real time scoring is anchored to midnight UTC. A burst that straddles midnight is split across two days and confirmed on the second day, with the daily job as the backstop.
+- Both the daily baseline and the spike rules are per topic and per customer. One customer's noisy topic never affects another's detection.
+
+Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or want to tune spike sensitivity for your account.
