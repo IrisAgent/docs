@@ -3,9 +3,9 @@ title: "Jira Service Desk/Jira Software"
 description: "IrisAgent Installation Guide for Jira issues. Use this guide to use Jira as your primary ticketing or issue provider. If you are looking to connect with Jira Software for bug tracking as an addon to your ticketing provider, see this page."
 ---
 
-## Sign up on IrisAgent Dashboard
+## Connect Jira to IrisAgent
 
-- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with either GSuite, Microsoft, or Okta SSO.
+- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
 
   <br />
 
@@ -17,21 +17,14 @@ description: "IrisAgent Installation Guide for Jira issues. Use this guide to us
 
 <br />
 
-- Click on **Connect with Jira Service Desk** (same button also works for Jira Software). Obtain a token from your Atlassian account with "write:jira-work" permissions as per the steps [on the official Atlassian docs](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/). Enter the token, email, and subdomain and click on Connect.
-
-  <br />
-
-  <img
-    style={{ borderRadius:"0.5rem" }}
-    src="/images/zd-connect.png"
-    alt="IrisAgent platform connection"
-  />
+- Choose Jira as your ticket source:
+  - **During onboarding:** on the **Connect your first data source** step, choose **Ticketing system**, then pick **Jira Service Management** (the same option also works for Jira Software).
+  - **Later, or to add Jira alongside an existing source:** go to **Data Sources → Ticketing System** in the left navigation and pick **Jira Service Management**.
+- Obtain a token from your Atlassian account with "write:jira-work" permissions as per the steps [on the official Atlassian docs](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/). Enter the token, email, and subdomain and click on Connect.
 
 <br />
 
-- This step is optional. If you want to connect with more platforms, such as Jira Software, Salesforce, etc., navigate to **Manage Integrations** on the bottom left and connect with the relevant platforms.
-
-  To connect a second Jira account for engineering issues while keeping this Jira Service Management account as the primary ticketing source, follow [Connect a second Jira account](/data-sources/Jira-Software#connect-a-second-jira-account).
+- To connect a second Jira account for engineering issues while keeping this Jira Service Management account as the primary ticketing source, follow [Connect a second Jira account](/data-sources/Jira-Software#connect-a-second-jira-account). To connect other platforms, such as Salesforce or Confluence, go to **Data Sources** in the left navigation and open the relevant section.
 
 ## Install the IrisAgent app into your Jira account
 

@@ -4,40 +4,46 @@ sidebarTitle: "Outlook"
 description: "IrisAgent Installation Guide for Outlook"
 ---
 
-## Sign up on IrisAgent Dashboard
+## Sign in to IrisAgent
 
-- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with either GSuite, Microsoft, or Okta SSO.
-
-  <br />
-
-  <img
-    style={{ borderRadius:"0.5rem" }}
-    src="/images/web-login.png"
-    alt="IrisAgent web app login"
-  />
+Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
 
 <br />
 
-- Click on **Connect with Outlook**. You will be asked to provide the following details:
-  - **Email Inbox**: The email address of the mailbox used for ticket ingestion.
-  - **Tenant ID**: Your Azure account identifier. You can find your Tenant ID by following [Microsoft's guide](https://learn.microsoft.com/en-us/sharepoint/find-your-office-365-tenant-id).
-
-  <br />
-
-  <img
-    style={{ borderRadius:"0.5rem" }}
-    src="/images/zd-connect.png"
-    alt="IrisAgent integration options including Outlook"
-  />
+<img
+  style={{ borderRadius:"0.5rem" }}
+  src="/images/web-login.png"
+  alt="IrisAgent web app login"
+/>
 
 <br />
 
-- After submitting the form, you will be redirected to Microsoft OAuth to authorize IrisAgent. The following permissions will be requested: `Mail.Read`, `Mail.Send`, and `offline_access`.
+## Choose Outlook as your ticket source
+
+You can connect Outlook during onboarding or later from the dashboard.
+
+- **During onboarding:** on the **Connect your first data source** step, choose **Ticketing system**, then pick **Outlook** from the list of providers.
+- **Later, or to add Outlook alongside an existing source:** go to **Data Sources → Ticketing System** in the left navigation and pick **Outlook**.
+
+<br />
+
+## Connect the mailbox
+
+On the **Connect with Outlook** form, provide the following details:
+
+- **Mailbox Email**: The email address of the mailbox used for ticket ingestion. Use a shared or support inbox, for example `support@yourcompany.com`.
+- **Tenant ID**: Your Azure account identifier. You can find your Tenant ID by following [Microsoft's guide](https://learn.microsoft.com/en-us/sharepoint/find-your-office-365-tenant-id).
+
+Click **Connect**. You will be redirected to Microsoft OAuth to authorize IrisAgent. The following permissions are requested: `Mail.Read`, `Mail.Send`, and `offline_access`.
 
 <Note>
 We recommend using a dedicated service account for the OAuth connection rather than a personal Microsoft account. This ensures uninterrupted access if the individual account owner leaves the organization.
 </Note>
 
+After you authorize, IrisAgent returns you to the dashboard and starts the initial backfill of your mailbox. Depending on volume this can take a few minutes to a few hours.
+
 <br />
 
-- This step is optional. If you want to connect with more platforms, such as Jira, Confluence, Salesforce, etc., navigate to **Manage Integrations** on the bottom left and connect with the relevant platforms.
+## Connect more data sources (optional)
+
+To connect more platforms, such as Jira, Confluence, or Salesforce, go to **Data Sources** in the left navigation and open the relevant section (Knowledge Bases, Development, CRM, and so on).

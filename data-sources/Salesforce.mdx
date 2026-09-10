@@ -3,12 +3,16 @@ title: "Salesforce"
 description: "IrisAgent Installation Guide for Salesforce"
 ---
 
-## Sign up on IrisAgent Dashboard
+## Connect Salesforce to IrisAgent
 
-- If you are a Salesforce admin, go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in your Salesforce credentials.
-  - If connecting with a production Salesforce account, please select the Continue with Salesforce option.
-  - If connecting with a Salesforce Sandbox account, please select the Continue with Salesforce Sandbox option.
-- Give the OAuth permissions and click on Allow.
+- If you are a Salesforce admin, go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
+- Choose Salesforce as your ticket source:
+  - **During onboarding:** on the **Connect your first data source** step, choose **Ticketing system**, then pick **Salesforce**.
+  - **Later, or to add Salesforce alongside an existing source:** go to **Data Sources → Ticketing System** in the left navigation and pick **Salesforce**.
+- Select the option that matches your org:
+  - For a production Salesforce org, choose **Connect production org**.
+  - For a Salesforce Sandbox org, choose **Connect sandbox org**.
+- Sign in with your Salesforce credentials, give the OAuth permissions, and click Allow.
 
 ## Install the IrisAgent app in Salesforce account
 

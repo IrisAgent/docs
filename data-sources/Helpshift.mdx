@@ -25,9 +25,9 @@ You need a Helpshift **Admin** role for this step.
 Keys are scoped per partner, so IrisAgent's key is separate from any other integration you run (Power BI, Slack, Jira). You can change its permissions or delete it at any time from the same page.
 </Note>
 
-## Sign up on IrisAgent Dashboard
+## Connect Helpshift to IrisAgent
 
-- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with either GSuite, Microsoft, or Okta SSO.
+- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
   <br/>
   <img
     style={{ borderRadius: '0.5rem' }}
@@ -36,17 +36,16 @@ Keys are scoped per partner, so IrisAgent's key is separate from any other integ
 
   />
 <br/>
-- Click on **Connect with Helpshift**.
-- Enter your **Helpshift domain** (the `<domain>` in `<domain>.helpshift.com`) and paste the **API key** generated above, then click **Connect**. IrisAgent validates the key and starts ingesting your issues.
+- Share your **Helpshift domain** (the `<domain>` in `<domain>.helpshift.com`) and the **API key** generated above with the IrisAgent team. IrisAgent validates the key and starts ingesting your issues.
 <br/>
-- This step is optional. If you want to connect with more platforms, such as Jira, Confluence, Salesforce, etc., navigate to **Manage Integrations** on the bottom left and connect with the relevant platforms.
+- To connect more platforms later, such as Jira, Confluence, or Salesforce, go to **Data Sources** in the left navigation and open the relevant section.
 
 ## Connect your knowledge base
 
 IrisAgent grounds AI answers in your existing knowledge content:
 
 - **Helpshift FAQs**: ingested automatically through the same API connection.
-- **Public help center or website**: add the URL under **Manage Integrations > Website Content** and IrisAgent will ingest the main page and all sub-pages.
+- **Public help center or website**: add the URL under **Data Sources → Website** and IrisAgent will ingest the main page and all sub-pages.
 - **Other sources**: Confluence, uploaded documents, and [custom knowledge APIs](/data-sources/Custom-API) are also supported.
 
 ## Agent copilot inside Helpshift

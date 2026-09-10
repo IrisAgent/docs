@@ -3,21 +3,24 @@ title: "Hubspot Service"
 description: "IrisAgent Installation Guide for Hubspot Service Software"
 ---
 
-## Sign up on IrisAgent Dashboard
+## Connect HubSpot to IrisAgent
 
-- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with either GSuite, Microsoft, or Okta SSO.
+- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
 
   <br />
 
   <img
     style={{ borderRadius:"0.5rem" }}
     src="/images/web-login.png"
-    alt="IrisAgent app listing on Zendesk"
+    alt="IrisAgent web app login"
   />
 
 <br />
 
-- Click on **Connect with Hubspot** and enter the following information.
+- Choose HubSpot as your ticket source:
+  - **During onboarding:** on the **Connect your first data source** step, choose **Ticketing system**, then pick **HubSpot**.
+  - **Later, or to add HubSpot alongside an existing source:** go to **Data Sources → Ticketing System** in the left navigation and pick **HubSpot**.
+- On the **Connect with HubSpot** form, enter the following information.
   - **Find your Hub ID:** To find your Hub ID, log in to HubSpot and open the dropdown menu under your account name in the upper right. You can also find your Hub ID in your HubSpot account's URL.
   - **Create a Private App Access Token**: Required scopes: **tickets**, **sales-email-read** (for ticket comments), and **crm.objects.owners.read** (for agents) \
     [More info: Creating Private Apps](https://developers.hubspot.com/docs/api/private-apps)
@@ -25,4 +28,4 @@ description: "IrisAgent Installation Guide for Hubspot Service Software"
     <br />
 
 
-- This step is optional. If you want to connect with more platforms, such as Jira, Confluence, Salesforce, etc., navigate to **Manage Integrations** on the bottom left and connect with the relevant platforms.
+- To connect more platforms later, such as Jira, Confluence, or Salesforce, go to **Data Sources** in the left navigation and open the relevant section.
