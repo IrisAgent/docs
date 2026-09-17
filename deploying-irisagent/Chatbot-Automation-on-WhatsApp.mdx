@@ -194,7 +194,7 @@ To configure:
 2. Set the **Confidence Threshold** for the WhatsApp channel
 3. Add intent-based triggers under **Customer Intent Patterns**
 4. Map escalation targets:
-   - **Zendesk path**: a Zendesk messaging queue or group
+   - **Zendesk path**: in the default chatbot configuration, set **Handoff** to **Start a live chat** and add any ticket tags your Zendesk routing trigger expects. IrisAgent adds those tags and passes control to Agent Workspace; the Zendesk trigger assigns the queue or group. See [Configure Human Handoff and Zendesk Routing](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging#step-5-configure-human-handoff-and-zendesk-routing)
    - **Salesforce path**: an Omni-Channel queue with appropriate skills
 
 When the human agent closes the Zendesk ticket or Salesforce Messaging Session, control returns to IrisAgent for the next inbound message from that customer.

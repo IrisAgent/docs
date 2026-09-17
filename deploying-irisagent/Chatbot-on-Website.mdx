@@ -91,6 +91,14 @@ guide](/deploying-irisagent/Salesforce-Live-Chat) for the Salesforce and
 IrisAgent setup steps.
 </Note>
 
+<Note>
+For Zendesk Messaging webhook deployments, select **Start a live chat** in the
+**Handoff** tab and optionally enter Zendesk ticket tags. When a procedure
+escalates, IrisAgent adds the tags to the active messaging ticket and passes
+Switchboard control to Zendesk Agent Workspace. See [Chatbot Automation on
+Zendesk Messaging](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging#step-5-configure-human-handoff-and-zendesk-routing).
+</Note>
+
 ### Advanced theming
 
 For full control over the chatbot's appearance and behavior, pass a theme object to the embed snippet using the `data-theme` attribute. The value is your theme JSON, **Base64-encoded**.

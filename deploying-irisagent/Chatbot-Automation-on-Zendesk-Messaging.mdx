@@ -189,13 +189,57 @@ Fields available in an expression:
 
 ---
 
+## Step 5: Configure Human Handoff and Zendesk Routing
+
+Use the existing chatbot **Handoff** settings to control what happens when a procedure escalates a Zendesk Messaging conversation. You do not need a second webhook or a separate release trigger in IrisAgent.
+
+<Note>
+  Zendesk webhook conversations use the chatbot configuration marked **Default**. If you have multiple chatbot configurations, add these settings to the default configuration.
+</Note>
+
+1. In the IrisAgent dashboard, open **AI Products** → **Chatbot** and click **Configure and deploy**
+2. Select the configuration marked **Default**, then open the **Handoff** tab
+3. Set **Method** to **Start a live chat**
+4. In **Zendesk ticket tags**, enter any tags that Zendesk should add to the messaging ticket when IrisAgent escalates. Separate multiple tags with commas
+5. Click **Update Configuration**
+
+Each tag can contain up to 80 characters and cannot contain spaces or other whitespace. You can configure up to 20 tags. For example:
+
+```text
+escalated_to_human, priority_support
+```
+
+When a procedure runs the **Escalate to human** action, IrisAgent:
+
+1. Sends the procedure's handoff response to the customer
+2. Finds the active Zendesk ticket for the messaging conversation
+3. Adds the configured tags to that ticket
+4. Passes Sunshine Conversations Switchboard control to Zendesk Agent Workspace
+5. Stops responding to subsequent messages in that conversation
+
+The same behavior applies automatically to conversations received through the Zendesk webhook, including Zendesk-managed messaging channels. No changes to the Conversations integration webhook are required.
+
+### Route the Tagged Ticket in Zendesk
+
+Use the configured tag in a Zendesk trigger to perform the customer-specific routing action. For example, a trigger can check for `escalated_to_human`, assign the ticket to the **Support** group, and let Zendesk omnichannel routing offer it to an available agent.
+
+Keep the Zendesk trigger responsible for group, priority, skills, and other account-specific routing choices. IrisAgent adds the configured tags and passes Switchboard control to Agent Workspace; it does not hardcode a Zendesk group.
+
+<Warning>
+  Ticket tagging is best-effort so a temporary Zendesk Support API or ticket-creation delay cannot leave the conversation with the bot. If IrisAgent cannot find or tag the ticket, it still passes control to Agent Workspace. In that case, a tag-dependent Zendesk trigger will not run, so configure a Zendesk fallback routing rule for untagged messaging handoffs if your workflow requires one.
+</Warning>
+
+---
+
 ## Verification
 
 After completing the setup:
 
 1. Send a test message through your Web Widget
-2. Verify that the conversation appears in your Zendesk Agent Workspace
-3. Confirm that IrisAgent is receiving and processing the conversation events
+2. Trigger a procedure that uses **Escalate to human**, or ask to speak with a human when your procedures support that request
+3. Verify that the active Zendesk ticket contains the configured handoff tags
+4. Confirm that your Zendesk trigger applies the expected group or other routing actions
+5. Verify that the conversation appears in Zendesk Agent Workspace and IrisAgent no longer replies
 
 If you encounter any issues, verify that:
 
@@ -203,6 +247,10 @@ If you encounter any issues, verify that:
 - The webhook events (`conversation:create` and `conversation:message`) are properly selected
 - Your Zendesk account has the required permissions (Suite Professional plan or above)
 - If you configured a chat filter in Step 4, the widget you are testing from actually matches it. A filter that matches no conversations will silently stop all AI answers
+- The chatbot configuration marked **Default** uses **Start a live chat** and contains valid Zendesk tags
+- Zendesk is connected as a ticketing source if you want IrisAgent to update the messaging ticket with tags
+- Your Zendesk trigger conditions match the exact tag configured in IrisAgent
+- If control reaches Agent Workspace without the tag, check for a temporary Support API or ticket-creation error and confirm that your fallback routing rule handles the conversation
 
 ---
 
