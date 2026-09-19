@@ -1,0 +1,128 @@
+---
+title: "Connecting your helpdesk for AI automation"
+description: "Procedural overview for connecting your ticketing system to IrisAgent, then deploying AI answers, copilot, and automation. Links to provider-specific guides."
+---
+
+To use IrisAgent for AI automation, connect your helpdesk (ticketing system) so IrisAgent can import tickets and knowledge, train on your content, and deploy answers inside the tools your team already uses. This page is the umbrella how-to. Follow the linked provider and deploy guides for click-by-click steps.
+
+---
+
+## Overview
+
+1. Connect your ticketing system (and optional knowledge sources)
+2. Wait for the initial backfill / indexing to finish
+3. Validate answers in the IrisGPT Playground
+4. Deploy Agent Assist, chat, ticket triggers, or deflectors
+5. Turn on procedures, AutoQA, and other automation
+
+For a longer checklist with invite, procedures, and AutoQA, see [Onboarding](/guides/onboarding).
+
+---
+
+## Step 1. Connect the ticketing system
+
+1. Sign in at [web.irisagent.com](https://web.irisagent.com).
+2. Complete the onboarding wizard, **or** go to **Data Sources → Ticketing System** and choose your provider.
+3. Authorize IrisAgent (OAuth or API token, depending on the provider). Intercom starts from the **Platforms** page.
+4. Confirm tickets and the built-in helpdesk knowledge base begin syncing.
+
+Pick your provider guide:
+
+| Helpdesk | Setup guide |
+| --- | --- |
+| Zendesk | [Zendesk](/data-sources/Zendesk) |
+| Salesforce | [Salesforce](/data-sources/Salesforce) |
+| Intercom | [Intercom](/data-sources/Intercom) |
+| Freshworks | [Freshworks](/data-sources/Freshworks) |
+| Jira Service Desk / Jira Software (as ticketing) | [Jira Software or Service Desk](/data-sources/Jira-Software-or-Service-Desk) |
+| HubSpot Service | [HubSpot](/data-sources/Hubspot) |
+| Helpshift | [Helpshift](/data-sources/Helpshift) |
+| Zoho Desk | [Zoho Desk](/data-sources/Zoho) |
+| Outlook (email as intake) | [Connect Outlook](/outlook) |
+
+Your ticketing system's built-in knowledge base usually syncs automatically. See [Ticketing System KB](/data-sources/Ticketing-Provider-KB).
+
+---
+
+## Step 2. Add optional knowledge and context
+
+Connect extra sources when tickets alone are not enough:
+
+- [Confluence](/data-sources/Confluence)
+- [Public Websites](/data-sources/Public-Websites)
+- [Upload Content](/data-sources/Upload-Content) (CSV / PDF)
+- [Jira Software](/data-sources/Jira-Software) (bug tracking alongside your helpdesk)
+- [Salesforce CRM](/data-sources/SalesforceCRM) (account context)
+- [Custom APIs](/data-sources/Custom-API) (live data in workflows)
+
+If you support multiple products, configure [Product Segmentation](/configuring-ai-and-automation/Product-Segmentation) so each ticket retrieves the right articles.
+
+---
+
+## Step 3. Validate before you go customer-facing
+
+1. Open **AI Products → Chatbot** (Playground) and ask real support questions.
+2. Check that answers cite the articles you expect.
+3. Spot-check grounding with [Support Analyst](/support-analyst) Answer Grounding QA on a sample case.
+4. Read [Understanding grounded answers](/configuring-ai-and-automation/Understanding-Grounded-Answers) and [About the Hallucination Removal Engine](/configuring-ai-and-automation/Hallucination-Removal-Engine) if you are tuning refusal behavior.
+
+Optional low-risk production step: enable private AI answers as internal ticket notes via **Automate → Case Triggers** (see [Onboarding](/guides/onboarding)) so agents see suggestions before customers do.
+
+---
+
+## Step 4. Deploy where work happens
+
+Choose one or more surfaces. Each link is the detailed install guide:
+
+**Agent Assist (copilot inside the helpdesk)**
+
+- Feature tour: [Agent Assist / Copilot App](/agent-copilot)
+- Admin install: [Deploy Agent Copilot](/deploying-irisagent/Agent-Copilot)
+- Experience Cloud sidebar: [Sidebar on Experience Cloud](/deploying-irisagent/Sidebar-on-Experience-Cloud)
+
+**Chat and messaging**
+
+- [Chatbot on Website](/deploying-irisagent/Chatbot-on-Website)
+- [Zendesk Messaging](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging)
+- [Intercom](/deploying-irisagent/Chatbot-Automation-on-Intercom)
+- [Freshchat](/deploying-irisagent/Chatbot-Automation-on-Freshchat)
+- [WhatsApp](/deploying-irisagent/Chatbot-Automation-on-WhatsApp)
+- [Zendesk Help Center chatbot](/deploying-irisagent/Chatbot-on-Zendesk-Help-Center)
+
+**Ticket automation and deflection**
+
+- [Tickets / Case Triggers](/deploying-irisagent/Tickets)
+- [Ticket Deflector on Zendesk](/deploying-irisagent/Ticket-Deflector-on-Zendesk)
+- [Case Deflector on Salesforce](/deploying-irisagent/Case-Deflector-on-Salesforce)
+
+**Internal bots**
+
+- [Slack](/deploying-irisagent/Slack)
+- [Microsoft Teams](/deploying-irisagent/Microsoft-Teams)
+
+---
+
+## Step 5. Turn on ongoing automation and QA
+
+- Procedures and workflows: [Workflows](/configuring-ai-and-automation/Workflows), [Ticket Deflection](/configuring-ai-and-automation/Ticket-Deflection)
+- Conversation quality rules: [AutoQA](/configuring-ai-and-automation/AutoQA)
+- Answer tone: [AI Response Style](/configuring-ai-and-automation/AI-Response-Style)
+- Integration user / token rotation: [Change Integration User](/account-management/Change-Integration-User)
+
+---
+
+## FAQ
+
+**Do I need a separate knowledge base product?**
+No. Many teams start with the helpdesk KB that syncs with the ticketing connection. Add Confluence, public docs, or uploads when you need more coverage.
+
+**Can I connect more than one ticketing system?**
+Yes. Use **Data Sources → Ticketing System** for additional providers after the first connection.
+
+**Where do I change the integration user or token?**
+See [Change Integration User](/account-management/Change-Integration-User).
+
+**What if answers look wrong after connect?**
+Confirm sync finished, check Playground citations, then review grounding and hallucination docs above. Fix KB gaps before widening automation.
+
+Need a guided setup: email [contact@irisagent.com](mailto:contact@irisagent.com) or book time with your IrisAgent CSM.

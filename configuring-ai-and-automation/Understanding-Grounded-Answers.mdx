@@ -1,0 +1,72 @@
+---
+title: "Understanding grounded answers in IrisAgent"
+description: "What grounding means in IrisAgent, which sources answers are checked against, and when IrisAgent refuses to answer."
+---
+
+A grounded answer in IrisAgent is one that is built only from your connected knowledge (articles, tickets, procedures, and other indexed sources) and that can be traced back to those sources. If IrisAgent cannot find supporting content, it declines or asks a clarifying question instead of guessing.
+
+---
+
+## What "grounded" means
+
+Grounding is the requirement that every claim in an AI answer is supported by content IrisAgent has indexed for your account. Answers are not free-form inventions from a general model. They are assembled from your help content and past support work, then presented with citations so an agent or admin can verify the source.
+
+In practice, a grounded answer:
+
+- Retrieves relevant articles, tickets, or procedures for the question
+- Generates the reply from that retrieved material
+- Surfaces the sources used so a human can audit the reply
+
+Validated answer accuracy above 95% on IrisAgent's accuracy evals comes from this grounding loop (retrieval, generation from retrieved sources, and refusal when support is missing).
+
+---
+
+## Sources IrisAgent checks
+
+IrisAgent answers from the sources connected to your account. Typical sources include:
+
+| Source type | Examples | Docs |
+| --- | --- | --- |
+| Ticketing system | Zendesk, Salesforce, Intercom, Freshworks, HubSpot, Jira Service Desk, Zoho Desk | [Connecting Data Sources](/data-sources/Zendesk) |
+| Built-in helpdesk KB | Guide, Knowledge, help center articles synced with your ticketing provider | [Ticketing System KB](/data-sources/Ticketing-Provider-KB) |
+| Knowledge bases | Confluence, public websites, uploaded CSV/PDF | [Confluence](/data-sources/Confluence), [Public Websites](/data-sources/Public-Websites), [Upload Content](/data-sources/Upload-Content) |
+| Procedures and workflows | Smart operating procedures and automation you enable | [Onboarding](/guides/onboarding), [Workflows](/configuring-ai-and-automation/Workflows) |
+
+Only content indexed for **your** account is used. IrisAgent does not answer from another customer's data.
+
+If you segment by product, retrieval is further limited to the knowledge mapped to that product. See [Segment Tickets and Chats by Product](/configuring-ai-and-automation/Product-Segmentation).
+
+---
+
+## When answers are blocked or refused
+
+IrisAgent is designed to refuse when grounding is weak or missing. Common cases:
+
+1. **No matching source.** Nothing in the indexed knowledge base or tickets supports a confident answer. IrisAgent declines or asks for clarification instead of inventing policy, pricing, or product behavior.
+2. **Out of scope.** The question is outside what your connected sources cover (for example, a request about a product line you have not indexed).
+3. **Insufficient context.** The ticket or chat is missing details required to retrieve the right article. Clarifying questions are preferred over a partial guess.
+4. **Failed faithfulness check.** When pre-delivery validation finds a claim that is not supported by the cited sources, that answer is not delivered as a grounded resolution. See [About the Hallucination Removal Engine](/configuring-ai-and-automation/Hallucination-Removal-Engine).
+
+Refusal is a success outcome on known-unanswerable questions. A confident wrong answer is worse than a clean handoff to a human agent.
+
+---
+
+## How to verify grounding after delivery
+
+For answers that already went out, use **Answer Grounding QA** in [Support Analyst](/support-analyst). Ask to check the grounding of the AI answer for a case or chat ID. Support Analyst grades two axes:
+
+- **Retrieval relevance**  -  were the cited articles actually about the question?
+- **Grounding faithfulness**  -  is every claim in the answer supported by those article bodies?
+
+Failure types include hallucination, wrong article, incomplete answer, and knowledge-base gap, so you can tell whether to fix the model path, the retrieval setup, or the KB itself.
+
+---
+
+## Related configuration
+
+- Tighten phrasing and tone without changing grounding rules: [AI Response Style](/configuring-ai-and-automation/AI-Response-Style)
+- Map customer phrasing to your KB terms: [Search Term Rewrites](/configuring-ai-and-automation/Search-Term-Rewrites)
+- Grade conversations for fabricated features or policies: [AutoQA](/configuring-ai-and-automation/AutoQA)
+- Connect the helpdesk that supplies tickets and KB: [Connecting your helpdesk for AI automation](/guides/Connecting-Your-Helpdesk)
+
+If you need help reviewing grounding for your account, email [contact@irisagent.com](mailto:contact@irisagent.com).

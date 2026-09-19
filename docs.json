@@ -81,15 +81,16 @@
                 "pages": [
                   "data-sources/Custom-API"
                 ]
-                },
-                {
-                  "group": "E-commerce",
-                  "pages": [
-                    "data-sources/Shopify"
-                  ]
+              },
+              {
+                "group": "E-commerce",
+                "pages": [
+                  "data-sources/Shopify"
+                ]
               }
             ]
-          },{
+          },
+          {
             "group": "Deploying IrisAgent",
             "pages": [
               {
@@ -158,7 +159,8 @@
                 ]
               }
             ]
-          },{
+          },
+          {
             "group": "Configuring AI and Automation",
             "pages": [
               {
@@ -175,6 +177,8 @@
                 "pages": [
                   "configuring-ai-and-automation/AutoKB",
                   "configuring-ai-and-automation/AutoQA",
+                  "configuring-ai-and-automation/Hallucination-Removal-Engine",
+                  "configuring-ai-and-automation/Understanding-Grounded-Answers",
                   "configuring-ai-and-automation/Product-Segmentation"
                 ]
               },
@@ -201,14 +205,17 @@
                 ]
               }
             ]
-          },{
+          },
+          {
             "group": "User Guides",
             "pages": [
               "guides/onboarding",
+              "guides/Connecting-Your-Helpdesk",
               "agent-copilot",
               "support-analyst"
             ]
-          },{
+          },
+          {
             "group": "Security and Compliance",
             "pages": [
               "security-and-compliance/Single-Sign-On-Options",
@@ -217,14 +224,16 @@
               "security-and-compliance/Reference-Architecture-Customer-VPC",
               "security-and-compliance/Reference-Architecture-On-Prem-Air-Gapped"
             ]
-          },{
+          },
+          {
             "group": "Account Management",
             "pages": [
               "account-management/Change-Integration-User"
             ]
           }
         ]
-      },{
+      },
+      {
         "tab": "API reference",
         "groups": [
           {
@@ -238,7 +247,8 @@
             "openapi": "/api-reference/openapi.json"
           }
         ]
-      }],
+      }
+    ],
     "global": {
       "anchors": [
         {
@@ -273,15 +283,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {

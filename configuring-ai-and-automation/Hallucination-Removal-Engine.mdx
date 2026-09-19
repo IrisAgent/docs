@@ -1,0 +1,69 @@
+---
+title: "About the Hallucination Removal Engine"
+description: "How IrisAgent validates AI answers before delivery, what operators should configure, and the limits of hallucination prevention."
+---
+
+The Hallucination Removal Engine is IrisAgent's pre-delivery check that blocks answers whose claims are not grounded in your indexed content. If a statement cannot be supported by retrieved sources, the answer does not go out as a resolved reply. Operators still control which sources are connected, which procedures are enabled, and which quality rules run after delivery.
+
+---
+
+## How validation works before delivery
+
+When IrisAgent prepares an answer (chat, ticket note, copilot suggestion, or API response), the engine:
+
+1. **Retrieves** candidate articles, tickets, and procedures for the question
+2. **Generates** a draft answer from that retrieved set
+3. **Checks faithfulness** so each material claim lines up with the retrieved source bodies
+4. **Attaches citations** when the answer passes, or **refuses / clarifies** when it does not
+
+This is the same grounding loop described in [Understanding grounded answers in IrisAgent](/configuring-ai-and-automation/Understanding-Grounded-Answers). The Hallucination Removal Engine is the gate that treats unsupported claims as a delivery failure, not as optional polish.
+
+IrisAgent also gates model and prompt changes on two eval sets: questions the AI should resolve, and known-unanswerable questions where the correct behavior is to decline. Changes that raise resolution at the cost of fabrication do not ship.
+
+---
+
+## What operators should configure
+
+You do not turn the Hallucination Removal Engine on as a separate toggle. You improve its effectiveness by controlling inputs and follow-up QA:
+
+| Area | What to do | Where |
+| --- | --- | --- |
+| Knowledge coverage | Connect ticketing KB, Confluence, public docs, and uploads so retrieval has real sources | [Data sources](/data-sources/Zendesk), [Upload Content](/data-sources/Upload-Content) |
+| Product scope | Segment tickets and articles by product so billing questions do not pull shipping articles | [Product Segmentation](/configuring-ai-and-automation/Product-Segmentation) |
+| Term alignment | Rewrite customer slang to your KB vocabulary before search | [Search Term Rewrites](/configuring-ai-and-automation/Search-Term-Rewrites) |
+| Procedures | Enable or write procedures for common flows so automation has approved steps | [Onboarding](/guides/onboarding), [Workflows](/configuring-ai-and-automation/Workflows) |
+| Post-delivery QA | Add AutoQA rules that flag fabricated features, pricing, or policies | [AutoQA](/configuring-ai-and-automation/AutoQA) |
+| Spot audits | Run Answer Grounding QA on a delivered case or chat answer | [Support Analyst](/support-analyst) |
+
+A practical starting AutoQA rule under Resolution Quality:
+
+> AI agent must not fabricate or hallucinate product features, pricing, or policies
+
+---
+
+## What "zero hallucinations" means here
+
+In IrisAgent product language, zero hallucinations means: **unsupported claims are not delivered as grounded answers**. The system prefers a decline, a clarifying question, or a human handoff over a confident guess.
+
+That is different from claiming every conversation ends in a full automated resolution. Automation rate and grounding are separate goals. Grounding wins when they conflict.
+
+---
+
+## Limits to keep in mind
+
+- **Stale or wrong articles still pass faithfulness.** If the cited article is outdated or answers a different question, the engine can be faithful to the wrong source. Support Analyst labels that **wrong article** (a retrieval / KB problem), not a generation hallucination.
+- **Incomplete answers can still be grounded.** An answer may cite the right article and still omit a required step. That is an **incomplete** defect in Answer Grounding QA.
+- **KB gaps look like refusals.** If no article contains the answer, IrisAgent should decline. Fix coverage with new articles or [Knowledge Suggestions (AutoKB)](/configuring-ai-and-automation/AutoKB), not by loosening the gate.
+- **Always-on grounding audit of every AI answer** (beyond on-demand Support Analyst checks and AutoQA rules) is on the product roadmap. Use spot checks and AutoQA today.
+- **Human agents can still edit or override** suggested text in Agent Assist. Copilot suggestions are starting points; agents remain accountable for what they send.
+
+---
+
+## Related reading
+
+- [Understanding grounded answers in IrisAgent](/configuring-ai-and-automation/Understanding-Grounded-Answers)
+- [Support Analyst  -  Answer Grounding QA](/support-analyst)
+- [AutoQA](/configuring-ai-and-automation/AutoQA)
+- [Connecting your helpdesk for AI automation](/guides/Connecting-Your-Helpdesk)
+
+Questions about grounding or QA setup: [contact@irisagent.com](mailto:contact@irisagent.com).
