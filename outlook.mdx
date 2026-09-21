@@ -34,13 +34,36 @@ On the **Connect with Outlook** form, provide the following details:
 - **Mailbox Email**: The email address of the mailbox used for ticket ingestion. Use a shared or support inbox, for example `support@yourcompany.com`.
 - **Tenant ID**: Your Azure account identifier. You can find your Tenant ID by following [Microsoft's guide](https://learn.microsoft.com/en-us/sharepoint/find-your-office-365-tenant-id).
 
-Click **Connect**. You will be redirected to Microsoft OAuth to authorize IrisAgent. The following permissions are requested: `Mail.Read`, `Mail.Send`, and `offline_access`.
+Click **Connect**. You will be redirected to Microsoft OAuth to authorize IrisAgent. The following permissions are requested:
+
+- `Mail.ReadWrite` lets IrisAgent read incoming mail and save AI-generated replies in the Outlook **Drafts** folder.
+- `Mail.Send` lets IrisAgent send a reply automatically when you choose that delivery method.
+- `offline_access` keeps the connection active without requiring you to sign in for every mailbox sync.
 
 <Note>
 We recommend using a dedicated service account for the OAuth connection rather than a personal Microsoft account. This ensures uninterrupted access if the individual account owner leaves the organization.
 </Note>
 
 After you authorize, IrisAgent returns you to the dashboard and starts the initial backfill of your mailbox. Depending on volume this can take a few minutes to a few hours.
+
+<br />
+
+## Reconnect an existing Outlook mailbox to enable drafts
+
+Outlook connections created before draft replies were available might not include the `Mail.ReadWrite` permission. If **Save as Outlook draft** is unavailable in **Automate → Case Triggers**, reconnect the existing mailbox once:
+
+1. Open [Change Integration User](https://web.irisagent.com/manage-integration-user).
+2. Confirm the connected platform is **Outlook**.
+3. Enter the same mailbox email address and Tenant ID used by the existing connection.
+4. Click **Connect**, sign in to the existing Microsoft account, and approve the requested permissions.
+
+Reconnect from the same IrisAgent dashboard. It updates the existing Outlook connection and does not create a second dashboard or move your data.
+
+<Note>
+Use the same mailbox and Microsoft tenant unless you intentionally want IrisAgent to connect as a different integration user.
+</Note>
+
+For reply configuration, see [Outlook AI Email Replies](/deploying-irisagent/Outlook).
 
 <br />
 
