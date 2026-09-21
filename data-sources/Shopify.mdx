@@ -1,20 +1,19 @@
 ---
 title: "Shopify"
-description: "Connect a Shopify store to IrisAgent and add your existing chatbot to the storefront"
+description: "Connect live Shopify product and order data to an IrisAgent chatbot"
 ---
 
 ## Overview
 
-The Shopify integration connects a Shopify store to an IrisAgent account and records which existing chatbot is associated with that store. In the initial release, you install the chatbot on the storefront by copying its JavaScript embed code into the Shopify theme.
+The Shopify integration lets an existing IrisAgent chatbot answer questions using live Shopify data. Connecting the data does not require you to publish the chatbot on the Shopify storefront. You can keep using the chatbot on any website where it is already deployed.
 
 The integration supports:
 
-- Connecting one Shopify store to an IrisAgent account
-- Associating an existing IrisAgent chatbot with the Shopify connection
-- Viewing the connected store and granted Shopify permissions
-- Changing the associated chatbot or disconnecting the store later
-- Answering live product, pricing, and inventory questions
+- Answering live product, pricing, inventory, and availability questions
 - Looking up order status and shipment tracking after matching an order number and email address
+- Associating one existing IrisAgent chatbot with the Shopify connection
+- Optionally adding that chatbot to the Shopify storefront with the IrisAgent app embed
+- Changing the associated chatbot or disconnecting the store later
 
 <Note>
   Product and order information is read live from Shopify and is not synchronized into the IrisAgent knowledge base. Refunds, cancellations, returns, and other write actions are not included.
@@ -29,23 +28,28 @@ You need:
 - At least one chatbot configured in IrisAgent
 - The permanent `*.myshopify.com` domain for the store
 
-During the private rollout, the Shopify app can be installed only on approved development or test stores. Installation by unrelated merchants will become available after the app is approved for public Shopify distribution.
-
-## Connect Shopify
+## Connect Shopify data from IrisAgent
 
 1. Log in to the [IrisAgent dashboard](https://web.irisagent.com/).
 2. In the left navigation, open **Data Sources → E-commerce**.
 3. Select the **Shopify** card.
 4. Enter the permanent Shopify domain, such as `your-store.myshopify.com`.
-5. Choose the IrisAgent chatbot to show on the store.
-6. Click **Connect Shopify**.
-7. Review and approve the requested permissions in Shopify.
+5. Choose the IrisAgent chatbot that should use the Shopify data.
+6. Click **Connect Shopify data**.
+7. Sign in to Shopify as a store administrator and approve the requested read-only permissions.
 
-After authorization, Shopify returns you to IrisAgent and the connection status shows the store name and granted permissions.
+After authorization, Shopify returns you to IrisAgent. The configuration page shows the connected store and granted permissions. The selected IrisAgent chatbot can now answer supported commerce questions wherever that chatbot is deployed.
 
-<Note>
-  Stores connected before read-only order lookup was introduced must click **Reconnect Shopify** and approve the `read_orders` permission. Without that permission, product search remains available but order status and shipment tracking are disabled.
-</Note>
+## Start from Shopify
+
+Merchants can also begin by installing IrisAgent from Shopify:
+
+1. Install IrisAgent and approve the requested read-only permissions in Shopify.
+2. Sign in to IrisAgent when redirected.
+3. Choose the chatbot that should use the Shopify data.
+4. Click **Finish Shopify setup**.
+
+Both connection methods provide the same live product and order capabilities.
 
 ## Configure commerce capabilities
 
@@ -54,62 +58,58 @@ After connecting the store, use **Read-only commerce capabilities** on the Shopi
 - **Product search, pricing, and inventory availability**
 - **Order status and shipment tracking**
 
-These capabilities apply only to the chatbot selected under **Chatbot shown on this store**.
+These capabilities apply only to the chatbot selected under **Chatbot using this store's data**.
 
 For product questions, the chatbot searches current Shopify product data and returns up to five matching products. For order questions, the chatbot collects both the order number and the email used on the order. IrisAgent returns order details only when both values match the same Shopify order.
 
 Shopify's standard `read_orders` permission covers orders from the most recent 60 days. Access to older orders requires Shopify's separately approved `read_all_orders` permission, which this integration does not request by default.
 
-## Add the chatbot to the storefront
+## Optionally add the chatbot to the storefront
 
-Connecting Shopify does not publish the chatbot. Install it using the embed code available from the chatbot configuration in IrisAgent.
+Connecting Shopify data does not automatically publish the chatbot on the storefront. If you want the chatbot to appear there:
 
-1. In IrisAgent, go to **AI Products** → **Chatbot** and click **Configure and deploy**.
-2. Use the **Configuration** selector to choose the chatbot that you want to install.
-3. Click **Deploy**.
-4. Click **Reveal API Key**, then copy the complete embed-code snippet.
-5. In Shopify Admin, open **Online Store → Themes**.
-6. For the published theme, click the **…** menu and select **Edit code**.
-7. Under **Layout**, open `theme.liquid`.
-8. Paste the copied IrisAgent snippet immediately before the closing `</body>` tag.
-9. Click **Save**.
-10. Open the storefront and confirm that the IrisAgent chat widget appears.
+1. Open **Data Sources → E-commerce → Shopify** in IrisAgent.
+2. Click **Enable chatbot in Shopify**.
+3. In the Shopify theme editor, open **App embeds** if it is not already visible.
+4. Turn on **IrisAgent Chatbot**.
+5. Click **Save**.
+6. Open the storefront and confirm that the chat widget appears.
 
-<Warning>
-  Add the snippet only once and only to themes where the chatbot should appear. Manual theme-code changes might need to be reapplied when you replace or update a theme.
-</Warning>
-
-The snippet loads the same chatbot widget used on other websites. Its token identifies the chatbot configuration, while its appearance and behavior continue to come from IrisAgent.
+The app embed loads the same chatbot selected on the Shopify configuration page. Its appearance and behavior continue to come from the chatbot configuration in IrisAgent.
 
 ## Change the chatbot
 
-To use a different chatbot on the connected store:
+To use a different chatbot with the connected store:
 
 1. Open **Data Sources → E-commerce → Shopify** in IrisAgent.
-2. Select another option under **Chatbot shown on this store**.
-3. Go to **AI Products** → **Chatbot**, click **Configure and deploy**, select that chatbot, and copy its code using **Deploy**.
-4. In the published Shopify theme's `layout/theme.liquid` file, replace the previous IrisAgent snippet with the new snippet and click **Save**.
+2. Select another option under **Chatbot using this store's data**.
 
-Changing the selection on the Shopify configuration page does not update a manually installed snippet. The storefront changes chatbots only after its embed code is replaced. Only IrisAgent administrators can change the Shopify association.
+The new selection receives Shopify data capabilities. If the IrisAgent app embed is enabled, the storefront also uses the newly selected chatbot without a theme-code change. Only IrisAgent administrators can change the Shopify association.
 
 ## Disconnect Shopify
 
 1. Open **Data Sources → E-commerce → Shopify**.
 2. Click **Disconnect** and confirm the action.
 
-Disconnecting revokes the Shopify access token and removes the store association from IrisAgent. Because the initial release installs the widget manually, disconnecting Shopify does not remove its JavaScript from the theme or stop the widget by itself. To remove the chatbot from the storefront, also delete the IrisAgent `<script>` snippet from `layout/theme.liquid` and save the theme.
+Disconnecting removes IrisAgent's access to Shopify data. To remove the widget from the storefront as well, disable **IrisAgent Chatbot** under **Online Store → Themes → Customize → App embeds**, or uninstall the IrisAgent app in Shopify.
 
 ## Troubleshooting
 
-### The chatbot does not appear
+### The chatbot cannot answer Shopify questions
 
-- Confirm that the complete IrisAgent `<script>` snippet appears immediately before `</body>` in `layout/theme.liquid`.
-- Confirm that you edited and saved the published theme.
-- Confirm that the snippet contains the token revealed for the intended chatbot configuration.
-- Make sure the snippet was added only once.
+- Confirm that the Shopify configuration page shows the store as connected.
+- Confirm that the relevant read-only commerce capability is enabled.
+- Confirm that the chatbot being tested is the one selected for the store.
+- If IrisAgent shows **Reconnect Shopify**, reconnect and approve the requested permissions.
+
+### The storefront chatbot does not appear
+
+- Confirm that **IrisAgent Chatbot** is enabled under **Online Store → Themes → Customize → App embeds**.
+- Click **Save** in the theme editor.
+- Confirm that you edited the published theme.
 - Test the published storefront in a new browser tab.
 
-### The Connect Shopify button is disabled
+### The Connect Shopify data button is disabled
 
 - Confirm that you are an IrisAgent administrator.
 - Enter the permanent `*.myshopify.com` domain, not a custom storefront domain.
@@ -122,4 +122,4 @@ A Shopify store can belong to only one IrisAgent account. Disconnect it from the
 
 ## Permissions and customer data
 
-The integration requests the Shopify permissions displayed during installation. IrisAgent stores the shop connection, capability settings, and encrypted Shopify access token. Product and order information is requested from Shopify only when the chatbot needs it. IrisAgent does not synchronize or persist Shopify customer profiles or order history.
+The integration requests the Shopify permissions displayed during authorization. IrisAgent stores the shop connection, capability settings, and encrypted Shopify credentials. Product and order information is requested from Shopify only when the chatbot needs it. IrisAgent does not synchronize Shopify customer profiles or order history into the IrisAgent knowledge base.
