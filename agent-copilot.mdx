@@ -47,6 +47,7 @@ The Suggested Resolution section shows an AI-generated answer for the current ti
 
 - A formatted resolution text
 - Links to the knowledge base articles and documentation that informed the answer
+- A **Generated from procedure** callout with a **View procedure** link when the answer follows a matching procedure
 - **Refine** and **Send to Draft** (Zendesk) or **Insert into Email** (Salesforce)
 - Thumbs up/down buttons to rate the quality of the suggestion
 
@@ -72,9 +73,10 @@ Dynamic Resolution generates a fresh AI answer on demand, using all comments and
 1. Click the **Get Dynamic Resolution** button in the Dynamic Resolution section
 2. IrisAgent reads through all ticket comments and conversation history
 3. A new resolution is generated and displayed with supporting links
-4. If you've already generated one, the button changes to **Refresh Resolution** so you can regenerate it after new comments are added
-5. Use **Refine** to rewrite the answer from instructions (same dialog as Suggested Resolution)
-6. Use **Send to Draft** to drop the current answer into the Zendesk reply editor (Zendesk only)
+4. If the answer follows a matching procedure, use the **View procedure** link in the highlighted callout to review it
+5. If you've already generated one, the button changes to **Refresh Resolution** so you can regenerate it after new comments are added
+6. Use **Refine** to rewrite the answer from instructions (same dialog as Suggested Resolution)
+7. Use **Send to Draft** to drop the current answer into the Zendesk reply editor (Zendesk only)
 
 **When to use Dynamic Resolution vs. Suggested Resolution:**
 
