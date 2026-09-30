@@ -56,6 +56,7 @@ If you do not yet have an IrisAgent Conversations integration:
    - **Event Subscriptions**:
      - ✅ `conversation:create` (Conversation created)
      - ✅ `conversation:message` (Conversation message)
+     - ✅ `switchboard:releaseControl` (Switchboard releases control after a human session)
 4. Click **Save**
 
 Record the following values from the integration detail page:
@@ -253,7 +254,7 @@ After completing setup, run an end-to-end test:
 **WhatsApp messages are not reaching IrisAgent**
 
 - Confirm the WhatsApp channel is **Active** in Zendesk or Salesforce
-- For Zendesk, verify the Conversations integration webhook subscriptions include `conversation:create` and `conversation:message`
+- For Zendesk, verify the Conversations integration webhook subscriptions include `conversation:create`, `conversation:message`, and `switchboard:releaseControl`
 - For Salesforce, verify the IrisAgent integration user has read access to `MessagingSession` and `ConversationEntry`
 
 **IrisAgent is replying but the customer does not see the message on WhatsApp**

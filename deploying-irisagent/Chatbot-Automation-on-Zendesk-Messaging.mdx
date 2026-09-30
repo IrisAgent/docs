@@ -44,8 +44,11 @@ Create a new Conversations integration to establish a bidirectional connection b
 - **Event Subscriptions**: Select the following events:
   - ✅ `conversation:create` (Conversation created)
   - ✅ `conversation:message` (Conversation message)
+  - ✅ `switchboard:releaseControl` (Switchboard releases control after a human session)
 
 4. Click **Save** to create the integration
+
+If you already have an IrisAgent Conversations integration, edit its existing webhook and add `switchboard:releaseControl`. Saving the IrisAgent configuration does not update event subscriptions in Zendesk.
 
 ### Record Integration Credentials
 
@@ -217,7 +220,7 @@ When a procedure runs the **Escalate to human** action, IrisAgent:
 4. Passes Sunshine Conversations Switchboard control to Zendesk Agent Workspace
 5. Stops responding to subsequent messages in that conversation
 
-The same behavior applies automatically to conversations received through the Zendesk webhook, including Zendesk-managed messaging channels. No changes to the Conversations integration webhook are required.
+The same handoff behavior applies to conversations received through the Zendesk webhook, including Zendesk-managed messaging channels. After a human session, IrisAgent resumes responding only when Zendesk sends `switchboard:releaseControl` to the webhook configured in Step 1. A new Zendesk ticket alone does not reset the handoff state. No second webhook or separate Zendesk trigger is needed.
 
 ### Route the Tagged Ticket in Zendesk
 
@@ -240,11 +243,12 @@ After completing the setup:
 3. Verify that the active Zendesk ticket contains the configured handoff tags
 4. Confirm that your Zendesk trigger applies the expected group or other routing actions
 5. Verify that the conversation appears in Zendesk Agent Workspace and IrisAgent no longer replies
+6. Close the human-handled ticket, then send another message from the same end user. Confirm IrisAgent replies in the new interaction after Zendesk releases Switchboard control
 
 If you encounter any issues, verify that:
 
 - All credentials are entered correctly
-- The webhook events (`conversation:create` and `conversation:message`) are properly selected
+- The webhook subscribes to `conversation:create`, `conversation:message`, and `switchboard:releaseControl`. If IrisAgent stays silent after a human session, check that Zendesk delivered the release event
 - Your Zendesk account has the required permissions (Suite Professional plan or above)
 - If you configured a chat filter in Step 4, the widget you are testing from actually matches it. A filter that matches no conversations will silently stop all AI answers
 - The chatbot configuration marked **Default** uses **Start a live chat** and contains valid Zendesk tags

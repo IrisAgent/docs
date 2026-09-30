@@ -27,7 +27,11 @@ You can [configure standard operating procedures by describing them in plain Eng
 **To create a plain-English procedure:**
 
 1. Go to **Automate** → **Procedures** on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories) and click **Create New Procedure / Q&A**.
-2. Enter the **name**, a **short scenario description** (when the AI Agent should trigger this procedure), and the **actions** the AI Agent should take (the steps, questions to ask, and any APIs or systems to call). Click on **Save**.
+2. Enter a **name** at the top of the editor. Under **Scenario**, describe when the AI Agent should use the procedure, such as "When the customer asks for a refund." Add training examples if they would help define the scenario.
+3. Under **Action**, choose **Instructions for AI Agent** for a flow that asks questions or takes actions, or **Direct Answer** for a fixed reply. Write the steps or answer in the editor. For an instruction flow, add any **Information to collect**.
+4. Set **Availability** for the relevant products, channels, and assistants. Choose the intended **Status**, then click **Save**.
+
+The current editor is called **Procedures**. Older references to **Custom Answers** or **Customer-Provided Tags** refer to the same area in earlier versions of the dashboard.
 
 <Tip>
   Write scenario descriptions the way you would brief a new agent — focus on the customer intent ("when a customer asks about…") rather than exact phrasing. IrisAgent's AI handles the wording variations, so you don't need to list every possible way a customer might phrase the request.
