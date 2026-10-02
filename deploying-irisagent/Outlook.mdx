@@ -15,7 +15,7 @@ Outlook uses the same **Case Triggers** engine as your ticketing system, so cond
 ## Prerequisites
 
 1. Your Outlook mailbox is connected as a data source. See the [Outlook connection guide](/outlook) for the initial setup.
-2. The OAuth connection includes `Mail.ReadWrite` for draft replies and `Mail.Send` for automatic replies. New Outlook connections request both permissions.
+2. The OAuth connection includes `Mail.ReadWrite` for draft replies and `Mail.Send` for automatic replies (plus their `.Shared` variants when the connected mailbox is a shared mailbox). New Outlook connections request all of these permissions.
 3. Access to the IrisAgent dashboard as an admin. Enabling deflection is admin-only.
 
 <Note>
