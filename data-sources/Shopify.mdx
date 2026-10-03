@@ -51,6 +51,23 @@ Merchants can also begin by installing IrisAgent from Shopify:
 
 Both connection methods provide the same live product and order capabilities.
 
+## Install with a private install link
+
+Some stores connect through a private IrisAgent app created only for that store, instead of the public IrisAgent app. If IrisAgent support sends you a private install link, use it in place of the **Connect Shopify data** button:
+
+1. Sign in to Shopify admin as the store owner or as a staff member with permission to install apps.
+2. Open the private install link from IrisAgent support and click **Install**.
+3. Approve the requested read-only permissions.
+4. Sign in to IrisAgent when redirected.
+5. Choose the chatbot that should use the Shopify data.
+6. Click **Finish Shopify setup**.
+
+The **Shopify** configuration page in IrisAgent then shows your store as connected. After the first install, you can reconnect or change settings from IrisAgent as usual.
+
+<Note>
+  Private install links work only for the store they were created for and expire after about seven days. If your link has expired, contact IrisAgent support for a new one.
+</Note>
+
 ## Configure commerce capabilities
 
 After connecting the store, use **Read-only commerce capabilities** on the Shopify configuration page to enable or disable:
@@ -115,6 +132,10 @@ Disconnecting removes IrisAgent's access to Shopify data. To remove the widget f
 - Enter the permanent `*.myshopify.com` domain, not a custom storefront domain.
 - Select a chatbot.
 - If the page says Shopify is not configured for the environment, contact IrisAgent support.
+
+### Shopify says the app is under review
+
+If Shopify shows **This app is under review** when you try to install IrisAgent, the public IrisAgent app is still awaiting Shopify App Store approval. Contact IrisAgent support for a private install link, then follow [Install with a private install link](#install-with-a-private-install-link).
 
 ### Shopify reports that the store is already connected
 
