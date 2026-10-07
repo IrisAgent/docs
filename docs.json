@@ -207,12 +207,6 @@
             ]
           },
           {
-            "group": "Iris Control",
-            "pages": [
-              "iris-control"
-            ]
-          },
-          {
             "group": "User Guides",
             "pages": [
               "guides/onboarding",
@@ -235,6 +229,12 @@
             "group": "Account Management",
             "pages": [
               "account-management/Change-Integration-User"
+            ]
+          },
+          {
+            "group": "Iris Control",
+            "pages": [
+              "iris-control"
             ]
           }
         ]

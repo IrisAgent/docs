@@ -30,15 +30,15 @@ Iris Control is a control layer for the LLM calls your own applications make. Yo
 
 ### Step 1: Get an API key
 
-Iris Control uses the same API keys as the rest of the [IrisAgent API](/api-reference/introduction). Keys are provided by your IrisAgent point of contact. Send them from your backend only.
+API keys are provided by your Iris Control point of contact. Send them from your backend only, never from browser or mobile code.
 
 ### Step 2: Add your model providers
 
-In the IrisAgent dashboard, open **Iris Control**, then **Providers**, and add the providers you use: OpenAI, Anthropic, Google Gemini, Azure OpenAI, AWS Bedrock, or a self-hosted model with an OpenAI-compatible endpoint. Provider keys are stored encrypted and are never returned by the API.
+In the Iris Control dashboard, open **Providers** and add the providers you use: OpenAI, Anthropic, Google Gemini, Azure OpenAI, AWS Bedrock, or a self-hosted model with an OpenAI-compatible endpoint. Provider keys are stored encrypted and are never returned by the API.
 
 ### Step 3: Create a use case
 
-Open **Iris Control**, then **Use cases**, and create one for each LLM feature you run, such as `support-answers` or `invoice-agent`. Set its model chain and, as needed, data scoping, tools, and grounding checks. The settings are described in [Use case policies](#use-case-policies).
+In the dashboard, open **Use cases** and create one for each LLM feature you run, such as `support-answers` or `invoice-agent`. Set its model chain and, as needed, data scoping, tools, and grounding checks. The settings are described in [Use case policies](#use-case-policies).
 
 ### Step 4: Point your client at Iris Control
 
@@ -112,7 +112,7 @@ Tag each call so the policy can scope it and the call log can group it.
 
 | Header | Required | Description |
 | --- | --- | --- |
-| `Authorization` | Yes | `Bearer` followed by your IrisAgent API key. |
+| `Authorization` | Yes | `Bearer` followed by your Iris Control API key. |
 | `X-Iris-Product` | No | The product the call belongs to. Limits retrieval to knowledge tagged with this product. |
 | `X-Iris-Tenant` | No | Your customer or tenant ID. Limits retrieval to that tenant's knowledge and groups the call log by tenant. |
 | `X-Iris-Workflow` | No | The workflow or agent making the call. Selects the tool allowlist for that workflow. |
@@ -164,7 +164,7 @@ To change models, edit the chain. Your application code does not change, because
 
 ### Data scoping
 
-When `retrieval.enabled` is on, Iris Control searches your connected knowledge before calling the model and adds the matching passages to the request. Knowledge comes from the same [data sources](/data-sources/Zendesk) you connect to IrisAgent, such as help centers, Confluence, websites, and [uploaded content](/data-sources/Upload-Content).
+When `retrieval.enabled` is on, Iris Control searches your connected knowledge before calling the model and adds the matching passages to the request. Knowledge comes from the [data sources](/data-sources/Zendesk) you connect, such as help centers, Confluence, websites, and [uploaded content](/data-sources/Upload-Content).
 
 `retrieval.scope_by` sets which request headers limit the search:
 
@@ -219,7 +219,7 @@ The grounding check runs after the model answers and before the response is retu
 
 ## Grounding check API
 
-To check answers produced outside Iris Control, for example behind an existing gateway, call the grounding check directly.
+To check answers produced outside Iris Control, call the grounding check directly.
 
 ```bash
 curl https://api1.irisagent.com/v1/control/grounding-check \
@@ -271,7 +271,7 @@ Send up to 5 sources per request.
 
 ## Call log
 
-Every call appears in **Iris Control**, then **Call log**, with:
+Every call appears in the dashboard under **Call log**, with:
 
 - The use case, product, tenant, workflow, and your `X-Iris-Trace-Id`
 - Each model attempt, with its outcome and latency
@@ -285,18 +285,11 @@ Filter by use case, tenant, model, or grounding result, and export entries as CS
 
 Compare models on your own questions before you change a use case's model chain.
 
-1. Open **Iris Control**, then **Evals**, and upload a CSV with `question` and, optionally, `expected_answer` columns, or select calls from the call log.
+1. In the dashboard, open **Evals** and upload a CSV with `question` and, optionally, `expected_answer` columns, or select calls from the call log.
 2. Pick the models to compare.
 3. Iris Control runs every question through each model with the use case's retrieval and grounding settings, and scores each answer for grounding and, when an expected answer is given, correctness.
 
 The scorecard shows accuracy, grounded rate, latency, and cost per model, so you can pick the model chain on your own data rather than a public benchmark.
-
-## Using Iris Control with an existing gateway
-
-If you already route LLM traffic through a gateway such as LiteLLM, Portkey, or AWS Bedrock, you can keep it:
-
-- **Iris Control behind your gateway.** Add Iris Control as an OpenAI-compatible upstream in your gateway, so calls for the selected use cases pass through Iris Control's policy.
-- **Grounding check only.** Keep your gateway as is and call the [Grounding check API](#grounding-check-api) on answers before they reach users.
 
 ## Errors
 
