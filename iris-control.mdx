@@ -1,0 +1,317 @@
+---
+title: "Iris Control: LLM control plane"
+sidebarTitle: "Iris Control"
+description: "Route, scope, check, and log every LLM call from your applications through one OpenAI-compatible endpoint, with model failover, data scoping, tool limits, grounding checks, and evals on your own data."
+---
+
+## Overview
+
+Iris Control is a control layer for the LLM calls your own applications make. Your apps send requests to one OpenAI-compatible endpoint, and Iris Control applies your policy to every call before and after the model runs:
+
+- **Routing and failover.** Each use case has a primary model and fallbacks. If a provider errors or times out, the next model answers.
+- **Data scoping.** Retrieval is limited to the product or tenant a call belongs to, so an answer only uses the data it is allowed to see.
+- **Tool limits.** Each workflow can call only the tools you allow.
+- **Grounding checks.** Answers are checked against approved sources before they are returned. Unsupported answers are flagged or replaced with your handoff message.
+- **Call log and evals.** Every prompt, answer, model, and policy decision is logged, and you can score models against your own questions.
+
+<Tip>
+  Try it before you connect anything: the [Iris Control live demo](https://irisagent.com/iris-control-demo/) runs model failover, data scoping, and grounding checks on live models, with no signup.
+</Tip>
+
+## How it works
+
+1. Your application calls Iris Control with an OpenAI-compatible request. The `model` field names a **use case** (for example `support-answers`), not a specific model.
+2. Iris Control looks up the use case's policy and applies it: scoped retrieval, allowed tools, and the model chain.
+3. The primary model answers. If its provider fails, Iris Control retries the call on the next model in the chain.
+4. The answer runs through the grounding check, when the use case has it turned on.
+5. Iris Control returns the answer in the standard OpenAI response format, with headers that show which model answered and what the policy did, and writes the call to the call log.
+
+## Quickstart
+
+### Step 1: Get an API key
+
+Iris Control uses the same API keys as the rest of the [IrisAgent API](/api-reference/introduction). Keys are provided by your IrisAgent point of contact. Send them from your backend only.
+
+### Step 2: Add your model providers
+
+In the IrisAgent dashboard, open **Iris Control**, then **Providers**, and add the providers you use: OpenAI, Anthropic, Google Gemini, Azure OpenAI, AWS Bedrock, or a self-hosted model with an OpenAI-compatible endpoint. Provider keys are stored encrypted and are never returned by the API.
+
+### Step 3: Create a use case
+
+Open **Iris Control**, then **Use cases**, and create one for each LLM feature you run, such as `support-answers` or `invoice-agent`. Set its model chain and, as needed, data scoping, tools, and grounding checks. The settings are described in [Use case policies](#use-case-policies).
+
+### Step 4: Point your client at Iris Control
+
+Change the base URL and API key in the OpenAI client your application already uses. Set `model` to the use case name.
+
+<CodeGroup>
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api1.irisagent.com/v1/control",
+    api_key=IRIS_API_KEY,
+)
+
+response = client.chat.completions.create(
+    model="support-answers",
+    messages=[{"role": "user", "content": "How do I export last month's invoices?"}],
+    extra_headers={
+        "X-Iris-Product": "billing",
+        "X-Iris-Tenant": "acme-corp",
+    },
+)
+
+print(response.choices[0].message.content)
+```
+
+```javascript Node.js
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  baseURL: "https://api1.irisagent.com/v1/control",
+  apiKey: process.env.IRIS_API_KEY,
+});
+
+const response = await client.chat.completions.create(
+  {
+    model: "support-answers",
+    messages: [{ role: "user", content: "How do I export last month's invoices?" }],
+  },
+  {
+    headers: {
+      "X-Iris-Product": "billing",
+      "X-Iris-Tenant": "acme-corp",
+    },
+  }
+);
+
+console.log(response.choices[0].message.content);
+```
+
+```bash cURL
+curl https://api1.irisagent.com/v1/control/chat/completions \
+  -H "Authorization: Bearer $IRIS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Iris-Product: billing" \
+  -H "X-Iris-Tenant: acme-corp" \
+  -d '{
+    "model": "support-answers",
+    "messages": [{"role": "user", "content": "How do I export last month'\''s invoices?"}]
+  }'
+```
+
+</CodeGroup>
+
+Streaming (`stream: true`), tool calling, and structured outputs work the same way as with the OpenAI API.
+
+## Request headers
+
+Tag each call so the policy can scope it and the call log can group it.
+
+| Header | Required | Description |
+| --- | --- | --- |
+| `Authorization` | Yes | `Bearer` followed by your IrisAgent API key. |
+| `X-Iris-Product` | No | The product the call belongs to. Limits retrieval to knowledge tagged with this product. |
+| `X-Iris-Tenant` | No | Your customer or tenant ID. Limits retrieval to that tenant's knowledge and groups the call log by tenant. |
+| `X-Iris-Workflow` | No | The workflow or agent making the call. Selects the tool allowlist for that workflow. |
+| `X-Iris-Trace-Id` | No | Your own request or trace ID, stored with the call log entry so you can join it to your logs. |
+
+## Response headers
+
+Every response carries the outcome of the policy.
+
+| Header | Description |
+| --- | --- |
+| `X-Iris-Request-Id` | The call log ID for this request. |
+| `X-Iris-Model` | The model that produced the answer. |
+| `X-Iris-Attempts` | The number of models tried. `2` means the primary failed and the first fallback answered. |
+| `X-Iris-Grounding` | `passed`, `flagged`, `blocked`, or `off`. |
+| `X-Iris-Tools-Removed` | Tools removed from the request or response because the workflow is not allowed to call them. |
+
+## Use case policies
+
+Each use case has one policy. You can edit it in the dashboard, or export and import it as YAML.
+
+```yaml
+use_case: support-answers
+models:
+  chain: [gpt-5.6-sol, grok-4.5, gemini-3.7-flash]
+  attempt_timeout_seconds: 15
+retrieval:
+  enabled: true
+  scope_by: [product, tenant]
+  max_sources: 5
+tools:
+  workflows:
+    billing-agent: [lookup_invoice, send_receipt]
+    triage-agent: [lookup_account]
+grounding:
+  mode: block            # off, flag, or block
+  check_links: true
+  handoff_message: "Let me connect you with a teammate who can confirm this."
+logging:
+  store_prompts: true
+  retention_days: 90
+```
+
+### Models and failover
+
+`models.chain` lists the models for the use case in order. Iris Control calls the first one. If the call fails with a provider error, a rate limit, or a timeout longer than `attempt_timeout_seconds`, it retries on the next model in the chain. Every attempt is recorded in the call log with its model, outcome, and latency, and `X-Iris-Attempts` shows how many models were tried.
+
+To change models, edit the chain. Your application code does not change, because it only names the use case.
+
+### Data scoping
+
+When `retrieval.enabled` is on, Iris Control searches your connected knowledge before calling the model and adds the matching passages to the request. Knowledge comes from the same [data sources](/data-sources/Zendesk) you connect to IrisAgent, such as help centers, Confluence, websites, and [uploaded content](/data-sources/Upload-Content).
+
+`retrieval.scope_by` sets which request headers limit the search:
+
+- `product`: only knowledge tagged with the `X-Iris-Product` value is searched. Articles can belong to several products.
+- `tenant`: only knowledge tagged with the `X-Iris-Tenant` value is searched.
+
+A call with a scope header that matches no knowledge gets no retrieved passages, so the model has nothing outside that scope to answer from.
+
+**If you run your own retrieval**, leave `retrieval.enabled` off and send the passages you retrieved with the request. Iris Control uses them for the grounding check:
+
+```python
+response = client.chat.completions.create(
+    model="support-answers",
+    messages=messages,
+    extra_body={
+        "iris": {
+            "sources": [
+                {
+                    "title": "Exporting invoices",
+                    "url": "https://help.example.com/invoices/export",
+                    "body": "Go to Billing, then Invoice history, and select Export.",
+                }
+            ]
+        }
+    },
+)
+```
+
+### Tool limits
+
+`tools.workflows` maps each workflow to the tools it may call. For a request with an `X-Iris-Workflow` header:
+
+- Tools in the request that are not on the workflow's list are removed before the model sees them.
+- A tool call in the model's response to a tool that is not on the list is removed from the response.
+
+Both cases are listed in `X-Iris-Tools-Removed` and recorded in the call log. A request without `X-Iris-Workflow` keeps the tools it sends.
+
+### Grounding checks
+
+The grounding check runs after the model answers and before the response is returned. It runs two checks against the sources for the call, whether retrieved by Iris Control or sent in `iris.sources`:
+
+- **Link check.** Every link in the answer must point to one of the sources. Links that can't be matched to a source are reported as unapproved.
+- **Claim check.** A judge model checks each claim in the answer against the source text and returns a verdict, a grounding score from 0 to 5, and any unsupported claims.
+
+`grounding.mode` decides what happens when an answer fails either check:
+
+| Mode | Behavior |
+| --- | --- |
+| `off` | No check runs. `X-Iris-Grounding: off`. |
+| `flag` | The answer is returned unchanged with `X-Iris-Grounding: flagged`, and the result is in the call log. Use this to review results before blocking. |
+| `block` | The answer is replaced with `handoff_message` and `X-Iris-Grounding: blocked` is set, so your app can route the user to a person. |
+
+## Grounding check API
+
+To check answers produced outside Iris Control, for example behind an existing gateway, call the grounding check directly.
+
+```bash
+curl https://api1.irisagent.com/v1/control/grounding-check \
+  -H "Authorization: Bearer $IRIS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "How long does a refund for a duplicate charge take?",
+    "answer": "Duplicate charges are refunded within 24 hours. See https://example.com/credit-policy.",
+    "sources": [
+      {
+        "title": "Refunds for duplicate charges",
+        "url": "https://help.example.com/refunds",
+        "body": "Once we confirm the duplicate charge, we refund it to the original payment method within 5 business days."
+      }
+    ]
+  }'
+```
+
+Response:
+
+```json
+{
+  "passed": false,
+  "urlCheck": {
+    "approved": [],
+    "unapproved": ["https://example.com/credit-policy"]
+  },
+  "judge": {
+    "model": "gemini-3.7-flash",
+    "verdict": "defect",
+    "failureType": "hallucination",
+    "groundingScore": 1,
+    "unsupportedClaims": ["Duplicate charges are refunded within 24 hours"],
+    "explanation": "The source says refunds take up to 5 business days."
+  }
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `passed` | `true` when every link is approved and the judge's verdict is `correct`. |
+| `urlCheck.approved` / `urlCheck.unapproved` | Links in the answer that do and don't match a source. |
+| `judge.verdict` | `correct` or `defect`. |
+| `judge.failureType` | For a defect: `hallucination`, `wrong_article`, `incomplete`, or `kb_gap`. |
+| `judge.groundingScore` | 0 to 5. Higher means better supported by the sources. |
+| `judge.unsupportedClaims` | Claims in the answer the sources don't support. |
+
+Send up to 5 sources per request.
+
+## Call log
+
+Every call appears in **Iris Control**, then **Call log**, with:
+
+- The use case, product, tenant, workflow, and your `X-Iris-Trace-Id`
+- Each model attempt, with its outcome and latency
+- The prompt, the retrieved or supplied sources, and the answer
+- Tools removed by policy
+- The grounding check result
+
+Filter by use case, tenant, model, or grounding result, and export entries as CSV. Set how long prompts and answers are kept with `logging.retention_days`, or turn off `logging.store_prompts` to keep only metadata.
+
+## Evals on your own data
+
+Compare models on your own questions before you change a use case's model chain.
+
+1. Open **Iris Control**, then **Evals**, and upload a CSV with `question` and, optionally, `expected_answer` columns, or select calls from the call log.
+2. Pick the models to compare.
+3. Iris Control runs every question through each model with the use case's retrieval and grounding settings, and scores each answer for grounding and, when an expected answer is given, correctness.
+
+The scorecard shows accuracy, grounded rate, latency, and cost per model, so you can pick the model chain on your own data rather than a public benchmark.
+
+## Using Iris Control with an existing gateway
+
+If you already route LLM traffic through a gateway such as LiteLLM, Portkey, or AWS Bedrock, you can keep it:
+
+- **Iris Control behind your gateway.** Add Iris Control as an OpenAI-compatible upstream in your gateway, so calls for the selected use cases pass through Iris Control's policy.
+- **Grounding check only.** Keep your gateway as is and call the [Grounding check API](#grounding-check-api) on answers before they reach users.
+
+## Errors
+
+Iris Control returns errors in the OpenAI error format.
+
+| Status | Meaning |
+| --- | --- |
+| `400` | The request is malformed, or `model` doesn't name a use case. |
+| `401` | The API key is missing or invalid. |
+| `404` | The use case doesn't exist. |
+| `429` | You've exceeded your rate limit. Retry after the `Retry-After` header. |
+| `502` | Every model in the use case's chain failed. The error body lists each attempt. |
+
+A blocked grounding check is not an error. It returns `200` with the handoff message and `X-Iris-Grounding: blocked`.
+
+<Note>
+  **Questions?** Contact us at [contact@irisagent.com](mailto:contact@irisagent.com) or [book an Iris Control demo](https://irisagent.com/get-a-demo-iris-control/).
+</Note>

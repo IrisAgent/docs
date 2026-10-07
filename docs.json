@@ -207,6 +207,12 @@
             ]
           },
           {
+            "group": "Iris Control",
+            "pages": [
+              "iris-control"
+            ]
+          },
+          {
             "group": "User Guides",
             "pages": [
               "guides/onboarding",
