@@ -246,6 +246,12 @@ See [Workflows — Using Custom APIs in plain-English workflows](/configuring-ai
 
 When a ticket arrives, IrisAgent automatically calls your API with the ticket's context, evaluates the expression, and runs the trigger actions only if the condition is met.
 
+You can combine API conditions with other ticket conditions. For example, to prioritize enterprise customers, create an API that returns the account tier from your CRM with the expression `response.accountTier == "enterprise"`, then add it as a condition on a trigger that sets the priority and posts a private note.
+
+### Using API data in trigger actions
+
+The response schema fields you defined are also available in the **Auto-respond to customer** and **Create Private Note** actions. Use the field picker in the action editor to insert them into the reply or note.
+
 ---
 
 Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or need help setting up your Custom API integration.

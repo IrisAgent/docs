@@ -27,88 +27,68 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Get started",
             "pages": [
               "index",
-              "quickstart"
+              "quickstart",
+              "guides/onboarding",
+              "guides/Connecting-Your-Helpdesk"
             ]
           },
           {
-            "group": "Connecting Data Sources",
+            "group": "Connect your data",
             "pages": [
               {
-                "group": "Ticketing systems",
+                "group": "Helpdesks",
                 "pages": [
                   "data-sources/Zendesk",
                   "data-sources/Salesforce",
                   "data-sources/Intercom",
-                  "data-sources/Jira-Software-or-Service-Desk",
                   "data-sources/Freshworks",
                   "data-sources/Hubspot",
+                  "data-sources/Zoho",
                   "data-sources/Helpshift",
-                  "data-sources/Zoho"
+                  "data-sources/Jira-Software-or-Service-Desk",
+                  "outlook"
                 ]
               },
               {
-                "group": "Knowledge bases",
+                "group": "Knowledge sources",
                 "pages": [
-                  "data-sources/Confluence",
                   "data-sources/Ticketing-Provider-KB",
+                  "data-sources/Confluence",
                   "data-sources/Public-Websites",
                   "data-sources/Upload-Content"
                 ]
               },
               {
-                "group": "Bug tracking",
+                "group": "Business systems",
                 "pages": [
-                  "data-sources/Jira-Software"
-                ]
-              },
-              {
-                "group": "CRM",
-                "pages": [
-                  "data-sources/SalesforceCRM"
-                ]
-              },
-              {
-                "group": "Email providers",
-                "pages": [
-                  "outlook"
-                ]
-              },
-              {
-                "group": "Custom APIs",
-                "pages": [
+                  "data-sources/SalesforceCRM",
+                  "data-sources/Jira-Software",
+                  "data-sources/Shopify",
                   "data-sources/Custom-API"
-                ]
-              },
-              {
-                "group": "E-commerce",
-                "pages": [
-                  "data-sources/Shopify"
                 ]
               }
             ]
           },
           {
-            "group": "Deploying IrisAgent",
+            "group": "Customer-facing AI agents",
             "pages": [
               {
                 "group": "Chat",
                 "pages": [
                   "deploying-irisagent/Chatbot-on-Website",
+                  "deploying-irisagent/Chatbot-on-Zendesk-Help-Center",
                   "deploying-irisagent/Salesforce-Live-Chat",
                   "deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging",
-                  "deploying-irisagent/Chatbot-Automation-on-WhatsApp",
                   "deploying-irisagent/Chatbot-Automation-on-Intercom",
                   "deploying-irisagent/Chatbot-Automation-on-Freshchat",
-                  "deploying-irisagent/Slack",
-                  "deploying-irisagent/Microsoft-Teams",
-                  "deploying-irisagent/Chatbot-on-Zendesk-Help-Center"
+                  "deploying-irisagent/Chatbot-Automation-on-WhatsApp"
                 ]
               },
               {
-                "group": "Voice AI",
+                "group": "Voice",
                 "pages": [
                   "deploying-irisagent/Voice-AI",
                   "deploying-irisagent/voice-ai-on-8x8",
@@ -119,41 +99,22 @@
                 ]
               },
               {
-                "group": "AI Search",
-                "pages": [
-                  "deploying-irisagent/AI-Search-on-Website",
-                  "deploying-irisagent/Internal-AI-Search-on-Confluence"
-                ]
-              },
-              {
-                "group": "Agent Copilot",
-                "pages": [
-                  "deploying-irisagent/Agent-Copilot",
-                  "deploying-irisagent/Sidebar-on-Experience-Cloud"
-                ]
-              },
-              {
-                "group": "Tickets",
-                "pages": [
-                  "deploying-irisagent/Tickets"
-                ]
-              },
-              {
                 "group": "Email",
                 "pages": [
-                  "deploying-irisagent/Conversation-Email",
-                  "deploying-irisagent/Outlook"
+                  "deploying-irisagent/Outlook",
+                  "deploying-irisagent/Conversation-Email"
                 ]
               },
               {
-                "group": "Text messaging",
+                "group": "SMS",
                 "pages": [
                   "deploying-irisagent/Outbound-SMS"
                 ]
               },
               {
-                "group": "Ticket Deflection",
+                "group": "Self-service search and deflection",
                 "pages": [
+                  "deploying-irisagent/AI-Search-on-Website",
                   "deploying-irisagent/Ticket-Deflector-on-Zendesk",
                   "deploying-irisagent/Case-Deflector-on-Salesforce"
                 ]
@@ -161,76 +122,73 @@
             ]
           },
           {
-            "group": "Configuring AI and Automation",
+            "group": "Agent Assist",
             "pages": [
-              {
-                "group": "AI Answers",
-                "pages": [
-                  "configuring-ai-and-automation/AI-Response-Style",
-                  "configuring-ai-and-automation/Search-Term-Rewrites",
-                  "configuring-ai-and-automation/Revise-Chatbot-Answers",
-                  "configuring-ai-and-automation/AI-for-Macros"
-                ]
-              },
-              {
-                "group": "Knowledge and Quality",
-                "pages": [
-                  "configuring-ai-and-automation/AutoKB",
-                  "configuring-ai-and-automation/AutoQA",
-                  "configuring-ai-and-automation/Hallucination-Removal-Engine",
-                  "configuring-ai-and-automation/Understanding-Grounded-Answers",
-                  "configuring-ai-and-automation/Product-Segmentation"
-                ]
-              },
-              {
-                "group": "Agent Assist",
-                "pages": [
-                  "configuring-ai-and-automation/Jira-Integration-Settings"
-                ]
-              },
-              {
-                "group": "Ticket Intelligence",
-                "pages": [
-                  "configuring-ai-and-automation/Ticket-Tagging",
-                  "configuring-ai-and-automation/Ticket-Sentiment",
-                  "configuring-ai-and-automation/Trending-Incident-Detection"
-                ]
-              },
-              {
-                "group": "Automation and Routing",
-                "pages": [
-                  "configuring-ai-and-automation/Workflows",
-                  "configuring-ai-and-automation/Ticket-Deflection",
-                  "guides/configuring-ai-and-automation/add-custom-apis"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "User Guides",
-            "pages": [
-              "guides/onboarding",
-              "guides/Connecting-Your-Helpdesk",
+              "deploying-irisagent/Agent-Copilot",
               "agent-copilot",
-              "support-analyst"
+              "deploying-irisagent/Sidebar-on-Experience-Cloud",
+              "configuring-ai-and-automation/AI-for-Macros",
+              "configuring-ai-and-automation/Jira-Integration-Settings"
             ]
           },
           {
-            "group": "Security and Compliance",
+            "group": "Internal AI agents",
+            "pages": [
+              "deploying-irisagent/Slack",
+              "deploying-irisagent/Microsoft-Teams",
+              "deploying-irisagent/Internal-AI-Search-on-Confluence"
+            ]
+          },
+          {
+            "group": "Ticket automation",
+            "pages": [
+              "deploying-irisagent/Tickets",
+              "configuring-ai-and-automation/Workflows",
+              "configuring-ai-and-automation/Ticket-Tagging"
+            ]
+          },
+          {
+            "group": "AI answers and knowledge",
+            "pages": [
+              "configuring-ai-and-automation/Understanding-Grounded-Answers",
+              "configuring-ai-and-automation/Hallucination-Removal-Engine",
+              "configuring-ai-and-automation/AI-Response-Style",
+              "configuring-ai-and-automation/Search-Term-Rewrites",
+              "configuring-ai-and-automation/Revise-Chatbot-Answers",
+              "configuring-ai-and-automation/Product-Segmentation",
+              "configuring-ai-and-automation/AutoKB"
+            ]
+          },
+          {
+            "group": "Insights and quality",
+            "pages": [
+              "support-analyst",
+              "configuring-ai-and-automation/Trending-Incident-Detection",
+              "configuring-ai-and-automation/Ticket-Sentiment",
+              "configuring-ai-and-automation/AutoQA"
+            ]
+          },
+          {
+            "group": "Admin and security",
             "pages": [
               "security-and-compliance/Single-Sign-On-Options",
               "security-and-compliance/Okta-SSO",
-              "security-and-compliance/Private-Deployment-Overview",
-              "security-and-compliance/Reference-Architecture-Customer-VPC",
-              "security-and-compliance/Reference-Architecture-On-Prem-Air-Gapped"
+              "account-management/Change-Integration-User",
+              {
+                "group": "Private deployment",
+                "pages": [
+                  "security-and-compliance/Private-Deployment-Overview",
+                  "security-and-compliance/Reference-Architecture-Customer-VPC",
+                  "security-and-compliance/Reference-Architecture-On-Prem-Air-Gapped"
+                ]
+              }
             ]
-          },
-          {
-            "group": "Account Management",
-            "pages": [
-              "account-management/Change-Integration-User"
-            ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "Iris Control",
+        "groups": [
           {
             "group": "Iris Control",
             "pages": [
@@ -271,6 +229,16 @@
       ]
     }
   },
+  "redirects": [
+    {
+      "source": "/configuring-ai-and-automation/Ticket-Deflection",
+      "destination": "/deploying-irisagent/Tickets#auto-respond-with-ai-answers"
+    },
+    {
+      "source": "/guides/configuring-ai-and-automation/add-custom-apis",
+      "destination": "/data-sources/Custom-API"
+    }
+  ],
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"

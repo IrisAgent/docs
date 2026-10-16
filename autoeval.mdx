@@ -6,7 +6,7 @@ description: "AutoEval generates a golden eval set from your LLM call logs, keep
 
 ## Overview
 
-AutoEval generates evals from the LLM calls your applications already make. You send a copy of your call logs, and AutoEval builds a **golden eval set** for each use case: a set of real inputs that covers your workflows, languages, and edge cases. As your traffic changes and you launch new workflows, AutoEval updates the set. Nobody on your team has to write or maintain test prompts.
+AutoEval generates evals from the LLM calls your applications already make. Route your calls through Iris Control, or send a copy of your call logs, and AutoEval builds a **golden eval set** for each use case: a set of real inputs that covers your workflows, languages, and edge cases. As your traffic changes and you launch new workflows, AutoEval updates the set. Nobody on your team has to write or maintain test prompts.
 
 Each eval checks a model's output against two kinds of rules:
 
@@ -16,18 +16,52 @@ Each eval checks a model's output against two kinds of rules:
 With evals in place, you can:
 
 - **Choose models on evidence.** Run the golden eval set on any model, including your own fine-tuned or self-hosted models, and compare the scores with cost and latency before you switch.
-- **Catch regressions in production.** See the correctness rate and the pass rate of every rule by use case, model, and tenant, and find failed calls before your customers report them.
+- **Catch regressions in production.** See the score of every LLM call in the [dashboard](#view-scores-in-the-dashboard), with the correctness rate and the pass rate of every rule by use case, model, and tenant, and find failed calls before your customers report them.
 - **Test changes before release.** Run an eval from your test suite or CI with the [evaluate API](#evaluate-api).
 
-AutoEval is part of [Iris Control](/iris-control). It works on a copy of your logs, so it never sits on your request path and adds no latency to your app.
+AutoEval is part of [Iris Control](/iris-control). Evals run after each call completes, never on your request path, so they add no latency to your app.
 
 <Tip>
   Try it before you connect anything: the AutoEval tab of the [Iris Control live demo](https://irisagent.com/iris-control-demo/#autoeval) compares models on IrisAgent's own support eval set, with price.
 </Tip>
 
+## Getting started
+
+AutoEval needs the input and output of each LLM call. There are two ways to get them to it.
+
+### Option 1: Route calls through Iris Control (recommended)
+
+Point the OpenAI-compatible client your application already uses at the Iris Control endpoint. Every call is captured automatically, so your golden eval set and scores stay up to date with no exports to manage. You also get Iris Control's routing, failover, spend limits, and redaction on the same calls.
+
+1. In the Iris Control dashboard, [create an API key](/iris-control#step-1-get-an-api-key) and [add your model providers](/iris-control#step-2-add-your-model-providers).
+2. [Create a use case](/iris-control#step-3-create-a-use-case) for each LLM feature, such as `support-answers`.
+3. Change the base URL and API key in your client, and set `model` to the use case name:
+
+   ```python Python
+   from openai import OpenAI
+
+   client = OpenAI(
+       base_url="https://api1.irisagent.com/v1/control",
+       api_key=IRIS_API_KEY,
+   )
+
+   response = client.chat.completions.create(
+       model="support-answers",
+       messages=[{"role": "user", "content": "How do I export last month's invoices?"}],
+   )
+   ```
+
+4. Optionally, [add custom rules](#custom-rules) for the use case. Default rules work without setup.
+
+Calls appear in the [call log](/iris-control#call-log) as they happen, and their scores appear on the **AutoEval** page. See the [Iris Control quickstart](/iris-control#quickstart) for Node.js, cURL, and request headers.
+
+### Option 2: Send a copy of your call logs
+
+If you aren't ready to change how your application calls models, export a copy of your call logs to AutoEval instead. Your application keeps calling its model providers exactly as it does today. Start with a one-time file, then set up a recurring export so your golden eval set stays up to date. See [Send your call logs](#send-your-call-logs) for the format.
+
 ## How it works
 
-1. **You send your call logs.** AutoEval needs the input and output of each call. [Export your call logs](#send-your-call-logs) to AutoEval, or route calls through the [Iris Control endpoint](/iris-control#quickstart) and they're captured automatically.
+1. **AutoEval receives your calls.** From the [Iris Control endpoint](#option-1-route-calls-through-iris-control-recommended) as they happen, or from [your call log export](#send-your-call-logs).
 2. **AutoEval generates your golden eval set.** For each use case, it selects inputs from your logs and keeps the set up to date as new calls arrive. See [Golden eval set](#golden-eval-set).
 3. **AutoEval grades outputs.** Each output is graded against the default rules and the use case's custom rules, both in production and in model comparisons.
 4. **You compare models.** AutoEval runs the golden eval set on each model you choose, with each input's original system prompt, and reports the scores with cost and latency.
@@ -112,7 +146,13 @@ Each graded output has one result:
 | `rules[].outcome` | `pass`, `fail`, or `not_applicable`. |
 | `rules[].explanation` | Why the rule passed or failed. |
 
-The **AutoEval** page of the dashboard rolls results up by use case, model, tenant, and rule: correctness rate, average score, the pass rate of each rule, and the failed calls behind each number.
+## View scores in the dashboard
+
+The **AutoEval** page of the Iris Control dashboard shows the scores of your LLM calls as they're graded:
+
+- **Every call.** Open any call to see its input, output, correctness verdict and score, and the result of each rule, with explanations.
+- **Rollups.** Correctness rate, average score, and the pass rate of each rule, by use case, model, tenant, and rule. Critical rule failures show first.
+- **Failures.** Filter to failed calls to see the examples behind each number.
 
 ## Compare models
 
@@ -132,7 +172,7 @@ Open any row to see the input and every model's output side by side, with their 
 
 ## Send your call logs
 
-If your applications call model providers directly, export a copy of your call logs to AutoEval. Nothing changes in your request path. Send one record per LLM call as JSONL:
+Use this if your application doesn't route calls through the Iris Control endpoint. Your application keeps calling its model providers as it does today, and you send AutoEval a copy of the calls afterward. Send one record per LLM call as JSONL:
 
 ```json
 {
@@ -166,7 +206,7 @@ To start, send a one-time file to your Iris Control point of contact. To keep yo
 
 ## Evaluate API
 
-Run an eval on one output on demand, for example from your test suite or CI before you ship a prompt change. The endpoint grades the output against the rules you send, or against the use case's rules when you send `use_case` instead.
+Run an eval on one output on demand, for example from your test suite or CI before you ship a prompt change. Scores from production calls don't need the API: they appear in the [dashboard](#view-scores-in-the-dashboard) automatically. The endpoint grades the output against the rules you send, or against the use case's rules when you send `use_case` instead.
 
 ```bash
 curl https://api1.irisagent.com/v1/control/autoeval/evaluate \
