@@ -12,7 +12,7 @@ Iris Control is a control layer for the LLM calls your own applications make. Yo
 - **Data scoping.** Retrieval is limited to the product or tenant a call belongs to, so an answer only uses the data it is allowed to see.
 - **Tool limits.** Each workflow can call only the tools you allow.
 - **Grounding checks.** Answers are checked against approved sources before they are returned. Unsupported answers are flagged or replaced with your handoff message.
-- **Call log and evals.** Every prompt, answer, model, and policy decision is logged, and [AutoEval](#autoeval) scores models against a golden eval set built from your own traffic.
+- **Call log and evals.** Every prompt, answer, model, and policy decision is logged, and [AutoEval](/autoeval) grades each output for correctness and against your own rules.
 
 You don't have to route traffic through Iris Control to use AutoEval. See [Integration options](#integration-options) to start from a copy of your logs instead.
 
@@ -34,8 +34,8 @@ Pick the lightest option that answers your question. You can move down the table
 
 | Option | What you send | On your request path? | What you get |
 | --- | --- | --- | --- |
-| Sample eval | 10 to 20 test examples as a CSV or JSONL file | No | A sample AutoEval report and leaderboard on your cases, with price |
-| Log import | A recurring export of your LLM call logs and feedback | No | AutoEval golden sets, new-model reports, and the call log |
+| Sample eval | 10 to 20 example calls (input and output) as a JSONL file | No | A sample AutoEval report: correctness and rule results, and a comparison with other models on the same inputs, with price |
+| Log import | A recurring export of your LLM call logs, in the [AutoEval log format](/autoeval#import-logs) | No | AutoEval grades, reports, and model comparisons on your own calls |
 | Endpoint | Your OpenAI-compatible client pointed at Iris Control | Yes | Everything above, plus routing, failover, data scoping, tool limits, and grounding checks |
 
 ### Architecture
@@ -302,102 +302,9 @@ Filter by use case, tenant, model, or grounding result, and export entries as CS
 
 ## AutoEval
 
-AutoEval keeps a golden eval set for each use case and scores every model you run or consider on it, with its price. Use it to decide which model to run, to check a cheaper model before moving traffic to it, and to test a new release before it reaches production.
+AutoEval grades the outputs in the call log: each output is checked for correctness against its own system prompt and user prompt, and against rules you write for the use case. You can also replay the same inputs on other models and compare the grades, cost, and latency before you change a model chain. AutoEval reads the call log, so it adds nothing to the request path.
 
-### How the golden set is built
-
-1. **Signals.** Feedback on real calls flags the cases worth keeping: user votes, human edits to the AI output, escalations, and task outcomes. Send them with the [feedback API](#send-feedback), in a [log import](#import-logs), or mark calls in the call log.
-2. **Qualification.** A decision model keeps only cases where the input is clear, the right output is known and verifiable, and the case tests something the set doesn't already cover.
-3. **Upkeep.** Near-duplicates merge, cases retire when your product or knowledge changes, and the set compresses to the cases that separate strong models from weak ones.
-
-You can also add cases yourself: in the dashboard, open **Evals** and upload a CSV with `question` and, optionally, `expected_answer` columns, or select calls from the call log.
-
-### What it scores
-
-Each use case has a rubric that fits its job. Every rubric also reports cost per call and latency.
-
-| Use case type | Metrics |
-| --- | --- |
-| Grounded answers | Answer accuracy, hallucination resistance, cited sources, grounding score |
-| Routing and tagging | Accuracy per label, and which labels get confused |
-| Agents and tool use | Right tool, right arguments, task completed, steps taken |
-| Generated content | Rubric score from a judge model, and a head-to-head against the model you run today |
-| Voice and multilingual | Language fidelity, comprehension of conversations that switch languages mid-sentence, turn accuracy, latency per turn |
-
-The judge model comes from a different family than the models it scores, and it is checked against a sample of your own reviewers' labels. Small sets report a range instead of a single score.
-
-### Your own models
-
-In-house and fine-tuned models are scored on the same golden set as hosted models. Add a self-hosted model under **Providers** with its OpenAI-compatible endpoint, then include it in an eval run like any other model.
-
-### Upgrade rules
-
-Each use case sets the rule a candidate model must pass before AutoEval recommends it:
-
-```yaml
-use_case: support-answers
-autoeval:
-  candidates: [gpt-6.1-sol, claude-opus-6]
-  upgrade_rule:
-    overall: must_improve
-    never_drop: [hallucination_resistance]
-    max_drop_points: 3     # any other metric
-  notify: [email, slack]
-```
-
-When a provider ships a new model, AutoEval runs it on your golden set and sends a report: ship or hold, the reasons, and the cost at your volume. AutoEval never changes a model chain on its own. The chain changes only when you edit it.
-
-## Import logs
-
-Use log import to run AutoEval without routing traffic through Iris Control. Send one record per LLM call as JSONL (or CSV with the same columns):
-
-```json
-{
-  "id": "call_8f2a",
-  "timestamp": "2026-10-15T18:04:11Z",
-  "use_case": "voice-agent",
-  "model": "in-house-voice-v3",
-  "messages": [
-    {"role": "user", "content": "Mera order kab aayega? It was supposed to come yesterday."},
-    {"role": "assistant", "content": "Aapka order kal shaam tak deliver ho jayega."}
-  ],
-  "latency_ms": 640,
-  "feedback": {"rating": "down", "edited_output": null, "escalated": false},
-  "reference_output": null,
-  "metadata": {"languages": ["hi", "en"], "tenant": "acme-corp"}
-}
-```
-
-| Field | Required | Description |
-| --- | --- | --- |
-| `id` | Yes | Your ID for the call. |
-| `messages` | Yes | The conversation in OpenAI message format, ending with the model's output. For voice, send the transcript. |
-| `model` | Yes | The model or model version that produced the output. |
-| `use_case` | No | Groups calls into a golden set. Defaults to `default`. |
-| `timestamp`, `latency_ms` | No | Used for latency and drift reports. |
-| `feedback` | No | `rating` (`up` or `down`), `edited_output` (the human-corrected output), and `escalated`. |
-| `reference_output` | No | The known correct output, when you have one. |
-| `metadata` | No | Any tags you filter by, such as tenant, product, or languages. |
-
-Send a one-time file to your Iris Control point of contact, or set up a recurring export to a cloud storage bucket. Exports from observability tools such as Langfuse, LangSmith, or Helicone can be mapped to this format. Records are redacted for PII and secrets before they are stored.
-
-## Send feedback
-
-When you use the endpoint, send feedback on a call with the `X-Iris-Request-Id` from its response, so AutoEval can learn from it:
-
-```bash
-curl https://api1.irisagent.com/v1/control/feedback \
-  -H "Authorization: Bearer $IRIS_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "request_id": "req_3c91",
-    "rating": "down",
-    "edited_output": "Refunds for duplicate charges take up to 5 business days.",
-    "escalated": true
-  }'
-```
-
-All fields other than `request_id` are optional.
+See [AutoEval](/autoeval) for rules, results, model comparisons, log imports, and the evaluate API.
 
 ## Errors
 

@@ -1,0 +1,175 @@
+---
+title: "AutoEval: evaluate LLM outputs on your own data"
+sidebarTitle: "AutoEval"
+description: "Grade every LLM output for correctness against its own prompt and against rules you write, then compare models by replaying the same prompts on each one."
+---
+
+## Overview
+
+AutoEval grades the outputs of the LLM calls your applications make. For each call it takes the **input** (the system prompt and the user prompt or conversation) and the **output**, and checks two things:
+
+- **Correctness.** Is the output a correct, complete answer to the input it was given? A judge model returns a verdict, a score from 0 to 5, and an explanation.
+- **Your rules.** Does the output follow the rules you wrote for this use case, such as "always include a link to a help article" or "reply in the language the user wrote in"? Each rule returns pass, fail, or not applicable, with an explanation.
+
+Use the grades two ways:
+
+1. **Measure quality in production.** See the correctness rate and the pass rate of every rule, per use case, model, and tenant, and find the calls that failed.
+2. **Compare models.** Replay the same inputs on other models, including your own in-house or fine-tuned models, grade every output the same way, and compare the results with cost and latency before you change models.
+
+AutoEval is part of [Iris Control](/iris-control). It works on a copy of your logs, so it never sits on your request path and adds no latency to your app.
+
+<Tip>
+  Try it before you connect anything: the AutoEval tab of the [Iris Control live demo](https://irisagent.com/iris-control-demo/#autoeval) compares models on IrisAgent's own support eval set, with price.
+</Tip>
+
+## How it works
+
+1. **Collect calls.** AutoEval needs the input and output of each call. Calls arrive from the [Iris Control endpoint](/iris-control#quickstart), from a [log import](#import-logs), or one at a time through the [evaluate API](#evaluate-api).
+2. **Grade each output.** A judge model reads the system prompt, the user prompt or conversation, and the output, and returns the correctness verdict and a result for each of the use case's rules.
+3. **Build an eval set.** Pick the inputs to compare models on: select calls in the call log, filter by use case, tenant, or result, or upload a file. Duplicate inputs are removed.
+4. **Compare models.** AutoEval sends every input in the eval set, with its original system prompt, to each model you choose, and grades each output with the same correctness check and rules.
+
+AutoEval never changes the models your application uses. You decide whether to switch.
+
+## Rules
+
+Rules are checks written in plain English, in the same format as [AutoQA](/configuring-ai-and-automation/AutoQA) rules. Each use case has its own rules, and every output in that use case is graded against all of its active rules.
+
+To create a rule, open **AutoEval** in the Iris Control dashboard, select the use case, and click **Create rule**. Each rule has:
+
+| Field | Description |
+| --- | --- |
+| **Description** | What the output must or must not do, in plain English. |
+| **Category** | Groups rules in reports, such as Format, Accuracy, Compliance, Tone, or Custom. |
+| **Severity** | `critical`, `warning`, or `info`. Reports show critical failures first. |
+
+Example rules:
+
+| Category | Rule |
+| --- | --- |
+| Format | The output must include at least one link to a help center article. |
+| Format | The output must be valid JSON with the fields `intent` and `priority`. |
+| Language | Reply in the same language, or mix of languages, the user wrote in. |
+| Compliance | Never promise a refund amount or a delivery date. |
+| Accuracy | Never mention a product feature that is not described in the system prompt. |
+
+A rule returns `not_applicable` when it doesn't apply to that call, for example a rule about refunds on a question about passwords. Not applicable results are left out of the rule's pass rate.
+
+## Results
+
+Every graded output has one result:
+
+```json
+{
+  "id": "call_8f2a",
+  "model": "gpt-5.6-sol",
+  "judge": "gemini-3.7-flash",
+  "correctness": {
+    "verdict": "defect",
+    "score": 2,
+    "explanation": "The user asked how to export invoices; the answer explains how to download a single receipt."
+  },
+  "rules": [
+    {
+      "ruleId": "include-link",
+      "outcome": "fail",
+      "explanation": "The output contains no link."
+    },
+    {
+      "ruleId": "same-language",
+      "outcome": "pass",
+      "explanation": "The user wrote in English and the reply is in English."
+    }
+  ]
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `correctness.verdict` | `correct` or `defect`. |
+| `correctness.score` | 0 to 5. Higher means a more correct and complete answer to the input. |
+| `correctness.explanation` | Why the judge gave that verdict. |
+| `rules[].outcome` | `pass`, `fail`, or `not_applicable`. |
+| `rules[].explanation` | Why the rule passed or failed. |
+
+The **AutoEval** page of the dashboard rolls results up by use case, model, tenant, and rule: correctness rate, average score, the pass rate of each rule, and the failed calls behind each number.
+
+## Compare models
+
+1. Open **AutoEval**, select a use case, and open **Compare models**.
+2. Choose the eval set: calls selected from the call log, a filter (for example the last 30 days, or only failed calls), or an uploaded file.
+3. Choose the models. Any model from your [providers](/iris-control#step-2-add-your-model-providers) can be compared, including a self-hosted model with an OpenAI-compatible endpoint.
+4. Run the comparison.
+
+AutoEval sends each input to each model with its original system prompt and grades every output. The report shows, per model:
+
+- Correctness rate and average correctness score
+- Pass rate of each rule, critical rules first
+- Cost per call and total cost, from each provider's price
+- Typical and slowest latency
+
+Open any row to see the input and every model's output side by side, with their grades.
+
+## Import logs
+
+Use a log import to grade calls your applications already made without routing traffic through Iris Control. Send one record per LLM call as JSONL:
+
+```json
+{
+  "id": "call_8f2a",
+  "timestamp": "2026-10-15T18:04:11Z",
+  "use_case": "support-answers",
+  "model": "gpt-5.6-sol",
+  "messages": [
+    {"role": "system", "content": "You are the support assistant for Acme Billing. Always link the help article you used."},
+    {"role": "user", "content": "How do I export last month's invoices?"}
+  ],
+  "output": "Go to Billing, then Invoice history, and select Export.",
+  "latency_ms": 1840,
+  "metadata": {"tenant": "acme-corp"}
+}
+```
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `id` | Yes | Your ID for the call. |
+| `messages` | Yes | The input in OpenAI message format: the system prompt and the user prompt, or the whole conversation before the output. |
+| `output` | Yes | The model's output for that input. |
+| `model` | Yes | The model, or model version, that produced the output. |
+| `use_case` | No | Selects the rules the output is graded against. Defaults to `default`. |
+| `timestamp`, `latency_ms` | No | Used in reports and for filtering. |
+| `metadata` | No | Tags you filter reports by, such as tenant, product, or language. |
+
+For a conversation, send one record per assistant turn: the conversation up to that turn in `messages`, and the turn in `output`. For voice, use the transcript.
+
+Send a one-time file to your Iris Control point of contact, or set up a recurring export to a storage bucket with them. Exports from logging tools such as Langfuse, LangSmith, or Helicone can be converted to this format.
+
+## Evaluate API
+
+Grade one output on demand, for example from your own test suite or CI. The endpoint grades the output against the rules you send, or against the use case's rules when you send `use_case` instead.
+
+```bash
+curl https://api1.irisagent.com/v1/control/autoeval/evaluate \
+  -H "Authorization: Bearer $IRIS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages": [
+      {"role": "system", "content": "You are the support assistant for Acme Billing. Always link the help article you used."},
+      {"role": "user", "content": "How do I export last month'\''s invoices?"}
+    ],
+    "output": "Go to Billing, then Invoice history, and select Export.",
+    "rules": [
+      {"id": "include-link", "description": "The output must include at least one link to a help center article.", "category": "Format", "severity": "critical"}
+    ]
+  }'
+```
+
+The response has the `correctness` and `rules` fields described in [Results](#results). Send up to 100 rules per request.
+
+## Data handling
+
+Inputs and outputs are redacted for PII and secrets before they are stored. Set how long they are kept with the use case's `logging.retention_days`. If prompts and outputs can't leave your environment, Iris Control and AutoEval can run in your own VPC; see the [customer VPC reference architecture](/security-and-compliance/Reference-Architecture-Customer-VPC).
+
+<Note>
+  **Questions?** Contact us at [contact@irisagent.com](mailto:contact@irisagent.com) or [book an Iris Control demo](https://irisagent.com/get-a-demo-iris-control/).
+</Note>

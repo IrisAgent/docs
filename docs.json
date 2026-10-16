@@ -234,7 +234,8 @@
           {
             "group": "Iris Control",
             "pages": [
-              "iris-control"
+              "iris-control",
+              "autoeval"
             ]
           }
         ]
