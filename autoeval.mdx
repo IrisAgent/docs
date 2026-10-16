@@ -1,21 +1,23 @@
 ---
-title: "AutoEval: run evals on your own LLM traffic"
+title: "AutoEval: generate evals from your own LLM traffic"
 sidebarTitle: "AutoEval"
-description: "Grade your LLM call logs against default and custom rules, keep a golden eval set current with your traffic, and compare models on it before you switch."
+description: "AutoEval generates a golden eval set from your LLM call logs, keeps it up to date as your traffic changes, and uses it to catch regressions and compare models before you switch."
 ---
 
 ## Overview
 
-AutoEval runs evals on the LLM calls your applications make, so you know whether each workflow works, which model to run, and what it costs. For each call it takes the **input** (the system prompt and the user prompt or conversation) and the **output**, and grades it against two kinds of rules:
+AutoEval generates evals from the LLM calls your applications already make. You send a copy of your call logs, and AutoEval builds a **golden eval set** for each use case: a set of real inputs that covers your workflows, languages, and edge cases. As your traffic changes and you launch new workflows, AutoEval updates the set. Nobody on your team has to write or maintain test prompts.
 
-- **Default rules.** On for every call from day one: is the output a correct, complete answer to the input it was given? A judge model returns a verdict, a score from 0 to 5, and an explanation.
-- **Custom rules.** Checks your team writes in plain English for each use case, such as "always include a link to a help article" or "reply in the language the user wrote in". Each rule returns pass, fail, or not applicable, with an explanation.
+Each eval checks a model's output against two kinds of rules:
 
-Use the results three ways:
+- **Default rules.** Is the output a correct, complete answer to its own system prompt and user prompt? A judge model returns a verdict, a score from 0 to 5, and an explanation. No setup needed.
+- **Custom rules.** Checks your team writes in plain English, such as "always include a link to a help article" or "reply in the language the user wrote in". Each returns pass, fail, or not applicable, with an explanation.
 
-1. **Measure quality in production.** See the correctness rate and the pass rate of every rule, per use case, model, and tenant, and find the calls that failed before your customers report them.
-2. **Keep a golden eval set.** Build a set of inputs from your own traffic that stays current as your product and your users change.
-3. **Compare models.** Replay the golden eval set on other models, including your own in-house or fine-tuned models, grade every output the same way, and compare the results with cost and latency before you change models.
+With evals in place, you can:
+
+- **Choose models on evidence.** Run the golden eval set on any model, including your own fine-tuned or self-hosted models, and compare the scores with cost and latency before you switch.
+- **Catch regressions in production.** See the correctness rate and the pass rate of every rule by use case, model, and tenant, and find failed calls before your customers report them.
+- **Test changes before release.** Run an eval from your test suite or CI with the [evaluate API](#evaluate-api).
 
 AutoEval is part of [Iris Control](/iris-control). It works on a copy of your logs, so it never sits on your request path and adds no latency to your app.
 
@@ -25,12 +27,23 @@ AutoEval is part of [Iris Control](/iris-control). It works on a copy of your lo
 
 ## How it works
 
-1. **Collect calls.** AutoEval needs the input and output of each call. Calls arrive from the [Iris Control endpoint](/iris-control#quickstart), from a [log import](#import-logs), or one at a time through the [evaluate API](#evaluate-api).
-2. **Grade each output.** A judge model reads the system prompt, the user prompt or conversation, and the output, and returns the correctness verdict from the default rules and a result for each of the use case's custom rules.
-3. **Keep a golden eval set.** AutoEval builds the [golden eval set](#golden-eval-set) for each use case from your call logs and keeps it current. You can also add calls from the call log or upload a file.
-4. **Compare models.** AutoEval sends every input in the eval set, with its original system prompt, to each model you choose, and grades each output with the same default and custom rules.
+1. **You send your call logs.** AutoEval needs the input and output of each call. [Export your call logs](#send-your-call-logs) to AutoEval, or route calls through the [Iris Control endpoint](/iris-control#quickstart) and they're captured automatically.
+2. **AutoEval generates your golden eval set.** For each use case, it selects inputs from your logs and keeps the set up to date as new calls arrive. See [Golden eval set](#golden-eval-set).
+3. **AutoEval grades outputs.** Each output is graded against the default rules and the use case's custom rules, both in production and in model comparisons.
+4. **You compare models.** AutoEval runs the golden eval set on each model you choose, with each input's original system prompt, and reports the scores with cost and latency.
 
 AutoEval never changes the models your application uses. You decide whether to switch.
+
+## Golden eval set
+
+A model comparison is only as good as the inputs it runs on. Eval sets written by hand for a pilot stop matching production within months: new workflows are missing, common questions repeat, and the hard cases drop out. AutoEval generates the golden eval set for each use case from your traffic and keeps it up to date:
+
+- **Built from real traffic.** Inputs come from your call logs, so the set reflects what your users ask today.
+- **No redundancy.** Duplicate and near-duplicate inputs are removed, so one common question can't skew the score.
+- **Diverse.** The set is balanced across workflows, tenants, languages, and edge cases, and includes calls that failed.
+- **Up to date.** When you launch a new use case or workflow, it gets its own slice of the set. Inputs that no longer match your product are retired.
+
+You can also add specific calls from the call log, or upload a file of inputs your team wants every model to pass.
 
 ## Rules
 
@@ -64,7 +77,7 @@ A rule returns `not_applicable` when it doesn't apply to that call, for example 
 
 ## Results
 
-Every graded output has one result:
+Each graded output has one result:
 
 ```json
 {
@@ -101,21 +114,10 @@ Every graded output has one result:
 
 The **AutoEval** page of the dashboard rolls results up by use case, model, tenant, and rule: correctness rate, average score, the pass rate of each rule, and the failed calls behind each number.
 
-## Golden eval set
-
-A model comparison is only as good as the inputs it runs on. Eval sets written by hand for a pilot stop matching production within months: new workflows are missing, common questions repeat, and the hard cases drop out. AutoEval keeps a golden eval set for each use case that stays live:
-
-- **Built from real traffic.** Inputs come from your call logs, so the set reflects what your users ask today.
-- **No redundancy.** Duplicate and near-duplicate inputs are removed, so one common question can't skew the score.
-- **Diverse.** The set is balanced across workflows, tenants, languages, and edge cases, and includes calls that failed.
-- **Current.** When you launch a new use case or workflow, it gets its own slice of the set. Inputs that no longer match your product are retired.
-
-You can add specific calls from the call log or upload a file of inputs, for example cases your team wants every model to pass.
-
 ## Compare models
 
 1. Open **AutoEval**, select a use case, and open **Compare models**.
-2. Choose the eval set: the use case's golden eval set, calls selected from the call log, a filter (for example the last 30 days, or only failed calls), or an uploaded file.
+2. Choose the eval set: the use case's golden eval set (the default), calls selected from the call log, a filter (for example the last 30 days, or only failed calls), or an uploaded file.
 3. Choose the models. Any model from your [providers](/iris-control#step-2-add-your-model-providers) can be compared, including a self-hosted model with an OpenAI-compatible endpoint.
 4. Run the comparison.
 
@@ -128,9 +130,9 @@ AutoEval sends each input to each model with its original system prompt and grad
 
 Open any row to see the input and every model's output side by side, with their grades.
 
-## Import logs
+## Send your call logs
 
-Use a log import to run evals on calls your applications already made without routing traffic through Iris Control. Send one record per LLM call as JSONL:
+If your applications call model providers directly, export a copy of your call logs to AutoEval. Nothing changes in your request path. Send one record per LLM call as JSONL:
 
 ```json
 {
@@ -160,11 +162,11 @@ Use a log import to run evals on calls your applications already made without ro
 
 For a conversation, send one record per assistant turn: the conversation up to that turn in `messages`, and the turn in `output`. For voice, use the transcript.
 
-Send a one-time file to your Iris Control point of contact, or set up a recurring export to a storage bucket with them. Exports from logging tools such as Langfuse, LangSmith, or Helicone can be converted to this format.
+To start, send a one-time file to your Iris Control point of contact. To keep your golden eval set and production reports up to date, set up a recurring export to a storage bucket with them. Exports from logging tools such as Langfuse, LangSmith, or Helicone can be converted to this format.
 
 ## Evaluate API
 
-Grade one output on demand, for example from your own test suite or CI. The endpoint grades the output against the rules you send, or against the use case's rules when you send `use_case` instead.
+Run an eval on one output on demand, for example from your test suite or CI before you ship a prompt change. The endpoint grades the output against the rules you send, or against the use case's rules when you send `use_case` instead.
 
 ```bash
 curl https://api1.irisagent.com/v1/control/autoeval/evaluate \
