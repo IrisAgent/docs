@@ -18,8 +18,8 @@ description: "IrisAgent Installation Guide for Salesforce"
 ## Install the IrisAgent app in Salesforce account
 
 1. Install the IrisAgent app using the installation link for your org type:
-   - **Production or Developer org:** [Production installation link](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tak000000k6qPAAQ)
-   - **Sandbox org:** [Sandbox installation link](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tak000000k6qPAAQ)
+   - **Production or Developer org:** [Production installation link](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tak000000pGfRAAU)
+   - **Sandbox org:** [Sandbox installation link](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tak000000pGfRAAU)
 
    Make sure you are logged into the target Salesforce org before opening the link. Sandbox orgs must use the `test.salesforce.com` link above, not the production one.
 2. Select the option Install for All Users (note that you can later restrict access to certain profiles). Click on Install after checking the acknowledgment. After installation, click on Done.
@@ -49,15 +49,39 @@ Salesforce Service Cloud allows use of many custom fields. We would need those f
 2. Case priority
 3. Any other entity for which you are using a custom field, instead of the default standard field that you would like IrisAgent to access
 
-Permissions accessed by IrisAgent
+## Permissions accessed by IrisAgent
 
-1. IrisAgent uses [the “api” scope](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_tokens_scopes.htm&type=5).
-2. The token obtained after the OAuth flow will have access to all the objects the logged-in user has access. Hence, a separate service user should be created for IrisAgent with sufficient permissions to access the objects required by IrisAgent.
-3. Below are the objects accessed by IrisAgent
+### OAuth scopes
 
-```text
-Objects with Read permissions: CaseArticle, CaseSolution, Solution, Account, CaseTag, Contact, EmailMessage, LiveChatTranscript, User, Group, Knowledge__kav, Knowledge__DataCategorySelection
-Objects with Read and Write permissions: Case, CaseComment
-```
+IrisAgent requests only two OAuth scopes:
+
+- [`api`](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_tokens_scopes.htm&type=5): access to the Salesforce REST API.
+- `refresh_token`: lets IrisAgent keep ingesting data without asking a user to sign in again.
+
+OAuth scopes do not limit which objects or fields IrisAgent can reach. The token inherits the permissions of the Salesforce user who signs in during the connection. To keep access to the minimum, connect IrisAgent with a dedicated integration user (for example "IrisAgent AI"), ideally on the Salesforce Integration (API only) user license, and grant that user only the permissions below through a permission set.
+
+### Object permissions
+
+| Object | Permission | Used for |
+|---|---|---|
+| Case | Read | Ingesting cases, including any custom Case fields you share with us |
+| Case | Create | Creating a case when the chatbot hands a conversation off to a ticket |
+| Case | Edit | Only if you enable these features: updating Owner (assignment), Status, or the custom Case fields you choose for tag and classification write-back |
+| FeedItem | Read | Reading case comments (Chatter text posts on the case) |
+| FeedItem | Create | Only if you enable private notes: posting internal notes on a case |
+| EmailMessage | Read | Reading the email thread on a case |
+| EmailMessage | Create | Only if you enable replies from IrisAgent: logging the reply on the case |
+| Knowledge__kav | Read | Ingesting published Knowledge articles |
+| Account | Read | Syncing account details (name, annual revenue, and any fields you share with us) |
+| User | Read | Syncing support agents for assignment and reporting |
+| Group | Read | Syncing queues and public groups for assignment |
+
+Grant field-level read access on any custom fields you share with us, and edit access on any Case fields you want IrisAgent to update. IrisAgent never deletes Salesforce records and does not use the Metadata, Tooling, or Apex REST APIs. Case updates are sent with assignment rules turned off, so they do not trigger your assignment rules.
+
+If you use the chatbot's live chat handoff to Salesforce Messaging for In-App and Web (Enhanced Chat), that handoff uses your Messaging deployment's guest access, not the integration user, so no extra object permissions are needed for it.
+
+### Switching to a new integration user
+
+To move an existing connection to a new integration user, contact your IrisAgent point of contact or [email us](mailto:contact@irisagent.com). We will enable a token refresh on your account, and you then sign in again with Salesforce as the new user. See [Change Integration User](/account-management/Change-Integration-User) for details.
 
 The above steps will complete the installation of IrisAgent. Please [email us](mailto:contact@irisagent.com) once these steps are completed, and our team will start setting up the machine learning models for your account.
