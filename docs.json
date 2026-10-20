@@ -237,6 +237,34 @@
     {
       "source": "/guides/configuring-ai-and-automation/add-custom-apis",
       "destination": "/data-sources/Custom-API"
+    },
+    {
+      "source": "/configuring-ai-and-automation/Case-Response-Settings",
+      "destination": "/configuring-ai-and-automation/AI-Response-Style"
+    },
+    {
+      "source": "/deploying-irisagent/AI-Search-on-Zendesk-Ticket-Form",
+      "destination": "/deploying-irisagent/Ticket-Deflector-on-Zendesk"
+    },
+    {
+      "source": "/deploying-irisagent/Chatbot",
+      "destination": "/deploying-irisagent/Chatbot-on-Website"
+    },
+    {
+      "source": "/Set-up-Tagging-and-Workflows",
+      "destination": "/configuring-ai-and-automation/Ticket-Tagging"
+    },
+    {
+      "source": "/api-reference/endpoint/:slug*",
+      "destination": "/api-reference/introduction"
+    },
+    {
+      "source": "/ai-tools/:slug*",
+      "destination": "/"
+    },
+    {
+      "source": "/development",
+      "destination": "/"
     }
   ],
   "logo": {
