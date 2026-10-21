@@ -6,7 +6,7 @@ description: "Deploy IrisAgent AI answers on WhatsApp through Zendesk Sunshine C
 
 This guide walks you through putting an IrisAgent AI customer service agent on WhatsApp.
 
-There are three architectural paths to WhatsApp. This guide covers all three, with the **CRM-routed path** (Zendesk or Salesforce) recommended for most teams because it requires no new WhatsApp Business Account, no Business Solution Provider (BSP) contract, and no Meta re-verification.
+There are three architectural paths to WhatsApp. This guide covers all three (the direct path has its own [setup guide](/helpdesk/WhatsApp)), with the **CRM-routed path** (Zendesk or Salesforce) recommended for most teams because it requires no new WhatsApp Business Account, no Business Solution Provider (BSP) contract, and no Meta re-verification.
 
 ## Choose your deployment path
 
@@ -14,7 +14,7 @@ There are three architectural paths to WhatsApp. This guide covers all three, wi
 | --- | --- | --- |
 | **Zendesk Sunshine Conversations** | You already run Zendesk and have (or can provision) a WhatsApp channel inside it | Hours |
 | **Salesforce Service Cloud Messaging** | You already run Salesforce Service Cloud with Digital Engagement | Hours to days |
-| **Direct WhatsApp Cloud API** | You are not on Zendesk or Salesforce, or you need custom flows that the CRM does not expose | 2 to 4 weeks |
+| **Direct WhatsApp Cloud API** | You are not on Zendesk or Salesforce. See [Connect WhatsApp directly](/helpdesk/WhatsApp) | Hours, once your Meta business is verified |
 
 The setup for the CRM-routed paths is largely the same as the existing [Chatbot Automation on Zendesk Messaging](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging) flow, with one extra step on the CRM side to provision WhatsApp itself.
 
@@ -160,26 +160,9 @@ IrisAgent now reads inbound WhatsApp Messaging Sessions, generates grounded answ
 
 ## Path C: Direct WhatsApp Cloud API
 
-If you are not on Zendesk or Salesforce, IrisAgent supports the Meta WhatsApp Cloud API directly. This path requires:
+If you are not on Zendesk or Salesforce, connect your WhatsApp Business number to IrisAgent directly under **Deploy → Text channels**. You need your Phone number ID, WhatsApp Business Account ID, and a system user access token. IrisAgent handles the webhook for you.
 
-- A verified Meta Business Account
-- A WhatsApp Business Account (WABA) and a registered phone number
-- A System User access token with `whatsapp_business_messaging` and `whatsapp_business_management` scopes
-
-To configure:
-
-1. In the IrisAgent dashboard, open **Deploy** → **Chat channels** from the left sidebar
-2. Select the **WhatsApp Cloud API** configuration
-3. Enter:
-   - **WABA ID**
-   - **Phone Number ID**
-   - **System User Access Token**
-   - **App Secret** (from your Meta App settings)
-   - **Webhook Verify Token** (any string; use the same value when configuring the Meta webhook)
-4. In your Meta App, configure the webhook callback to `https://api1.irisagent.com/v1/webhooks/whatsapp` and subscribe to the `messages` field
-5. Save
-
-This path gives you the most flexibility but you are responsible for template approval, quality rating, and Meta business verification on your own.
+Follow [Connect WhatsApp directly](/helpdesk/WhatsApp) for step-by-step setup. With this path you are responsible for Meta business verification and your number's quality rating.
 
 ---
 

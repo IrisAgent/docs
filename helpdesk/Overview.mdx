@@ -1,0 +1,99 @@
+---
+title: "IrisAgent Helpdesk"
+sidebarTitle: "Overview"
+description: "Run customer support from IrisAgent: one Conversations inbox where your AI agent answers first and your team takes over live chats, replies by email, and tracks every conversation to resolution"
+---
+
+IrisAgent Helpdesk lets your team work customer conversations directly in the IrisAgent dashboard, without a separate ticketing tool. Your AI agent answers first on every channel. When a customer needs a person, the conversation lands in the **Conversations** inbox, where a teammate can join the chat, email the customer, leave internal notes, and mark it resolved.
+
+<Note>
+Already use Zendesk, Salesforce, Intercom, Freshchat, or another helpdesk? You do not need IrisAgent Helpdesk. IrisAgent can hand conversations to your existing tool instead. See [Connect your helpdesk](/guides/Connecting-Your-Helpdesk).
+</Note>
+
+## What's included
+
+<CardGroup cols={2}>
+  <Card title="Conversations inbox" icon="inbox" href="/helpdesk/Conversations-Inbox">
+    Every chat and voice conversation in one place, with queues, owners, statuses, priorities, and internal notes.
+  </Card>
+  <Card title="Live chat" icon="comments" href="/helpdesk/Live-Chat">
+    Your team takes over website chats from the bot and replies in real time inside the chat widget.
+  </Card>
+  <Card title="Email replies" icon="envelope" href="/helpdesk/Email">
+    Email a customer from any conversation, sent from a verified address on your own domain.
+  </Card>
+  <Card title="WhatsApp" icon="whatsapp" href="/helpdesk/WhatsApp">
+    Connect your WhatsApp Business number so your AI agent answers customers on WhatsApp.
+  </Card>
+</CardGroup>
+
+## Channels at a glance
+
+| Channel | AI agent answers | Your team can reply from Conversations | Set up in |
+| --- | --- | --- | --- |
+| Website chat widget | Yes | Yes, through [live chat](/helpdesk/Live-Chat) | **Deploy → Chat channels** |
+| Email | Not applicable | Yes, outbound [email replies](/helpdesk/Email) to a conversation's contact | **Deploy → Email channels** |
+| WhatsApp | Yes | Not yet. Conversations are AI-answered | **Deploy → Text channels** |
+| Voice | Yes | Leave internal notes or send an email | **Deploy → Voice channels** |
+| SMS | Outbound campaigns only | No | **Deploy → Text channels** (see [Outbound SMS](/deploying-irisagent/Outbound-SMS)) |
+
+## Set up your helpdesk
+
+Follow these steps in order. Steps 2 to 5 need an IrisAgent **admin**.
+
+<Steps>
+  <Step title="Connect your knowledge">
+    Your AI agent answers from your knowledge base. Add at least one source under **Data Sources**, such as [Public Websites](/data-sources/Public-Websites) or [Upload Content](/data-sources/Upload-Content), and test answers in the Playground.
+  </Step>
+  <Step title="Deploy the website chat widget">
+    Add the IrisAgent chat widget to your website. See [Chatbot on Website](/deploying-irisagent/Chatbot-on-Website).
+  </Step>
+  <Step title="Turn on live chat">
+    In the chatbot's **Handoff** tab, choose **Start a live chat** and set the destination to the **IrisAgent inbox**. See [Live chat](/helpdesk/Live-Chat#turn-on-live-chat).
+  </Step>
+  <Step title="Set up email replies (optional)">
+    Verify a sender address on your company's domain under **Deploy → Email channels**. See [Email replies](/helpdesk/Email).
+  </Step>
+  <Step title="Connect WhatsApp (optional)">
+    Connect your WhatsApp Business number under **Deploy → Text channels**. See [WhatsApp](/helpdesk/WhatsApp).
+  </Step>
+  <Step title="Invite your team">
+    Invite the people who will answer customers. See [Invite your team](#invite-your-team) below.
+  </Step>
+</Steps>
+
+## Invite your team
+
+1. Open the user menu and choose **Settings**.
+2. In the **Dashboard** section, open the **Users** card and click **Manage**.
+3. Enter one or more email addresses, separated by commas.
+4. Choose a role and click **Invite Users**.
+
+You can change a teammate's role or remove them from the same panel.
+
+### Roles
+
+IrisAgent has two dashboard roles:
+
+| Task | Non-admin | Admin |
+| --- | --- | --- |
+| View and search Conversations | Yes | Yes |
+| Take over, reply to, and end live chats | Yes | Yes |
+| Add internal notes, set status, owner, and priority, mark resolved | Yes | Yes |
+| Send email replies from a conversation | Yes | Yes |
+| Configure chatbot handoff and live chat | No | Yes |
+| Configure the email sender, SMS, and WhatsApp | No | Yes |
+| Edit or merge contacts | No | Yes |
+| Invite admins, change roles, remove users | No | Yes |
+
+New invites default to **non-admin**. Only an admin can invite another admin.
+
+## Related pages
+
+- [Conversations inbox](/helpdesk/Conversations-Inbox)
+- [Live chat](/helpdesk/Live-Chat)
+- [Email replies](/helpdesk/Email)
+- [WhatsApp](/helpdesk/WhatsApp)
+- [Workflows and procedures](/configuring-ai-and-automation/Workflows) control when the AI escalates and what it collects first.
+
+Need help getting set up? Email [contact@irisagent.com](mailto:contact@irisagent.com).

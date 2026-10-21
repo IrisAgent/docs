@@ -1,0 +1,111 @@
+---
+title: "Conversations inbox"
+sidebarTitle: "Conversations inbox"
+description: "Find, triage, and work customer conversations in IrisAgent: queues, filters, owners, statuses, internal notes, and resolving"
+---
+
+The **Conversations** inbox shows every conversation your AI agent has had, across chat and voice. It is where your team sees who is waiting for a person, joins live chats, emails customers, and tracks each conversation to resolution.
+
+To open it, go to **Activity → Conversations** in the left navigation.
+
+## Find a conversation
+
+### Queues
+
+Use the tabs above the list to focus on what needs attention:
+
+| Queue | Shows |
+| --- | --- |
+| **All** | Every conversation that matches your filters |
+| **Waiting** | Visitors who asked for a person and are waiting for a teammate to join |
+| **Live** | Live chats a teammate is currently handling |
+| **Mine** | Conversations assigned to you |
+
+Waiting conversations are pinned to the top of the list, followed by live ones. The **Waiting** and **Live** counts are highlighted whenever they are above zero, so keep an eye on them.
+
+<Note>
+The inbox refreshes about every 15 seconds. There are no browser notifications or sounds yet, so keep the inbox open while your team is on shift.
+</Note>
+
+### Channel tabs and search
+
+- **All / Chat / Voice** at the top switches between channels.
+- The search box matches a visitor's name, any message text, or a chat ID.
+
+### Filters
+
+Click **Filters** to narrow the list:
+
+- **Chatbot or source:** pick one or more chatbot configurations, or a conversation source (**Customer channels**, **Agent Chat**, **Dashboard preview**).
+- **Status:** New, In progress, or Resolved.
+- **Assignee:** Unassigned, or a specific teammate.
+- **Date:** Today, Last 7 days, Last 30 days, or Last 90 days.
+- **Agent requested:** only conversations where the customer asked for a person.
+
+Click **Clear all** to reset. **Export to CSV** downloads the filtered list.
+
+<Note>
+The inbox loads your most recent conversations plus every chat that is waiting or live. To open an older conversation, use a direct link to it.
+</Note>
+
+### Reading the list
+
+Each row shows the contact, the channel, and a preview of the last message. Anonymous website visitors get a friendly generated name, such as "Calm Falcon", so you can tell them apart. Chips show where a conversation stands: **Waiting for agent**, **Live · \<teammate\>**, **Agent requested**, or **Resolved**.
+
+## Work a conversation
+
+Click a conversation to open its thread. The middle pane shows the full timeline: AI answers (tagged **Bot**), teammate replies (tagged **Agent**), internal notes, and any emails sent.
+
+### Reply, email, or add a note
+
+The composer at the bottom has three tabs:
+
+- **Chat** sends a message into the customer's chat window. This is available for website chats when [live chat](/helpdesk/Live-Chat) is on. Press **Enter** to send and **Shift+Enter** for a new line.
+- **Email** sends an email to the conversation's contact. See [Email replies](/helpdesk/Email).
+- **Note** adds an internal note. Only your team can see notes.
+
+Voice calls cannot receive chat replies. Use an email or a note instead.
+
+### Take over a chat
+
+If a website chat is still with the bot, click **Take over from bot** to step in, or simply send a message from the **Chat** tab. See [Live chat](/helpdesk/Live-Chat) for the full flow.
+
+### Status, owner, and priority
+
+The details panel on the right lets you set:
+
+| Field | Options |
+| --- | --- |
+| **Status** | New, In progress, Resolved |
+| **Owner** | Unassigned, or any teammate |
+| **Priority** | Normal, High |
+
+IrisAgent fills these in for you as a conversation moves:
+
+- When a customer asks for a person, the conversation becomes **New** with **High** priority.
+- When a teammate takes over, it becomes **In progress** and is assigned to them.
+- Conversations the AI fully handled start as **Resolved**.
+
+### Mark resolved or reopen
+
+Click **Mark resolved** when you're done. If a live chat is still open, resolving it also ends the chat and hands the customer back to the bot. Click **Reopen** to move a resolved conversation back to **In progress**.
+
+### Contact and conversation details
+
+The right-hand panel also shows:
+
+- **Contact:** name, email, and phone. Click **View and edit contact** to update it. A **Possible duplicate** chip means another contact may be the same person.
+- **Captured details:** information a procedure collected, such as an order number.
+- **Conversation info:** when it started, its channel, source, chatbot, and conversation ID.
+
+Use **Collapse details panel** to give the thread more room.
+
+## Improve AI answers from the inbox
+
+Hover over any AI answer and click **Revise** to correct how the AI answers that kind of question. See [Revise chatbot answers](/configuring-ai-and-automation/Revise-Chatbot-Answers).
+
+## Related pages
+
+- [Live chat](/helpdesk/Live-Chat)
+- [Email replies](/helpdesk/Email)
+- [IrisAgent Helpdesk overview](/helpdesk/Overview)

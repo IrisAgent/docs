@@ -1,0 +1,100 @@
+---
+title: "WhatsApp"
+sidebarTitle: "WhatsApp"
+description: "Connect your WhatsApp Business number to IrisAgent so your AI agent answers customers on WhatsApp, grounded in your knowledge base"
+---
+
+Connect a WhatsApp Business number directly to IrisAgent, and your AI agent answers every customer who messages that number. Answers are grounded in your knowledge base, in the customer's own language.
+
+<Note>
+This page covers connecting WhatsApp **directly** through the Meta WhatsApp Cloud API. If WhatsApp already runs through Zendesk or Salesforce, see [WhatsApp through Zendesk or Salesforce](/deploying-irisagent/Chatbot-Automation-on-WhatsApp) instead.
+</Note>
+
+## Before you begin
+
+You need:
+
+- IrisAgent admin access
+- A WhatsApp Business Account (WABA) in Meta Business Manager, with a registered phone number
+- A Meta **system user access token** for that WhatsApp Business Account, with the `whatsapp_business_messaging` and `whatsapp_business_management` permissions
+
+From **WhatsApp Manager** (or your Meta app's **WhatsApp → API Setup** page), note:
+
+- The **Phone number ID** of the number customers will message. This is a numeric ID, not the phone number itself.
+- The **WhatsApp Business Account ID**.
+
+<Tip>
+Create the token for a system user rather than a personal Meta account, and give it no expiry. A token tied to a person stops working if they leave or lose access. See Meta's guide to [system users](https://www.facebook.com/business/help/503306463479099).
+</Tip>
+
+## Connect your number
+
+1. In IrisAgent, go to **Deploy → Text channels**.
+2. Find the **WhatsApp** card, below the US SMS number card.
+3. Enter the **Phone number ID**.
+4. Enter the **WhatsApp Business Account ID**.
+5. Paste the **System user access token**.
+6. Click **Connect WhatsApp**.
+
+IrisAgent checks that the token can access the number before saving it, then stores the token encrypted. The card then shows your WhatsApp number with a **Connected** status, and AI replies are on.
+
+You don't need to set up a webhook or callback URL. IrisAgent receives your messages automatically once the number is connected.
+
+## Test it
+
+1. From a personal WhatsApp account, message your business number with a common question, such as "What is your refund policy?"
+2. Confirm your AI agent replies with an answer from your knowledge base.
+3. In IrisAgent, open **Activity → Conversations** to see the conversation.
+
+## Pause or resume AI replies
+
+Use the **AI replies** toggle on the WhatsApp card:
+
+- **Connected:** incoming WhatsApp messages are answered by your AI agent.
+- **Paused:** incoming messages are received but not answered.
+
+You don't need to re-enter the token to pause or resume.
+
+## Change the connected number
+
+1. On the WhatsApp card, click **Change number**.
+2. Enter the new **Phone number ID** and **WhatsApp Business Account ID**.
+3. Leave the token empty to keep the current one, or paste a new token if the new number is in a different WhatsApp Business Account.
+4. Click **Save number**.
+
+The previous number is disconnected. The **AI replies** setting stays as it was.
+
+## How your AI agent answers on WhatsApp
+
+- Text messages and button replies are answered. Images, voice notes, and other media are not answered yet.
+- Answers are sent as plain text. Source links appear as "Title: URL" after the answer.
+- The AI replies in the language the customer writes in.
+- After 24 hours without messages, the next message starts a new conversation. This matches WhatsApp's 24-hour customer service window.
+
+### Current limitations
+
+- Your team cannot reply to WhatsApp conversations from the Conversations inbox yet. When a customer asks for a person on WhatsApp, the AI keeps answering. Share another way to reach your team (such as an email address or phone number) in your handoff procedure.
+- IrisAgent does not send WhatsApp template messages, so it never messages a customer first or outside the 24-hour window.
+- Each WhatsApp number can be connected to only one IrisAgent account.
+
+## Troubleshooting
+
+| Message | What to do |
+| --- | --- |
+| "Enter the numeric Phone number ID…" | Copy the **Phone number ID** from WhatsApp Manager, not the phone number. |
+| "invalid accessToken" | The token is wrong, expired, or revoked. Generate a new system user token and try again. |
+| "the access token cannot access this WhatsApp phone number" | The token's system user isn't assigned to this WhatsApp Business Account, or lacks the `whatsapp_business_messaging` and `whatsapp_business_management` permissions. Assign the account to the system user in Business Settings and generate a new token. |
+| "this WhatsApp phone number is connected to another customer" | The number is already connected to a different IrisAgent account. Disconnect it there first, or [contact us](mailto:contact@irisagent.com). |
+| The card is read-only | Only dashboard admins can connect a WhatsApp number. Ask an admin. |
+
+### Customers aren't getting replies
+
+- Check that the card shows **Connected**, not **Paused**.
+- Check the number's **Quality rating** and messaging limits in WhatsApp Manager. Meta may restrict a number with a low rating.
+- Make sure the number isn't also connected to another WhatsApp tool, such as the WhatsApp Business app or another provider.
+
+## Related pages
+
+- [WhatsApp through Zendesk or Salesforce](/deploying-irisagent/Chatbot-Automation-on-WhatsApp)
+- [IrisAgent Helpdesk overview](/helpdesk/Overview)
+- [Meta: WhatsApp Cloud API documentation](https://developers.facebook.com/docs/whatsapp/cloud-api)

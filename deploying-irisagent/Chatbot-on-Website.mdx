@@ -58,7 +58,7 @@ These options are organized into **Instructions**, **Behavior**, **Appearance**,
 | **Brand logo** | Your logo, shown in the chat window header. Upload a PNG/SVG/JPG (max 2&nbsp;MB) or provide a URL. | IrisAgent logo |
 | **Welcome message** | The first message visitors see when they open the chat. | `Hello! 👋 Welcome to our support thread. How can I assist you today?` |
 | **Auto-open chat window** | When **on**, the chat window expands automatically on page load. When **off**, visitors see only the collapsed launcher button until they click it. | On |
-| **Agent handoff** | What happens when a visitor needs a human: send the support team's contact details, open a support ticket, or start a live chat. Includes an optional handoff message. | Send contact details |
+| **Agent handoff** | What happens when a visitor needs a human: send the support team's contact details, open a support ticket, or start a live chat in the IrisAgent inbox or your helpdesk. Includes an optional handoff message. | Send contact details |
 | **AI response style** | Custom guidelines for how the AI should respond (tone, phrasing, formatting). Up to 2,000 characters. | — |
 | **Language** | Force a fixed conversation language. If unset, the chatbot translates dynamically. | Auto (dynamic translation) |
 | **Product ID** | Optionally scope this chatbot to a specific product. | — |
@@ -82,6 +82,13 @@ If your account was set up from a website link only, connect a source such as
 [Salesforce](/data-sources/Salesforce) before selecting this option. Connecting
 Salesforce uses its own Salesforce sign-in and is separate from your original
 website signup.
+</Note>
+
+<Note>
+To have your team reply to visitors from the IrisAgent dashboard, select **Start
+a live chat** under **Agent handoff** and set **Live chat destination** to
+**IrisAgent inbox**. Escalated chats appear in the **Waiting** queue in
+Conversations. See [Live chat](/helpdesk/Live-Chat).
 </Note>
 
 <Note>

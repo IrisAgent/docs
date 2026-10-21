@@ -1,14 +1,22 @@
 ---
-title: "Conversation Email"
-sidebarTitle: "Custom sender domain"
-description: "Configure a customer-owned sender domain for email replies sent from IrisAgent Conversations"
+title: "Email replies"
+sidebarTitle: "Email replies"
+description: "Email customers from the IrisAgent Conversations inbox, sent from a verified address on your own domain"
 ---
 
-Conversation Email lets agents reply to a customer from the IrisAgent Conversations inbox. Messages use an address on a domain your company controls instead of an IrisAgent-owned sender.
+Email replies let your team email a customer straight from a conversation in the [Conversations inbox](/helpdesk/Conversations-Inbox). Use them to follow up after a chat ends, answer a question that needed research, or reach a customer who left before a teammate joined. Emails are sent from an address on your company's domain, not an IrisAgent address.
+
+Setting this up takes two parts: an admin configures and verifies the sender once, then anyone on your team can send emails from conversations.
+
+<Note>
+Looking for AI replies to emails arriving in your Outlook mailbox? See [Outlook AI email replies](/deploying-irisagent/Outlook).
+</Note>
+
+## Set up the sender
 
 IrisAgent automates sender-domain creation with the email provider and checks its verification status. Your DNS administrator still needs to publish the generated records because only your organization or DNS provider can authorize changes to your domain.
 
-## Before you begin
+### Before you begin
 
 You need:
 
@@ -25,7 +33,7 @@ Use your real company domain. Do not enter placeholder domains such as `test.com
 Adding the verification records does not replace or modify your existing inboxes or email hosting. It authorizes IrisAgent's email provider to send using the configured domain.
 </Note>
 
-## Configure the sender
+### Configure the sender
 
 1. In IrisAgent, open **Deploy → Email channels**.
 2. Enter the **From address** customers should see as the sender.
@@ -35,7 +43,7 @@ Adding the verification records does not replace or modify your existing inboxes
 
 When you save matching addresses, IrisAgent automatically creates the sender domain with the email provider and displays the DNS records required for verification. You do not need to create the domain separately in the provider dashboard.
 
-## Verify the domain
+### Verify the domain
 
 1. Copy each displayed DNS record into your DNS provider. Use the copy button next to an individual value, or click **Copy all**.
 2. Preserve the displayed record type, name or host, value, and priority where one is provided.
@@ -48,16 +56,35 @@ IrisAgent also refreshes a pending domain's status while the settings panel rema
 Do not remove or replace existing mail-delivery records unless your DNS administrator has confirmed that the change is safe. Add only the records shown by IrisAgent.
 </Warning>
 
-## Enable conversation emails
+### Enable conversation emails
 
 After the domain status changes to **verified**:
 
 1. Select **Enable conversation emails**.
 2. Click **Save**.
 
-Agents can now send email replies from Conversations when the conversation has a captured customer email address. Customer replies are delivered to the configured Reply-To mailbox.
+Your team can now send email replies from Conversations. Customer replies are delivered to the configured Reply-To mailbox.
 
 Changing either email address disables sending until the new sender domain is provisioned and verified. If you only change the mailbox portion while keeping the same domain, save the settings and follow the status shown in the panel.
+
+## Send an email from a conversation
+
+1. Open the conversation in **Activity → Conversations**.
+2. In the composer, select the **Email** tab.
+3. Check the subject. It defaults to "Following up on your conversation".
+4. Write your message and click **Send email**.
+
+The email goes to the email address on the conversation's contact. It appears in the conversation timeline with its delivery status: **Pending**, **Accepted**, **Sent**, or **Failed**.
+
+### Requirements
+
+- The conversation needs a contact with an email address. If the visitor hasn't shared one yet, the Email tab explains that email replies unlock once they do. Ask for an email address in your chatbot's handoff procedure so it's captured before a teammate is needed.
+- An admin must have configured, verified, and enabled the sender, as described above.
+
+### Good to know
+
+- Customer replies go to your **Reply-To** mailbox. They are not added back into the IrisAgent conversation, so watch that mailbox for responses.
+- To prevent abuse, sending is limited to 100 emails per hour for your account and 10 emails per recipient per day.
 
 ## Configuration reference
 
@@ -84,6 +111,10 @@ If domain setup did not complete, confirm that both addresses are valid and use 
 ### The enable checkbox is unavailable
 
 Conversation emails cannot be enabled until the provider reports the sender domain as verified. Complete the DNS steps and check verification again.
+
+### The Email tab says email is unavailable
+
+An administrator hasn't finished the sender setup. Ask an admin to complete the steps in [Set up the sender](#set-up-the-sender) under **Deploy → Email channels**.
 
 ### The settings are read-only
 

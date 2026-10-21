@@ -1,0 +1,110 @@
+---
+title: "Live chat"
+sidebarTitle: "Live chat"
+description: "Let your team take over website chats from the AI agent and reply to visitors in real time from the IrisAgent Conversations inbox"
+---
+
+With live chat, your AI agent handles website chats until a visitor needs a person. Then a teammate joins from the [Conversations inbox](/helpdesk/Conversations-Inbox) and replies in the same chat window. The visitor never leaves your website or the chat widget.
+
+<Note>
+Live chat in the IrisAgent inbox works with the [IrisAgent website chat widget](/deploying-irisagent/Chatbot-on-Website). If your team works in another tool, you can route live chats there instead: [Salesforce](/deploying-irisagent/Salesforce-Live-Chat), [Zendesk Messaging](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging), [Intercom](/deploying-irisagent/Chatbot-Automation-on-Intercom), or [Freshchat](/deploying-irisagent/Chatbot-Automation-on-Freshchat).
+</Note>
+
+## How it works
+
+1. A visitor chats with your AI agent on your website.
+2. The visitor asks for a person, or the AI decides to escalate. The conversation appears in the **Waiting** queue in Conversations. The bot keeps answering while the visitor waits, and the visitor sees "Connecting you to a support agent…".
+3. A teammate clicks **Join chat**. The bot pauses, and the visitor sees that they are chatting with that teammate.
+4. The teammate and visitor chat in real time.
+5. The teammate clicks **End chat & return to bot**. The visitor is told the agent has left and that the assistant can help with anything else.
+
+## Turn on live chat
+
+You need to be an IrisAgent admin.
+
+1. Go to **Deploy → Chat channels**.
+2. On the **Website Chatbot** card, click **Manage** and open the chatbot configuration you use on your website.
+3. Open the **Handoff** tab.
+4. Under **Method**, choose **Start a live chat**.
+5. Under **Live chat destination**, choose **IrisAgent inbox (your team replies from Conversations)**.
+6. Optionally turn on **Automatically escalate when no answer is found** to send visitors to your team whenever the AI has no answer.
+7. Save the configuration.
+
+Repeat for each chatbot configuration that should offer live chat.
+
+## When chats are escalated
+
+A chat moves to the **Waiting** queue when:
+
+- **The visitor asks for a person.** Clear requests such as "talk to a human" trigger your chatbot's **Agent handoff** procedure. New chatbots include this procedure by default, and you can edit what it says and what information it collects first.
+- **A procedure escalates.** Any procedure can hand off at the right step, for example after collecting an order number. See [Workflows](/configuring-ai-and-automation/Workflows).
+- **The AI has no answer**, if you turned on **Automatically escalate when no answer is found**.
+
+Escalated conversations are marked **Agent requested**, set to **New**, and given **High** priority.
+
+## Answer a live chat
+
+The bar above the composer always shows who is handling the chat:
+
+| You see | Meaning | Action |
+| --- | --- | --- |
+| "IrisAgent bot is handling this conversation" | The AI is answering | **Take over from bot** |
+| "Visitor asked for a human · waiting …" | The visitor is in the Waiting queue | **Join chat** |
+| "You're live with the visitor" | You own the chat and the bot is paused | **End chat & return to bot** |
+| "\<Teammate\> is chatting with the visitor" | A teammate owns the chat | **Take over** |
+
+### Join and reply
+
+1. Open the **Waiting** queue in Conversations and select the chat.
+2. Read the conversation so far, including what the bot already answered and any **Captured details**.
+3. Click **Join chat**. The conversation is assigned to you and set to **In progress**.
+4. Type in the **Chat** tab and press **Enter**. Your message appears in the visitor's chat window within a few seconds.
+
+You can also reply without clicking **Join chat** first. The button then reads **Take over & send**, and sending takes over the chat.
+
+### Step in before the visitor asks
+
+You don't have to wait for an escalation. Click **Take over from bot** on any website chat to pause the AI and reply yourself, for example when you spot a frustrated customer or a high-value account.
+
+### Take over from a teammate
+
+If a teammate owns a chat, click **Take over** to move it to you. The conversation is reassigned to you. Only the teammate who owns a live chat can end it, so take it over first if you need to end it for them.
+
+### End the chat
+
+When you're done, click **End chat & return to bot**. The AI answers any further questions from the visitor. Click **Mark resolved** to close out the conversation. Resolving a conversation also ends any open live chat.
+
+## What the visitor sees
+
+- While waiting: "Connecting you to a support agent…". The AI keeps answering in the meantime.
+- After a teammate joins: "You're chatting with \<name\>."
+- After the chat ends: "The agent has left the chat. Our assistant can help with anything else."
+
+Chats stay connected if the visitor reloads the page.
+
+## Good to know
+
+- Live chat replies are text only.
+- There are no agent availability settings or business hours yet. Waiting chats stay in the queue until a teammate joins or resolves them, and the bot keeps helping the visitor in the meantime. If your team is not always online, consider asking for an email address in your handoff procedure so you can [follow up by email](/helpdesk/Email).
+- Conversations answered by a teammate are not counted as AI resolutions.
+- Website chats close automatically 4 days after they start. The visitor can still read the transcript and can start a new chat with the reset icon.
+
+## Troubleshooting
+
+### The Chat tab says live chat is off for this chatbot
+
+The chatbot's live chat destination is not the IrisAgent inbox. An admin can change it in the chatbot's **Handoff** tab. See [Turn on live chat](#turn-on-live-chat). You can still send an email or add a note.
+
+### There is no chat reply option on a conversation
+
+Live chat replies are available for conversations from the IrisAgent website chat widget. Voice, WhatsApp, and conversations from other chat tools (such as Intercom or Zendesk) cannot receive replies from the IrisAgent inbox.
+
+### "Take over the conversation before replying"
+
+A teammate took over the chat while you were typing. Click **Take over** if you need to continue the conversation yourself.
+
+## Related pages
+
+- [Conversations inbox](/helpdesk/Conversations-Inbox)
+- [Chatbot on Website](/deploying-irisagent/Chatbot-on-Website)
+- [Workflows and procedures](/configuring-ai-and-automation/Workflows)

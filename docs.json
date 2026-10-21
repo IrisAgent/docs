@@ -36,6 +36,16 @@
             ]
           },
           {
+            "group": "IrisAgent Helpdesk",
+            "pages": [
+              "helpdesk/Overview",
+              "helpdesk/Conversations-Inbox",
+              "helpdesk/Live-Chat",
+              "helpdesk/Email",
+              "helpdesk/WhatsApp"
+            ]
+          },
+          {
             "group": "Connect your data",
             "pages": [
               {
@@ -101,8 +111,7 @@
               {
                 "group": "Email",
                 "pages": [
-                  "deploying-irisagent/Outlook",
-                  "deploying-irisagent/Conversation-Email"
+                  "deploying-irisagent/Outlook"
                 ]
               },
               {
@@ -265,6 +274,10 @@
     {
       "source": "/development",
       "destination": "/"
+    },
+    {
+      "source": "/deploying-irisagent/Conversation-Email",
+      "destination": "/helpdesk/Email"
     }
   ],
   "logo": {
