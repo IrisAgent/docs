@@ -36,16 +36,6 @@
             ]
           },
           {
-            "group": "IrisAgent Helpdesk",
-            "pages": [
-              "helpdesk/Overview",
-              "helpdesk/Conversations-Inbox",
-              "helpdesk/Live-Chat",
-              "helpdesk/Email",
-              "helpdesk/WhatsApp"
-            ]
-          },
-          {
             "group": "Connect your data",
             "pages": [
               {
@@ -146,6 +136,16 @@
               "deploying-irisagent/Slack",
               "deploying-irisagent/Microsoft-Teams",
               "deploying-irisagent/Internal-AI-Search-on-Confluence"
+            ]
+          },
+          {
+            "group": "IrisAgent Helpdesk",
+            "pages": [
+              "helpdesk/Overview",
+              "helpdesk/Conversations-Inbox",
+              "helpdesk/Live-Chat",
+              "helpdesk/Email",
+              "helpdesk/WhatsApp"
             ]
           },
           {
