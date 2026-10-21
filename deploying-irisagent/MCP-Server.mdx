@@ -1,0 +1,153 @@
+---
+title: "IrisAgent MCP Server"
+sidebarTitle: "MCP (Claude, Cursor, AI agents)"
+description: "Connect Claude, Cursor, VS Code, or your own AI agents to IrisAgent's Support Analyst through the Model Context Protocol (MCP)."
+---
+
+The IrisAgent MCP server lets your team use the [Support Analyst](/support-analyst) from the AI assistants they already work in. Connect Claude Code, Cursor, VS Code, or any agent that speaks the [Model Context Protocol](https://modelcontextprotocol.io) (MCP), and ask questions about your support data without opening the IrisAgent portal.
+
+Answers are grounded in the tickets, chats, and knowledge IrisAgent has already ingested for your account, and they cite the tickets they used. Assistants can only read your data. They can't change tickets, send replies, or publish articles.
+
+---
+
+## What you can ask
+
+Anything you can ask the Support Analyst in the portal works through MCP. For example:
+
+- "How many billing tickets did we get last week compared with the week before, and what's driving the increase?"
+- "Summarize ticket 48213 and tell me whether the AI's answer on it was correct."
+- "What did we tell Acme Corp about the outage this month?"
+- "Which agents have the slowest first response time this week?"
+- "Is there a Jira bug linked to these login complaints?"
+- "Give me this week's support briefing."
+
+You can also combine IrisAgent with the assistant's other tools in one request, for example "Pull this week's escalations from IrisAgent, then draft a Slack update for the support leads."
+
+---
+
+## Requirements
+
+- An IrisAgent account with a connected ticketing system. The Support Analyst answers from the data IrisAgent has already ingested.
+- An **admin** user in the IrisAgent portal to turn on access and generate the API key.
+- An MCP client that supports remote servers over Streamable HTTP with custom headers, such as Claude Code, Cursor, or VS Code.
+
+<Note>One-click sign-in for Claude.ai and ChatGPT connectors is coming soon. Until then, use a client that accepts an API key header.</Note>
+
+---
+
+## Set up
+
+<Steps>
+  <Step title="Turn on access">
+    In the IrisAgent portal, go to **Deploy > AI Assistants (MCP)** and turn on **AI assistant access**. Only admins can change this setting.
+  </Step>
+  <Step title="Generate an API key">
+    On the same page, click **Generate key**. Copy the key right away: it starts with `irs_mcp_` and is shown only once. If you lose it, click **Regenerate key** to create a new one. Regenerating disconnects every assistant that uses the old key.
+  </Step>
+  <Step title="Copy the server URL">
+    Copy the **Server URL** from the page. It is `https://api1.irisagent.com/mcp`.
+  </Step>
+  <Step title="Connect your assistant">
+    Add the server to your MCP client with the API key in an `Authorization: Bearer` header. The page shows ready-to-paste setup for Claude Code and Cursor with your new key filled in. The examples below use `YOUR_MCP_API_KEY` as a placeholder.
+  </Step>
+</Steps>
+
+<CodeGroup>
+
+```bash Claude Code
+claude mcp add --transport http irisagent https://api1.irisagent.com/mcp \
+  --header "Authorization: Bearer YOUR_MCP_API_KEY"
+```
+
+```json Cursor (~/.cursor/mcp.json)
+{
+  "mcpServers": {
+    "irisagent": {
+      "url": "https://api1.irisagent.com/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_MCP_API_KEY"
+      }
+    }
+  }
+}
+```
+
+```json VS Code (.vscode/mcp.json)
+{
+  "servers": {
+    "irisagent": {
+      "type": "http",
+      "url": "https://api1.irisagent.com/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_MCP_API_KEY"
+      }
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+For other MCP clients and custom agents, point a Streamable HTTP client at `https://api1.irisagent.com/mcp` and send `Authorization: Bearer YOUR_MCP_API_KEY` on every request.
+
+Once connected, ask your assistant a question about your support data. It calls IrisAgent automatically.
+
+---
+
+## Tools
+
+The server exposes three read-only tools. Your assistant picks the right one from your question.
+
+| Tool | What it does | Inputs |
+|---|---|---|
+| `ask_support_analyst` | Asks the Support Analyst a question about your tickets, chats, accounts, agents, procedures, Jira issues, and AI answer quality. Returns the answer, the tickets it referenced, and a `conversation_id` for follow-ups. | `question` (required), `conversation_id`, `case_id`, `case_number`, `timezone` |
+| `get_weekly_briefing` | Returns the latest weekly support briefing: AI deflection, conversations handled, cases auto-answered, escalations, knowledge gaps, AutoQA results, and new or trending ticket categories, each compared with the previous week. | None |
+| `list_saved_questions` | Lists the saved Support Analyst questions (shortcuts) your team has set up in the portal. | None |
+
+### Follow-up questions
+
+Each answer from `ask_support_analyst` includes a `conversation_id`. Your assistant passes it back on the next question so the Support Analyst keeps the context, for example "Which accounts are affected most?" after a question about billing tickets. Conversation IDs only work with the API key that created them.
+
+### Focusing on one ticket
+
+Pass `case_id` (the ticket ID from your ticketing system, such as the Zendesk ticket ID or the Salesforce case ID) to focus a question on a single ticket. For Salesforce, you can also pass `case_number`.
+
+### Relative dates
+
+Questions like "last week" use UTC unless the assistant passes a `timezone`, such as `America/Los_Angeles`.
+
+### Progress updates
+
+While the Support Analyst works, the server sends progress updates such as "Searching tickets" and "Counting tickets" to clients that support MCP progress notifications.
+
+---
+
+## Security and data
+
+- **Read only.** Assistants can search, count, summarize, and audit, and can draft knowledge articles or procedures for you to review. Nothing is published or changed in IrisAgent or your ticketing system.
+- **Scoped to your organization.** The API key identifies your organization. An assistant can never choose or see another organization's data.
+- **Keys are shown once.** IrisAgent stores only a hash of the key. Treat it like a password, and regenerate it if it might have been exposed. Regenerating revokes the old key immediately.
+- **You stay in control.** Turning off **AI assistant access** blocks every MCP request for your organization, even with a valid key.
+- **Data leaves IrisAgent for the assistant you connect.** Answers, including quoted ticket text, are sent to the provider of the assistant you use (for example Anthropic for Claude or Anysphere for Cursor) under your agreement with that provider.
+- **Audited.** Every MCP question is logged with your Support Analyst activity.
+
+---
+
+## Limits
+
+Each organization can ask up to 20 questions per minute, with up to 4 questions running at the same time. A single question can take up to two minutes for complex analysis. Your assistant receives a clear message when a limit is reached, and can try again shortly.
+
+---
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| `401 Unauthorized` | The key is missing, mistyped, or was regenerated. Make sure the header is `Authorization: Bearer irs_mcp_...` with no extra spaces, and paste the current key. |
+| `403` "not enabled for this organization" | **AI assistant access** is turned off. An admin can turn it on under **Deploy > AI Assistants (MCP)**. |
+| "rate limit reached" or "too many Support Analyst questions are running" | Your organization hit the per-minute or concurrent limit. Wait a minute and try again. |
+| "conversation_id must be a value returned by a previous answer" | The conversation started with a key that was since regenerated, or the ID was changed. Ask the question again without a `conversation_id` to start a new conversation. |
+| "took too long to answer" | Ask a narrower question, for example by adding a date range or an account name. |
+| The assistant doesn't call IrisAgent | Mention IrisAgent or your support data in the question, and check that the server shows as connected in your client's MCP settings. |
+
+Need help? [Contact us](https://irisagent.com/get-a-demo/) and we'll help you connect your first assistant.

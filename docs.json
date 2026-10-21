@@ -135,6 +135,7 @@
             "pages": [
               "deploying-irisagent/Slack",
               "deploying-irisagent/Microsoft-Teams",
+              "deploying-irisagent/MCP-Server",
               "deploying-irisagent/Internal-AI-Search-on-Confluence"
             ]
           },
