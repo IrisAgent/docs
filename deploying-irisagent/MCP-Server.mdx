@@ -28,7 +28,7 @@ You can also combine IrisAgent with the assistant's other tools in one request, 
 ## Requirements
 
 - An IrisAgent account with a connected ticketing system. The Support Analyst answers from the data IrisAgent has already ingested.
-- An **admin** user in the IrisAgent portal to turn on access and generate the API key.
+- An **admin** user in the IrisAgent portal to generate the API key. MCP is available on every IrisAgent account, so there is nothing to turn on.
 - An MCP client that supports remote servers over Streamable HTTP with custom headers, such as Claude Code, Cursor, or VS Code.
 
 <Note>One-click sign-in for Claude.ai and ChatGPT connectors is coming soon. Until then, use a client that accepts an API key header.</Note>
@@ -38,14 +38,11 @@ You can also combine IrisAgent with the assistant's other tools in one request, 
 ## Set up
 
 <Steps>
-  <Step title="Turn on access">
-    In the IrisAgent portal, go to **Deploy > AI Assistants (MCP)** and turn on **AI assistant access**. Only admins can change this setting.
-  </Step>
   <Step title="Generate an API key">
-    On the same page, click **Generate key**. Copy the key right away: it starts with `irs_mcp_` and is shown only once. If you lose it, click **Regenerate key** to create a new one. Regenerating disconnects every assistant that uses the old key.
+    In the IrisAgent portal, go to **Deploy > AI Assistants (MCP)** and click **Generate key**. Only admins can generate a key. Copy the key right away: it starts with `irs_mcp_` and is shown only once. If you lose it, click **Regenerate key** to create a new one. Regenerating disconnects every assistant that uses the old key.
   </Step>
   <Step title="Copy the server URL">
-    Copy the **Server URL** from the page. It is `https://api1.irisagent.com/mcp`.
+    Copy the **Server URL** from the page. The examples below use `https://api1.irisagent.com/mcp`, which works for every account and reaches the same server.
   </Step>
   <Step title="Connect your assistant">
     Add the server to your MCP client with the API key in an `Authorization: Bearer` header. The page shows ready-to-paste setup for Claude Code and Cursor with your new key filled in. The examples below use `YOUR_MCP_API_KEY` as a placeholder.
@@ -127,7 +124,7 @@ While the Support Analyst works, the server sends progress updates such as "Sear
 - **Read only.** Assistants can search, count, summarize, and audit, and can draft knowledge articles or procedures for you to review. Nothing is published or changed in IrisAgent or your ticketing system.
 - **Scoped to your organization.** The API key identifies your organization. An assistant can never choose or see another organization's data.
 - **Keys are shown once.** IrisAgent stores only a hash of the key. Treat it like a password, and regenerate it if it might have been exposed. Regenerating revokes the old key immediately.
-- **You stay in control.** Turning off **AI assistant access** blocks every MCP request for your organization, even with a valid key.
+- **You stay in control.** Regenerating the key on **Deploy > AI Assistants (MCP)** disconnects every assistant that uses the old key right away.
 - **Data leaves IrisAgent for the assistant you connect.** Answers, including quoted ticket text, are sent to the provider of the assistant you use (for example Anthropic for Claude or Anysphere for Cursor) under your agreement with that provider.
 - **Audited.** Every MCP question is logged with your Support Analyst activity.
 
@@ -144,7 +141,7 @@ Each organization can ask up to 20 questions per minute, with up to 4 questions 
 | Symptom | What to check |
 |---|---|
 | `401 Unauthorized` | The key is missing, mistyped, or was regenerated. Make sure the header is `Authorization: Bearer irs_mcp_...` with no extra spaces, and paste the current key. |
-| `403` "not enabled for this organization" | **AI assistant access** is turned off. An admin can turn it on under **Deploy > AI Assistants (MCP)**. |
+| `403` "IrisAgent access is disabled for this organization" | Your IrisAgent account is inactive. [Contact us](https://irisagent.com/get-a-demo/) to reactivate it. |
 | "rate limit reached" or "too many Support Analyst questions are running" | Your organization hit the per-minute or concurrent limit. Wait a minute and try again. |
 | "conversation_id must be a value returned by a previous answer" | The conversation started with a key that was since regenerated, or the ID was changed. Ask the question again without a `conversation_id` to start a new conversation. |
 | "took too long to answer" | Ask a narrower question, for example by adding a date range or an account name. |
