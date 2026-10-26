@@ -10,6 +10,19 @@ Connect a WhatsApp Business number directly to IrisAgent, and your AI agent answ
 This page covers connecting WhatsApp **directly** through the Meta WhatsApp Cloud API. If WhatsApp already runs through Zendesk or Salesforce, see [WhatsApp through Zendesk or Salesforce](/deploying-irisagent/Chatbot-Automation-on-WhatsApp) instead.
 </Note>
 
+## Two ways to connect
+
+| | Connect from the WhatsApp card | Connect through your own Meta app |
+| --- | --- | --- |
+| Who sets it up | You, in IrisAgent | You create a Meta app, then the IrisAgent team connects it |
+| Webhook setup | None | Set up by IrisAgent, or pasted into your Meta app |
+| Availability | Rolling out | Available now |
+| Steps | [Connect your number](#connect-your-number) | [Connect through your own Meta app](#connect-through-your-own-meta-app) |
+
+<Info>
+Connecting from the WhatsApp card is rolling out. Until it's available for your account, use [your own Meta app](#connect-through-your-own-meta-app). Your number stays in your own WhatsApp Business Account either way, so you can switch later without changing numbers.
+</Info>
+
 ## Before you begin
 
 You need:
@@ -39,6 +52,98 @@ Create the token for a system user rather than a personal Meta account, and give
 IrisAgent checks that the token can access the number before saving it, then stores the token encrypted. The card then shows your WhatsApp number with a **Connected** status, and AI replies are on.
 
 You don't need to set up a webhook or callback URL. IrisAgent receives your messages automatically once the number is connected.
+
+## Connect through your own Meta app
+
+Use this option to go live on WhatsApp now. You create a Meta app in your own Meta Business portfolio, and the IrisAgent team connects it to your IrisAgent account. Meta bills you directly for WhatsApp messages.
+
+### What you need
+
+- A **Meta Business portfolio** (Business Manager) where you are an admin. Completing [business verification](https://www.facebook.com/business/help/2058515294227817) is recommended; it raises your messaging limits and lets you use your company's display name.
+- A **phone number** that can receive an SMS or voice call for verification.
+- A **privacy policy URL** for your business, which Meta requires before an app goes live.
+
+<Warning>
+The phone number can't be in use on WhatsApp anywhere else. If it's on the **WhatsApp Business app** or the regular WhatsApp app, delete that WhatsApp account first (in the app: **Settings → Account → Delete account**). Chat history stays on the phone but does not move to IrisAgent. If the number is with another WhatsApp provider, ask that provider to release it first.
+</Warning>
+
+### Step 1: Create a Meta app
+
+1. Go to [Meta for Developers](https://developers.facebook.com/apps) and click **Create app**.
+2. Enter an app name (for example, "Acme WhatsApp") and your contact email.
+3. For the use case, choose **Connect with customers through WhatsApp**.
+4. Select your Meta Business portfolio, then click **Create app**.
+
+### Step 2: Add your phone number
+
+1. In your app, open **WhatsApp → API Setup**.
+2. Click **Add phone number** and enter your business display name, time zone and category.
+3. Enter the phone number and verify it with the code Meta sends by SMS or voice call.
+4. Wait for Meta to approve the display name. This usually takes a few hours, and sometimes up to two days.
+5. In **WhatsApp Manager → Account tools → Payment methods**, add a payment method so Meta can bill your messages. See [Meta's WhatsApp pricing](https://developers.facebook.com/docs/whatsapp/pricing).
+
+### Step 3: Create a permanent access token
+
+1. In [Business Settings](https://business.facebook.com/settings), open **Users → System users** and click **Add**.
+2. Name the system user (for example, "IrisAgent") and give it the **Admin** role.
+3. Click **Assign assets** and give the system user **Full control** of:
+   - your new **app**, and
+   - your **WhatsApp Business Account**.
+4. Click **Generate token**, choose your app, and set the expiry to **Never**.
+5. Select the `whatsapp_business_messaging` and `whatsapp_business_management` permissions, then generate the token.
+6. Copy the token. Meta shows it only once.
+
+### Step 4: Collect your app details
+
+1. In your app, open **App settings → Basic**.
+2. Copy the **App ID**.
+3. Next to **App secret**, click **Show** and copy it.
+4. Enter your **Privacy policy URL** and choose a **Category**, then click **Save changes**.
+5. Open **WhatsApp → API Setup** and copy the **Phone number ID** and the **WhatsApp Business Account ID**.
+
+### Step 5: Publish your app
+
+Meta only sends real customer messages to apps that are live.
+
+1. In your app, open **Publish**.
+2. Click **Publish** and confirm.
+
+You don't need to submit your app for App Review. An app can always message through its own business's WhatsApp numbers.
+
+### Step 6: Send your details to IrisAgent
+
+Send these five values to your IrisAgent contact:
+
+| Value | Where you found it |
+| --- | --- |
+| Phone number ID | WhatsApp → API Setup |
+| WhatsApp Business Account ID | WhatsApp → API Setup |
+| App ID | App settings → Basic |
+| App secret | App settings → Basic |
+| Permanent access token | Business Settings → System users |
+
+<Warning>
+The app secret and access token give full access to your WhatsApp number. Share them only over a secure channel, such as a password manager share or a one-time secret link, never in a regular email or chat message. IrisAgent stores both encrypted.
+</Warning>
+
+### Step 7: IrisAgent connects your app
+
+The IrisAgent team saves your details, subscribes your app to your WhatsApp Business Account, and points your app's webhook at your own IrisAgent webhook URL. You don't need to do anything in this step.
+
+To confirm, open your app's **WhatsApp → Configuration** page. The **Callback URL** starts with `https://frontend-api-server-v2.api.irisagent.com/v1/webhooks/whatsapp/`, and **messages** is subscribed under **Webhook fields**.
+
+If the IrisAgent team asks you to set the webhook yourself, they send you a **Callback URL** and a **Verify token**. Then:
+
+1. Open **WhatsApp → Configuration** in your app.
+2. Under **Webhook**, click **Edit**.
+3. Paste the **Callback URL** and the **Verify token**, then click **Verify and save**.
+4. Under **Webhook fields**, click **Manage** and subscribe to **messages**.
+
+When it's connected, follow [Test it](#test-it) below.
+
+### Switching to the WhatsApp card later
+
+When connecting from the WhatsApp card is available for your account, you can reconnect your number there. The number stays in your WhatsApp Business Account, so your customers keep messaging the same number. You can then delete the Meta app you created.
 
 ## Test it
 
@@ -71,9 +176,19 @@ The previous number is disconnected. The **AI replies** setting stays as it was.
 - The AI replies in the language the customer writes in.
 - After 24 hours without messages, the next message starts a new conversation. This matches WhatsApp's 24-hour customer service window.
 
+## Reply from the inbox
+
+Your team can take over a WhatsApp conversation and reply from **Activity → Conversations**, the same way as [live chat](/helpdesk/Live-Chat):
+
+1. Open the conversation and click **Take over**. The AI stops replying while you own the conversation.
+2. Type your reply. It is sent to the customer on WhatsApp.
+
+When a customer asks for a person on WhatsApp, the conversation waits in the inbox for an agent.
+
+WhatsApp only delivers replies within **24 hours of the customer's last message**. After that, the conversation shows as **Resolved**, and the customer's next message starts a new conversation in the inbox.
+
 ### Current limitations
 
-- Your team cannot reply to WhatsApp conversations from the Conversations inbox yet. When a customer asks for a person on WhatsApp, the AI keeps answering. Share another way to reach your team (such as an email address or phone number) in your handoff procedure.
 - IrisAgent does not send WhatsApp template messages, so it never messages a customer first or outside the 24-hour window.
 - Each WhatsApp number can be connected to only one IrisAgent account.
 
@@ -86,12 +201,20 @@ The previous number is disconnected. The **AI replies** setting stays as it was.
 | "the access token cannot access this WhatsApp phone number" | The token's system user isn't assigned to this WhatsApp Business Account, or lacks the `whatsapp_business_messaging` and `whatsapp_business_management` permissions. Assign the account to the system user in Business Settings and generate a new token. |
 | "this WhatsApp phone number is connected to another customer" | The number is already connected to a different IrisAgent account. Disconnect it there first, or [contact us](mailto:contact@irisagent.com). |
 | The card is read-only | Only dashboard admins can connect a WhatsApp number. Ask an admin. |
+| "WhatsApp only delivers replies within 24 hours…" | The customer's last message was more than 24 hours ago. Your reply is sent once the customer writes again, in the new conversation. |
 
 ### Customers aren't getting replies
 
 - Check that the card shows **Connected**, not **Paused**.
 - Check the number's **Quality rating** and messaging limits in WhatsApp Manager. Meta may restrict a number with a low rating.
 - Make sure the number isn't also connected to another WhatsApp tool, such as the WhatsApp Business app or another provider.
+
+If you connected through your own Meta app, also check that:
+
+- the app shows **Published** (Live) in the Meta App Dashboard;
+- **WhatsApp → Configuration** shows the IrisAgent callback URL, with **messages** subscribed;
+- the access token hasn't been deleted or regenerated. If it has, send the new token to your IrisAgent contact;
+- the app secret hasn't been reset. If it has, send the new secret to your IrisAgent contact.
 
 ## Related pages
 

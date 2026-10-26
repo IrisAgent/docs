@@ -1,10 +1,10 @@
 ---
 title: "IrisAgent MCP Server"
 sidebarTitle: "MCP (Claude, Cursor, AI agents)"
-description: "Connect Claude, Cursor, VS Code, or your own AI agents to IrisAgent's Support Analyst through the Model Context Protocol (MCP)."
+description: "Connect Claude, ChatGPT, Claude Code, Cursor, or your own AI agents to IrisAgent's Support Analyst through the Model Context Protocol (MCP)."
 ---
 
-The IrisAgent MCP server lets your team use the [Support Analyst](/support-analyst) from the AI assistants they already work in. Connect Claude Code, Cursor, VS Code, or any agent that speaks the [Model Context Protocol](https://modelcontextprotocol.io) (MCP), and ask questions about your support data without opening the IrisAgent portal.
+The IrisAgent MCP server lets your team use the [Support Analyst](/support-analyst) from the AI assistants they already work in. Connect Claude, ChatGPT, Claude Code, Cursor, VS Code, or any agent that speaks the [Model Context Protocol](https://modelcontextprotocol.io) (MCP), and ask questions about your support data without opening the IrisAgent portal.
 
 Answers are grounded in the tickets, chats, and knowledge IrisAgent has already ingested for your account, and they cite the tickets they used. Assistants can only read your data. They can't change tickets, send replies, or publish articles.
 
@@ -28,64 +28,104 @@ You can also combine IrisAgent with the assistant's other tools in one request, 
 ## Requirements
 
 - An IrisAgent account with a connected ticketing system. The Support Analyst answers from the data IrisAgent has already ingested.
-- An **admin** user in the IrisAgent portal to generate the API key. MCP is available on every IrisAgent account, so there is nothing to turn on.
-- An MCP client that supports remote servers over Streamable HTTP with custom headers, such as Claude Code, Cursor, or VS Code.
+- An IrisAgent portal login. MCP is available on every IrisAgent account, so there is nothing to turn on.
+- An MCP client that supports remote servers over Streamable HTTP and MCP sign-in, such as Claude, ChatGPT, Claude Code, Cursor, or VS Code. Each person signs in with their own IrisAgent login, so no API key is needed. Only custom agents that can't sign in need an API key, which an **admin** generates.
 
-<Note>One-click sign-in for Claude.ai and ChatGPT connectors is coming soon. Until then, use a client that accepts an API key header.</Note>
+The server URL for every account is `https://mcp.irisagent.com/mcp`. The same URL and setup steps appear on **Deploy > AI Assistants (MCP)** in the portal.
 
 ---
 
-## Set up
+## Connect your assistant
+
+Every assistant follows the same pattern: add the server URL, then sign in with IrisAgent and click **Allow access**.
+
+<Tabs>
+  <Tab title="Claude">
+    <Steps>
+      <Step title="Add a custom connector">
+        In Claude, open **Customize > Connectors** and click **Add custom connector**. On Team and Enterprise plans, an Owner first adds it under **Organization settings > Connectors > Add > Custom**, and members then connect it from **Customize > Connectors**.
+      </Step>
+      <Step title="Enter the server URL">
+        Name it IrisAgent, paste `https://mcp.irisagent.com/mcp`, and click **Add**. Then click **Connect**.
+      </Step>
+      <Step title="Sign in and allow access">
+        Sign in with your IrisAgent account and click **Allow access**.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="ChatGPT">
+    <Steps>
+      <Step title="Add a custom MCP server">
+        In ChatGPT on the web, open **Plugins**, click **+**, then **Add custom MCP server**. Custom MCP servers are available on ChatGPT Business, Enterprise, and Edu plans, where a workspace admin may need to add it or grant you permission.
+      </Step>
+      <Step title="Enter the server URL">
+        Name it IrisAgent, paste `https://mcp.irisagent.com/mcp` under **Connection**, choose OAuth for authentication, acknowledge the risk warning, and click **Create as a plugin**.
+      </Step>
+      <Step title="Sign in and allow access">
+        Sign in with your IrisAgent account and click **Allow access**. In a chat, type **@** and pick IrisAgent.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Claude Code">
+    <Steps>
+      <Step title="Add the server">
+        ```bash
+        claude mcp add --transport http irisagent https://mcp.irisagent.com/mcp
+        ```
+      </Step>
+      <Step title="Authenticate">
+        In Claude Code, run `/mcp`, select **irisagent**, and choose **Authenticate**.
+      </Step>
+      <Step title="Sign in and allow access">
+        Your browser opens the IrisAgent sign-in page. Sign in and click **Allow access**.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Cursor">
+    <Steps>
+      <Step title="Add the server">
+        Add this to `~/.cursor/mcp.json`, or `.cursor/mcp.json` in a project:
+
+        ```json
+        {
+          "mcpServers": {
+            "irisagent": {
+              "url": "https://mcp.irisagent.com/mcp"
+            }
+          }
+        }
+        ```
+      </Step>
+      <Step title="Sign in from Cursor">
+        Open Cursor's MCP settings and click the sign-in button next to **irisagent**.
+      </Step>
+      <Step title="Sign in and allow access">
+        Sign in with your IrisAgent account and click **Allow access**.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+The sign-in page names the app, your organization, and where you return afterwards. If it says **Connect an unverified app**, IrisAgent can't confirm which app is asking. Only allow access if you started the connection yourself.
+
+To disconnect, remove the connector in your assistant, or click **Disconnect** under **Connected assistants** on **Deploy > AI Assistants (MCP)**. Admins see and can disconnect everyone's connections there.
+
+---
+
+## API key for custom agents
+
+Use an API key only for your own agents and scripts that can't sign in. Only admins can manage the key.
 
 <Steps>
   <Step title="Generate an API key">
-    In the IrisAgent portal, go to **Deploy > AI Assistants (MCP)** and click **Generate key**. Only admins can generate a key. Copy the key right away: it starts with `irs_mcp_` and is shown only once. If you lose it, click **Regenerate key** to create a new one. Regenerating disconnects every assistant that uses the old key.
+    On **Deploy > AI Assistants (MCP)**, open **API key for custom agents** and click **Generate key**. Copy the key right away: it starts with `irs_mcp_` and is shown only once. Generating a key, including the first one, disconnects every assistant connected with sign-in across your organization, so do this before your team connects, or warn them first.
   </Step>
-  <Step title="Copy the server URL">
-    Copy the **Server URL** from the page. The examples below use `https://api1.irisagent.com/mcp`, which works for every account and reaches the same server.
-  </Step>
-  <Step title="Connect your assistant">
-    Add the server to your MCP client with the API key in an `Authorization: Bearer` header. The page shows ready-to-paste setup for Claude Code and Cursor with your new key filled in. The examples below use `YOUR_MCP_API_KEY` as a placeholder.
+  <Step title="Send it on every request">
+    Point a Streamable HTTP MCP client at `https://mcp.irisagent.com/mcp` and send `Authorization: Bearer YOUR_MCP_API_KEY` on every request.
   </Step>
 </Steps>
 
-<CodeGroup>
-
-```bash Claude Code
-claude mcp add --transport http irisagent https://api1.irisagent.com/mcp \
-  --header "Authorization: Bearer YOUR_MCP_API_KEY"
-```
-
-```json Cursor (~/.cursor/mcp.json)
-{
-  "mcpServers": {
-    "irisagent": {
-      "url": "https://api1.irisagent.com/mcp",
-      "headers": {
-        "Authorization": "Bearer YOUR_MCP_API_KEY"
-      }
-    }
-  }
-}
-```
-
-```json VS Code (.vscode/mcp.json)
-{
-  "servers": {
-    "irisagent": {
-      "type": "http",
-      "url": "https://api1.irisagent.com/mcp",
-      "headers": {
-        "Authorization": "Bearer YOUR_MCP_API_KEY"
-      }
-    }
-  }
-}
-```
-
-</CodeGroup>
-
-For other MCP clients and custom agents, point a Streamable HTTP client at `https://api1.irisagent.com/mcp` and send `Authorization: Bearer YOUR_MCP_API_KEY` on every request.
+If you lose the key, click **Regenerate key**. Regenerating disconnects every assistant using the current key, and every assistant connected with sign-in across your organization.
 
 Once connected, ask your assistant a question about your support data. It calls IrisAgent automatically.
 
@@ -103,7 +143,7 @@ The server exposes three read-only tools. Your assistant picks the right one fro
 
 ### Follow-up questions
 
-Each answer from `ask_support_analyst` includes a `conversation_id`. Your assistant passes it back on the next question so the Support Analyst keeps the context, for example "Which accounts are affected most?" after a question about billing tickets. Conversation IDs only work with the API key that created them.
+Each answer from `ask_support_analyst` includes a `conversation_id`. Your assistant passes it back on the next question so the Support Analyst keeps the context, for example "Which accounts are affected most?" after a question about billing tickets. Conversation IDs only work with the connection or API key that created them.
 
 ### Focusing on one ticket
 
@@ -122,9 +162,10 @@ While the Support Analyst works, the server sends progress updates such as "Sear
 ## Security and data
 
 - **Read only.** Assistants can search, count, summarize, and audit, and can draft knowledge articles or procedures for you to review. Nothing is published or changed in IrisAgent or your ticketing system.
-- **Scoped to your organization.** The API key identifies your organization. An assistant can never choose or see another organization's data.
+- **Scoped to your organization.** The API key or sign-in identifies your organization. An assistant can never choose or see another organization's data.
+- **Sign-in connections belong to a person.** Each connection made with sign-in is tied to the IrisAgent user who approved it, and their questions are logged under their name. Connections use short-lived tokens that refresh automatically for up to 90 days, after which you sign in again. IrisAgent stores only hashes of the tokens. Removing a user from IrisAgent ends their connections.
 - **Keys are shown once.** IrisAgent stores only a hash of the key. Treat it like a password, and regenerate it if it might have been exposed. Regenerating revokes the old key immediately.
-- **You stay in control.** Regenerating the key on **Deploy > AI Assistants (MCP)** disconnects every assistant that uses the old key right away.
+- **You stay in control.** Regenerating the key on **Deploy > AI Assistants (MCP)** disconnects every assistant right away, including connections made with sign-in.
 - **Data leaves IrisAgent for the assistant you connect.** Answers, including quoted ticket text, are sent to the provider of the assistant you use (for example Anthropic for Claude or Anysphere for Cursor) under your agreement with that provider.
 - **Audited.** Every MCP question is logged with your Support Analyst activity.
 
@@ -140,7 +181,8 @@ Each organization can ask up to 20 questions per minute, with up to 4 questions 
 
 | Symptom | What to check |
 |---|---|
-| `401 Unauthorized` | The key is missing, mistyped, or was regenerated. Make sure the header is `Authorization: Bearer irs_mcp_...` with no extra spaces, and paste the current key. |
+| `401 Unauthorized` | The key is missing, mistyped, or was regenerated. Make sure the header is `Authorization: Bearer irs_mcp_...` with no extra spaces, and paste the current key. With sign-in, reconnect the connector to sign in again. |
+| "This connection link has expired" | Sign-in requests last 15 minutes and work once. Start the connection again from your assistant. |
 | `403` "IrisAgent access is disabled for this organization" | Your IrisAgent account is inactive. [Contact us](https://irisagent.com/get-a-demo/) to reactivate it. |
 | "rate limit reached" or "too many Support Analyst questions are running" | Your organization hit the per-minute or concurrent limit. Wait a minute and try again. |
 | "conversation_id must be a value returned by a previous answer" | The conversation started with a key that was since regenerated, or the ID was changed. Ask the question again without a `conversation_id` to start a new conversation. |
