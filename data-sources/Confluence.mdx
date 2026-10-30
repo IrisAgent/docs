@@ -1,6 +1,6 @@
 ---
 title: "Confluence"
-description: "IrisAgent Installation Guide for Confuence to sync your knowledge content. Please note that the steps to connect with Confluence and Jira Software are the same, just the scope of the token provided below are different."
+description: "IrisAgent Installation Guide for Confluence to sync your knowledge content. Connect a Confluence Cloud site with a scoped Atlassian API token, then choose which Confluence spaces IrisAgent reads."
 ---
 
 ## **Introduction**
@@ -8,21 +8,55 @@ description: "IrisAgent Installation Guide for Confuence to sync your knowledge 
 \
 IrisAgent provides AI-powered answers to support tickets from internal knowledge base in Confluence using the Atlassian Confluence integration.
 
-## **Connect with Atlassian**
+## **Before you start**
 
-1. Login to the [IrisAgent dashboard](https://web.irisagent.com/). This step assumes that you have already connected IrisAgent to your ticketing provider.
+- An IrisAgent account with your ticketing provider already connected.
+- A Confluence Cloud site (your site address ends in `.atlassian.net`).
+- An Atlassian user who can read the Confluence spaces you want IrisAgent to use. A dedicated service user is recommended (see [Permissions of the Atlassian Token](#permissions-of-the-atlassian-token)).
+
+## **Step 1: Create a scoped Atlassian API token**
+
+1. Signed in as that Atlassian user, open your Atlassian account settings, go to **Security**, then **API tokens**, and create an API token with scopes. Here are [the steps to create the token](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+2. Choose **Confluence** as the app and add these scopes:
+   - `read:confluence-content.all`
+   - `read:confluence-content.summary`
+   - `read:confluence-space.summary`
+   - `read:confluence-props`
+   - `search:confluence`
+3. Copy the token. You will paste it into IrisAgent in Step 3.
+
+## **Step 2: Find your Cloud ID**
+
+1. Open `https://{your-site-name}.atlassian.net/_edge/tenant_info` in your browser.
+2. The page shows a line like `{"cloudId":"1234abcd-12ab-34cd-56ef-1234567890ab"}`. Copy just the `cloudId` value (the UUID). If you paste the whole line, IrisAgent extracts the UUID for you.
+
+## **Step 3: Connect Confluence in IrisAgent**
+
+1. Login to the [IrisAgent dashboard](https://web.irisagent.com/).
 2. In the left navigation, open **Data Sources** and select **Knowledge Bases**.
-3. On the Confluence card, click **Connect**. If you are using an Atlassian cloud instance, use **Connect with Atlassian/Jira Cloud**. If you are using an Atlassian on-prem instance, use **Connect with Atlassian/Jira Server**. Give the OAuth permissions and click on Allow. This will automatically connect IrisAgent with Jira and Confluence.
+3. On the Confluence card, click **Connect**. The **Connect Confluence** screen opens.
+4. Fill in the four fields:
+   - **Confluence API Token**: the token from Step 1.
+   - **Email Address**: the email of the Atlassian user who created the token.
+   - **Subdomain**: your site name only, without `https://` and without `.atlassian.net`. For `https://acme.atlassian.net`, enter `acme`.
+   - **Cloud ID**: the UUID from Step 2.
+5. Click **Connect**. The Confluence card now shows **Connected**, with the number of synced articles underneath.
 
-   <br />
+IrisAgent syncs Confluence pages and blog posts. Page labels are kept as article tags, and pages edited in Confluence are picked up on the next sync.
 
-- If you are connecting with Atlassian Cloud, a follow-on page will show up that asks for the Atlassian cloud token, email address, and base URL. Here are [the steps to create the token](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
-- If you are connecting with Atlassian Server, a follow-on page will show up that asks for the Atlassian server token and base URL. Here are [the steps to create the token](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+<Note>
+  The Confluence card connects Confluence Cloud sites. For an Atlassian Server or Data Center instance, use the **Atlassian/Jira Server** card under **Data Sources → Development**, or contact IrisAgent support.
+</Note>
 
-## Selecting certain Confluence Spaces 
+## **Step 4: Select which Confluence spaces IrisAgent reads**
 
-1. When creating the token in the step above, ensure you only give permissions to the relevant projects.
-2. After you connect with your Atlassian account, the Confluence card on the **Data Sources → Knowledge Bases** page shows as connected. Click on the Settings gear icon. This shows a side panel where you can select/deselect which projects you want IrisAgent to have access to.
+1. When creating the token in Step 1, use an Atlassian user who can only read the relevant spaces.
+2. On the **Data Sources → Knowledge Bases** page, click the Settings gear icon on the connected Confluence card.
+3. In the side panel, under **Confluence Spaces**, select the spaces you want IrisAgent to read (each shows its article count), then click **Apply**. **Select All** and **Select None** are available. If no space is selected, all spaces the token can read are included.
+
+## **Step 5: Test it**
+
+Open **Chatbot** under **AI Products** and ask a question your Confluence pages answer. The answer lists the Confluence page it used under **Sources**.
 
 ## **Details on IrisAgent's Atlassian Connection**
 
@@ -32,12 +66,15 @@ IrisAgent only ingests data from Atlassian from the last 3 months (can be config
 
 The Atlassian token generated by a user has the same access level as that user’s permissions within jira. It is recommended that a service user be created and that user’s token be entered in the IrisAgent dashboard, so that permissions can be easily granted/revoked as and when new functionality is introduced.
 
-### **OAuth permissions needed for Confluence**
+### **Token scopes needed for Confluence**
 
-IrisAgent uses this integration to automatically suggest articles and resolutions from Confluence that match a new support case and assist both support reps and customers in finding faster resolutions. The token needs to have the following permissions in Confluence:
+IrisAgent uses this integration to automatically suggest articles and resolutions from Confluence that match a new support case and assist both support reps and customers in finding faster resolutions. The API token needs these Confluence scopes, which let IrisAgent read and search pages and blog posts:
 
-1. Read all blogs
-2. Read all pages
+1. `read:confluence-content.all`
+2. `read:confluence-content.summary`
+3. `read:confluence-space.summary`
+4. `read:confluence-props`
+5. `search:confluence`
 
 ### **Granting Access only to either Jira/Confluence**
 
