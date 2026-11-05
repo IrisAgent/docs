@@ -37,32 +37,32 @@ The server URL for every account is `https://mcp.irisagent.com/mcp`. The same UR
 
 ## Connect your assistant
 
-Every assistant follows the same pattern: add the server URL, then sign in with IrisAgent and click **Allow access**.
+Every assistant follows the same pattern: add IrisAgent, then sign in with IrisAgent and click **Allow access**.
 
 <Tabs>
   <Tab title="Claude">
     <Steps>
-      <Step title="Add a custom connector">
-        In Claude, open **Customize > Connectors** and click **Add custom connector**. On Team and Enterprise plans, an Owner first adds it under **Organization settings > Connectors > Add > Custom**, and members then connect it from **Customize > Connectors**.
-      </Step>
-      <Step title="Enter the server URL">
-        Name it IrisAgent, paste `https://mcp.irisagent.com/mcp`, and click **Add**. Then click **Connect**.
+      <Step title="Add IrisAgent from the directory">
+        Open [IrisAgent in Claude's directory](https://claude.ai/directory/irisagent) and add it. On Team and Enterprise plans, an Owner adds it for the organization under **Organization settings > Connectors**, and members then connect with their own account.
       </Step>
       <Step title="Sign in and allow access">
         Sign in with your IrisAgent account and click **Allow access**.
+      </Step>
+      <Step title="Use it in a chat">
+        Ask Claude a question about your support data.
       </Step>
     </Steps>
   </Tab>
   <Tab title="ChatGPT">
     <Steps>
-      <Step title="Add a custom MCP server">
-        In ChatGPT on the web, open **Plugins**, click **+**, then **Add custom MCP server**. Custom MCP servers are available on ChatGPT Business, Enterprise, and Edu plans, where a workspace admin may need to add it or grant you permission.
-      </Step>
-      <Step title="Enter the server URL">
-        Name it IrisAgent, paste `https://mcp.irisagent.com/mcp` under **Connection**, choose OAuth for authentication, acknowledge the risk warning, and click **Create as a plugin**.
+      <Step title="Install the plugin">
+        Open [IrisAgent in ChatGPT Plugins](https://chatgpt.com/plugins/plugin_asdk_app_6ae650c3ecc88191a26980a45ecd8e54) and click **Install plugin**. On workspace plans, an admin may need to allow it first.
       </Step>
       <Step title="Sign in and allow access">
-        Sign in with your IrisAgent account and click **Allow access**. In a chat, type **@** and pick IrisAgent.
+        Sign in with your IrisAgent account and click **Allow access**.
+      </Step>
+      <Step title="Use it in a chat">
+        In a chat, type **@** and pick IrisAgent.
       </Step>
     </Steps>
   </Tab>

@@ -10,20 +10,53 @@ Connect a WhatsApp Business number directly to IrisAgent, and your AI agent answ
 This page covers connecting WhatsApp **directly** through the Meta WhatsApp Cloud API. If WhatsApp already runs through Zendesk or Salesforce, see [WhatsApp through Zendesk or Salesforce](/deploying-irisagent/Chatbot-Automation-on-WhatsApp) instead.
 </Note>
 
-## Two ways to connect
+## Ways to connect
 
-| | Connect from the WhatsApp card | Connect through your own Meta app |
-| --- | --- | --- |
-| Who sets it up | You, in IrisAgent | You create a Meta app, then the IrisAgent team connects it |
-| Webhook setup | None | Set up by IrisAgent, or pasted into your Meta app |
-| Availability | Rolling out | Available now |
-| Steps | [Connect your number](#connect-your-number) | [Connect through your own Meta app](#connect-through-your-own-meta-app) |
+| | Connect with Facebook (recommended) | Enter IDs and a token | Connect through your own Meta app |
+| --- | --- | --- | --- |
+| Who sets it up | You, in a few clicks | You, in IrisAgent | You create a Meta app, then the IrisAgent team connects it |
+| What you need | A Facebook account that manages your business | A system user token from Meta Business Settings | A Meta app, its secret and a token |
+| Webhook setup | None | None | Set up by IrisAgent, or pasted into your Meta app |
+| Steps | [Connect with Facebook](#connect-with-facebook) | [Connect your number](#connect-your-number) | [Connect through your own Meta app](#connect-through-your-own-meta-app) |
 
 <Info>
-Connecting from the WhatsApp card is rolling out. Until it's available for your account, use [your own Meta app](#connect-through-your-own-meta-app). Your number stays in your own WhatsApp Business Account either way, so you can switch later without changing numbers.
+Your number stays in your own WhatsApp Business Account whichever way you connect, so you can switch later without changing numbers.
 </Info>
 
-## Before you begin
+## Connect with Facebook
+
+Connect with Facebook opens Meta's WhatsApp signup in a popup. You pick or create your WhatsApp Business Account and number there, and IrisAgent sets up everything else.
+
+### What you need
+
+- IrisAgent admin access.
+- A Facebook account that is an admin of your company's **Meta Business portfolio**, or that can create one.
+- A **phone number** that can receive an SMS or voice call for verification, and that isn't in use on WhatsApp anywhere else. If it's on the WhatsApp Business app or with another WhatsApp provider, see the warning under [Connect through your own Meta app](#connect-through-your-own-meta-app).
+- Pop-ups allowed for web.irisagent.com.
+
+### Steps
+
+1. In IrisAgent, go to **Deploy → Text channels**.
+2. On the **WhatsApp** card, click **Connect with Facebook**.
+3. Sign in to Facebook in the popup, if asked.
+4. Choose your **Meta Business portfolio**, or create one.
+5. Choose your **WhatsApp Business Account**, or create one.
+6. Add your phone number and **display name**, then verify the number with the code Meta sends by SMS or voice call.
+7. Review the permissions IrisAgent asks for and click **Confirm**.
+
+The popup closes, and IrisAgent connects the number. The card then shows your WhatsApp number with a **Connected** status, and AI replies are on.
+
+Meta reviews your display name, which usually takes a few hours. Your number can receive and answer messages before the review finishes.
+
+<Note>
+IrisAgent sets a two-step verification PIN on your number while connecting it. If you ever move the number to another provider, reset the PIN in **WhatsApp Manager → Phone numbers → Settings → Two-step verification**.
+</Note>
+
+Add a payment method in **WhatsApp Manager → Account tools → Payment methods** so Meta can bill your messages. See [Meta's WhatsApp pricing](https://developers.facebook.com/docs/whatsapp/pricing).
+
+## Before you connect manually
+
+Use this option if you'd rather not sign in with Facebook in IrisAgent, or if your IT team manages Meta access tokens.
 
 You need:
 
@@ -141,9 +174,9 @@ If the IrisAgent team asks you to set the webhook yourself, they send you a **Ca
 
 When it's connected, follow [Test it](#test-it) below.
 
-### Switching to the WhatsApp card later
+### Switching to Connect with Facebook later
 
-When connecting from the WhatsApp card is available for your account, you can reconnect your number there. The number stays in your WhatsApp Business Account, so your customers keep messaging the same number. You can then delete the Meta app you created.
+You can reconnect your number with [Connect with Facebook](#connect-with-facebook) at any time. The number stays in your WhatsApp Business Account, so your customers keep messaging the same number. After it's reconnected, you can delete the Meta app you created.
 
 ## Test it
 
@@ -201,6 +234,9 @@ WhatsApp only delivers replies within **24 hours of the customer's last message*
 | "the access token cannot access this WhatsApp phone number" | The token's system user isn't assigned to this WhatsApp Business Account, or lacks the `whatsapp_business_messaging` and `whatsapp_business_management` permissions. Assign the account to the system user in Business Settings and generate a new token. |
 | "this WhatsApp phone number is connected to another customer" | The number is already connected to a different IrisAgent account. Disconnect it there first, or [contact us](mailto:contact@irisagent.com). |
 | The card is read-only | Only dashboard admins can connect a WhatsApp number. Ask an admin. |
+| The Facebook popup doesn't open | Allow pop-ups for web.irisagent.com, and check that your browser or an extension isn't blocking connect.facebook.net. |
+| "Meta did not accept the signup code…" | The signup took too long or was opened twice. Click **Connect with Facebook** again. |
+| "registering your number with WhatsApp failed, so nothing was changed…" | The number already has a two-step verification PIN. Turn it off in **WhatsApp Manager → Phone numbers → Settings → Two-step verification**, then click **Connect with Facebook** again. |
 | "WhatsApp only delivers replies within 24 hours…" | The customer's last message was more than 24 hours ago. Your reply is sent once the customer writes again, in the new conversation. |
 
 ### Customers aren't getting replies
