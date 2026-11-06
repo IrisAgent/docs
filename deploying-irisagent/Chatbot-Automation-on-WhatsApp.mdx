@@ -1,20 +1,20 @@
 ---
-title: "Chatbot Automation on WhatsApp"
-sidebarTitle: "WhatsApp"
+title: "WhatsApp through Zendesk or Salesforce"
+sidebarTitle: "WhatsApp via Zendesk or Salesforce"
 description: "Deploy IrisAgent AI answers on WhatsApp through Zendesk Sunshine Conversations or Salesforce Service Cloud Messaging"
 ---
 
-This guide walks you through putting an IrisAgent AI customer service agent on WhatsApp.
-
-There are three architectural paths to WhatsApp. This guide covers all three (the direct path has its own [setup guide](/helpdesk/WhatsApp)), with the **CRM-routed path** (Zendesk or Salesforce) recommended for most teams because it requires no new WhatsApp Business Account, no Business Solution Provider (BSP) contract, and no Meta re-verification.
+<Tip>
+**Most teams should connect WhatsApp directly to IrisAgent** with [Connect with Facebook](/helpdesk/WhatsApp). It takes a few minutes, needs no help desk, and your team can reply from the IrisAgent inbox. Use this page only if your WhatsApp channel already runs inside Zendesk or Salesforce and you want to keep it there.
+</Tip>
 
 ## Choose your deployment path
 
 | Path | Use when | Time to live |
 | --- | --- | --- |
-| **Zendesk Sunshine Conversations** | You already run Zendesk and have (or can provision) a WhatsApp channel inside it | Hours |
-| **Salesforce Service Cloud Messaging** | You already run Salesforce Service Cloud with Digital Engagement | Hours to days |
-| **Direct WhatsApp Cloud API** | You are not on Zendesk or Salesforce. See [Connect WhatsApp directly](/helpdesk/WhatsApp) | Hours, once your Meta business is verified |
+| **Direct (recommended)** | Most teams. See [WhatsApp](/helpdesk/WhatsApp) | Minutes |
+| **Zendesk Sunshine Conversations** | Your WhatsApp channel already runs in Zendesk | Hours |
+| **Salesforce Service Cloud Messaging** | Your WhatsApp channel already runs in Salesforce Service Cloud with Digital Engagement | Hours to days |
 
 The setup for the CRM-routed paths is largely the same as the existing [Chatbot Automation on Zendesk Messaging](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging) flow, with one extra step on the CRM side to provision WhatsApp itself.
 
@@ -158,13 +158,6 @@ IrisAgent now reads inbound WhatsApp Messaging Sessions, generates grounded answ
 
 ---
 
-## Path C: Direct WhatsApp Cloud API
-
-If you are not on Zendesk or Salesforce, connect your WhatsApp Business number to IrisAgent directly under **Deploy → Text channels**. You need your Phone number ID, WhatsApp Business Account ID, and a system user access token. IrisAgent handles the webhook for you.
-
-Follow [Connect WhatsApp directly](/helpdesk/WhatsApp) for step-by-step setup. With this path you are responsible for Meta business verification and your number's quality rating.
-
----
 
 ## Configure escalation and handoff
 
