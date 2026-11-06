@@ -1,21 +1,17 @@
 ---
 title: "Chatbot Automation on Freshchat"
 sidebarTitle: "Freshchat"
-description: "Deploy IrisAgent AI answers to your Freshchat conversations"
+description: "Let IrisAgent AI answer customers in your Freshchat conversations"
 ---
 
-## **Introduction**
+IrisAgent answers customers in Freshchat through a webhook. Keep the IrisAgent and Freshchat settings open side by side: you copy values in both directions.
 
-\
-IrisAgent AI can answer customer queries right within your Freshchat conversations seamlessly using webhooks. This guide will help you integrate IrisAgent with Freshchat.
+## Step 1: Turn on Freshchat in IrisAgent
 
-## **IrisAgent Portal Configuration**
-
-### **Step 1: Access Freshchat Configuration**
-
-1. In the IrisAgent portal, open **Deploy** → **Chat channels** from the left sidebar
-2. Find the **Freshchat** card and click **Configure** to open the configuration sidebar
-3. Toggle **Enable Chat Automation** to ON
+1. In the IrisAgent dashboard, go to **Deploy** → **Chat channels**.
+2. On the **Freshchat** card, click **Configure**.
+3. Turn on **Enable AI Chat Assistant**.
+4. Copy **Your Webhook URL**. It looks like `https://api1.irisagent.com/v1/webhooks/freshchat/{YourOrganizationID}`.
 
   <img
     style={{ borderRadius:"0.5rem" }}
@@ -23,71 +19,12 @@ IrisAgent AI can answer customer queries right within your Freshchat conversatio
     alt="IrisAgent Freshchat Configuration UI"
   />
 
-### **Step 2: Note Your Webhook URL**
+## Step 2: Add the webhook in Freshchat
 
-\
-Once enabled, you'll see a **Webhook URL** field that displays your organization-specific endpoint:
-
-```
-https://api1.irisagent.com/v1/webhooks/freshchat/{YourOrganizationID}
-```
-
-**Important:** Keep this configuration page open - you'll need to copy values from Freshchat and paste them here.
-
-  <img
-    style={{ borderRadius:"0.5rem" }}
-    src="/images/deploying-irisagent/freshchat/irisagent-config-fields.png"
-    alt="IrisAgent Configuration Fields"
-  />
-
-### **Step 2a: Configure Event Filtering (Optional)**
-
-\
-You can optionally enable event filtering to control which Freshchat conversations IrisAgent processes. This allows you to target specific channels or apply custom filtering logic.
-
-#### **Filter Modes**
-
-**Simple Mode:**
-1. Toggle **Enable Filter** to ON
-2. Select **Simple** mode
-3. Choose a **Topic** (Channel) from the dropdown
-4. IrisAgent will only process conversations from the selected channel
-
-**Advanced Mode:**
-1. Toggle **Enable Filter** to ON
-2. Select **Advanced** mode
-3. Enter a custom filter query
-4. IrisAgent will process only conversations matching your query criteria
-
-**Note:** Filtering is optional. If disabled, IrisAgent will process all incoming conversation events.
-
-  <img
-    style={{ borderRadius:"0.5rem" }}
-    src="/images/deploying-irisagent/freshchat/irisagent-config-filter.png"
-    alt="IrisAgent Event Filter Configuration"
-  />
-
-## **Freshchat Admin Settings**
-
-### **Step 3: Access Freshchat Admin Settings**
-
-1. Log in to your Freshchat account
-2. Navigate to: `https://{YourOrganizationID}.myfreshworks.com/crm/sales/settings`
-3. You'll be configuring two sections:
-   - Conversation Webhooks
-   - API Settings
-
-### **Step 4: Set Up Conversation Webhook**
-
-1. In Freshchat Admin Settings, locate **Conversation Webhooks** section
-2. Click **Add Webhook** or **Configure**
-3. Enter the following details:
-   - **Webhook URL**: Paste the webhook URL from IrisAgent configuration
-     ```
-     https://api1.irisagent.com/v1/webhooks/freshchat/{YourOrganizationID}
-     ```
-   - **Authentication**: You'll enter the RSA Public Key in the next step
-4. **Do not save yet** - proceed to Step 5 first
+1. Sign in to Freshchat and open the admin settings (`https://{YourOrganizationID}.myfreshworks.com/crm/sales/settings`).
+2. In **Conversation Webhooks**, add or configure a webhook and paste the IrisAgent webhook URL.
+3. Copy the webhook's **Authentication Key** (RSA public key).
+4. Save and enable the webhook.
 
   <img
     style={{ borderRadius:"0.5rem" }}
@@ -95,23 +32,9 @@ You can optionally enable event filtering to control which Freshchat conversatio
     alt="Freshchat Webhook Configuration"
   />
 
-### **Step 5: Copy and Configure Authentication Key**
+## Step 3: Copy your Freshchat API details
 
-1. Return to the **IrisAgent Freshchat Configuration** page
-2. In the **Authentication Key** field, you'll find your RSA Public Key
-3. Copy this key
-4. Return to Freshchat Webhook configuration
-5. Paste the RSA Public Key in the **Authentication** field
-6. Click **Save**
-7. **Enable** the webhook
-
-### **Step 6: Retrieve Freshchat API Credentials**
-
-1. In Freshchat Admin Settings, locate **API Settings** section
-2. You'll see two important values:
-   - **Your API Key**
-   - **Your chat URL**
-3. Copy both of these values
+In Freshchat **API Settings**, copy **Your API Key** and **Your chat URL**.
 
   <img
     style={{ borderRadius:"0.5rem" }}
@@ -119,10 +42,33 @@ You can optionally enable event filtering to control which Freshchat conversatio
     alt="Freshchat API Settings"
   />
 
-### **Step 7: Enter Freshchat Credentials in IrisAgent**
+## Step 4: Finish the IrisAgent configuration
 
-1. Return to the **IrisAgent Freshchat Configuration** page
-2. Enter the following values copied from Freshchat:
-   - **Chat URL**: Paste "Your chat URL" from Freshchat API Settings
-   - **API Token**: Paste "Your API Key" from Freshchat API Settings
-3. Click **Save**
+Back in the IrisAgent **Freshchat Configuration** panel, enter:
+
+| IrisAgent field | Value from Freshchat |
+| --- | --- |
+| **Freshchat Domain** | Your chat URL, e.g. `yourcompany.freshchat.com/v2` |
+| **Authentication Key** | The webhook authentication key from Step 2 |
+| **API Token** | Your API key |
+
+Then click **Save**.
+
+  <img
+    style={{ borderRadius:"0.5rem" }}
+    src="/images/deploying-irisagent/freshchat/irisagent-config-fields.png"
+    alt="IrisAgent Configuration Fields"
+  />
+
+## Optional settings
+
+- **Hand-off Trigger:** stop the AI when the conversation is assigned to an agent, or when an agent sends a message.
+- **Chatbot User ID:** the Freshchat user that represents the bot. IrisAgent keeps responding when this user sends a message.
+- **Escalation Routing:** send conversations to an **Agent ID** or **Group ID** when a customer asks for a human.
+- **Conversation Filtering:** limit which conversations IrisAgent answers. Choose **Channel-based (Simple)** and pick a channel, or **Custom Query (Advanced)** and enter a filter expression. With filtering off, IrisAgent handles all conversations.
+
+  <img
+    style={{ borderRadius:"0.5rem" }}
+    src="/images/deploying-irisagent/freshchat/irisagent-config-filter.png"
+    alt="IrisAgent Event Filter Configuration"
+  />

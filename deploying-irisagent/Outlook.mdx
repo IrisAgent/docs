@@ -1,115 +1,90 @@
 ---
 title: "Outlook AI Email Replies"
 sidebarTitle: "Outlook AI replies"
-description: "Create AI reply drafts for agents to review in Outlook, or send AI replies automatically"
+description: "Save AI reply drafts in Outlook for agents to review, or send AI replies automatically"
 ---
 
-Once your Outlook mailbox is connected, IrisAgent can generate a reply to an incoming customer email using your knowledge base and past tickets. You choose whether IrisAgent saves the reply in Outlook for an agent to review and send, or sends it automatically.
+IrisAgent can reply to incoming customer emails in your connected Outlook mailbox using your knowledge base and past tickets. Replies stay on the original thread and come from the connected mailbox. You choose to save them as drafts or send them automatically, for all emails or only those matching your conditions.
 
-In both modes, the reply stays on the existing email thread and uses the connected support mailbox. You can enable AI replies for every email that has an answer, or limit them to emails that match conditions you define.
-
-<Note>
-Outlook uses the same **Case Triggers** engine as your ticketing system, so conditions, actions, and variables work the way they do on tickets. See [Tickets](/deploying-irisagent/Tickets) for the full set.
-</Note>
+Outlook uses the same **Case Triggers** engine as tickets. See [Tickets](/deploying-irisagent/Tickets) for all conditions, actions, and variables.
 
 ## Prerequisites
 
-1. Your Outlook mailbox is connected as a data source. See the [Outlook connection guide](/outlook) for the initial setup.
-2. The OAuth connection includes `Mail.ReadWrite` for draft replies and `Mail.Send` for automatic replies (plus their `.Shared` variants when the connected mailbox is a shared mailbox). New Outlook connections request all of these permissions.
-3. Access to the IrisAgent dashboard as an admin. Enabling deflection is admin-only.
+1. Your mailbox is connected. See the [Outlook connection guide](/outlook).
+2. The connection includes `Mail.ReadWrite` (drafts) and `Mail.Send` (automatic replies), plus their `.Shared` variants for a shared mailbox. New connections request all of these.
+3. You are an IrisAgent admin.
 
 <Note>
-If **Save as Outlook draft** is unavailable, reconnect the existing Outlook integration once to approve `Mail.ReadWrite`. Follow [Reconnect an existing Outlook mailbox to enable drafts](/outlook#reconnect-an-existing-outlook-mailbox-to-enable-drafts).
+If **Save as Outlook draft** is unavailable, [reconnect the mailbox once](/outlook#reconnect-an-existing-outlook-mailbox-to-enable-drafts) to approve `Mail.ReadWrite`.
 </Note>
 
-## How Outlook emails become tickets
+## How emails become tickets
 
-IrisAgent groups your mailbox into conversations:
+- A **new inbound email** becomes a ticket.
+- A **reply in that conversation** becomes a comment on the ticket.
 
-- A **new inbound email** (the start of a conversation) becomes a ticket.
-- A **reply on an existing conversation** becomes a comment on that ticket.
+Triggers run on tickets, so IrisAgent replies to the email that starts a conversation, not to every reply.
 
-Triggers run on tickets, which means IrisAgent responds to the email that opens a conversation, not to every back-and-forth reply within it.
+## Delivery method
 
-## Choose draft or automatic delivery
+- **Save as Outlook draft:** saves the reply in the mailbox's **Drafts** folder. Nothing goes to the customer until an agent sends it.
+- **Send automatically:** sends the reply as soon as the trigger runs, with no agent review.
 
-On the dashboard, go to **Automate → Case Triggers**. The **AI Email Replies** card includes a **Delivery method** menu:
+New setups with draft permission default to **Save as Outlook draft**. Existing triggers keep sending automatically until an admin changes them. Changing the method affects future runs only. It does not send drafts already in Outlook.
 
-- **Save as Outlook draft** creates a reply in the connected mailbox's **Drafts** folder. Nothing is sent to the customer. An agent can open the draft in Outlook, review or edit it, and send it manually.
-- **Send automatically** sends the AI reply to the customer as soon as the trigger runs. No agent review is required.
+<Tip>
+Start with drafts, or with Option 2 on a small slice of email, so agents can check answer quality before you send automatically.
+</Tip>
 
-For a new Outlook setup with draft permission, **Save as Outlook draft** is selected by default. Existing triggers continue to send automatically unless an admin changes their delivery method.
+## Option 1: Reply to all eligible emails
 
-You can change the delivery method while **AI Email Replies** is enabled. The selection applies to future trigger runs and does not send drafts that are already waiting in Outlook.
-
-## Option 1: Create replies for all eligible emails
-
-Use this when you want IrisAgent to create a reply for every email that has an AI answer.
-
-1. On the dashboard, go to **Automate** → **Case Triggers**.
-2. On the **AI Email Replies** card, choose **Save as Outlook draft** or **Send automatically**.
+1. Go to **Automate** → **Case Triggers**.
+2. On the **AI Email Replies** card, pick a **Delivery method**.
 3. Turn on the **AI Email Replies** switch.
 
-This creates a trigger named **System: Case Deflection using AI** that runs on every ticket where the AI produced an answer. There are no other conditions on it. Emails where the AI has no answer are left alone for your agents.
+This creates the trigger **System: Case Deflection using AI**, which runs on every ticket that has an AI answer. Emails without an answer are left for your agents. Use the same switch to turn it off.
 
-You can turn this off at any time with the same switch. To review the trigger and its activity, open **System: Case Deflection using AI**.
+## Option 2: Reply only to matching emails
 
-<Note>
-We recommend starting with draft delivery or Option 2 below. This lets agents validate answer quality on real traffic before you enable automatic replies for the whole mailbox.
-</Note>
+1. Go to **Automate** → **Case Triggers** and click **Create New Trigger**.
+2. Click **Add conditions** and add your conditions (see below).
+3. Under **Actions**, add **AI email reply**.
+4. Choose a **Delivery method**.
+5. In the text box, add `{{irisgpt.case.answer}}`. It is replaced by the AI answer and its source links. You can add your own text around it.
+6. Name the trigger with the pencil icon, then click **Add New Trigger**.
 
-## Option 2: Create replies only for emails matching conditions
+Emails that match and have an AI answer get a reply. Matching emails without an answer are skipped and retried if an answer is generated later.
 
-Use a custom trigger when AI replies should run only for a specific part of your email volume.
-
-1. On the dashboard, go to **Automate** → **Case Triggers**, and click **Create New Trigger**.
-2. Click **Add conditions** and add the conditions that decide which emails get a reply. See the table below for what works on Outlook.
-3. From the **Actions** panel, add **AI email reply**.
-4. In **Delivery method**, choose **Save as Outlook draft** or **Send automatically**.
-5. In the text box, add `{{irisgpt.case.answer}}`. This is replaced with the AI answer and its source links when the action runs. You can write your own text before and after it, such as a greeting or a line about how to reach a human.
-6. Name the trigger using the pencil icon at the top.
-7. Click **Add New Trigger** to save.
-
-Emails that match the conditions **and** have an AI answer get a draft or an automatic reply, according to the selected delivery method. Emails that match but have no AI answer are skipped, and IrisAgent will retry them if an answer is generated later.
-
-### Conditions on Outlook
-
-| Condition | What it maps to in Outlook |
+| Condition | Outlook meaning |
 | --- | --- |
-| Custom Field | A custom field available on the IrisAgent case |
-| Subject | The email subject line |
-| Ticket Content | The email body, with formatting stripped |
+| Custom Field | A custom field on the IrisAgent case |
+| Subject | The email subject |
+| Ticket Content | The email body, without formatting |
 
-## What happens to the reply
+## What the reply looks like
 
-- In draft mode, the reply is saved in the connected mailbox's **Drafts** folder. It is not visible to the customer until an agent sends it from Outlook.
-- In automatic mode, the reply is sent immediately without agent review.
-- The draft or sent reply is attached to the **existing email thread**, so it keeps the subject line and threading intact.
-- It uses the **connected mailbox**, not an IrisAgent address.
-- The body is **HTML formatted**: the AI answer, followed by a bulleted list of the source links it drew from.
-- Any text you added around `{{irisgpt.case.answer}}` in the trigger is rendered alongside it.
+- HTML: the AI answer, then a bulleted list of its source links, plus any text you added around `{{irisgpt.case.answer}}`.
+- On the existing thread, with the subject and threading intact.
+- From the connected mailbox, not an IrisAgent address.
 
 ## Guardrails
 
-- **An AI answer is required.** If there is no answer, IrisAgent does not create a draft or send an email.
-- **One reply per email, per action.** Once a trigger action creates a draft or sends a reply on a conversation, it will not run again on that same conversation.
-- **Recent email only.** IrisAgent evaluates triggers against a recent window of activity rather than reprocessing your entire mailbox history.
+- **No answer, no reply.** IrisAgent never drafts or sends without an AI answer.
+- **One reply per conversation, per action.** A trigger action does not run twice on the same conversation.
+- **Recent email only.** Triggers run on recent activity, not your whole mailbox history.
 
-## Other variables you can use
-
-Besides `{{irisgpt.case.answer}}`, the following are available in the reply content:
+## Other variables
 
 | Variable | Value |
 | --- | --- |
-| `{{agent.name}}` | The name of the agent assigned to the ticket |
-| `{{ticket.sentiment}}` | The sentiment IrisAgent detected on the ticket |
+| `{{agent.name}}` | Name of the assigned agent |
+| `{{ticket.sentiment}}` | Detected ticket sentiment |
 
-If you have [Custom APIs](/data-sources/Custom-API) configured, you can also call them inline using `{{action_name()}}` to pull live data into the reply.
+You can also call [Custom APIs](/data-sources/Custom-API) inline with `{{action_name()}}` to add live data.
 
-## Related pages
+## Related
 
-- [Outlook connection guide](/outlook) covers connecting the mailbox in the first place.
-- [Tickets](/deploying-irisagent/Tickets) covers the full set of trigger conditions and actions.
-- [Auto-respond with AI answers](/deploying-irisagent/Tickets#auto-respond-with-ai-answers) walks through auto-response setup in more detail.
+- [Outlook connection guide](/outlook)
+- [Tickets](/deploying-irisagent/Tickets) and [Auto-respond with AI answers](/deploying-irisagent/Tickets#auto-respond-with-ai-answers)
 
-Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or require assistance setting up Outlook AI email replies.
+Need help? [Email us](mailto:contact@irisagent.com).

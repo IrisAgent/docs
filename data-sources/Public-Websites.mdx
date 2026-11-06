@@ -1,50 +1,37 @@
 ---
 title: "Public Websites"
-description: "Crawl your public documentation, tutorials, and blogs so IrisAgent can answer from content already published on your site"
+description: "Crawl your public docs, tutorials and blogs so IrisAgent can answer from content already on your site"
 ---
 
-## Overview
+IrisAgent can crawl your public website (documentation, tutorials, release notes, blog posts) and use it in answers, without copying it into a knowledge base first.
 
-A large share of the answers your customers need is already published: product
-documentation, getting-started tutorials, release notes, and blog posts. IrisAgent
-provides a specialized web scraper designed for extracting data from public
-websites, so that content can be ingested and used in answers without being
-duplicated into a knowledge base first.
-
-This is a good fit for public-facing content. For knowledge that sits behind a
-login or inside an internal wiki, use [Confluence](/data-sources/Confluence) or
-[Upload Content](/data-sources/Upload-Content) instead.
+For content behind a login or in an internal wiki, use [Confluence](/data-sources/Confluence) or [Upload Content](/data-sources/Upload-Content) instead.
 
 ## Add a website
 
-1. Go to **Data Sources** → **Website** on the [IrisAgent dashboard](https://web.irisagent.com/).
+1. Go to **Data Sources → Website** on the [IrisAgent dashboard](https://web.irisagent.com/).
 2. Open the **Website Content** card.
-3. Add the top-level URL to your website. This page and its subpages will be crawled and indexed.
+3. Add the top-level URL. That page and its subpages are crawled and indexed.
 
-Because the crawler follows subpages from the URL you provide, point it at the
-most specific root that covers the content you want. Giving it a documentation
-root rather than your marketing homepage keeps the index focused on pages that
-actually answer support questions.
+<Tip>
+Use the most specific root that covers what you need, such as your docs root rather than your marketing homepage. This keeps the index focused on pages that answer support questions.
+</Tip>
 
-## Keeping crawled content current
+## Keep content current
 
-The crawler re-visits your site so that newly published and updated pages are
-picked up over time. If you publish a page and need it reflected sooner, you can
-re-run the crawl from the same **Website Content** card.
+The crawler revisits your site to pick up new and updated pages. To pick up a change sooner, re-run the crawl from the **Website Content** card.
 
 ## Related data sources
 
-- [Ticketing System KB](/data-sources/Ticketing-Provider-KB) for the knowledge base in your ticketing system
-- [Confluence](/data-sources/Confluence) for internal Atlassian knowledge
-- [Upload Content](/data-sources/Upload-Content) for CSV and PDF files
+- [Ticketing System KB](/data-sources/Ticketing-Provider-KB): your ticketing system's knowledge base
+- [Confluence](/data-sources/Confluence): internal Atlassian knowledge
+- [Upload Content](/data-sources/Upload-Content): CSV and PDF files
 
 ## Data governance and security
 
-Data between customer environments and IrisAgent's systems is always encrypted at
-rest and during transmission, authenticated at each endpoint, monitored for
-integrity, and protected by enterprise-grade security protocols.
+Data between your environment and IrisAgent is encrypted at rest and in transit, authenticated at each endpoint, monitored for integrity and protected by enterprise-grade security protocols.
 
-- IrisAgent only crawls pages that are publicly reachable on the URL you provide.
-- IrisAgent removes PII data and does not store any PII data on our servers.
-- IrisAgent does not share any data with third parties.
+- IrisAgent only crawls pages publicly reachable from the URL you provide.
+- IrisAgent removes PII and does not store PII on its servers.
+- IrisAgent does not share data with third parties.
 - IrisAgent is SOC 2 Type II compliant and GDPR compliant.

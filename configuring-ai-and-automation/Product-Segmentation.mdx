@@ -1,101 +1,79 @@
 ---
 title: "Segment Tickets and Chats by Product"
 sidebarTitle: "Segment by product"
-description: "Map tickets, knowledge base articles, and chatbots to specific products so each one only retrieves the knowledge that belongs to its product."
+description: "Assign tickets, knowledge, and chatbots to products so each one only uses that product's knowledge."
 ---
 
-If your account supports more than one product, you usually want IrisAgent to answer a ticket using only the knowledge that belongs to that product. A billing question should pull from billing articles, a shipping question from shipping articles, and so on. Product segmentation lets you do exactly that.
+If you support more than one product, product segmentation makes IrisAgent answer each ticket or chat using only that product's knowledge. If you have a single product, skip this page.
 
-It works in two halves that need to agree with each other:
+A ticket (or chatbot) and an article are connected when they are assigned the **same product**. You set this up in **Settings** > **Products**:
 
-1. **Article Product Classifier** tags each knowledge base article with a product.
-2. **Case Product Classifier** tags each incoming ticket with a product.
+| Card | What it does |
+| --- | --- |
+| **Product Catalog** | Creates the products you assign everywhere else |
+| **Article Product Classifier** | Assigns articles to products by URL pattern |
+| **Case Product Classifier** | Assigns incoming tickets to products |
 
-When a ticket comes in, IrisAgent matches the ticket's product to articles carrying the same product, so only the relevant knowledge is considered. If you only have a single product, you can skip this entirely.
+All of this is optional. With no configuration, every ticket can use your full knowledge base.
 
-<Info>Both classifiers live in the portal under **Settings** in the **Ingestion** section. They are optional. With no configuration, every ticket can retrieve from your full knowledge base.</Info>
+## 1. Create your products
 
-## How matching works
+1. Go to **Settings** and click **Manage products** on the **Product Catalog** card.
+2. Under **Create product**, enter a **Product name** and **Product ID** (a lowercase slug, for example `billing`). The ID is locked after creation.
+3. Click **Create product**. Repeat for each product.
 
-A ticket and an article are connected when they resolve to the **same product value**. The product value is just a label you choose (for example, `billing` or `shipping`). Use the same label in both classifiers so the two sides line up.
+## 2. Assign knowledge to products
 
-- The **Article Product Classifier** decides an article's product from its URL.
-- The **Case Product Classifier** decides a ticket's product from its Zendesk brand ID, tags, keywords, or text.
+- **Whole knowledge base**: in **Data Sources**, set the **Default product** for the knowledge source. It is used when no URL rule matches.
+- **Mixed help center**: use the **Article Product Classifier** to override the default for specific article URLs:
+  1. In **Settings**, click **Configure** on the **Article Product Classifier** card.
+  2. Click **Add Group**, then pick one or more **Products**.
+  3. Add regex patterns matched against article URLs, for example `^https://help\.example\.com/billing/.*`.
+  4. Repeat for each product, then click **Save**.
 
-Get the labels consistent across both and the right articles surface for the right tickets automatically.
+## 3. Assign tickets to products
 
-## Configure the Article Product Classifier
+1. In **Settings**, click **Configure** on the **Case Product Classifier** card.
+2. Click **Add Group** and pick the **Product**.
+3. Add any of these signals:
+   - **Brand ID** (Zendesk only): exact match on the ticket's numeric Zendesk brand ID.
+   - **Tags**: exact tags applied when the ticket was created.
+   - **Keywords**: whole-word, case-insensitive match in subject or description (`bill` matches `Bill` but not `billing`).
+   - **Regex patterns**: matched against subject and description.
+4. Repeat for each product, then click **Save**.
 
-This maps knowledge base articles to products using patterns matched against each article's URL.
+Each Zendesk Brand ID must contain only digits and can belong to only one group. Leading and trailing spaces are trimmed on save.
 
-1. Go to **Settings** in the portal and open the **Ingestion** section.
-2. Click **Configure** on the **Article Product Classifier** card.
-3. Click **Add Group** and enter a **Product Category** (the product label, for example `billing`).
-4. Add one or more **URL patterns** (regular expressions) that match the article URLs for that product. For example, `^https://help\.example\.com/billing/.*`.
-5. Repeat for each product, then click **Save**.
+<Warning>
+  New mappings apply only to tickets ingested after you save. Existing tickets are not reclassified.
+</Warning>
 
-When an article URL matches a group's pattern, that article is tagged with the group's product.
+**Match order** when a ticket matches more than one product:
 
-## Configure the Case Product Classifier
+1. Zendesk Brand ID (Zendesk only)
+2. Regex
+3. Keyword
+4. Tag
 
-This maps incoming tickets to products. You can use any combination of the available signals:
+Within regex, keyword, and tag, the first matching group (in the order you arranged them) wins. Once a group is configured, the Case Product Classifier fully controls how that account's tickets get products.
 
-1. **Zendesk Brand ID** exactly matches the ticket's source brand. This option is available only when Zendesk is the connected ticket source.
-2. **Tags** that were applied to the ticket at creation time (for example, a `billing` tag).
-3. **Keywords** found in the ticket subject or description. Keyword matching is whole word and case insensitive, so `bill` matches `Bill` but not `billing`.
-4. **Regex patterns** matched against the ticket subject and description.
+## 4. Scope a chatbot to a product
 
-To set it up:
-
-1. Go to **Settings** in the portal and open the **Ingestion** section.
-2. Click **Configure** on the **Case Product Classifier** card.
-3. Click **Add Group** and enter a **Product ID** (use the same label you used in the Article Product Classifier, for example `billing`).
-4. Add any combination of the signals that identify that product. For Zendesk, you can enter the numeric **Zendesk Brand ID** shown in Zendesk for that brand. Otherwise, add **Tags**, **Keywords**, or **Regex Patterns**.
-5. Repeat for each product, then click **Save**.
-
-Each Zendesk Brand ID must contain only digits and can be assigned to only one product group. IrisAgent trims spaces from the beginning and end when you save the configuration.
-
-<Warning>New mappings apply only to tickets ingested after you save the configuration. Existing tickets are not reclassified.</Warning>
-
-### Match precedence
-
-When a ticket could match more than one product, IrisAgent decides by signal type in this order:
-
-1. For Zendesk tickets, an exact **Zendesk Brand ID** match wins first.
-2. If no brand ID matches, a **regex** match wins.
-3. If no regex matches, a **keyword** match wins.
-4. If none of the other signals match, a **tag** match wins.
-
-Within regex, keyword, and tag signals, groups are evaluated in the order you arranged them, so the first matching group wins the tie. Duplicate Zendesk Brand IDs are rejected when you save the configuration.
-
-<Note>The Case Product Classifier is config first. Once a group is configured, it fully owns how that account's tickets are assigned to products.</Note>
-
-## Segment the chatbot by product
-
-You can scope a chatbot to a single product so it only answers from that product's knowledge. This is set on the chatbot configuration rather than on a ticket.
-
-1. Go to **AI Products** → **Chatbot**, click **Configure and deploy**, and select the chatbot configuration you want to scope.
-2. In the **Product ID** section, enter the product label you want this chatbot to use (for example, `billing`).
+1. Go to **AI Products** > **Chatbot**, click **Configure and deploy**, and open the chatbot configuration.
+2. On the **Advanced** tab, under **Product segmentation**, pick the **Product**.
 3. Click **Update Configuration**.
 
-The chatbot now retrieves only from articles that the **Article Product Classifier** tagged with that same product label.
+The chatbot now uses only articles assigned to that product.
 
-<Warning>Only set a **Product ID** on the chatbot if you have a matching product configured in the **Article Product Classifier**. The label must match exactly (a typo like `billing` versus `Billing` breaks the link). If the chatbot's Product ID does not match any classified articles, every chat returns no answer because no knowledge is in scope. Leave the field empty to let the chatbot retrieve from your full knowledge base.</Warning>
+<Warning>
+  Only set a chatbot product if articles are assigned to that same product. If none are, every chat returns no answer. Choose **All products** to use your full knowledge base.
+</Warning>
 
 ## Example
 
-A two-product account selling billing and shipping might configure:
+Products `billing` and `shipping`:
 
-**Article Product Classifier**
+- **Knowledge**: URL rule `^https://help\.example\.com/billing/.*` for `billing`, and `^https://help\.example\.com/shipping/.*` for `shipping`.
+- **Tickets**: `billing` has Brand ID `123456789`, keyword `invoice`, and regex `(?i)\b(invoice|payment)\b`. `shipping` has tag `shipping` and keyword `ship`.
 
-- Product Category `billing`, URL pattern `^https://help\.example\.com/billing/.*`
-- Product Category `shipping`, URL pattern `^https://help\.example\.com/shipping/.*`
-
-**Case Product Classifier**
-
-- Product ID `billing`: Zendesk Brand ID `123456789`, keyword `invoice`, regex `(?i)\b(invoice|payment)\b`
-- Product ID `shipping`: tag `shipping`, keyword `ship`
-
-A Zendesk ticket from brand `123456789` matches `billing` before IrisAgent evaluates its text or tags. A ticket from another brand reading "my payment failed" matches the `billing` regex. In both cases, IrisAgent answers using only the billing articles.
-
-<Tip>Keep the product labels identical across the two classifiers. A typo (for example `billing` versus `Billing`) breaks the link and the ticket will not find its articles.</Tip>
+A Zendesk ticket from brand `123456789` matches `billing` before IrisAgent checks its text or tags. A ticket from another brand saying "my payment failed" matches the `billing` regex. Both are answered from billing articles only.

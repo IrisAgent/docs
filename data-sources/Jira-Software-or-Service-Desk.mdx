@@ -1,33 +1,28 @@
 ---
 title: "Jira Service Desk/Jira Software"
 sidebarTitle: "Jira Service Management"
-description: "IrisAgent Installation Guide for Jira issues. Use this guide to use Jira as your primary ticketing or issue provider. If you are looking to connect with Jira Software for bug tracking as an addon to your ticketing provider, see this page."
+description: "Connect Jira as your primary ticketing provider. To add Jira Software for bug tracking alongside another ticketing provider, see the Jira Software page."
 ---
 
 ## Connect Jira to IrisAgent
 
-- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
+1. Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
 
-  <br />
+   <img
+     style={{ borderRadius:"0.5rem" }}
+     src="/images/web-login.png"
+     alt="IrisAgent web login"
+   />
 
-  <img
-    style={{ borderRadius:"0.5rem" }}
-    src="/images/web-login.png"
-    alt="IrisAgent web login"
-  />
+2. Choose Jira as your ticket source:
+   - **During onboarding:** on **Connect your first data source**, choose **Ticketing system**, then **Jira Service Management** (this also works for Jira Software).
+   - **Later, or alongside another source:** go to **Data Sources → Ticketing System** and pick **Jira Service Management**.
+3. Create an Atlassian API token with `write:jira-work` permission ([Atlassian's guide](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)).
+4. Enter the token, the email that created it, and your subdomain (the `yourcompany` in `yourcompany.atlassian.net`). If you use a scoped API token, also enter your **Cloud ID**. Click **Connect**.
 
-<br />
-
-- Choose Jira as your ticket source:
-  - **During onboarding:** on the **Connect your first data source** step, choose **Ticketing system**, then pick **Jira Service Management** (the same option also works for Jira Software).
-  - **Later, or to add Jira alongside an existing source:** go to **Data Sources → Ticketing System** in the left navigation and pick **Jira Service Management**.
-- Obtain a token from your Atlassian account with "write:jira-work" permissions as per the steps [on the official Atlassian docs](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/). Enter the token, email, and subdomain and click on Connect.
-
-<br />
-
-- To connect a second Jira account for engineering issues while keeping this Jira Service Management account as the primary ticketing source, follow [Connect a second Jira account](/data-sources/Jira-Software#connect-a-second-jira-account). To connect other platforms, such as Salesforce or Confluence, go to **Data Sources** in the left navigation and open the relevant section.
+To add a second Jira account for engineering issues while keeping this one as your ticketing source, see [Connect a second Jira account](/data-sources/Jira-Software#connect-a-second-jira-account). For other platforms, go to **Data Sources** and open the relevant section.
 
 ## Install the IrisAgent app into your Jira account
 
-1. Navigate to [IrisAgent's listing](https://marketplace.atlassian.com/apps/1229507/irisagent?tab=overview&hosting=cloud) on the Atlassian Marketplace.
-2. Click on Install and follow the next steps.
+1. Open [IrisAgent's listing](https://marketplace.atlassian.com/apps/1229507/irisagent?tab=overview&hosting=cloud) on the Atlassian Marketplace.
+2. Click **Install** and follow the prompts.

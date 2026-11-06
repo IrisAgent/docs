@@ -1,103 +1,78 @@
 ---
 title: "AI Search in Confluence"
 sidebarTitle: "AI Search in Confluence"
-description: "Embed the existing IrisAgent AI Search widget in Confluence using the same configuration as AI Search on your website."
+description: "Embed the IrisAgent AI Search widget in a Confluence page using your existing AI Search configuration."
 ---
 
-Add the existing IrisAgent AI Search widget to a Confluence page. Employees get the same search bar, AI answers, source links, follow-up questions, and feedback controls used by AI Search in the IrisAgent portal.
+Add the IrisAgent AI Search widget to a Confluence page. Employees get the same search bar, AI answers, source links, follow-ups, and feedback as AI Search on your website. It uses the same shared widget key and knowledge configuration. There is no employee sign-in.
 
-There is no additional employee sign-in. The embed uses the same shared widget key and knowledge configuration as your existing AI Search deployment.
+## Choose a method
 
-## Choose an embedding method
+Ask your Confluence administrator which macros your site has.
 
-Check with your Confluence administrator which macros are available on your site.
+| Available macro | What to do |
+| --- | --- |
+| HTML macro that allows JavaScript and external scripts | [Option 1](#option-1-use-the-existing-deployment-snippet): paste the existing widget snippet. No IrisAgent changes. |
+| iFrame macro that accepts a URL | [Option 2](#option-2-embed-a-hosted-page-with-the-iframe-macro): embed a hosted page that runs the snippet. |
 
-| Available macro | Setup | IrisAgent changes needed |
-| --- | --- | --- |
-| HTML macro that permits JavaScript and external scripts | Paste the existing Website Search Widget deployment snippet into the macro. | None. Use the existing widget. |
-| iFrame macro that accepts a webpage URL | Embed a hosted HTML page that runs the same snippet. | A hosted page is needed. IrisAgent's optional Confluence host requires deployment and framing configuration. |
-
-The standard iFrame macro accepts a webpage URL, not a JavaScript snippet. An HTML macro that executes scripts may require an installed app or administrator configuration. Do not paste the snippet into a normal Confluence code block; that displays the code instead of running it.
+Do not paste the snippet into a normal Confluence code block. That shows the code instead of running it.
 
 ## Option 1: Use the existing deployment snippet
 
-Use this option when your Confluence site has an HTML macro that permits JavaScript and external scripts. No new IrisAgent frontend or backend release is needed.
+1. Open [Website Search Widget settings](https://web.irisagent.com/manage-chatbot/search).
+2. Select **Basic usage**, **Public product mode**, or **Specific product ID** to match your AI Search deployment.
+3. Copy the full snippet (container, external script, and initialization script).
+4. Edit the Confluence page, insert your HTML macro, and paste the snippet.
+5. Have your Confluence admin confirm the macro allows JavaScript and the external widget script.
+6. Publish, then test a question, a source link, a follow-up, and feedback.
 
-1. Open [Website Search Widget settings](https://web.irisagent.com/manage-chatbot/search) in IrisAgent.
-2. Select **Basic usage**, **Public product mode**, or **Specific product ID**, as appropriate for your existing AI Search deployment.
-3. Copy the complete generated snippet, including the container, external script, and initialization script.
-4. Edit the Confluence page and insert your site's HTML macro. Paste the complete snippet into its HTML editor.
-5. Have your Confluence administrator confirm that the macro permits JavaScript execution and loading the external widget script. The setting names depend on the macro provider.
-6. Publish the page and verify a question, a source link, a follow-up, and feedback.
-
-For example, the [HTML for Confluence Cloud macro](https://appfire.atlassian.net/wiki/spaces/HTML/pages/70617024/HTML%2Bmacro%2B-%2BCloud) supports JavaScript when enabled. Availability and configuration depend on the installed app. For Data Center, consult Atlassian's [JavaScript configuration guidance](https://support.atlassian.com/confluence/kb/how-to-use-javascript-in-confluence/) and your administrator.
-
-This method loads the widget directly inside the HTML macro. It does not use IrisAgent's optional `/agent-assist.html` host or require that host's frame-origin configuration.
+For example, the [HTML for Confluence Cloud macro](https://appfire.atlassian.net/wiki/spaces/HTML/pages/70617024/HTML%2Bmacro%2B-%2BCloud) supports JavaScript when enabled. For Data Center, see Atlassian's [JavaScript guidance](https://support.atlassian.com/confluence/kb/how-to-use-javascript-in-confluence/).
 
 ## Option 2: Embed a hosted page with the iFrame macro
 
-Use this option when you have an iFrame macro but cannot run the deployment snippet in an HTML macro. Host a small HTML page containing the same complete snippet on an approved site that permits framing by your Confluence instance, then use that page's URL in the macro.
+Host a small HTML page with the same full snippet on a site that allows framing by your Confluence instance, then use its URL in the iFrame macro.
 
-IrisAgent also provides an optional Confluence host. Confirm with IrisAgent that it has been deployed before using the URL below. It requires the exact trusted Confluence HTTPS origins to be configured; external framing is disabled by default. This host is an alternative to direct snippet embedding, not a prerequisite for the existing widget.
+Or use IrisAgent's optional hosted page. External framing is off by default, so IrisAgent must deploy it and allow your exact Confluence HTTPS origin first.
 
-1. Ask IrisAgent to confirm deployment of the host and allow your exact Confluence HTTPS origin.
-2. Copy the `apiKey` value from your Website Search Widget deployment snippet.
-3. Edit the target Confluence page and insert the **iFrame** macro.
-4. Set its URL to the following, replacing `YOUR_WIDGET_KEY` with that value:
+1. Ask IrisAgent to confirm the host is deployed and to allow your Confluence HTTPS origin.
+2. Copy the `apiKey` value from your Website Search Widget snippet.
+3. Edit the Confluence page and insert the **iFrame** macro.
+4. Set the URL, replacing `YOUR_WIDGET_KEY`:
 
    ```text
    https://web.irisagent.com/agent-assist.html#apiKey=YOUR_WIDGET_KEY
    ```
 
-5. Start with a width of `800` and height of `700` pixels, or use the macro's full-width layout.
-6. Publish the page and verify a question, a source link, a follow-up, and feedback.
+5. Start with width `800` and height `700` pixels, or use full width.
+6. Publish, then test a question, a source link, a follow-up, and feedback.
 
-Keep the `#apiKey=...` fragment in the URL. URL-encode parameter values if they contain special characters. The fragment keeps the key out of the initial page request and referrer; it does not make the shared key a secret.
-
-See Atlassian's [iFrame macro instructions](https://support.atlassian.com/confluence-cloud/docs/insert-the-iframe-macro/) for the macro's settings.
+Keep the `#apiKey=...` fragment and URL-encode values with special characters. The fragment keeps the key out of the page request and referrer, but the key is still not a secret. See Atlassian's [iFrame macro instructions](https://support.atlassian.com/confluence-cloud/docs/insert-the-iframe-macro/).
 
 ### Product settings for the IrisAgent hosted page
 
-For public-product mode, append `&usePublicProduct=true`:
+- Public product mode: append `&usePublicProduct=true`.
+- Specific product: append `&productId=YOUR_PRODUCT_ID`. This takes precedence over `usePublicProduct`.
 
 ```text
 https://web.irisagent.com/agent-assist.html#apiKey=YOUR_WIDGET_KEY&usePublicProduct=true
 ```
 
-For a specific product, append `&productId=YOUR_PRODUCT_ID` instead. An explicit product ID takes precedence over the public-product setting. With direct snippet embedding, select the desired mode in Website Search Widget settings and copy its generated snippet instead.
-
-## Access and knowledge configuration
-
-Both methods use the same shared widget key and knowledge configuration as your existing AI Search deployment. Confirm that this configuration is appropriate for the people who will use it.
+## Access and limits
 
 <Note>
-  The shared widget key can be copied from the embed configuration. Confluence page restrictions do not add individual authentication to the widget's API. Neither method adds an employee sign-in or per-user attribution.
+  Anyone can copy the shared widget key from the embed. Confluence page restrictions do not add authentication to the widget's API. Neither method adds employee sign-in or per-user attribution.
 </Note>
 
-## How it works
-
-The Confluence page loads the existing AI Search widget. Its existing APIs generate answers, retrieve matching resources, handle follow-ups, and collect feedback. There is no new employee-search backend, per-user attribution, conversation-source label, or billing policy.
-
-The widget does not automatically read its host Confluence page or receive the context of an open Zendesk ticket. Include relevant details in your question. Open source links to verify the answer; the source application's normal access requirements still apply.
+- Both methods use your existing AI Search widget, APIs, knowledge configuration, and billing. Make sure that configuration suits the people who will use it.
+- The widget does not read the Confluence page it sits on or an open Zendesk ticket. Include details in your question.
+- Source links keep their normal access requirements.
 
 ## Troubleshooting
 
-### The snippet appears as text or the HTML macro stays blank
+**The snippet shows as text, or the HTML macro is blank.** Make sure you used an HTML macro that runs JavaScript, not a code block. Ask your admin to allow scripts, the external widget script, and API requests. Otherwise, use Option 2.
 
-Confirm that you pasted the complete snippet into an HTML macro that executes JavaScript, rather than a normal code block. Ask your administrator to check the macro's script settings and whether it permits the external widget script and API requests. If script execution is unavailable, use the hosted-page option.
+**The hosted page will not display in the iFrame.** Check that the URL has `/agent-assist.html` before the fragment and that IrisAgent has allowed your exact Confluence HTTPS origin. Framing is checked for every ancestor, so if your macro adds a vendor-hosted frame, IrisAgent must allow that origin too. Send IrisAgent your Confluence site URL and macro name. If framing is not possible, add a normal link to the same URL.
 
-### The hosted page refuses to display in the iFrame macro
+**The hosted page asks for an apiKey.** Make sure the full `#apiKey=...` fragment was saved. Use the key from the AI Search snippet, not an employee login token.
 
-For IrisAgent's optional host, confirm that the URL ends in `/agent-assist.html` before the fragment, that the embed page is deployed, and that IrisAgent has allowed your exact Confluence HTTPS origin.
-
-The framing policy checks every ancestor. If your macro adds a vendor-hosted frame, IrisAgent must verify and allow that exact origin as well. Send your IrisAgent contact the Confluence site URL and macro name. Cloud, custom domains, and Data Center all require this configuration.
-
-If framing is unavailable, add a normal link to the same full URL so people can open the widget in a new tab.
-
-### The IrisAgent hosted page asks for an apiKey
-
-Check that the full `#apiKey=...` fragment was saved in the macro URL. Use the key from the AI Search deployment snippet, not an employee login token.
-
-### The widget loads but answers are missing
-
-Verify that the shared key and optional product settings match your working AI Search deployment. Check that the relevant knowledge has been ingested. This page uses the same widget and APIs as the existing search experience.
+**The widget loads but gives no answers.** Check that the key and product settings match your working AI Search deployment and that the relevant knowledge has been ingested.

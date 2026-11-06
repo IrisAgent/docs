@@ -1,50 +1,32 @@
 ---
 title: "Voice AI on GoTo Connect"
 sidebarTitle: "GoTo Connect"
-description: "This guide walks you through deploying IrisAgent Voice AI with GoTo Connect, enabling intelligent call automation for your customer service operations."
+description: "Route GoTo Connect calls to IrisAgent Voice AI with a dial plan."
 ---
 
 ## Prerequisites
 
-Before you begin, ensure you have:
-
 - A GoTo Connect account with admin or super admin access
 - Access to the GoTo Connect PBX Administration portal
-- A phone number in GoTo Connect that will receive customer calls
+- A GoTo Connect phone number that receives customer calls
 
-## Step 1: Sign Up for IrisAgent
+## Step 1: Sign up for IrisAgent
 
-You can sign up for IrisAgent in one of two ways: by connecting your ticketing platform or using public website as knowledge source.
+Sign up by connecting your ticketing platform or by using your public website as the knowledge source.
 
-## Step 2: Create a Dial Plan in GoTo Connect
+## Step 2: Create a dial plan in GoTo Connect
 
-Next, configure GoTo Connect to route incoming calls to your IrisAgent Voice AI.
-
-### Access the Dial Plan Editor
-
-1. Sign in to the GoTo Connect Admin Portal
-2. Navigate to **Phone System** → **Dial Plans**
-3. Click **\+ Add Dial Plan** to create a new dial plan
-
-### Configure the Dial Plan
-
-1. Give your dial plan a descriptive name (e.g., "IrisAgent Voice AI")
-2. In the dial plan editor, add a node to route calls to an external number
-3. Enter the **external phone number** provided by the IrisAgent team
+1. Sign in to the GoTo Connect Admin Portal.
+2. Go to **Phone System → Dial Plans** and click **\+ Add Dial Plan**.
+3. Name the dial plan (for example, "IrisAgent Voice AI").
+4. Add a node that routes calls to an external number, and enter the **external phone number** from the IrisAgent team.
 
    ![Image](/images/image-3.png)
-4. Configure any additional routing options as needed:
-   - Set business hours if you want AI to handle calls only during specific times
-   - Add fallback options for when the external number is unavailable
-5. Click **Save** to save your dial plan
+5. Optionally, set business hours (to use AI only at certain times) and fallback options (if the external number is unavailable).
+6. Click **Save**.
 
-## Step 3: Test Your Integration
+## Step 3: Test
 
-After completing the setup, verify that calls are routing correctly to IrisAgent Voice AI.
-
-### Make a Test Call
-
-1. Call the phone number you configured from an external phone (not a GoTo Connect line)
-2. You should hear the IrisAgent Voice AI greeting
-3. Test a few common customer queries to ensure responses are working as expected
-
+1. Call your number from an outside phone (not a GoTo Connect line).
+2. You should hear the IrisAgent Voice AI greeting.
+3. Try a few common customer questions to check the responses.

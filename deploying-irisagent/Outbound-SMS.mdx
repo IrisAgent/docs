@@ -1,172 +1,139 @@
 ---
 title: "Outbound SMS"
 sidebarTitle: "Outbound SMS"
-description: "Connect a Twilio number or set up an IrisAgent-managed number, then create outbound SMS campaigns from a CSV contact list"
+description: "Connect a Twilio number or get an IrisAgent-managed number, then send SMS campaigns to a CSV of opted-in contacts"
 ---
 
-IrisAgent Outbound lets you send SMS campaigns to customers who have explicitly opted in to receive text messages from your business. You can connect an existing Twilio number or request a dedicated IrisAgent-managed US number. Each campaign keeps its message, audience, and sending results together.
-
-<Note>
-For a customer-owned Twilio number, IrisAgent verifies the credentials, SMS capability, Messaging Service, and sender-pool membership. You are responsible for the number's carrier registration, campaign approval, consent, and Twilio billing.
-</Note>
+Send SMS campaigns to customers who explicitly opted in to texts from your business. Use your own Twilio number or request a dedicated IrisAgent-managed US number.
 
 ## Before you begin
 
-For either setup method, you need:
+You need:
 
 - IrisAgent administrator access
-- A CSV file containing only contacts who have explicitly opted in
+- A CSV of contacts who explicitly opted in
 
-If you request an IrisAgent-managed number, prepare:
+**For an IrisAgent-managed number**, also prepare:
 
-- A notification email and your company's legal, tax, address, and authorized-contact information
-- A description of the messages you plan to send and representative message samples
-- An explanation of how recipients opt in, with supporting evidence and relevant website links
+- A notification email, plus your company's legal, tax, address and authorized-contact details
+- A description of the messages you will send, with sample messages
+- How recipients opt in, with evidence and website links
 
-Business registration and messaging-use-case registration are separate steps. You do not need to create your own Twilio account for an IrisAgent-managed number.
+You do not need your own Twilio account for a managed number.
 
-If you connect your own Twilio number, you also need:
+**For your own Twilio number**, also have:
 
-- The Twilio Account SID for the account or subaccount that owns the number
-- An SMS-capable US phone number in that same account or subaccount
-- A Twilio Messaging Service whose sender pool contains that number
-- A restricted Twilio API key SID and secret created in that same account or subaccount
-- The applicable approved carrier registration associated with that Messaging Service
+- The Twilio **Account SID** of the account or subaccount that owns the number
+- An SMS-capable US number in that account
+- A Twilio **Messaging Service** whose sender pool contains the number
+- A restricted Twilio API key (SID and secret) created in that same account
+- An approved carrier registration (for example, an A2P 10DLC campaign) linked to the Messaging Service
 
-## Set up your text channel
+<Note>
+For your own Twilio number, IrisAgent checks the credentials, SMS capability, Messaging Service and sender pool. You are responsible for carrier registration, campaign approval, consent and Twilio billing.
+</Note>
 
-In IrisAgent, open **Deploy → Text channels**, then choose one of the following setup methods.
+Both setup options start in **Deploy → Text channels**.
 
 ## Connect your existing Twilio number
 
-Use this option when your company already owns a Twilio number and manages its Twilio registration and billing.
+The number, Messaging Service and API key must all belong to the account or subaccount whose Account SID you enter. Parent-account credentials cannot reach subaccount resources, and the reverse.
 
-### 1. Confirm the Twilio resources use the same account
+### 1. Gather Twilio details
 
-The phone number, Messaging Service, and restricted API key must belong to the Twilio account or subaccount identified by the Account SID you enter in IrisAgent. Credentials created in a parent account cannot automatically access resources owned by a subaccount, and the reverse is also true.
+In the Twilio Console, in the account that owns the number:
 
-In the Twilio Console:
-
-1. Select the account or subaccount that owns the phone number.
-2. Copy its **Account SID**, which begins with `AC`.
-3. Under **Phone Numbers**, confirm the number is SMS capable.
-
-### 2. Configure the Messaging Service
-
-1. Open **Messaging → Messaging Services** in Twilio.
-2. Create a Messaging Service or select the service you want IrisAgent to use.
-3. Copy its **Messaging Service SID**, which begins with `MG`.
-4. Open the service's **Senders** tab.
-5. Add the phone number to the sender pool if it is not already listed.
+1. Copy the **Account SID** (starts with `AC`).
+2. Under **Phone Numbers**, confirm the number is SMS capable.
+3. Open **Messaging → Messaging Services**, create or select a service, and copy its **Messaging Service SID** (starts with `MG`).
+4. On the service's **Senders** tab, add the number if it is not listed.
 
 <Warning>
-An approved Twilio Business Profile or Brand does not by itself register a number for application-to-person messaging. For a US local 10DLC number, open the Messaging Service's **Compliance → 10DLC** tab and ensure the service is associated with an approved A2P campaign that covers the messages you intend to send. If the page says **Start 10DLC A2P campaign registration**, the service is not registered.
+An approved Business Profile or Brand does not register a number for sending. For a US local 10DLC number, open the Messaging Service's **Compliance → 10DLC** tab and make sure it is linked to an approved A2P campaign that covers your messages. If you see **Start 10DLC A2P campaign registration**, the service is not registered. For toll-free and other sender types, complete the verification shown under **Compliance**.
 </Warning>
 
-For other sender types, such as toll-free numbers, complete the applicable Twilio verification shown under the Messaging Service's **Compliance** tab.
+### 2. Create a restricted API key
 
-### 3. Create a restricted API key
-
-1. In the same Twilio account or subaccount, open **Settings → API keys and tokens**.
-2. Create a restricted API key following [Twilio's restricted API key documentation](https://www.twilio.com/docs/iam/api-keys/restricted-api-keys).
-3. Grant the least privileges needed to read the owned phone number and Messaging Service, read its sender pool, and create outbound messages.
-4. Copy the **API Key SID**, which begins with `SK`, and the secret.
+1. In the same account, open **Settings → API keys and tokens**.
+2. Create a restricted key ([Twilio guide](https://www.twilio.com/docs/iam/api-keys/restricted-api-keys)) with only the permissions to read the number, the Messaging Service and its sender pool, and to create outbound messages.
+3. Copy the **API Key SID** (starts with `SK`) and the secret.
 
 <Warning>
-Twilio displays an API key secret only when the key is created. Store it securely. Do not send it through email or chat. IrisAgent stores the submitted secret encrypted, and you can revoke the key in Twilio at any time.
+Twilio shows the secret only once. Store it securely and never send it by email or chat. IrisAgent stores it encrypted, and you can revoke the key in Twilio at any time.
 </Warning>
 
-### 4. Connect the number in IrisAgent
+### 3. Connect in IrisAgent
 
 1. Open **Deploy → Text channels**.
-2. Select **Use your Twilio number**, then click **Connect Twilio**.
-3. Enter the **Account SID**, **Restricted API Key SID**, **Restricted API Key secret**, **US phone number**, and **Messaging Service SID**.
+2. Under **Use your Twilio number**, click **Connect Twilio**.
+3. Enter the **Account SID**, **Restricted API Key SID**, **Restricted API Key secret**, **US phone number** and **Messaging Service SID**.
 4. Click **Connect number**.
 
-IrisAgent confirms that it can access the number and Messaging Service, that the number supports SMS, and that the number belongs to the Messaging Service sender pool. A successful connection does not independently confirm A2P campaign approval or that the approved use case covers the campaign you create in IrisAgent.
+A successful connection confirms access, SMS capability and sender-pool membership. It does not confirm A2P campaign approval or that your approved use case covers your IrisAgent campaigns.
 
 ## Get an IrisAgent-managed number
 
 1. Open **Deploy → Text channels**.
 2. Under **Get an IrisAgent number**, click **Get a new number**.
-3. Enter a preferred three-digit US area code.
-4. Click **Get number**.
+3. Enter a preferred three-digit US area code and click **Get number**.
 
-IrisAgent provisions a dedicated number for your workspace in a customer-specific Twilio subaccount. Number provisioning is separate from carrier approval: receiving a number does not mean it is ready to send.
+IrisAgent provisions a dedicated number in a customer-specific Twilio subaccount. The number cannot send until carrier registration is approved.
 
 <Note>
-The managed registration experience below requires the updated Text channels feature to be enabled for your workspace. If you do not see these controls, contact IrisAgent support. Connecting your own Twilio number remains a separate setup option.
+Managed registration must be enabled for your workspace. If you do not see these controls, contact IrisAgent support.
 </Note>
 
 ### 1. Register your business
 
-After your number is provisioned:
+1. Enter the email that should receive registration updates.
+2. Click **Start / resume registration** and complete the embedded business form with accurate company and tax details.
+3. Submit and wait for brand review.
 
-1. Enter the email address that should receive registration updates.
-2. Click **Start / resume registration**.
-3. Complete the secure embedded business registration form with accurate company and tax information.
-4. Submit the form and wait for brand review.
-
-If you close an unfinished form, use **Start / resume registration** to continue. Submitting the form does not activate sending. Recently submitted information can take a few minutes to appear in the status shown by IrisAgent.
+Use **Start / resume registration** to continue an unfinished form. New submissions can take a few minutes to show up in IrisAgent.
 
 ### 2. Register your messaging use case
 
 After the brand is approved:
 
-1. Click **Register messaging use case** on Text channels.
-2. Complete the separate embedded campaign-registration form, including the purpose of your messages, representative samples, and opt-in information.
-3. Ensure the opt-in description matches the actual experience recipients see.
-4. Submit the form for campaign review.
-
-You do not need to enter the business notification email again to open this step. An approved brand alone is not enough to send messages.
+1. Click **Register messaging use case**.
+2. Complete the form: message purpose, sample messages and opt-in details. The opt-in description must match what recipients actually see.
+3. Submit for campaign review.
 
 <Note>
-A **messaging-use-case registration** is the Twilio A2P registration associated with your Messaging Service. An **Outbound campaign** in IrisAgent is a particular message and CSV audience. Creating an Outbound campaign does not create or approve a carrier registration.
+A **messaging use case** is the Twilio A2P registration for your Messaging Service. An **Outbound campaign** in IrisAgent is one message sent to one CSV audience. Creating an Outbound campaign does not create or approve a carrier registration.
 </Note>
 
 ### 3. Wait for number activation
 
-After campaign approval, IrisAgent waits for confirmation that the selected number is registered to that campaign. The managed sender becomes **Active** only after the business, messaging use case, and number have completed the required approvals.
-
-Text channels displays these stages:
+After campaign approval, the number must be registered to that campaign. The sender becomes **Active** only when the business, use case and number are all approved.
 
 | Stage | What to do |
 | --- | --- |
 | **Business registration** | Start or resume the business form. |
-| **Brand review** | Wait for the business review result. |
+| **Brand review** | Wait for the result. |
 | **Messaging use case** | Open the campaign form after brand approval. |
-| **Campaign review** | Wait for the messaging-use-case review result. |
-| **Number registration** | Wait for carrier activation of the selected number. |
-| **Ready to send** | Create or open an Outbound campaign and review it before sending. |
-
-The status banner summarizes the current state:
+| **Campaign review** | Wait for the result. |
+| **Number registration** | Wait for carrier activation of the number. |
+| **Ready to send** | Create an Outbound campaign. |
 
 | Status | Meaning |
 | --- | --- |
-| **Action required** | Complete the business form or, after brand approval, register the messaging use case. |
-| **Carrier review** | Business, campaign, or number registration is still pending. Check the stage for details. |
-| **Needs attention** | Read the explanation. Use **Correct registration** when available, or contact support. |
-| **Active** | All required approvals for the managed sender have been confirmed. |
+| **Action required** | Complete the business form, or the use-case form after brand approval. |
+| **Carrier review** | A registration is still pending. |
+| **Needs attention** | Read the reason. Use **Correct registration** if shown, or contact support. |
+| **Active** | All approvals confirmed. |
 
-Click **Refresh status** to retrieve the latest registration state. The page also refreshes approximately every 30 seconds while no registration form or setup action is open. You do not need to leave the page open for provider updates to be processed.
+Click **Refresh status** for the latest state. The page also refreshes about every 30 seconds when no form is open. You do not need to keep it open.
 
-### Correct a rejected registration
+**Rejected registration:** IrisAgent shows the reason. Click **Correct registration** to fix and resubmit. You cannot edit a registration under review. For number-registration problems, contact support.
 
-If a brand or campaign is rejected, IrisAgent shows the available rejection reason. Click **Correct registration** to reopen the appropriate form and address the requested changes. Registrations awaiting review cannot be edited. For number-registration problems or a status without a correction button, contact support.
-
-### Get help with registration
-
-When a registration action is available, use **View required details** to review [Twilio's business-information checklist](https://www.twilio.com/docs/messaging/compliance/a2p-10dlc/collect-business-info), or **Email us details** to open a prefilled email to IrisAgent support. You can also [email support directly](mailto:support@irisagent.com).
-
-Share general business and messaging details by email. Do not email API secrets, tax identifiers, or identity documents; ask support for a secure way to provide sensitive information.
+**Need help?** Use **View required details** for [Twilio's business-information checklist](https://www.twilio.com/docs/messaging/compliance/a2p-10dlc/collect-business-info), or **Email us details** to email [IrisAgent support](mailto:support@irisagent.com). Never email API secrets, tax IDs or identity documents. Ask support for a secure way to share them.
 
 <Warning>
-Purchasing a number, approving a Business Profile, approving a Brand, or enabling Twilio Compliance Embeddable access does not by itself authorize outbound SMS. Embeddable access only enables the registration forms; each managed customer's brand, campaign, and number still need the applicable approvals. Mock/demo approvals do not authorize real messages.
+Buying a number, an approved Business Profile or Brand, or Twilio Compliance Embeddable access does not by itself authorize outbound SMS. The brand, campaign and number all need approval. Mock or demo approvals do not authorize real messages.
 </Warning>
 
 ## Prepare a contacts CSV
-
-Create a CSV with a `phone_number` column. You can optionally add `first_name` for personalization.
 
 ```csv
 phone_number,first_name
@@ -174,112 +141,64 @@ phone_number,first_name
 (212) 555-0199,Grace
 ```
 
-CSV requirements:
-
-- `phone_number` is required. IrisAgent also recognizes `phone`, `mobile`, and `mobile_number` as phone-column headings.
-- `first_name` is optional. `first name`, `firstname`, and `name` are also recognized.
-- Numbers must be valid US numbers. Formatting characters are allowed; IrisAgent normalizes accepted numbers to E.164 format.
-- Duplicate phone numbers are included once.
-- Invalid rows are skipped and reported after import.
-- A campaign can contain up to **1,000 unique recipients** in the initial release.
+- **Phone column (required):** `phone_number`, `phone`, `mobile` or `mobile_number`.
+- **First name (optional):** `first_name`, `first name`, `firstname` or `name`.
+- Numbers must be valid US numbers. Formatting is fine. IrisAgent converts them to E.164.
+- Duplicates are included once. Invalid rows are skipped and reported.
+- Up to **1,000 unique recipients** per campaign.
 
 <Warning>
-Upload only recipients who explicitly agreed to receive texts from your business. A prior purchase, support interaction, or possession of a phone number is not automatically SMS consent. Maintain your own consent records and honor opt-out requests.
+Upload only people who explicitly agreed to receive texts from your business. A purchase, support contact or known phone number is not consent. Keep your own consent records and honor opt-outs.
 </Warning>
 
-## Create a campaign
+## Create and send a campaign
 
-1. Open **Outbound** from the IrisAgent sidebar.
-2. Click **Create campaign**.
-3. Enter a campaign name. This is visible only to your team.
-4. Write the message recipients should receive.
-5. Upload the contacts CSV.
-6. Review the number of valid and skipped contacts.
-7. Confirm that every recipient has explicitly opted in.
-8. Click **Save draft**.
+1. Open **Outbound → Text Campaigns** and click **Create campaign**.
+2. Enter a **Campaign name** (visible only to your team) and the **Message**.
+3. Upload the CSV and check the valid and skipped counts.
+4. Confirm that every recipient has explicitly consented, then click **Save draft**.
+5. Open the saved campaign, review it, and click **Send campaign** once your text channel is active.
+6. Track delivery metrics and recipient-level failures on the campaign page.
 
-Click any campaign row to review its message, audience size, consent confirmation, and delivery metrics. Use **Configure** at the top of the Outbound page to return to **Deploy → Text channels**.
+**Configure text** at the top of Text Campaigns takes you to **Deploy → Text channels**.
 
-### Send and monitor a campaign
+For managed numbers, IrisAgent rechecks registration before sending and blocks the send if it cannot confirm it. For your own Twilio number, registration stays your responsibility.
 
-1. Open the saved campaign and review its message, audience, and consent confirmation.
-2. Ensure your text channel is active, then click **Send campaign**.
-3. Monitor the delivery metrics and any recipient-level failures on the campaign details page.
+A sent message is not proof of delivery. Twilio can report a carrier failure later. The campaign page shows reported errors with the recipient, a description and a Twilio error-code link when available.
 
-For managed numbers, IrisAgent rechecks registration before dispatching a campaign. If registration cannot be confirmed, sending is blocked. For customer-owned Twilio numbers, you remain responsible for registration and use-case approval even when the connection is active.
+### Personalize and format messages
 
-API acceptance or a sent message is not proof of delivery. Twilio can report a later carrier failure. The campaign details page displays reported delivery errors with recipient information, a failure description, and a Twilio error-code link when available. A completed send operation does not mean every recipient received the message.
-
-### Personalize a message
-
-Use `{{first_name}}` wherever the recipient's first name should appear:
+Use `{{first_name}}` to insert the recipient's first name:
 
 ```text
 Hi {{first_name}}, your subscription renews tomorrow. Reply STOP to opt out.
 ```
 
-The campaign preview substitutes a sample name so you can check the finished message. Contacts without a first name should be reviewed before sending a personalized campaign.
+The preview fills in a sample name. Check contacts without a first name before sending.
 
-## Message length and opt-out language
-
-The editor shows the message length and an estimated SMS segment count. Messages longer than a single segment may be split by the carrier and can cost more to deliver. Non-GSM characters can also change segment length.
-
-Include clear sender identification and opt-out language appropriate for your program, such as `Reply STOP to opt out`. Carrier and legal requirements vary by use case and jurisdiction; your organization is responsible for ensuring its campaign and consent process comply with applicable requirements.
+The editor shows an estimated SMS segment count. Longer messages and non-GSM characters can use more segments and cost more. Include sender identification and opt-out language such as `Reply STOP to opt out`. You are responsible for meeting carrier and legal requirements.
 
 ## Troubleshooting
 
-### I received a number, but sending is not available
+**I have a number but cannot send.** Provisioning and registration are separate. In **Deploy → Text channels**, click **Refresh status** and check the stage. After brand approval you must complete **Register messaging use case**. Sending stays off until the sender is **Active**.
 
-Number provisioning and carrier registration are separate. Open **Deploy → Text channels**, click **Refresh status**, and check the current stage. After brand approval, you must complete **Register messaging use case**. Campaign approval is followed by number registration; sending remains unavailable until the managed sender is **Active**.
+**My business was approved but I still cannot send.** Brand approval only unlocks the use-case form. A Business Profile approval or Compliance Embeddable enrollment is not a campaign registration. Follow the remaining stages.
 
-### My business was approved, but I still cannot send
+**I submitted a form but still see the registration button.** Submission is not approval, and updates can take a few minutes. Click **Refresh status**. If the form is still a draft, the button resumes it. If it persists, contact support. Do not get a new number.
 
-Check which approval you received. A Twilio Business Profile approval or Compliance Embeddable enrollment is not a completed customer campaign registration. Brand approval unlocks the messaging-use-case form; it does not activate the number. Follow the remaining stages in Text channels.
+**Status refresh or registration fails.** Read the error and retry. If it says embedded registration is not enabled, contact support. Do not buy another number.
 
-### I submitted a form, but the page still offers registration
+**Twilio connection fails.** Check that:
 
-Submission is not approval, and provider records may take a few minutes to appear. Click **Refresh status** before retrying. If the form is still a draft, the registration action resumes it. If the discrepancy persists, contact support rather than creating a new number.
+- The SIDs start with `AC` (Account), `SK` (API key) and `MG` (Messaging Service).
+- The API key was created in the account that owns the number and Messaging Service.
+- The number is SMS capable and appears on the service's **Senders** tab.
+- The API key can read those resources and create outbound messages.
 
-### Status refresh or registration is unavailable
+**Twilio error 30034 or undelivered messages.** [Error 30034](https://www.twilio.com/docs/api/errors/30034) means a US 10DLC message came from an unregistered number. In Twilio, open the Messaging Service, check **Compliance → 10DLC**, and link it to an approved A2P campaign. Sending an IrisAgent campaign does not create a Twilio A2P registration. Twilio can accept a message and later mark it **Undelivered**. Compare the campaign page with **Twilio → Messaging → Logs**, and contact support with the campaign and error code (never your API secret).
 
-Read the inline error and retry shortly. If the error says embedded registration is not enabled, contact IrisAgent support to confirm access for the managed account. Do not purchase another number or assume that an existing business-profile approval resolves this error.
+**CSV rejected.** Make sure it is a CSV, has a recognized phone heading, contains valid US numbers and has no more than 1,000 unique valid recipients.
 
-### Twilio connection fails
+**Rows skipped.** Rows with missing or invalid numbers are skipped, and duplicates removed. Fix the file and upload again.
 
-Confirm that:
-
-- The Account SID begins with `AC`, the API Key SID begins with `SK`, and the Messaging Service SID begins with `MG`.
-- The restricted API key was created in the same account or subaccount that owns the number and Messaging Service.
-- The phone number is SMS capable.
-- The phone number appears under the selected Messaging Service's **Senders** tab.
-- The restricted API key has permission to read those resources and create outbound messages.
-
-### Twilio reports error 30034 or an undelivered message
-
-[Twilio error 30034](https://www.twilio.com/docs/api/errors/30034) means a US local 10DLC message was sent from an unregistered number. Open **Messaging → Messaging Services**, select the service connected to IrisAgent, and check **Compliance → 10DLC**. Associate the service with the applicable approved A2P campaign or complete its registration before sending again.
-
-Activating an outbound campaign in IrisAgent does not create or enable a Twilio A2P campaign. They are separate:
-
-- An **IrisAgent campaign** defines the message and recipients and starts the send operation.
-- A **Twilio A2P campaign registration** tells US carriers who is sending, the approved use case, and which Messaging Service is authorized.
-
-Twilio may initially accept an API request and later mark the message **Undelivered** after receiving a carrier response. Check the campaign details page in IrisAgent for reported delivery errors. If the final state has not appeared yet, refresh the campaign and compare it with **Twilio → Messaging → Logs**. Contact support if the discrepancy persists; include the campaign and error code, never your API secret.
-
-### My CSV was rejected
-
-Confirm that the file:
-
-- is saved as CSV
-- includes a recognized phone-number heading
-- contains valid US phone numbers
-- contains no more than 1,000 unique valid recipients
-
-### Some rows were skipped
-
-IrisAgent skips rows with missing or invalid phone numbers and removes duplicates. Correct the source file and upload it again if those contacts should be included.
-
-### Registration is taking longer than expected
-
-Business and campaign reviews are separate, and timing varies; the UI does not guarantee an approval date. Monitor the notification email and the current stage under **Deploy → Text channels**. If the status changes to **Needs attention**, read the reason and use **Correct registration** when offered. If the number remains pending after campaign approval, contact support to check number-registration updates rather than retrying campaign sends.
-
-For help, [contact IrisAgent support](mailto:support@irisagent.com).
+**Registration is slow.** Review times vary and are not guaranteed. Watch your notification email and the stage in **Deploy → Text channels**. If the number is still pending after campaign approval, contact [IrisAgent support](mailto:support@irisagent.com) instead of retrying sends.

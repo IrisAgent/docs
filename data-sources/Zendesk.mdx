@@ -1,11 +1,9 @@
 ---
 title: "Zendesk"
-description: "IrisAgent Installation Guide for Zendesk"
+description: "Connect Zendesk to IrisAgent and install the IrisAgent app"
 ---
 
-## Overview
-
-Check out this video for a quick overview of setting up IrisAgent on Zendesk.
+Watch a quick overview of setting up IrisAgent on Zendesk:
 
 <iframe
   width="560"
@@ -18,52 +16,42 @@ Check out this video for a quick overview of setting up IrisAgent on Zendesk.
   style={{ width: '100%', borderRadius: '0.5rem' }}
 ></iframe>
 
-
 ## Connect Zendesk to IrisAgent
 
-- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
-  <br/>
-  <img 
-    style={{ borderRadius: '0.5rem' }}
-    src="/images/web-login.png" 
-    alt="IrisAgent web app login"
+1. Sign in to the [IrisAgent Dashboard](https://web.irisagent.com/).
+   <img
+     style={{ borderRadius: '0.5rem' }}
+     src="/images/web-login.png"
+     alt="IrisAgent web app login"
+   />
+2. Choose Zendesk as your ticket source:
+   - **During onboarding**: on **Connect your first data source**, choose **Ticketing system**, then **Zendesk**.
+   - **Later**: go to **Data Sources** > **Ticketing System** and pick **Zendesk**.
+3. Approve the OAuth permissions and click **Allow**. This connects both Zendesk tickets and Zendesk Guide.
 
-  />
-<br/>
-- Choose Zendesk as your ticket source:
-  - **During onboarding:** on the **Connect your first data source** step, choose **Ticketing system**, then pick **Zendesk**.
-  - **Later, or to add Zendesk alongside an existing source:** go to **Data Sources → Ticketing System** in the left navigation and pick **Zendesk**.
-- Give the OAuth permissions and click on Allow. This will automatically connect with both Zendesk tickets and Zendesk Guide/Knowledge.
-<br/>
-- To connect more platforms later, such as Jira, Confluence, or Salesforce, go to **Data Sources** in the left navigation and open the relevant section.
+To add other platforms (Jira, Confluence, Salesforce), open the matching section under **Data Sources**.
 
-## **Install IrisAgent app into your Zendesk account**
+## Install IrisAgent app into your Zendesk account
 
-- Navigate to [IrisAgent's listing](https://www.zendesk.com/marketplace/apps/support/244660/irisagent/) on the Zendesk Marketplace.
-- Click on **Install** and follow the next steps.
-  <br/>
-  <img 
-    style={{ borderRadius: '0.5rem' }}
-    src="/images/zendesk-irisagent-app.png" 
-    alt="IrisAgent app listing on Zendesk"
-  />
+1. Open [IrisAgent on the Zendesk Marketplace](https://www.zendesk.com/marketplace/apps/support/244660/irisagent/).
+2. Click **Install** and follow the steps.
 
-## Create tickets from procedures
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="/images/zendesk-irisagent-app.png"
+  alt="IrisAgent app listing on Zendesk"
+/>
 
-When Zendesk is your active ticketing provider, **Create Zendesk ticket** is automatically available in the procedure editor under **Actions → Connected actions**. It uses this Zendesk connection, so you do not need to provision a separate Custom API or credential.
+## Knowledge from every Zendesk brand
 
-Add the information you want the AI to collect, including a caller email if you need it as the ticket's requester email, and insert `{{Create Zendesk ticket}}` at the appropriate step. See [Create Zendesk tickets from a procedure](/configuring-ai-and-automation/Workflows#create-zendesk-tickets-from-a-procedure) for setup, supported requester and subject fields, and a voice answering-service example.
+IrisAgent imports Help Center articles from every active brand that has a Help Center. You do not need a second Zendesk connection.
 
-## Knowledge base: every Zendesk brand
+- If a brand's articles are missing, check that the brand is active and has a Help Center.
+- An article is removed only after every brand returns 404 for it.
+- If IrisAgent cannot list brands (Zendesk returns 403 or 404), it imports from the subdomain on the token. Other errors fail the import rather than guess.
 
-Connecting Zendesk imports **tickets and Zendesk Guide**. Help Center articles are requested per brand, not only from the primary subdomain.
+## What's next
 
-Zendesk requires a brand-specific Help Center host. IrisAgent lists every active brand that has a Help Center, then ingests incremental articles from each brand subdomain. Deletion checks search the originating brand first and only drop an article after every brand returns 404.
-
-If a second brand's Help Center looks empty in IrisAgent, check that the brand is active and has a Help Center. You do not need a second Zendesk connection.
-
-If IrisAgent cannot list brands (Zendesk returns 403 or 404), it ingests from the subdomain you configured on the token. Other list errors fail ingest instead of guessing.
-
-After you connect Zendesk, [macro suggestions](/configuring-ai-and-automation/AI-for-Macros) turn on automatically.
-
-If Jira is also connected, administrators can [customize Jira issues created from Agent Assist and sync linked Jira fields into Zendesk ticket fields](/configuring-ai-and-automation/Jira-Integration-Settings).
+- [Macro suggestions](/configuring-ai-and-automation/AI-for-Macros) turn on automatically after you connect.
+- Procedures can use **Create Zendesk ticket** (under **Actions** > **Connected actions**) with no extra setup. Insert `{{Create Zendesk ticket}}` where the ticket should be created. See [Create Zendesk tickets from a procedure](/configuring-ai-and-automation/Workflows#create-zendesk-tickets-from-a-procedure).
+- If Jira is connected, admins can [customize Jira issues and sync Jira fields into Zendesk](/configuring-ai-and-automation/Jira-Integration-Settings).

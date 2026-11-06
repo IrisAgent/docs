@@ -1,30 +1,26 @@
 ---
 title: "Salesforce"
 sidebarTitle: "Salesforce Service Cloud"
-description: "IrisAgent Installation Guide for Salesforce"
+description: "Connect Salesforce Service Cloud to IrisAgent and install the IrisAgent app"
 ---
 
 ## Connect Salesforce to IrisAgent
 
-- If you are a Salesforce admin, go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
-- Choose Salesforce as your ticket source:
-  - **During onboarding:** on the **Connect your first data source** step, choose **Ticketing system**, then pick **Salesforce**.
-  - **Later, or to add Salesforce alongside an existing source:** go to **Data Sources → Ticketing System** in the left navigation and pick **Salesforce**.
-- Select the option that matches your org:
-  - For a production Salesforce org, choose **Connect production org**.
-  - For a Salesforce Sandbox org, choose **Connect sandbox org**.
-- Sign in with your Salesforce credentials, give the OAuth permissions, and click Allow.
+A Salesforce admin should do these steps.
+
+1. Sign in to the [IrisAgent dashboard](https://web.irisagent.com/) with Google, Microsoft, or Okta SSO.
+2. Choose Salesforce:
+   - **During onboarding:** on **Connect your first data source**, choose **Ticketing system**, then **Salesforce**.
+   - **Later:** go to **Data Sources → Ticketing System** and pick **Salesforce**.
+3. Click **Connect production org** or **Connect sandbox org**.
+4. Sign in to Salesforce, grant the OAuth permissions, and click **Allow**.
 
 ## Install the IrisAgent app in Salesforce account
 
-1. Install the IrisAgent app using the installation link for your org type:
+1. While logged in to the target org, open the installation link:
    - **Production or Developer org:** [Production installation link](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tak000000pGfRAAU)
-   - **Sandbox org:** [Sandbox installation link](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tak000000pGfRAAU)
-
-   Make sure you are logged into the target Salesforce org before opening the link. Sandbox orgs must use the `test.salesforce.com` link above, not the production one.
-2. Select the option Install for All Users (note that you can later restrict access to certain profiles). Click on Install after checking the acknowledgment. After installation, click on Done.
-
-<br />
+   - **Sandbox org:** [Sandbox installation link](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tak000000pGfRAAU) (sandboxes must use `test.salesforce.com`)
+2. Select **Install for All Users** (you can restrict profiles later), check the acknowledgment, click **Install**, then **Done**.
 
 <img
   style={{ borderRadius: '0.5rem' }}
@@ -32,56 +28,59 @@ description: "IrisAgent Installation Guide for Salesforce"
   alt="IrisAgent app listing for Salesforce"
 />
 
-## Display the IrisAgent app on the Lightning Salesforce case page
+## Add IrisAgent to the Lightning case page
 
-1. Go to Setup – Object Manager. Search for the Case object.
-2. Click on the Lightning Record Pages menu option and edit or create a Lightning page.
-3. Click Edit.
-4. Select **IrisAgent Sidebar: Inline Email** and set it to the desired location on the page. Do not add the standard **IrisAgent Sidebar** component as well.
-5. Make sure the standard **Email** action is visible in the Case Feed publisher when the page loads. This lets agents insert Suggested and Dynamic Resolutions into the inline email composer.
-6. Click on Save. If a pop box opens, click on Activate.
+1. Go to **Setup → Object Manager** and open the **Case** object.
+2. Open **Lightning Record Pages**, then edit or create a page.
+3. Add **IrisAgent Sidebar: Inline Email** where you want it. Do not also add the standard **IrisAgent Sidebar** component.
+4. Make sure the standard **Email** action is visible in the Case Feed publisher on load. Agents use it to insert Suggested and Dynamic Resolutions into the email composer.
+5. Click **Save**, then **Activate** if prompted.
 
-## Share the list of custom fields
+## Share your custom fields
 
-Salesforce Service Cloud allows use of many custom fields. We would need those field names to perform data ingestion. Please email the API field names for the following entities at [this email address](mailto:contact@irisagent.com):
+[Email us](mailto:contact@irisagent.com) the API field names for:
 
 1. Article body in Salesforce Knowledge
 2. Case priority
-3. Any other entity for which you are using a custom field, instead of the default standard field that you would like IrisAgent to access
+3. Any other entity where you use a custom field instead of the standard one
 
 ## Permissions accessed by IrisAgent
 
 ### OAuth scopes
 
-IrisAgent requests only two OAuth scopes:
+IrisAgent requests two scopes:
 
 - [`api`](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_tokens_scopes.htm&type=5): access to the Salesforce REST API.
-- `refresh_token`: lets IrisAgent keep ingesting data without asking a user to sign in again.
+- `refresh_token`: keeps ingestion running without a new sign-in.
 
-OAuth scopes do not limit which objects or fields IrisAgent can reach. The token inherits the permissions of the Salesforce user who signs in during the connection. To keep access to the minimum, connect IrisAgent with a dedicated integration user (for example "IrisAgent AI"), ideally on the Salesforce Integration (API only) user license, and grant that user only the permissions below through a permission set.
+Scopes do not limit which objects or fields IrisAgent can reach. The token inherits the permissions of the user who connects. To keep access minimal, connect with a dedicated integration user (for example "IrisAgent AI"), ideally on the Salesforce Integration (API only) license, and grant only the permissions below through a permission set.
 
 ### Object permissions
 
 | Object | Permission | Used for |
 |---|---|---|
-| Case | Read | Ingesting cases, including any custom Case fields you share with us |
-| Case | Create | Creating a case when the chatbot hands a conversation off to a ticket |
-| Case | Edit | Only if you enable these features: updating Owner (assignment), Status, or the custom Case fields you choose for tag and classification write-back |
-| FeedItem | Read | Reading case comments (Chatter text posts on the case) |
-| FeedItem | Create | Only if you enable private notes: posting internal notes on a case |
-| EmailMessage | Read | Reading the email thread on a case |
-| EmailMessage | Create | Only if you enable replies from IrisAgent: logging the reply on the case |
+| Case | Read | Ingesting cases, including custom Case fields you share |
+| Case | Create | Creating a case when the chatbot hands off to a ticket |
+| Case | Edit | Only if enabled: updating Owner (assignment), Status, or the custom Case fields you choose for tag and classification write-back |
+| FeedItem | Read | Reading case comments (Chatter text posts) |
+| FeedItem | Create | Only if private notes are enabled: posting internal notes |
+| EmailMessage | Read | Reading the case email thread |
+| EmailMessage | Create | Only if replies from IrisAgent are enabled: logging the reply |
 | Knowledge__kav | Read | Ingesting published Knowledge articles |
-| Account | Read | Syncing account details (name, annual revenue, and any fields you share with us) |
-| User | Read | Syncing support agents for assignment and reporting |
+| Account | Read | Syncing account details (name, annual revenue, and fields you share) |
+| User | Read | Syncing agents for assignment and reporting |
 | Group | Read | Syncing queues and public groups for assignment |
 
-Grant field-level read access on any custom fields you share with us, and edit access on any Case fields you want IrisAgent to update. IrisAgent never deletes Salesforce records and does not use the Metadata, Tooling, or Apex REST APIs. Case updates are sent with assignment rules turned off, so they do not trigger your assignment rules.
+Grant field-level read access on custom fields you share, and edit access on Case fields IrisAgent should update.
 
-If you use the chatbot's live chat handoff to Salesforce Messaging for In-App and Web (Enhanced Chat), that handoff uses your Messaging deployment's guest access, not the integration user, so no extra object permissions are needed for it.
+- IrisAgent never deletes Salesforce records and does not use the Metadata, Tooling, or Apex REST APIs.
+- Case updates are sent with assignment rules turned off, so they do not trigger your assignment rules.
+- Live chat handoff to Salesforce Messaging for In-App and Web (Enhanced Chat) uses your Messaging deployment's guest access, so it needs no extra object permissions.
 
 ### Switching to a new integration user
 
-To move an existing connection to a new integration user, contact your IrisAgent point of contact or [email us](mailto:contact@irisagent.com). We will enable a token refresh on your account, and you then sign in again with Salesforce as the new user. See [Change Integration User](/account-management/Change-Integration-User) for details.
+Contact your IrisAgent point of contact or [email us](mailto:contact@irisagent.com). We enable a token refresh, and you sign in again as the new user. See [Change Integration User](/account-management/Change-Integration-User).
 
-The above steps will complete the installation of IrisAgent. Please [email us](mailto:contact@irisagent.com) once these steps are completed, and our team will start setting up the machine learning models for your account.
+## Finish setup
+
+[Email us](mailto:contact@irisagent.com) when these steps are done. Our team then sets up the machine learning models for your account.

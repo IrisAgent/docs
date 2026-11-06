@@ -1,171 +1,89 @@
 ---
 title: "Onboarding"
-description: "Step-by-step guide to onboarding your team on IrisAgent — from connecting your first data source through deploying AI automations."
+description: "Set up IrisAgent step by step, from connecting your first data source to deploying AI automations."
 ---
 
-Welcome to IrisAgent. This guide walks you through the important steps to get your account set up and your team productive. You can complete these steps in order, or jump to the one you need — your onboarding checklist inside the portal tracks your progress automatically.
-
-After your first account connection completes, open the **Get started** checklist from the portal top bar. It links to the current setup tasks, including **Ask Support Analyst about your tickets**, inviting a teammate, adding a procedure, and deploying the chatbot or Agent Copilot.
-
----
+Do these steps in order, or jump to the one you need. After your first connection completes, open the **Get started** checklist from the portal top bar to track progress. It links to tasks such as **Ask Support Analyst about your tickets**, inviting a teammate, adding a procedure, and deploying the chatbot or Agent Copilot.
 
 ## 1. Connect your account with the onboarding wizard
 
-The onboarding wizard launches automatically the first time you log in to [web.irisagent.com](https://web.irisagent.com). It walks you through connecting your first data source, adding training content, customizing your AI agent, and deploying it — all in one guided flow.
+The wizard opens the first time you log in to [web.irisagent.com](https://web.irisagent.com). Pick a path:
 
-**What to do:**
+- **Ticketing system:** connect Zendesk, Freshdesk, HubSpot, Salesforce, Jira Service Management, Zoho Desk, or Outlook. IrisAgent imports tickets, macros, and knowledge base articles.
+- **Website link:** paste your URL. IrisAgent builds a chat agent trained on your public site and help docs.
+- **Not ready yet, speak to a human:** book a 20-minute demo.
 
-Choose the path that matches your use case:
+The import or indexing can take a few minutes to a few hours. You can continue with the next steps while it runs.
 
-- **Ticketing system.** Connect Zendesk, Freshdesk, HubSpot, Salesforce, Jira Service Management, Zoho Desk, or Outlook. IrisAgent imports your tickets, macros, and knowledge base articles and starts training.
-- **Website link** — paste your URL and IrisAgent builds an AI chat agent trained on your public site and help docs.
-- **Speak to a human** — book a 20-minute demo if you'd prefer a guided walkthrough with the team.
-
-Once connected, IrisAgent kicks off a backfill of your historical tickets (ticketing path) or indexes your help content (website path). Depending on volume this can take a few minutes to a few hours. You can continue with the rest of the onboarding steps while it runs.
-
-To connect an additional ticketing system later, go to **Data Sources → Ticketing System** in the portal and pick your provider. Intercom uses a separate OAuth sign-in flow that starts from the **Platforms** page. Provider-specific setup guides:
-
-- [Zendesk](/data-sources/Zendesk)
-- [Salesforce](/data-sources/Salesforce)
-- [Intercom](/data-sources/Intercom)
-- [Freshworks](/data-sources/Freshworks)
-- [Jira Software or Service Desk](/data-sources/Jira-Software-or-Service-Desk)
-- [HubSpot](/data-sources/Hubspot)
-
----
+To add another ticketing system later, go to **Data Sources → Ticketing System**. Intercom uses a separate OAuth flow from the **Platforms** page. Guides: [Zendesk](/data-sources/Zendesk), [Salesforce](/data-sources/Salesforce), [Intercom](/data-sources/Intercom), [Freshworks](/data-sources/Freshworks), [Jira](/data-sources/Jira-Software-or-Service-Desk), [HubSpot](/data-sources/Hubspot).
 
 ## 2. Ask your first question in the IrisGPT Playground
 
-The Playground is the fastest way to see IrisAgent in action against your own knowledge.
-
-**What to do:**
-
-Open **AI Products** → **Chatbot** in the portal and type a realistic support question — something a customer or agent might actually ask. IrisGPT searches your connected knowledge base, past tickets, and documentation to generate an answer with citations to the source material.
-
-Use the Playground to validate answer quality, spot gaps in your knowledge base, and get a feel for how IrisGPT phrases responses before you deploy it anywhere else.
-
----
+Open **AI Products → Chatbot** and type a realistic support question. IrisGPT answers from your knowledge base, past tickets, and docs, with citations. Use it to check answer quality and spot knowledge gaps before you deploy.
 
 ## 3. Invite your teammates
 
-IrisAgent is more useful when your whole team has access — admins, agents, and knowledge managers all benefit from different parts of the portal.
-
-**What to do:**
-
-Go to **Manage Users** and invite teammates by email. You can assign roles to control what each person can see and change. Invited users receive an email with a signup link.
-
----
+Go to **Manage Users** and invite teammates by email. Assign roles to control what each person can see and change.
 
 ## 4. Add your first smart operating procedure
 
-Smart operating procedures teach IrisAgent how to handle specific ticket types — what to answer, what to escalate, and what steps to take automatically.
+Procedures tell IrisAgent how to handle specific ticket types: what to answer, what to escalate, and what to do automatically.
 
-**What to do:**
+1. Go to **Automate → Procedures** and open the **AI Recommended** tab. These drafts come from your own tickets.
+2. Click a row to review it. If it's correct, set the status to **Enabled** in the drop-down at the top and save.
 
-Start with the procedures IrisAgent has already drafted for you. Go to **Automate** → **Procedures** and open the **AI Recommended** tab. These procedures were generated from your own tickets, so they usually cover your most common scenarios.
+If **AI Recommended** is empty, check back in a day or two.
 
-Click a row to open a recommended procedure and review it. If it looks correct, change the status to **Enabled** in the drop-down menu at the top and save it.
-
-If the **AI Recommended** tab is empty, wait a day or two for the generation job to run over your imported tickets, then check back.
-
-You can also create your own. Click **Create New Procedure / Q&A** and describe the procedure in plain English: what triggers it, what IrisAgent should do (suggest an answer or take an action), and when to hand off to a human. This is useful for common scenarios your tickets do not cover yet.
-
-If you're not sure where to start, check the **Procedure Library** for ready-made examples you can clone and adapt to your workflow.
-
-Procedures power both the chatbot and the agent copilot, so the work you do here pays off across every deployment surface. For more on building automation flows, see [Workflows](/configuring-ai-and-automation/Workflows).
-
----
+To write your own, click **Create New Procedure / Q&A** and describe in plain English what triggers it, what IrisAgent should do, and when to hand off to a human. For ready-made examples to clone, see the **Procedure Library**. Procedures power both the chatbot and Agent Copilot. See [Workflows](/configuring-ai-and-automation/Workflows).
 
 ## 5. Install the Agent Copilot app
 
-Agent Copilot is the AI sidebar that lives inside your agents' ticketing system, giving them real-time answers, summaries, and suggested replies.
+Agent Copilot is the AI sidebar in your agents' ticketing system, with answers, summaries, and suggested replies.
 
-**What to do:**
-
-Go to **Deploy → Agent Copilot** and follow the install instructions for your ticketing system. For Zendesk and Salesforce, the app installs in one click from their respective marketplaces. Once installed, the sidebar appears automatically when agents open a ticket.
-
-See the [Agent Copilot guide](/agent-copilot) for a full tour of sidebar features, and the [Agent Copilot deployment guide](/deploying-irisagent/Agent-Copilot) for admin install steps.
-
----
+Go to **Deploy → Copilot** and follow the install steps for your ticketing system. Zendesk and Salesforce install from their marketplaces. See the [Agent Copilot guide](/agent-copilot) and the [deployment guide](/deploying-irisagent/Agent-Copilot).
 
 ## 6. Review your first auto-generated tag
 
-IrisAgent automatically tags and categorizes your tickets so you can spot trends without manual tagging.
-
-**What to do:**
-
-Open **Topics** in the portal to see the tags IrisAgent has generated from your ticket volume. Review the top tags, merge duplicates, and rename anything that doesn't match your internal terminology. Your feedback here improves future auto-tagging and unlocks better analytics.
-
-For a deeper look at how auto-tagging works and how to tune it, see [Ticket Tagging](/configuring-ai-and-automation/Ticket-Tagging).
-
----
+Open **Topics** to see the tags IrisAgent generated from your tickets. Merge duplicates and rename anything that doesn't match your terminology. See [Ticket Tagging](/configuring-ai-and-automation/Ticket-Tagging).
 
 ## 7. Enable private ticket notes with AI answers
 
-Even before you deploy a public-facing chatbot, you can have IrisAgent post AI-generated answers as **internal notes** on every new ticket. Your agents get an instant starting point, customers never see a bot response you haven't approved, and you can validate answer quality in production without risk.
+Before you deploy a customer-facing bot, IrisAgent can post AI answers as **internal notes** on new tickets. Customers never see them, and agents can copy, edit, or ignore them.
 
-**What to do:**
-
-Go to **Automate** → **Case Triggers** in the portal and turn on the toggle to enable private ticket notes. That's it — IrisAgent will start posting AI-generated answers as internal notes on every new ticket. Agents can copy, edit, or ignore them as they see fit.
-
-This is one of the fastest ways to deliver value from IrisAgent to your support team — no customer-facing changes required.
-
----
+Go to **Automate → Case Triggers** and turn on the **AI Private Notes on Cases** card.
 
 ## 8. Deploy a chatbot or grab your API key
 
-Once you're happy with the quality of answers in the Playground and have your procedures and triggers in place, it's time to deploy IrisAgent where your users can reach it.
+Open **Deploy** and pick a channel:
 
-**What to do:**
-
-Open **Deploy** in the portal. You have several options:
-
-- **Website chatbot:** copy the embed snippet and paste it into your site. See [Chatbot on Website](/deploying-irisagent/Chatbot-on-Website).
-- **Zendesk Messaging:** [Chatbot Automation on Zendesk Messaging](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging).
-- **Intercom:** [Chatbot Automation on Intercom](/deploying-irisagent/Chatbot-Automation-on-Intercom).
-- **Freshchat:** [Chatbot Automation on Freshchat](/deploying-irisagent/Chatbot-Automation-on-Freshchat).
-- **Slack / Microsoft Teams:** [Slack](/deploying-irisagent/Slack), [Microsoft Teams](/deploying-irisagent/Microsoft-Teams).
-- **API key:** if you're building a custom integration, copy your API key and hit our REST endpoints directly. See the [API reference](/api-reference/introduction).
-
----
+- **Website chatbot:** [Chatbot on Website](/deploying-irisagent/Chatbot-on-Website)
+- **Zendesk Messaging:** [Chatbot Automation on Zendesk Messaging](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging)
+- **Intercom:** [Chatbot Automation on Intercom](/deploying-irisagent/Chatbot-Automation-on-Intercom)
+- **Freshchat:** [Chatbot Automation on Freshchat](/deploying-irisagent/Chatbot-Automation-on-Freshchat)
+- **Slack / Microsoft Teams:** [Slack](/deploying-irisagent/Slack), [Microsoft Teams](/deploying-irisagent/Microsoft-Teams)
+- **API:** copy your key from **Deploy → API Keys** and call the REST endpoints. See the [API reference](/api-reference/introduction).
 
 ## 9. Add AutoQA rules
 
-AutoQA lets IrisAgent automatically grade every support conversation against your team's quality standards — tone, accuracy, policy adherence, resolution — so you don't have to manually sample tickets for QA.
+AutoQA grades support conversations against your quality standards, such as tone, accuracy, and policy adherence.
 
-**What to do:**
-
-Go to **AutoQA → QA Rules** and click **Add Rule**. Describe the rule in plain English (e.g., "Agent apologized for the delay when response time exceeded SLA") and set the criteria IrisAgent should grade against. Once rules are live, grades show up under **AutoQA → QA Reviews** and can be filtered by agent, team, or time period.
-
-Start with two or three high-signal rules that reflect how your team already coaches. You can always add more once you see the reports in action.
-
-For a full walkthrough, see [AutoQA](/configuring-ai-and-automation/AutoQA).
-
----
+Go to **Quality → QA Rules**, click **Create New Rule**, and describe the rule in plain English (for example, "Agent apologized for the delay when response time exceeded SLA"). Results appear under **Quality → QA Reviews**. Start with two or three rules that match how your team already coaches. See [AutoQA](/configuring-ai-and-automation/AutoQA).
 
 ## 10. (Optional) Segment tickets and articles by product
 
-If your account supports more than one product, you can tell IrisAgent which knowledge belongs to which product so that each ticket only retrieves articles for its own product. A billing ticket pulls from billing articles, a shipping ticket from shipping articles, and so on. If you have a single product, skip this step.
+If you support more than one product, you can make each ticket retrieve only its own product's articles. Skip this if you have one product.
 
-**What to do:**
+Go to **Settings** and, in the **Products** section, configure both classifiers with identical product labels:
 
-Go to **Settings → Ingestion** and configure the two product classifiers so they use the same product labels:
+- **Article Product Classifier:** maps articles to a product by URL pattern.
+- **Case Product Classifier:** maps tickets to a product by tags, keywords, or regex on the subject and description.
 
-- **Article Product Classifier:** map knowledge base articles to a product using URL patterns.
-- **Case Product Classifier:** map incoming tickets to a product using tags, keywords, or regex on the ticket subject and description.
-
-Keep the product labels identical across both so a ticket assigned to a product finds the articles tagged with that same product.
-
-For the full setup, precedence rules, and examples, see [Segmenting Tickets and Articles by Product](/configuring-ai-and-automation/Product-Segmentation).
-
----
+See [Segmenting Tickets and Articles by Product](/configuring-ai-and-automation/Product-Segmentation).
 
 ## What's next
 
-Once you've completed the onboarding checklist, explore the rest of the platform:
-
 - [Case Triggers](/deploying-irisagent/Tickets), [Workflows](/configuring-ai-and-automation/Workflows), [Ticket Sentiment](/configuring-ai-and-automation/Ticket-Sentiment), [AutoKB](/configuring-ai-and-automation/AutoKB), and [AutoQA](/configuring-ai-and-automation/AutoQA)
-- [Security and Compliance](/security-and-compliance/Single-Sign-On-Options) — SSO and access controls
-- [API reference](/api-reference/introduction) — build custom integrations on top of IrisAgent
+- [Security and Compliance](/security-and-compliance/Single-Sign-On-Options): SSO and access controls
+- [API reference](/api-reference/introduction)
 
-If you have questions, email [contact@irisagent.com](mailto:contact@irisagent.com) or ping your IrisAgent CSM.
+Questions? Email [contact@irisagent.com](mailto:contact@irisagent.com) or contact your IrisAgent CSM.

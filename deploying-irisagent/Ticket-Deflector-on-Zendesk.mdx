@@ -1,24 +1,22 @@
 ---
 title: "Ticket Deflector on Zendesk"
 sidebarTitle: "Zendesk ticket form deflector"
-description: "Integrate the IrisAgent Ticket Deflector into your Zendesk Ticket Submission Form to automatically suggest AI answers and reduce ticket volume"
+description: "Add the IrisAgent Ticket Deflector to your Zendesk ticket form to suggest AI answers before a ticket is submitted"
 ---
 
-A lightweight, drop-in JavaScript widget that adds AI-powered ticket deflection to your Zendesk Help Center. It listens to user input on the "Submit a Request" page and suggests relevant answers from your knowledge base before a ticket is created.
+The Ticket Deflector is a small script for your Zendesk Help Center. On the **Submit a request** page, it reads what the customer types and suggests AI answers and articles before they submit a ticket.
 
 ## Prerequisites
 
-1. Admin access to your Zendesk Help Center (Suite Growth or above, or Guide Professional or above)
-2. Access to IrisAgent dashboard
+- Admin access to your Zendesk Help Center (Suite Growth or above, or Guide Professional or above)
+- Access to the IrisAgent dashboard
 
-## Edit the Zendesk theme template
+## Add the script to your theme
 
-Edit your Zendesk Help Center theme to load the widget:
-
-1. Log in to Zendesk and click the **Zendesk Products** icon in the top bar, then select **Knowledge**
-2. In **Knowledge admin**, click the **Customize design** icon in the sidebar to open the Themes page
-3. Click **Customize** on your theme, then click **Edit code**
-4. Select `new_request_page.hbs` from the **Templates** section and paste the following code snippet after the last closing `</div>` tag (outside `<div class="container">`):
+1. In Zendesk, click the **Zendesk Products** icon in the top bar and select **Knowledge**.
+2. In **Knowledge admin**, click **Customize design** in the sidebar.
+3. Click **Customize** on your theme, then **Edit code**.
+4. Open `new_request_page.hbs` under **Templates**. Paste this after the last closing `</div>` (outside `<div class="container">`):
 
 ```html
 <script
@@ -28,8 +26,8 @@ Edit your Zendesk Help Center theme to load the widget:
 </script>
 ```
 
-5. Replace `YOUR_IRIS_AGENT_API_KEY` in the above code with your key by going to the [Configure page](https://web.irisagent.com/manage-chatbot) on IrisAgent dashboard
-6. Since the IrisAgent Ticket Deflector replaces the built-in search bar, remove the entire `<div class="search-container">` element and everything inside it.
+5. Replace `YOUR_IRIS_AGENT_API_KEY` with your **Business ID** from **Deploy → API Keys** in the [IrisAgent dashboard](https://web.irisagent.com/manage-chatbot/api-keys).
+6. The deflector replaces the built-in search bar, so delete the whole `<div class="search-container">` element.
 
 <Accordion title="Full example of new_request_page.hbs (with search-container removed)">
 ```html
@@ -57,14 +55,10 @@ Edit your Zendesk Help Center theme to load the widget:
   defer>
 </script>
 ```
-
-<p>Remember to replace <code>YOUR_IRIS_AGENT_API_KEY</code> with your actual API key (see step 5).</p>
 </Accordion>
 
-## Save, preview, and verify
+## Test and publish
 
-After adding the script, confirm that the deflector behaves correctly before publishing:
-
-1. Click **Save** in the theme editor, then click **Preview** to open the help center in a new tab and navigate to the **Submit a request** page
-2. Enter a test subject and description; the deflector should surface suggested answers before the ticket is actually submitted
-3. Once satisfied, return to the Themes page and click **Set as live theme** to deploy the updated version to your production support form
+1. Click **Save**, then **Preview**, and open the **Submit a request** page.
+2. Type a test subject and description (at least 15 characters in total). Suggested answers should appear before you submit.
+3. Back on the Themes page, click **Set as live theme**.

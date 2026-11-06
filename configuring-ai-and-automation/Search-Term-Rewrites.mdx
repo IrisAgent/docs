@@ -3,34 +3,27 @@ title: "Search Term Rewrites"
 description: "Rewrite the terms customers use so they match your knowledge base before the AI searches it"
 ---
 
-## **Overview**
-
-Search Term Rewrites (shown as **Query Term Rewrites** in the dashboard) rewrite terms in the user's question (or case text) so they match your knowledge base before the AI searches it. This is useful when customers use abbreviations, slang, or internal shorthand that differs from the wording in your articles.
-
-For example, if your articles use the word "account" but customers often type "acct", you can add a rule that rewrites "acct" to "account" so the right articles are retrieved.
-
-To configure it, open the [IrisAgent dashboard](https://web.irisagent.com), go to **Deploy** in the left navigation, and select **Cases**.
+Search Term Rewrites (called **Query Term Rewrites** in the dashboard) swap terms in a customer's question or case text for the wording your knowledge base uses, before the AI searches. Use them for abbreviations, slang, or shorthand. For example, rewrite "acct" to "account".
 
 <Note>
-Search Term Rewrites apply to **both chat and case answers**. They only affect retrieval (which articles the AI finds). They do **not** change the answer text shown to the customer.
+Rewrites apply to **both chat and case answers**. They only change which articles the AI finds, not the answer text.
 </Note>
 
-## **Adding a Rewrite Rule**
+## Add a rewrite rule
 
-1. On the **Cases** page, find the **Query Term Rewrites** section.
+1. In the [IrisAgent dashboard](https://web.irisagent.com), go to **Deploy → Cases** and find **Query Term Rewrites**.
 2. Check **Enable query term rewrites**.
-3. Click **+ Add rule**.
-4. Fill in the rule:
-   - **From** -- the term as the customer might type it (for example, `acct`).
-   - **To** -- the term your knowledge base uses (for example, `account`).
-   - **Whole word** -- when checked, the rule only matches the term as a complete word, not as part of a larger word. For example, with "Whole word" on, a rule for `acct` will not match inside `accts`.
-   - **Ignore case** -- when checked, the rule matches regardless of capitalization (so `Acct`, `ACCT`, and `acct` are all rewritten).
-5. Add more rules as needed by clicking **+ Add rule** again. Remove a rule with the **×** button.
-6. Click **Save Rewrites**.
+3. Click **+ Add rule** and fill in:
+   - **From:** the term customers type, such as `acct`.
+   - **To:** the term your knowledge base uses, such as `account`.
+   - **Whole word:** match only the complete word (`acct` won't match inside `accts`).
+   - **Ignore case:** match any capitalization (`Acct`, `ACCT`, `acct`).
+4. Add more rules with **+ Add rule**, or remove one with **×**.
+5. Click **Save Rewrites**.
 
-Both **Whole word** and **Ignore case** are enabled by default for new rules.
+**Whole word** and **Ignore case** are on by default. Every rule needs a **From** term, and **From** and **To** must differ, or the rules won't save.
 
-## **Example Rules**
+## Example rules
 
 | From | To | Notes |
 |---|---|---|
@@ -39,10 +32,6 @@ Both **Whole word** and **Ignore case** are enabled by default for new rules.
 | icloud | invoicecloud | Maps a misheard or shortened term to your product name |
 | cancel sub | cancel subscription | Expands shorthand to match article wording |
 
-## **Validation**
+To change the tone and wording of answers instead, see [AI Response Style](/configuring-ai-and-automation/AI-Response-Style).
 
-When you save, IrisAgent checks that every rule has a **From** term and that the **From** and **To** values are different. If a rule is missing a **From** term or has identical **From** and **To** values, you will see an error and the rules will not be saved.
-
-To change the tone and wording of the answer itself (rather than what the AI retrieves), see [AI Response Style](/configuring-ai-and-automation/AI-Response-Style).
-
-If you need help configuring search term rewrites, reach out by [sending us an email](mailto:contact@irisagent.com?subject=Search%20Term%20Rewrites).
+Need help? [Email us](mailto:contact@irisagent.com?subject=Search%20Term%20Rewrites).

@@ -1,17 +1,10 @@
 ---
 title: "Microsoft Teams Bot"
 sidebarTitle: "Microsoft Teams"
-description: "Deploy IrisAgent as a Microsoft Teams Bot"
+description: "Deploy the IrisAgent chatbot in Microsoft Teams"
 ---
 
-## **Introduction**
-
-\
-IrisGPT Chatbot for Microsoft Teams is an intelligent conversational assistant designed to make teamwork more efficient and productive. It helps users find information, summarize discussions, automate routine tasks, and generate quick insights—all without leaving Teams. With natural language understanding and enterprise-grade security, IrisGPT supports everyday collaboration, empowering teams to focus on ideas instead of administrative work.\
-\
-[Contact us now](https://irisagent.com/get-a-demo/) to schedule a demo and bring IrisGPT onboard your team. Elevate your collaboration. Embrace the future with IrisGPT for Teams.
-
-<br />
+Use the IrisAgent chatbot inside Microsoft Teams to find answers without leaving Teams.
 
 <img
   style={{ borderRadius:"0.5rem" }}
@@ -19,44 +12,39 @@ IrisGPT Chatbot for Microsoft Teams is an intelligent conversational assistant d
   alt="IrisAgent bot for Microsoft Teams"
 />
 
-## **Installing the IrisGPT app in Microsoft Teams**
+## Prerequisites
 
-### **Prerequisites for Installation**
+- Admin access to the Microsoft Teams Admin Center
+- The [`irisagent-chatbot.zip`](https://github.com/IrisAgent/docs/raw/main/assets/msteams/irisagent-chatbot.zip) app package
 
-- Access to Microsoft Teams Admin Center
-- Admin permissions in Microsoft Teams
-- The [`irisagent-chatbot.zip`](https://github.com/IrisAgent/docs/raw/main/assets/msteams/irisagent-chatbot.zip) file
+## Step 1: Upload the app to Teams
 
-### **Installation Steps**
+1. Open [Teams Admin Center > Manage apps](https://admin.teams.microsoft.com/policies/manage-apps).
+2. Click **Upload new app** and select `irisagent-chatbot.zip`.
+3. Follow the prompts to finish.
 
-#### **Step 1: Upload App to Microsoft Teams**
+## Step 2: Find your Tenant ID
 
-1. Navigate to the [Microsoft Teams Admin Center - Manage Apps](https://admin.teams.microsoft.com/policies/manage-apps).
-2. Click on **Upload new app**
-3. Select the [`irisagent-chatbot.zip`](https://github.com/IrisAgent/docs/raw/main/assets/msteams/irisagent-chatbot.zip) file provided by IrisAgent
-4. Follow the prompts to complete the upload
+- In the Azure Portal: **Azure Active Directory** > **Properties** > **Tenant ID**, or
+- From the Teams Admin Center URL.
 
-#### **Step 2: Find Your Tenant ID**
+## Step 3: Connect your tenant in IrisAgent
 
-Locate your Microsoft Teams Tenant ID:
+1. In IrisAgent, go to **Deploy** > **Chat channels**.
+2. On the **Microsoft Teams** card, click **Connect**.
+3. Under **Add New Tenant**, enter your **Tenant ID** and click **Save**.
 
-- Option 1: Azure Portal \> Azure Active Directory \> Properties \> Tenant ID
-- Option 2: Extract from the Teams Admin Center URL
+The tenant then appears under **Connected Tenants**. If you need help, contact the IrisAgent team.
 
-#### **Step 3: Provide Tenant ID to the IrisAgent Team**
+## Use it in Teams
 
-Send your Tenant ID to the IrisAgent team for configuration.
+1. In Teams, search apps for **IrisAgent** and open it.
+2. Start a conversation.
 
-## **Start Using IrisGPT in Microsoft Teams**
+You can also add the app to a channel and ask questions by mentioning it.
 
-Once the app has been installed and configured, you can start using it in Microsoft Teams. Click on the Search for apps bar in Microsoft Teams. Type IrisAgent in the search box. The IrisAgent app will appear in the search results. Click on the IrisAgent app from the search results. You can now start a conversation with the IrisAgent chatbot.
-
-<br/>
-  <img
-    style={{ borderRadius: '0.5rem' }}
-    src="/images/IrisGPT-Chat-in-Teams.png"
-    alt="IrisAgent web app login"
-
-  />
-
-You can also invite the app to any channel and ask any questions from the IrisAgent app by mentioning it.
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="/images/IrisGPT-Chat-in-Teams.png"
+  alt="IrisAgent chatbot in Microsoft Teams"
+/>

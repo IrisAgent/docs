@@ -1,266 +1,145 @@
 ---
 title: "Chatbot Automation on Zendesk Messaging"
 sidebarTitle: "Zendesk Messaging"
-description: "Deploy IrisAgent AI answers to your Zendesk Messaging Chatbot"
+description: "Deploy IrisAgent AI answers to your Zendesk Messaging chatbot"
 ---
 
-This guide walks you through setting up the Zendesk Sunshine Conversations (aka Zendesk Messaging) integration with IrisAgent.
+Connect IrisAgent to Zendesk Messaging (Sunshine Conversations) so it answers your messaging conversations.
 
 ## Prerequisites
 
-Before setting up the Conversations integration, you must have **Messaging for Web** configured in your Zendesk account. This integration requires a functioning Web Widget to communicate with your customers.
-
-### Setting Up Messaging for Web
-
-If you haven't already set up messaging, follow the official Zendesk guide: [Getting started with messaging for your website, help center, and mobile apps](https://support.zendesk.com/hc/en-us/articles/4408827701530-Getting-started-with-messaging-for-your-website-help-center-and-mobile-apps)
+- **Messaging for Web** set up in Zendesk with a working Web Widget. See Zendesk's guide: [Getting started with messaging](https://support.zendesk.com/hc/en-us/articles/4408827701530-Getting-started-with-messaging-for-your-website-help-center-and-mobile-apps).
+- Zendesk Suite Professional plan or above.
 
 ![Messaging Setup](/images/messaging.png)
 
-**Key steps:**
-
-1. Create a messaging channel (automatically enabled in your account)
-2. Configure and customize your Web Widget appearance
-3. Install the Web Widget code on your website or help center
-4. Set up ticket routing and agent access
-
----
-
 ## Step 1: Create a Conversations Integration
 
-Create a new Conversations integration to establish a bidirectional connection between Zendesk and IrisAgent.
+Zendesk guide: [Creating conversations integrations in Admin Center](https://support.zendesk.com/hc/en-us/articles/4576083789850-Creating-conversations-integrations-in-Admin-Center).
 
-**Follow the official guide:** [Creating conversations integrations in Admin Center](https://support.zendesk.com/hc/en-us/articles/4576083789850-Creating-conversations-integrations-in-Admin-Center)
-
-### Configuration Steps
-
-1. In Zendesk Admin Center, navigate to **Apps and integrations** \> **Integrations** \> **Conversations integrations**
-2. Click **Create integration** and give it a descriptive name (e.g., "IrisAgent Integration")
-3. Configure the webhook settings:
+1. In Zendesk Admin Center, go to **Apps and integrations** > **Integrations** > **Conversations integrations**.
+2. Click **Create integration** and name it (for example, "IrisAgent Integration").
+3. Set the webhook:
+   - **Target URL**: `https://api1.irisagent.com/v1/webhooks/zendesk`
+   - **Events**: `conversation:create`, `conversation:message`, and `switchboard:releaseControl`
+4. Click **Save**.
+5. Copy the **Webhook ID** and **Shared secret** from the integration details page.
 
 ![Conversations Integration Details](/images/conversations_integrations_details.png)
 
-**Webhook Configuration:**
+<Warning>
+  The shared secret is shown only once. Copy it before you leave the page.
+</Warning>
 
-- **Target URL**: `https://api1.irisagent.com/v1/webhooks/zendesk`
-- **Event Subscriptions**: Select the following events:
-  - ✅ `conversation:create` (Conversation created)
-  - ✅ `conversation:message` (Conversation message)
-  - ✅ `switchboard:releaseControl` (Switchboard releases control after a human session)
-
-4. Click **Save** to create the integration
-
-If you already have an IrisAgent Conversations integration, edit its existing webhook and add `switchboard:releaseControl`. Saving the IrisAgent configuration does not update event subscriptions in Zendesk.
-
-### Record Integration Credentials
-
-After saving, you'll need to collect the following information:
-
-| Credential         | Description                                  | Where to Find                              |
-| ------------------ | -------------------------------------------- | ------------------------------------------ |
-| **App ID**         | Identifies your Zendesk account              | Integration details page                   |
-| **Integration ID** | Unique identifier for this integration       | Integration details page                   |
-| **Webhook ID**     | Identifier for the webhook configuration     | Integration details page                   |
-| **Shared secret**  | Authentication password for webhook requests | Integration details page (shown only once) |
-
-⚠️ **Important:** The shared secret is shown only once. Copy and store it securely before leaving the page.
-
----
+If you already have an IrisAgent integration, edit its webhook in Zendesk and add `switchboard:releaseControl`. Saving in IrisAgent does not change Zendesk event subscriptions.
 
 ## Step 2: Generate API Keys
 
-API keys provide authentication credentials for making API calls to Sunshine Conversations.
-
-### Creating API Keys
-
-1. In your Conversations integration, navigate to the **API Keys** tab
-2. Click **Create API key** and give it a descriptive name
-3. After creation, click on the key to view the credentials dialog
+1. In your Conversations integration, open the **API Keys** tab.
+2. Click **Create API key** and name it.
+3. Click the key and copy the **App ID**, **Key ID**, and **Secret key**. The secret key is shown only once.
 
 ![API Keys Configuration](/images/conversations_integrations_api_keys.png)
 
-### Record API Credentials
-
-Copy and store the following values:
-
-| Credential     | Description                                     |
-| -------------- | ----------------------------------------------- |
-| **App ID**     | Your Zendesk account identifier (same as above) |
-| **Key ID**     | Used with the secret key for authentication     |
-| **Secret key** | Authentication password for API requests        |
-
-⚠️ **Important:** The secret key is shown only once. Copy and store it securely before closing the dialog.
-
----
-
 ## Step 3: Configure IrisAgent
 
-Now that you have all the required credentials, configure IrisAgent to connect with your Zendesk Sunshine Conversations.
-
-1. In the IrisAgent dashboard, open **Deploy** → **Chat channels** from the left sidebar
-2. Find the **Zendesk Sunshine** card and click **Configure** to open the configuration panel
-3. Enter all the credentials you collected:
-   - App ID
-   - Integration ID
-   - Webhook ID
-   - Shared secret
-   - Key ID
-   - Secret key
-4. Click **Save** to complete the setup
-
----
+1. In IrisAgent, go to **Deploy** > **Chat channels**.
+2. On the **Zendesk Sunshine** card, click **Configure**.
+3. Turn on **Enable Chat Automation**.
+4. Under **Webhook Credentials**, enter the **Webhook ID** and **Shared secret**.
+5. Under **API Key**, enter the **App ID**, **Key ID**, and **Key Secret** (the Zendesk secret key).
+6. Click **Save**.
 
 ## Step 4: Limit IrisAgent to Specific Widgets or Brands (Optional)
 
-By default, the Conversations integration is **account-wide**. Zendesk sends `conversation:create` and `conversation:message` events for every messaging conversation in your account, across every brand and every Web Widget. That means IrisAgent will answer in all of your messaging widgets.
+The integration is account-wide, so by default IrisAgent answers in every Web Widget and brand. To limit it, use the **Chat Filter**. You do not need a second integration or API key.
 
-If you run more than one Web Widget and want IrisAgent active on only some of them (for example, on a billing product but not on a separate website product), use the **chat filter**.
+The filter is an allow-list. When it is on, IrisAgent answers only matching conversations and ignores the rest, including any new widget you launch later.
 
-<Note>
-  You do not need a second Conversations integration, webhook, or API key for this. One integration serves your whole account, and the filter controls which conversations IrisAgent responds to.
-</Note>
+| Your setup                          | Match on                 | Filter mode |
+| ----------------------------------- | ------------------------ | ----------- |
+| Widgets are on separate brands      | Brand ID                 | Simple      |
+| Widgets share one brand             | Messaging integration ID | Advanced    |
 
-### How the Filter Behaves
-
-The chat filter is an **allow-list**. When it is enabled, IrisAgent responds only to conversations that match it and ignores everything else. Any widget you do not include is silently skipped.
-
-This is useful when rolling out a new widget: configure the filter to match only your existing widgets, and a newly launched widget will not receive AI answers until you deliberately add it.
-
-### Choose a Matching Method
-
-Pick based on how your widgets are separated in Zendesk.
-
-| Your setup                                 | Match on                     | Filter mode |
-| ------------------------------------------ | ---------------------------- | ----------- |
-| Widgets are on **separate Zendesk brands**  | Brand ID                     | Simple      |
-| Widgets share a **single brand**            | Messaging integration ID     | Advanced    |
-
-Every Web Widget is its own messaging integration, so the integration ID always distinguishes them, even when the brand does not.
-
-### Configure the Filter
-
-1. In the IrisAgent dashboard, open **Deploy** → **Chat channels**
-2. On the **Zendesk Sunshine** card, click **Configure** to open the **Zendesk Sunshine Configuration** panel
-3. Scroll to the **Chat Filter** section and turn the toggle on
-4. Choose a **Filter Mode**:
-   - **Simple**: enter the **Brand ID** of the brand IrisAgent should respond to. The read-only **Generated Query** field below shows the expression this produces.
-   - **Advanced**: enter a match expression in the **Query** field (see below)
-5. Click **Save**
+1. In the **Zendesk Sunshine Configuration** panel, turn on **Chat Filter**.
+2. Pick a **Filter Mode**:
+   - **Simple**: enter the **Brand ID**. The read-only **Generated Query** shows the resulting expression.
+   - **Advanced**: enter an expression in **Query** (examples below).
+3. Click **Save**.
 
 <Tip>
-  The **Chat Filter** section is independent of the **Enable Chat Automation** toggle, so you can set your filter up before turning chat automation on. This lets you launch with the correct scope from the very first conversation.
+  The Chat Filter works independently of **Enable Chat Automation**, so you can set it up before turning automation on.
 </Tip>
 
-### Advanced Match Expressions
+### Advanced expressions
 
-Advanced mode accepts an expression that is evaluated against each incoming message. The expression must return true or false, and it is validated by the backend when you save, so an invalid expression is rejected rather than silently blocking answers.
-
-Respond only to one widget:
+The expression must return true or false. Invalid expressions are rejected when you save.
 
 ```
 Message.Source.IntegrationID == "YOUR_INTEGRATION_ID"
-```
-
-Respond to several widgets:
-
-```
 Message.Source.IntegrationID in ["FIRST_INTEGRATION_ID", "SECOND_INTEGRATION_ID"]
-```
-
-Combine a brand and a widget:
-
-```
 Conversation.BrandID == "YOUR_BRAND_ID" and Message.Source.IntegrationID == "YOUR_INTEGRATION_ID"
 ```
 
-Fields available in an expression:
+| Field                                                     | Meaning                                          |
+| --------------------------------------------------------- | ------------------------------------------------ |
+| `Conversation.BrandID`                                    | Zendesk brand of the conversation                |
+| `Conversation.ActiveSwitchboardIntegration.IntegrationID` | Integration currently handling the conversation  |
+| `Message.Source.IntegrationID`                            | Web Widget (messaging integration) of the message |
+| `Message.Source.Type`                                     | Source type, for example `web`                   |
+| `Message.Content.Text`                                    | Message text                                     |
 
-| Field                                              | Description                                      |
-| -------------------------------------------------- | ------------------------------------------------ |
-| `Conversation.BrandID`                              | Zendesk brand the conversation belongs to        |
-| `Conversation.ActiveSwitchboardIntegration.IntegrationID` | Integration currently handling the conversation |
-| `Message.Source.IntegrationID`                      | Messaging integration the message arrived on (the Web Widget) |
-| `Message.Source.Type`                               | Message source type, for example `web`           |
-| `Message.Content.Text`                              | Text of the incoming message                     |
+You cannot filter on ticket fields or tags. IrisAgent replies before the ticket exists.
 
-<Warning>
-  A ticket field cannot be used to filter messaging conversations. IrisAgent replies to the visitor in real time, before a ticket has been created and populated, so ticket fields and tags are not available at that point. Use the brand or the messaging integration ID instead.
-</Warning>
+### Finding IDs
 
-### Finding Your Brand and Integration IDs
-
-- **Brand ID**: in Zendesk Admin Center, go to **Account** \> **Brands** and open the brand. The numeric ID appears in the page URL.
-- **Messaging integration ID**: the simplest way is to send one test message through each Web Widget, then contact IrisAgent support. Because IrisAgent already receives every messaging event, we can read the exact brand and integration ID each of your widgets reports and confirm the correct filter values with you.
-
----
+- **Brand ID**: Zendesk Admin Center > **Account** > **Brands**, open the brand. The ID is in the URL.
+- **Messaging integration ID**: send a test message through each widget, then contact IrisAgent support. We can read the brand and integration ID each widget reports.
 
 ## Step 5: Configure Human Handoff and Zendesk Routing
 
-Use the existing chatbot **Handoff** settings to control what happens when a procedure escalates a Zendesk Messaging conversation. You do not need a second webhook or a separate release trigger in IrisAgent.
+Zendesk webhook conversations use the chatbot configuration marked **Default**. Add these settings there.
 
-<Note>
-  Zendesk webhook conversations use the chatbot configuration marked **Default**. If you have multiple chatbot configurations, add these settings to the default configuration.
-</Note>
+1. Go to **AI Products** > **Chatbot** and click **Configure and deploy**.
+2. Select the **Default** configuration and open the **Handoff** tab.
+3. Set **Method** to **Start a live chat**.
+4. In **Zendesk ticket tags**, enter comma-separated tags (optional). Each tag can be up to 80 characters with no spaces. You can add up to 20 tags. Example: `escalated_to_human, priority_support`
+5. Click **Update Configuration**.
 
-1. In the IrisAgent dashboard, open **AI Products** → **Chatbot** and click **Configure and deploy**
-2. Select the configuration marked **Default**, then open the **Handoff** tab
-3. Set **Method** to **Start a live chat**
-4. In **Zendesk ticket tags**, enter any tags that Zendesk should add to the messaging ticket when IrisAgent escalates. Separate multiple tags with commas
-5. Click **Update Configuration**
+When a procedure runs **Escalate to human**, IrisAgent:
 
-Each tag can contain up to 80 characters and cannot contain spaces or other whitespace. You can configure up to 20 tags. For example:
+1. Sends the procedure's handoff response.
+2. Adds your tags to the active Zendesk ticket.
+3. Passes Switchboard control to Zendesk Agent Workspace and stops replying.
 
-```text
-escalated_to_human, priority_support
-```
+IrisAgent resumes only when Zendesk sends `switchboard:releaseControl` after the human session. A new ticket alone does not reset the handoff.
 
-When a procedure runs the **Escalate to human** action, IrisAgent:
+### Route the tagged ticket in Zendesk
 
-1. Sends the procedure's handoff response to the customer
-2. Finds the active Zendesk ticket for the messaging conversation
-3. Adds the configured tags to that ticket
-4. Passes Sunshine Conversations Switchboard control to Zendesk Agent Workspace
-5. Stops responding to subsequent messages in that conversation
-
-The same handoff behavior applies to conversations received through the Zendesk webhook, including Zendesk-managed messaging channels. After a human session, IrisAgent resumes responding only when Zendesk sends `switchboard:releaseControl` to the webhook configured in Step 1. A new Zendesk ticket alone does not reset the handoff state. No second webhook or separate Zendesk trigger is needed.
-
-### Route the Tagged Ticket in Zendesk
-
-Use the configured tag in a Zendesk trigger to perform the customer-specific routing action. For example, a trigger can check for `escalated_to_human`, assign the ticket to the **Support** group, and let Zendesk omnichannel routing offer it to an available agent.
-
-Keep the Zendesk trigger responsible for group, priority, skills, and other account-specific routing choices. IrisAgent adds the configured tags and passes Switchboard control to Agent Workspace; it does not hardcode a Zendesk group.
+Create a Zendesk trigger on your tag (for example, `escalated_to_human`) that sets the group, priority, or skills. IrisAgent does not pick a Zendesk group.
 
 <Warning>
-  Ticket tagging is best-effort so a temporary Zendesk Support API or ticket-creation delay cannot leave the conversation with the bot. If IrisAgent cannot find or tag the ticket, it still passes control to Agent Workspace. In that case, a tag-dependent Zendesk trigger will not run, so configure a Zendesk fallback routing rule for untagged messaging handoffs if your workflow requires one.
+  Tagging is best-effort. If IrisAgent cannot find or tag the ticket, it still hands control to Agent Workspace, and tag-based triggers will not fire. Add a fallback routing rule for untagged messaging handoffs if you need one.
 </Warning>
 
----
+## Verify
 
-## Verification
+1. Send a test message through your Web Widget.
+2. Trigger **Escalate to human**.
+3. Check that the ticket has your tags, your trigger routed it, and IrisAgent stopped replying.
+4. Close the ticket, send another message as the same user, and confirm IrisAgent replies again.
 
-After completing the setup:
+If something does not work, check that:
 
-1. Send a test message through your Web Widget
-2. Trigger a procedure that uses **Escalate to human**, or ask to speak with a human when your procedures support that request
-3. Verify that the active Zendesk ticket contains the configured handoff tags
-4. Confirm that your Zendesk trigger applies the expected group or other routing actions
-5. Verify that the conversation appears in Zendesk Agent Workspace and IrisAgent no longer replies
-6. Close the human-handled ticket, then send another message from the same end user. Confirm IrisAgent replies in the new interaction after Zendesk releases Switchboard control
+- All credentials are correct.
+- The webhook subscribes to all three events. If IrisAgent stays silent after a human session, confirm Zendesk delivered the release event.
+- Your test widget matches the Chat Filter, if you set one. A filter that matches nothing stops all answers.
+- The **Default** chatbot configuration uses **Start a live chat** with valid tags.
+- Zendesk is connected as a ticketing source (needed for tagging).
+- Your trigger conditions match the exact tag.
 
-If you encounter any issues, verify that:
+## Resources
 
-- All credentials are entered correctly
-- The webhook subscribes to `conversation:create`, `conversation:message`, and `switchboard:releaseControl`. If IrisAgent stays silent after a human session, check that Zendesk delivered the release event
-- Your Zendesk account has the required permissions (Suite Professional plan or above)
-- If you configured a chat filter in Step 4, the widget you are testing from actually matches it. A filter that matches no conversations will silently stop all AI answers
-- The chatbot configuration marked **Default** uses **Start a live chat** and contains valid Zendesk tags
-- Zendesk is connected as a ticketing source if you want IrisAgent to update the messaging ticket with tags
-- Your Zendesk trigger conditions match the exact tag configured in IrisAgent
-- If control reaches Agent Workspace without the tag, check for a temporary Support API or ticket-creation error and confirm that your fallback routing rule handles the conversation
-
----
-
-## Additional Resources
-
-- [Zendesk Messaging Documentation](https://support.zendesk.com/hc/en-us/articles/4408827701530)
-- [Conversations Integrations Guide](https://support.zendesk.com/hc/en-us/articles/4576083789850)
-- [Sunshine Conversations API Documentation](https://developer.zendesk.com/api-reference/conversations/)
+- [Zendesk Messaging documentation](https://support.zendesk.com/hc/en-us/articles/4408827701530)
+- [Conversations integrations guide](https://support.zendesk.com/hc/en-us/articles/4576083789850)
+- [Sunshine Conversations API](https://developer.zendesk.com/api-reference/conversations/)

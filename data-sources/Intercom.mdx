@@ -1,38 +1,30 @@
 ---
 title: "Intercom"
-description: "IrisAgent Installation Guide for Intercom"
+description: "Connect Intercom to IrisAgent and install the IrisAgent app"
 ---
 
 ## Connect Intercom to IrisAgent
 
-- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
+1. Sign in to the [IrisAgent dashboard](https://web.irisagent.com/) with Google, Microsoft, or Okta SSO.
 
-  <br />
+   <img
+     style={{ borderRadius:"0.5rem" }}
+     src="/images/web-login.png"
+     alt="IrisAgent web app login"
+   />
 
-  <img
-    style={{ borderRadius:"0.5rem" }}
-    src="/images/web-login.png"
-    alt="IrisAgent web app login"
-  />
+2. Open [Platforms](https://web.irisagent.com/platforms) and click **Connect with Intercom**. Intercom uses its own OAuth flow.
+3. Grant the OAuth permissions and click **Allow**. This connects both Intercom tickets and articles.
 
-<br />
-
-- Choose Intercom as your ticket source. Intercom uses a separate OAuth sign-in flow, so start it from **Platforms** in the dashboard and click **Connect with Intercom**.
-- Give the OAuth permissions and click on Allow. This will automatically connect with both Intercom tickets and articles.
-
-<br />
-
-- To connect more platforms later, such as Jira, Confluence, or Salesforce, go to **Data Sources** in the left navigation and open the relevant section.
+To add more sources later (Jira, Confluence, Salesforce), open **Data Sources** in the left navigation.
 
 ## Install the IrisAgent app into your Intercom account
 
-- In Intercom, open **Settings → Integrations → App Store**, search for **IrisAgent**, and open the listing. Intercom also includes IrisAgent in its [third-party apps directory](https://www.intercom.com/help/en/articles/11070907-apps-built-by-third-parties-third-party-apps).
-- Click on Install and follow the next steps.
+1. In Intercom, open **Settings → Integrations → App Store**, search for **IrisAgent**, and open the listing. It is also in Intercom's [third-party apps directory](https://www.intercom.com/help/en/articles/11070907-apps-built-by-third-parties-third-party-apps).
+2. Click **Install** and follow the prompts.
 
-  <br />
-
-  <img
-    style={{ borderRadius:"0.5rem" }}
-    src="/images/intercom-ia-app.png"
-    alt="IrisAgent app listing on Zendesk"
-  />
+   <img
+     style={{ borderRadius:"0.5rem" }}
+     src="/images/intercom-ia-app.png"
+     alt="IrisAgent app listing on Intercom"
+   />

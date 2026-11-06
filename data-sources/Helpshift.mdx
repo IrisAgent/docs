@@ -1,65 +1,48 @@
 ---
 title: 'Helpshift'
-description: 'IrisAgent Installation Guide for Helpshift'
+description: 'Connect Helpshift to IrisAgent with a scoped API key'
 ---
 
-## Overview
+IrisAgent connects to Helpshift with an API key your Helpshift admin creates. You control the key's permissions (read-only or read and write) and can revoke it at any time.
 
-IrisAgent connects to Helpshift using a scoped API key that your Helpshift admin generates. Unlike Zendesk, Helpshift does not use OAuth: you stay in full control of the key, its permissions (read-only or read and write), and can revoke it at any time from your Helpshift dashboard.
+IrisAgent then ingests your Helpshift issues, messages, tags and custom issue fields for agent assist, AI tagging and routing, trending incident detection, AutoQA and AutoKB.
 
-Once connected, IrisAgent ingests your Helpshift issues, messages, tags, and custom issue fields to power agent assist, AI tagging and routing, trending incident detection, AutoQA, and AutoKB.
+## 1. Create an API key in Helpshift
 
-## Generate an API key in Helpshift
+You need the Helpshift **Admin** role.
 
-You need a Helpshift **Admin** role for this step.
+1. In Helpshift, go to **Settings > APIs**.
+2. Under **REST APIs**, click **Add partner** and enter the partner email from the IrisAgent team.
+3. Choose a permission level:
+   - **Read-only** (recommended to start): ingestion, agent assist, tagging suggestions, incident detection, AutoQA and AutoKB.
+   - **Read & Write**: also lets IrisAgent write tags, custom issue fields and notes back to your issues.
+4. Click **VIEW API KEY** and copy the key.
 
-1. In your Helpshift dashboard, navigate to **Settings > APIs**.
-2. Under **REST APIs**, click **Add partner**.
-3. Enter the partner email address provided by the IrisAgent team.
-4. Select the permission level:
-   - **Read-only**: recommended to get started. Enables ingestion, agent assist, tagging suggestions, incident detection, AutoQA, and AutoKB.
-   - **Read & Write**: additionally lets IrisAgent write tags, custom issue fields, and notes back onto your Helpshift issues.
-5. Click the **VIEW API KEY** option to reveal the key and copy it.
+The key belongs only to IrisAgent, separate from your other integrations. You can change its permissions or delete it on the same page.
 
-<Note>
-Keys are scoped per partner, so IrisAgent's key is separate from any other integration you run (Power BI, Slack, Jira). You can change its permissions or delete it at any time from the same page.
-</Note>
+## 2. Share it with IrisAgent
 
-## Connect Helpshift to IrisAgent
+1. Sign in to the [IrisAgent dashboard](https://web.irisagent.com/) with Google, Microsoft or Okta SSO.
+2. Send the IrisAgent team your **Helpshift domain** (the `<domain>` in `<domain>.helpshift.com`) and the **API key**. IrisAgent validates the key and starts ingesting your issues.
 
-- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
-  <br/>
-  <img
-    style={{ borderRadius: '0.5rem' }}
-    src="/images/web-login.png"
-    alt="IrisAgent web app login"
+To connect other platforms later, such as Jira, Confluence or Salesforce, open **Data Sources** in the left navigation.
 
-  />
-<br/>
-- Share your **Helpshift domain** (the `<domain>` in `<domain>.helpshift.com`) and the **API key** generated above with the IrisAgent team. IrisAgent validates the key and starts ingesting your issues.
-<br/>
-- To connect more platforms later, such as Jira, Confluence, or Salesforce, go to **Data Sources** in the left navigation and open the relevant section.
+## Knowledge sources
 
-## Connect your knowledge base
+- **Helpshift FAQs:** ingested automatically through the same connection.
+- **Public help center or website:** add the URL under **Data Sources → Website**. See [Public Websites](/data-sources/Public-Websites).
+- **Other sources:** Confluence, uploaded documents and [custom knowledge APIs](/data-sources/Custom-API).
 
-IrisAgent grounds AI answers in your existing knowledge content:
+## Agent copilot in Helpshift
 
-- **Helpshift FAQs**: ingested automatically through the same API connection.
-- **Public help center or website**: add the URL under **Data Sources → Website** and IrisAgent will ingest the main page and all sub-pages.
-- **Other sources**: Confluence, uploaded documents, and [custom knowledge APIs](/data-sources/Custom-API) are also supported.
+Helpshift has no app framework for its agent dashboard, so IrisAgent delivers the copilot through:
 
-## Agent copilot inside Helpshift
+- **IrisAgent browser extension:** shows suggested resolutions, similar cases and knowledge next to the Helpshift issue. No Helpshift setup needed.
+- **Write-back** (Read & Write key): adds suggested tags and custom issue field values to the issue.
+- **IrisAgent dashboard:** triage analytics, trending incident alerts, AutoQA reviews and AutoKB drafts.
 
-Helpshift does not provide an embeddable app framework in its agent dashboard, so IrisAgent's copilot is delivered through:
+## Real-time updates (optional)
 
-- **IrisAgent browser extension**: overlays AI-suggested resolutions, similar cases, and knowledge directly alongside the Helpshift issue view. No Helpshift configuration required.
-- **Native write-back** (requires a Read & Write key): IrisAgent posts suggested tags and custom issue field values onto the issue so agents see them in the Helpshift UI they already use.
-- **IrisAgent dashboard**: triage analytics, trending incident alerts, AutoQA reviews, and AutoKB drafts live in the IrisAgent web app side by side with Helpshift.
+By default IrisAgent polls the Helpshift API at regular intervals. For faster updates, your admin can add a webhook under **Settings > APIs > Partners webhooks**, pointing at the endpoint the IrisAgent team provides.
 
-## Real-time updates
-
-For lower-latency ingestion, your Helpshift admin can additionally configure a webhook from **Settings > APIs > Partners webhooks** pointing at the endpoint provided by the IrisAgent team. Webhooks push issue activity to IrisAgent as it happens; otherwise IrisAgent polls the REST API at regular intervals.
-
-## Questions?
-
-Reach out to us at [contact@irisagent.com](mailto:contact@irisagent.com) and we will help you get set up.
+Questions? [contact@irisagent.com](mailto:contact@irisagent.com)

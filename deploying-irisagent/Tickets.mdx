@@ -1,92 +1,72 @@
 ---
 title: "Tickets"
 sidebarTitle: "Case Triggers"
-description: "Use Case Triggers to automate incoming tickets: auto-respond with AI answers, route to the right team, tag, update fields, and post internal notes"
+description: "Use Case Triggers to automate incoming tickets: auto-respond with AI answers, route, tag, update fields and post internal notes"
 ---
 
-Once your ticketing system is connected, IrisAgent can act on incoming tickets automatically through **Case Triggers**. A trigger is a set of **Conditions** (which tickets it applies to) paired with **Actions** (what IrisAgent does to them). Conditions are evaluated with AND logic, so a trigger fires only when every condition matches.
+**Case Triggers** act on incoming tickets automatically. Each trigger has **Conditions** (which tickets) and **Actions** (what to do). A trigger fires only when every condition matches.
 
-This lets you go well beyond auto-responding. The same trigger engine handles routing, triage, tagging, and enrichment.
-
-Case Triggers work across your connected ticketing systems, including Zendesk, Freshdesk, Salesforce, Jira, HubSpot, Intercom, and Zoho, as well as your [Outlook](/deploying-irisagent/Outlook) inbox.
+Triggers work with Zendesk, Freshdesk, Salesforce, Jira, HubSpot, Intercom, Zoho and your [Outlook](/deploying-irisagent/Outlook) inbox.
 
 ## Prerequisites
 
-1. Your ticketing system is connected as a data source. See [Connect your helpdesk](/guides/Connecting-Your-Helpdesk) for setup.
-2. IrisAgent has ingested enough tickets and knowledge base content for its AI to tag tickets and generate answers.
-3. Access to the IrisAgent dashboard. Enabling deflection across all tickets is admin-only.
+- Your ticketing system is connected. See [Connect your helpdesk](/guides/Connecting-Your-Helpdesk).
+- IrisAgent has ingested enough tickets and knowledge base content to tag tickets and generate answers.
+- Access to the IrisAgent dashboard. Turning on deflection for all tickets is admin-only.
 
-## What you can automate
+## Actions
 
-### Reply to the customer
-
-**Auto-respond to customer** sends IrisAgent's AI answer, generated from your knowledge base and past tickets, straight to the customer without waiting for an agent. This is the same answer your agents see in the **Suggested Resolution** widget.
-
-You can enable this on every ticket with a single toggle, or scope it to specific tickets with conditions. Both approaches are covered in [Auto-respond with AI answers](#auto-respond-with-ai-answers) below.
-
-### Route and assign
-
-- **Assign agent** routes the ticket to a specific agent.
-- **Assign team** routes the ticket to a team, for example sending everything IrisAgent tags as `billing` to your Finance queue.
-
-### Triage
-
-- **Change case status** updates the ticket status.
-- **Apply macro** applies one of your existing ticketing system macros.
-
-### Tag and enrich
-
-- **Write tags to case** applies IrisAgent's AI-generated tags so your views and reports stay consistent without agent effort.
-- **Write custom tags to case** applies tags you define yourself.
-- **Write custom field to case** writes a value into a custom field on the ticket.
-
-### Help your agents
-
-- **Write private note** posts an internal comment visible only to your team. This is a good first step when rolling out AI answers, since the agent reviews the answer and sends it in one click rather than the AI replying to the customer directly.
+| Action | What it does |
+| --- | --- |
+| **Auto-respond to customer** | Sends the AI answer (the same one agents see in **Suggested Resolution**) to the customer. See [Auto-respond with AI answers](#auto-respond-with-ai-answers). |
+| **Assign agent** | Routes the ticket to an agent. |
+| **Assign team** | Routes the ticket to a team, for example `billing` tickets to Finance. |
+| **Change case status** | Updates the ticket status. |
+| **Apply Macro** | Applies one of your existing macros (Zendesk). |
+| **Write tags to case** | Applies IrisAgent's AI-generated tags. |
+| **Write custom tags to case** | Applies tags you define. |
+| **Write custom field to case** | Writes a value to a custom field. |
+| **Create Private Note** | Posts an internal note for your team. A safe first step for AI answers: agents review and send. |
 
 <Note>
-IrisAgent can also surface AI insights as a private note on every ticket without building a trigger. See [Workflows](/configuring-ai-and-automation/Workflows) for that toggle.
+To add AI insights as a private note on every ticket without a trigger, see [Workflows](/configuring-ai-and-automation/Workflows).
 </Note>
 
 ## Conditions
 
-| Condition | What it matches |
+| Condition | Matches |
 | --- | --- |
-| Topics | The topic or category IrisAgent's AI assigns to the ticket |
+| Topics | The topic IrisAgent's AI assigns |
 | Tags | Tags on the ticket |
-| Custom Field | A value in one of your ticketing system's custom fields |
-| Subject | Text in the ticket subject |
-| Ticket Content | Text in the ticket body |
-| Ticket Priority | The ticket priority |
-| Account Name | The account the ticket belongs to |
-| API conditions | Live data from your own systems |
-
-**API conditions** appear once you have [Custom APIs](/data-sources/Custom-API) configured, listed as `API: <your_api_name>`. They let a trigger branch on real-time data, such as whether the customer has an active subscription or which segment they belong to, rather than only on what is already written on the ticket.
+| Custom Field | A custom field value |
+| Subject | Text in the subject |
+| Ticket Content | Text in the body |
+| Ticket Priority | The priority |
+| Account Name | The ticket's account |
+| `API: <your_api_name>` | Live data from your systems, once [Custom APIs](/data-sources/Custom-API) are set up (for example, whether the customer has an active subscription) |
 
 ## Create a trigger
 
-1. Go to **Automate** → **Case Triggers** on the [IrisAgent dashboard](https://web.irisagent.com/triggers) and click **Create New Trigger**.
-2. Click **Add conditions** and add the conditions you want from the **Conditions** panel on the right.
-3. Add one or more actions from the **Actions** panel.
-4. Name the trigger using the pencil icon.
-5. Click **Add New Trigger** to save. It starts running on new incoming tickets immediately.
+1. Go to **Automate → Case Triggers** on the [IrisAgent dashboard](https://web.irisagent.com/triggers) and click **Create New Trigger**.
+2. Click **Add conditions** and pick conditions from the **Conditions** panel.
+3. Add actions from the **Actions** panel.
+4. Name the trigger with the pencil icon.
+5. Click **Add New Trigger**. It runs on new tickets right away.
 
-Once it is live, the **Trigger Activity** panel on the trigger shows how many cases were auto-responded to and how many had their status auto-updated, over a 1 day, 7 day, or 14 day window.
+The trigger's **Trigger Activity** panel shows how many cases were auto-responded, auto-assigned or had their status auto-updated, for the date range you choose.
 
 <Tip>
-Start with a narrow condition set, such as one topic plus one keyword, and review the first few tickets it fires on before broadening the rule. This validates the behavior without mis-routing a large volume of tickets.
+Start narrow (for example, one topic plus one keyword) and review the first few tickets before broadening the rule.
 </Tip>
 
 ## Auto-respond with AI answers
 
-Auto-responding (ticket deflection) replies to incoming tickets with IrisAgent's AI answer, so customers get a response without waiting for an agent. The answers are the same ones agents see in the **Suggested Resolution** widget, generated from your knowledge base and past tickets.
+Auto-responding (deflection) replies to tickets with IrisAgent's AI answer, built from your knowledge base and past tickets.
 
 ### On specific tickets (recommended)
 
-Scoping deflection to a specific type of ticket is the safest way to roll it out.
-
-1. Go to **Automate** → **Case Triggers** and click **Create New Trigger**.
-2. Add the conditions that should trigger deflection from the **Conditions** panel, for example a particular tag or certain keywords.
+1. Go to **Automate → Case Triggers** and click **Create New Trigger**.
+2. Add conditions, such as a tag or keywords.
 
 <img
   style={{ borderRadius:"0.5rem", height:"50%" }}
@@ -94,20 +74,18 @@ Scoping deflection to a specific type of ticket is the safest way to roll it out
   alt="IrisAgent ticket conditions"
 />
 
-3. Add the action **Auto-respond to customer** from the **Actions** panel.
-4. Add `{{irisgpt.case.answer}}` in the text box. This inserts the AI answer generated by IrisAgent. You can add other text before or after it.
-5. Name the trigger using the pencil icon.
-6. Click **Add New Trigger** to save.
+3. Add the **Auto-respond to customer** action and put `{{irisgpt.case.answer}}` in the text box. You can add text before or after it.
+4. Name the trigger and click **Add New Trigger**.
 
-The trigger's activity view shows every ticket that received an AI auto-response, along with its deflection metrics.
+The trigger's activity view lists every ticket that got an AI response.
 
 ### On all tickets
 
 <Warning>
-Every ticket that has an AI answer will get an auto-response. Prefer scoping deflection to specific tickets unless you have validated answer quality across your whole queue.
+Every ticket with an AI answer gets an auto-response. Only do this after validating answer quality across your queue.
 </Warning>
 
-Go to **Automate** → **Case Triggers** and toggle on **Enable Case Deflection**. Use the same switch to turn it off.
+In **Automate → Case Triggers**, turn on the **Case Deflection** toggle. Turn it off the same way.
 
 <img
   style={{ borderRadius:"0.5rem" }}
@@ -115,20 +93,20 @@ Go to **Automate** → **Case Triggers** and toggle on **Enable Case Deflection*
   alt="IrisAgent ticket deflection toggle"
 />
 
-Enabling it creates a trigger called **System: Case Deflection**. Open it to review the tickets that received an AI auto-response and the associated deflection metrics.
+This creates a trigger named **System: Case Deflection using AI**. Open it to see which tickets got AI responses.
 
-## Common use cases
+## Example uses
 
-- **Known-issue auto-response:** when a ticket matches a known issue, send the AI answer directly, or post it as a private note for the agent to review first.
-- **Routing by AI topic:** send everything the AI classifies as `billing` to Finance, or anything mentioning "cancel my subscription" to a retention specialist.
-- **Auto-tagging:** apply tags like `refund` or `outage` as the AI classifies incoming tickets, so reporting stays consistent.
-- **VIP handling:** use an API condition to check the customer's segment, then route enterprise tickets to a dedicated team and tag them.
-- **Entitlement checks:** use an API condition on subscription status to decide whether to auto-respond or route to sales.
+- **Known issues:** send the AI answer, or post it as a private note for review.
+- **Routing:** send `billing` topics to Finance, or "cancel my subscription" to retention.
+- **Auto-tagging:** tag `refund` or `outage` tickets for consistent reporting.
+- **VIP handling:** use an API condition on customer segment to route enterprise tickets.
+- **Entitlement checks:** use an API condition on subscription status to auto-respond or route to sales.
 
 ## Related pages
 
-- [Workflows](/configuring-ai-and-automation/Workflows) covers the drag-and-drop trigger builder, plain-English procedures for chat, voice, and agent assist, and the AI insights private note toggle.
-- [Custom APIs](/data-sources/Custom-API) covers configuring the APIs that power API conditions.
-- [Outlook](/deploying-irisagent/Outlook) covers what changes when your tickets are emails.
+- [Workflows](/configuring-ai-and-automation/Workflows): drag-and-drop trigger builder, procedures and the AI insights private note.
+- [Custom APIs](/data-sources/Custom-API): set up APIs for API conditions.
+- [Outlook](/deploying-irisagent/Outlook): how triggers work for email.
 
-Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or require assistance with product onboarding.
+Need help? [Email us](mailto:contact@irisagent.com).

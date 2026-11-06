@@ -1,186 +1,127 @@
 ---
 title: "Custom APIs"
-description: "Connect any external HTTP API to IrisAgent so it can fetch live data and use it as a trigger condition or AI workflow step"
+description: "Connect any HTTP API to IrisAgent and use its live data in workflows and case triggers"
 ---
 
-## Overview
+A Custom API connects IrisAgent to any HTTP endpoint (internal systems, third-party services, data warehouses). You can use it:
 
-Custom APIs let you connect IrisAgent to any external HTTP endpoint — your internal systems, third-party services, or data warehouses. Once configured, a Custom API can be used in two ways:
-
-- **As a trigger condition** in the drag-and-drop Workflows builder (e.g., "only run this automation if the customer is on the Premium plan")
-- **As a live data source** in AI-powered FAQ workflows, where IrisAgent collects required fields from the customer, calls your API, and presents the response in natural language
-
----
+- **In AI FAQ workflows:** IrisAgent collects the required fields from the customer, calls your API, and explains the response in plain language.
+- **As a trigger condition:** for example, "only run this automation if the customer is on the Premium plan."
 
 <Tip>
-  To create a Zendesk ticket with information collected by a procedure, use the built-in [Create Zendesk ticket action](/configuring-ai-and-automation/Workflows#create-zendesk-tickets-from-a-procedure). It appears automatically when Zendesk is your active ticketing provider and uses your existing connection. You only need a Custom API if you require a different payload, such as mapping values to Zendesk custom ticket fields.
+  To create a Zendesk ticket from a procedure, use the built-in [Create Zendesk ticket action](/configuring-ai-and-automation/Workflows#create-zendesk-tickets-from-a-procedure). You only need a Custom API for a different payload, such as mapping values to Zendesk custom ticket fields.
 </Tip>
 
 ## Step 1: Open the Custom APIs configuration
 
-1. Log in to the [IrisAgent dashboard](https://web.irisagent.com/).
-2. Click on **Data Sources** in the left navigation.
-3. Scroll to the **Development** section and click **Configure** on the **Custom APIs** card.
+1. In the [IrisAgent dashboard](https://web.irisagent.com/), go to **Data Sources** → **APIs**.
+2. On the **Custom APIs** card, click **Configure**.
 
-This opens a side panel with two tabs: **APIs** and **Credentials**.
+A side panel opens with two tabs: **APIs** and **Credentials**.
 
----
+## Step 2: Add a credential (optional)
 
-## Step 2: Add a credential (if your API requires authentication)
+Skip this if your API needs no authentication or uses a token in the URL.
 
-Skip this step if your API is publicly accessible or uses URL-based tokens.
-
-1. In the side panel, click the **Credentials** tab.
-2. Click **Add Credential**.
-3. Fill in the fields:
-   | Field | Description |
+1. Open the **Credentials** tab and click **Add Credential**.
+2. Fill in:
+   | Field | Example |
    | --- | --- |
-   | **Credential Name** | A human-readable label, e.g. `Production Bearer Token` |
-   | **Header Name** | The HTTP header to send, e.g. `Authorization` or `X-API-Key` |
-   | **Header Value** | The secret value, e.g. `Bearer sk-abc123` |
-4. Click **Create & Select**.
+   | **Credential Name** | `Production Bearer Token` |
+   | **Header Name** | `Authorization` or `X-API-Key` |
+   | **Header Value** | `Bearer sk-abc123` |
+3. Click **Create Credential**.
+
+You can also create a credential from inside the API form (**Create New Credential**, then **Create & Select**).
 
 <Note>
-  Credential values are stored securely and cannot be viewed after saving. Store them in a safe location before saving.
+  You cannot view a credential value after saving. Keep a copy somewhere safe.
 </Note>
-
----
 
 ## Step 3: Create a Custom API
 
-1. Click the **APIs** tab and then **Add API**.
-2. Fill in the **Create Custom API** form:
-
-### Basic information
+On the **APIs** tab, click **Add API** and fill in the **Create Custom API** form.
 
 | Field | Description |
 | --- | --- |
-| **Name** | A descriptive name shown in the trigger builder, e.g. `Customer Premium Check API` |
-| **API Credential** | Select a credential from Step 2, or leave as _None_ for unauthenticated requests |
-
-### HTTP configuration
-
-| Field | Description |
-| --- | --- |
+| **Name** | Shown in the trigger builder, e.g. `Customer Premium Check API` |
+| **API Credential** | A credential from Step 2, or _None_ |
 | **Method** | `GET`, `POST`, `PUT`, or `DELETE` |
-| **URL** | The full endpoint URL. Supports template variables (see below) |
-| **Headers** | Any additional headers beyond the credential. Add as many key/value rows as needed |
-| **Request Body** | Available for `POST` and `PUT` methods. Supports template variables |
+| **URL** | Full endpoint URL. Supports template variables |
+| **Headers** | Extra key/value headers beyond the credential |
+| **Request Body** | For `POST` and `PUT`. Supports template variables |
 
 ### Template variables
 
-Use `{{variableName}}` placeholders in the URL, headers, or body to inject live ticket context at call time. IrisAgent automatically substitutes these before making the request.
+Use `{{variableName}}` in the URL, headers, or body. IrisAgent fills them in before each call.
 
-**Built-in variables (always available):**
-
-| Variable | Value injected |
-| --- | --- |
-| `{{ticketId}}` | The unique identifier of the ticket |
-| `{{priority}}` | The priority level of the ticket |
-| `{{status}}` | The current status of the ticket |
-| `{{subject}}` | The subject line of the ticket |
-| `{{accountId}}` | The account/company ID associated with the ticket |
-
-**Example URL using a built-in variable:**
+Built-in variables: `{{ticketId}}`, `{{priority}}`, `{{status}}`, `{{subject}}`, `{{accountId}}` (the account or company ID on the ticket).
 
 ```text
 https://api.yourcompany.com/customers/check?ticketId={{ticketId}}&accountId={{accountId}}
 ```
 
-**Custom variables** — for FAQ workflows that collect information from the customer (such as an order number or email address), you can define your own placeholder names:
+Any other name is a **custom variable**. In FAQ workflows, IrisAgent collects it from the customer before calling the API:
 
 ```text
 https://api.yourcompany.com/orders/{{orderId}}
 ```
 
-IrisAgent will automatically detect `{{orderId}}` as a field it needs to collect from the customer before calling the API.
-
 ### Response schema
 
-Define the fields you expect back from your API. This tells IrisAgent how to interpret the response.
+Click **Add Field** for each response value you want to use. Set the **Field name** (the JSON key, e.g. `isPremium`) and **Field type** (`String`, `Boolean`, `Integer`, or `Float`).
 
-1. Click **Add Field**.
-2. For each field, set:
-   - **Field name** — matches the JSON key in the response, e.g. `isPremium`
-   - **Field type** — `String`, `Boolean`, `Integer`, or `Float`
-3. Add one field per value you want to use in an expression or surface to the customer.
-
-**Example** — for a response like `{"isPremium": true, "tier": "enterprise"}`:
-
-- Field `isPremium` → Boolean
-- Field `tier` → String
+For `{"isPremium": true, "tier": "enterprise"}`, add `isPremium` (Boolean) and `tier` (String).
 
 ### Expression
 
-Write a condition that evaluates the API response. IrisAgent uses this expression to determine the trigger result.
-
-Access response fields using `response.fieldName`:
+The expression evaluates the response. Reference fields as `response.fieldName`:
 
 ```text
 response.isPremium == true && response.tier == "enterprise"
 ```
 
-Set the **Return Type** to match what your expression evaluates to (`Boolean`, `String`, `Integer`, or `Float`).
+Set **Return Type** to what the expression returns (`String`, `Boolean`, `Integer`, or `Float`).
 
 ### Prerequisite (optional): run another API first
 
-Some workflows need to call one API and then feed its result into a second call. A common case: HubSpot requires a contact's record ID to link it to a ticket, so you have to create or look up the contact **before** creating the ticket.
-
-The **Prerequisite** section, at the bottom of the form, lets this Custom API run another Custom API first and reuse its result:
+Use this to feed one API's result into another call. For example, HubSpot needs a contact's record ID before you can link it to a ticket.
 
 | Field | Description |
 | --- | --- |
-| **Run this action first** | Select another Custom API to run before this one. Its Expression result is captured. Leave as _None_ to disable chaining |
-| **Store its result as** | A variable name (letters, numbers, and underscores). The prerequisite's result becomes available to this API as `{{yourName}}` in the URL, headers, and body |
+| **Run this action first** | Another Custom API to run first. Leave as _None_ to disable |
+| **Store its result as** | A variable name (letters, numbers, underscores). Use it as `{{yourName}}` in this API's URL, headers, and body |
 
-At call time IrisAgent runs the prerequisite first, evaluates its Expression, and injects the value under the name you chose. You then reference it like any other template variable, for example `{{contactId}}`.
+The injected value is the prerequisite API's **Expression** result, so make that expression return the single value you need (for example, the new record's `id`). An API cannot be its own prerequisite.
 
-<Note>
-  The injected value comes from the prerequisite API's own **Expression**, so make sure that API's Expression returns the single value you want (for example, the new record's `id`). The prerequisite dropdown never lists the API you are currently editing, so an API cannot depend on itself.
-</Note>
-
-3. Click **Create API** to save.
-
----
+Click **Create API** to save.
 
 ## Step 4: Test your API
 
-After saving, reopen the API in edit mode to use the built-in test tool.
+Testing is available after you save.
 
-1. Click the **edit icon** next to your API in the table.
-2. Expand the **Test API** section.
-3. Enter sample values for each template variable (built-in and custom).
-4. Click **Run Test**.
+1. Click the **edit icon** next to your API.
+2. In the **Test API Configuration** section, enter sample values for each variable.
+3. Click **Run Test**.
 
-IrisAgent will call your API with the provided values and show:
+You see the expression result, the execution time, and any error. Adjust the URL, schema, or expression until the result is correct.
 
-- The expression result
-- The execution time in milliseconds
-- Any error message if the call failed
+## Example: link a HubSpot contact to a new ticket
 
-Iterate on the URL, expression, or schema until the test returns the expected result.
-
----
-
-## Example: chain two APIs to link a HubSpot Contact to a ticket
-
-When a chatbot handoff creates a HubSpot ticket, HubSpot will not automatically link the person to it just because their email appears in the ticket text. To show up under the ticket's **Contacts** panel, the ticket has to be created with an association to the contact's record ID. That takes two calls: first resolve the contact, then create the ticket linked to it. Use a **Prerequisite** to chain them.
+HubSpot only shows a contact on a ticket if the ticket is created with an association to the contact's record ID. Chain two APIs to do this.
 
 ### API 1: Upsert HubSpot contact
 
-This creates the contact if it is new, or returns the existing one, and outputs its ID.
+Creates the contact or returns the existing one, and outputs its ID.
 
 | Field | Value |
 | --- | --- |
 | **Name** | `Upsert Hubspot contact` |
-| **API Credential** | Your HubSpot credential (the private app token must include the `crm.objects.contacts.write` scope) |
+| **API Credential** | Your HubSpot credential (the private app token needs the `crm.objects.contacts.write` scope) |
 | **Method** | `POST` |
 | **URL** | `https://api.hubapi.com/crm/v3/objects/contacts/batch/upsert` |
-| **Request Body** | see below |
 | **Expression** | `response.results[0].id` |
 | **Return Type** | `String` |
-
-Request body:
 
 ```json
 {
@@ -194,22 +135,19 @@ Request body:
 }
 ```
 
-`{{email}}` and `{{name}}` are custom variables IrisAgent collects from the customer during the conversation.
+`{{email}}` and `{{name}}` are custom variables collected from the customer.
 
 ### API 2: Create HubSpot ticket
-
-This creates the ticket and links it to the contact from API 1.
 
 | Field | Value |
 | --- | --- |
 | **Name** | `Create Hubspot ticket` |
 | **Method** | `POST` |
 | **URL** | `https://api.hubapi.com/crm/v3/objects/tickets` |
-| **Request Body** | see below |
-| **Prerequisite → Run this action first** | `Upsert Hubspot contact` |
-| **Prerequisite → Store its result as** | `contactId` |
+| **Run this action first** | `Upsert Hubspot contact` |
+| **Store its result as** | `contactId` |
 
-Request body (the `associations` block references `{{contactId}}` from the prerequisite; association type ID `16` is HubSpot's Ticket-to-Contact type):
+Association type ID `16` is HubSpot's Ticket-to-Contact type:
 
 ```json
 {
@@ -226,32 +164,24 @@ Request body (the `associations` block references `{{contactId}}` from the prere
 }
 ```
 
-Now when the handoff runs, IrisAgent upserts the contact, captures its ID as `{{contactId}}`, and creates the ticket already linked to that contact.
+On handoff, IrisAgent upserts the contact, stores its ID as `{{contactId}}`, and creates the ticket linked to it.
 
----
+## Use Custom APIs in workflows
 
-## Using Custom APIs in Workflows
+### In AI FAQ workflows (recommended)
 
-### \[Recommended\] As a live data source in AI FAQ workflows for chats and cases
+See [Using Custom APIs in plain-English workflows](/configuring-ai-and-automation/Workflows#using-custom-apis-in-plain-english-workflows).
 
-See [Workflows — Using Custom APIs in plain-English workflows](/configuring-ai-and-automation/Workflows#using-custom-apis-in-plain-english-workflows) for how to wire a Custom API into an AI-driven multi-turn conversation.
+### As a case trigger condition
 
-### As a trigger condition (drag-and-drop builder) for cases
+1. Go to **Automate** → [**Case Triggers**](https://web.irisagent.com/triggers).
+2. Click **Create New Trigger** and add a condition.
+3. In the condition picker, select your API. It is listed as `API: <name>`.
+4. Enter the value to compare against (for example, `true` for a Boolean).
+5. Save the trigger.
 
-1. Go to **Automate** → **Case Triggers** on the [IrisAgent dashboard](https://web.irisagent.com/triggers).
-2. Click **\+ Create New Trigger** and add a **Condition**.
-3. In the condition picker, scroll to the **API** section — your Custom APIs appear listed as `API: <name>`.
-4. Select your API. Depending on its return type, you will be prompted to enter a comparison value (e.g. `true` for a Boolean, or a string to match).
-5. Save and activate the trigger.
+When a ticket arrives, IrisAgent calls your API with the ticket's context and runs the trigger actions only if the condition matches. You can combine API conditions with other conditions.
 
-When a ticket arrives, IrisAgent automatically calls your API with the ticket's context, evaluates the expression, and runs the trigger actions only if the condition is met.
+The response schema fields are also available in the **Auto-respond to customer** and **Create Private Note** actions. Insert them with the field picker.
 
-You can combine API conditions with other ticket conditions. For example, to prioritize enterprise customers, create an API that returns the account tier from your CRM with the expression `response.accountTier == "enterprise"`, then add it as a condition on a trigger that sets the priority and posts a private note.
-
-### Using API data in trigger actions
-
-The response schema fields you defined are also available in the **Auto-respond to customer** and **Create Private Note** actions. Use the field picker in the action editor to insert them into the reply or note.
-
----
-
-Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or need help setting up your Custom API integration.
+Need help? [Email us](mailto:contact@irisagent.com).

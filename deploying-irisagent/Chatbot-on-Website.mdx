@@ -1,31 +1,23 @@
 ---
 title: "Chatbot on Website"
 sidebarTitle: "Website chat widget"
-description: "Deploy IrisAgent as a Chatbot"
+description: "Add the IrisAgent chatbot to your website and customize it"
 ---
 
-## **Introduction**
+The IrisAgent chatbot answers support questions on any website. You can match it to your brand (colors, logo, welcome message) and see every conversation in IrisAgent.
 
-IrisAgent's customizable chatbot can be deployed on any website to answer support questions. This chatbot is designed to enhance customer support and provide instant assistance to website visitors. Here are the key features and capabilities:
+## Set up and deploy
 
-1. **Customizability**: The chatbot can be fully customized to match your brand's identity. You can customize the chatbot's appearance, including its colors, fonts, and overall design, to seamlessly integrate it into your website.
-2. **Branding and Logo**: You have the ability to add your brand's logo to the chatbot interface, ensuring a consistent visual representation of your company's identity throughout the customer experience.
-3. **Welcome Message**: You can create a personalized welcome message that will greet visitors as soon as they initiate a conversation with the chatbot. This message can be tailored to introduce your brand, set expectations, and guide users on how to get the support they need.
-4. **Support Question Handling**: The chatbot is equipped to handle a wide range of support questions and provide relevant answers in real-time. It utilizes natural language processing (NLP) and machine learning techniques to understand user inquiries and respond accurately.
-5. **Analytics and Insights**: The chatbot provides detailed analytics and insights into user interactions, allowing you to understand customer behavior, identify frequently asked questions, and optimize the chatbot's performance over time.
+1. Go to **AI Products → Chatbot** and click **Configure and deploy**. The default configuration opens. Use the configuration selector to switch, or **New configuration** to add one.
 
-## **Getting Started and Integration Guide**
-
-1. Go to **AI Products** → **Chatbot** and click **Configure and deploy**. The default chatbot configuration opens automatically; use the **Configuration** selector to switch configurations or **New configuration** to create one.
     <img
       style={{ borderRadius: '0.5rem' }}
       src="/images/chatbot.png"
       alt="IrisAgent chatbot configure page"
     />
 
-2. Customize the chatbot (brand color, logo, welcome message, behavior, and more) using the settings described in [Configuration options](#configuration-options) below.
-
-3. Click **Deploy**, then **Reveal API Key**, and paste the snippet into the **body** section of your website.
+2. Customize the chatbot. See [Configuration options](#configuration-options).
+3. Click **Deploy**, then **Reveal API Key**, and paste the snippet into your website's `<body>`:
 
    ```html
     <script async
@@ -36,86 +28,46 @@ IrisAgent's customizable chatbot can be deployed on any website to answer suppor
    </script>
    ```
 
-4. You can see chatbot conversations under **Activity** → **Conversations**.
+4. Conversations appear under **Activity → Conversations**.
 
-5. That's it, done! You should be seeing the IrisAgent chatbot on your website.
+## Configuration options
 
-## **Configuration options**
+Configure the chatbot in two ways:
 
-You can configure the chatbot in two ways:
-
-- **From the chatbot configuration editor** (recommended for most users): edit the common settings through the dashboard UI. No code required.
-- **From the embed snippet** (advanced): pass a full theme object via a `data-theme` attribute to control every visual detail. See [Advanced theming](#advanced-theming).
+- **Configuration editor** (recommended): no code needed.
+- **Embed snippet** (advanced): pass a full theme with `data-theme`. See [Advanced theming](#advanced-theming).
 
 ### Settings in the configuration editor
 
-These options are organized into **Instructions**, **Behavior**, **Appearance**, **Handoff**, **Localization**, and **Advanced** tabs in the chatbot configuration editor.
+The editor has **Instructions**, **Behavior**, **Appearance**, **Handoff**, **Localization**, and **Advanced** tabs.
 
 | Setting | Description | Default |
 | --- | --- | --- |
-| **Configuration name** | Name shown in the chatbot header and used by your team to identify the configuration. | — |
-| **Banner color** | Primary brand color used for the launcher button and accents. | `#0cb49e` |
-| **Brand logo** | Your logo, shown in the chat window header. Upload a PNG/SVG/JPG (max 2&nbsp;MB) or provide a URL. | IrisAgent logo |
-| **Welcome message** | The first message visitors see when they open the chat. | `Hello! 👋 Welcome to our support thread. How can I assist you today?` |
-| **Auto-open chat window** | When **on**, the chat window expands automatically on page load. When **off**, visitors see only the collapsed launcher button until they click it. | On |
-| **Agent handoff** | What happens when a visitor needs a human: send the support team's contact details, open a support ticket, or start a live chat in the IrisAgent inbox or your helpdesk. Includes an optional handoff message. | Send contact details |
-| **AI response style** | Custom guidelines for how the AI should respond (tone, phrasing, formatting). Up to 2,000 characters. | — |
-| **Language** | Force a fixed conversation language. If unset, the chatbot translates dynamically. | Auto (dynamic translation) |
-| **Product ID** | Optionally scope this chatbot to a specific product. | — |
-
-<Note>
-**Auto-open** controls whether the chatbot starts expanded or collapsed. Turning it
-off is useful when you want a less intrusive experience and prefer visitors to open
-the chat themselves. By default the window auto-opens on desktop only.
-</Note>
+| **Configuration name** | Shown in the chatbot header and used to identify the configuration. | None |
+| **Banner color** | Brand color for the launcher button and accents. | `#0cb49e` |
+| **Logo** | Shown in the chat header. Upload PNG/SVG/JPG (max 2&nbsp;MB) or enter a URL. | IrisAgent logo |
+| **Welcome message** | First message visitors see. | `Hello! 👋 Welcome to our support thread. How can I assist you today?` |
+| **Automatically open the chat window on page load** | On: the window expands on page load. Off: visitors see only the launcher until they click it. By default it auto-opens on desktop only. | On |
+| **Show a proactive message** | A message card next to the launcher while the chat is collapsed. | On |
+| **Handoff method** | What happens when a visitor needs a human: show the procedure message or contact details, open a support ticket, or start a live chat. | Show procedure message / contact details |
+| **AI Response Style** | Answer guidelines for tone, phrasing, and formatting. Up to 2,000 characters. | None |
+| **Language** | Fixes the conversation language. If unset, the chatbot translates automatically. | Auto |
+| **Product** | Restricts the chatbot to articles for one product. | None |
 
 <Warning>
-Only set a **Product ID** if you have a matching Product ID configured for your
-articles (under **Settings → Article Product Classifier**). Otherwise, chats may
-return no answer. See [Product Segmentation](/configuring-ai-and-automation/Product-Segmentation).
+Only set a **Product** if your articles have a matching product ID (under **Settings → Article Product Classifier**). Otherwise chats may return no answer. See [Product Segmentation](/configuring-ai-and-automation/Product-Segmentation).
 </Warning>
 
-<Note>
-Setting **Agent handoff** to **Open a ticket** requires a ticketing or CRM data
-source to be connected first, so IrisAgent has somewhere to create the ticket.
-If your account was set up from a website link only, connect a source such as
-[Salesforce](/data-sources/Salesforce) before selecting this option. Connecting
-Salesforce uses its own Salesforce sign-in and is separate from your original
-website signup.
-</Note>
+### Handoff options
 
-<Note>
-To have your team reply to visitors from the IrisAgent dashboard, select **Start
-a live chat** under **Agent handoff** and set **Live chat destination** to
-**IrisAgent inbox**. Escalated chats appear in the **Waiting** queue in
-Conversations. See [Live chat](/helpdesk/Live-Chat).
-</Note>
-
-<Note>
-To let visitors stay in the IrisGPT widget while agents reply from Salesforce,
-first configure an Enhanced Chat custom client deployment, then select **Start a
-live chat** under **Agent handoff**. Follow the [Salesforce Live Chat Handoff
-guide](/deploying-irisagent/Salesforce-Live-Chat) for the Salesforce and
-IrisAgent setup steps.
-</Note>
-
-<Note>
-For Zendesk Messaging webhook deployments, select **Start a live chat** in the
-**Handoff** tab and optionally enter Zendesk ticket tags. When a procedure
-escalates, IrisAgent adds the tags to the active messaging ticket and passes
-Switchboard control to Zendesk Agent Workspace. See [Chatbot Automation on
-Zendesk Messaging](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging#step-5-configure-human-handoff-and-zendesk-routing).
-</Note>
+- **Open a support ticket** needs a ticketing or CRM data source connected first. If you signed up with a website link only, connect one such as [Salesforce](/data-sources/Salesforce).
+- **Start a live chat** with **Live chat destination** set to **IrisAgent inbox**: your team replies from the dashboard. Escalated chats appear in the **Waiting** queue in Conversations. See [Live chat](/helpdesk/Live-Chat).
+- **Start a live chat** to Salesforce: visitors stay in the widget while agents reply in Salesforce. First set up an Enhanced Chat custom client deployment. See [Salesforce Live Chat Handoff](/deploying-irisagent/Salesforce-Live-Chat).
+- **Start a live chat** for Zendesk Messaging webhook deployments: optionally enter Zendesk ticket tags. On escalation, IrisAgent adds the tags and passes Switchboard control to Zendesk Agent Workspace. See [Chatbot Automation on Zendesk Messaging](/deploying-irisagent/Chatbot-Automation-on-Zendesk-Messaging#step-5-configure-human-handoff-and-zendesk-routing).
 
 ### Advanced theming
 
-For full control over the chatbot's appearance and behavior, pass a theme object to the embed snippet using the `data-theme` attribute. The value is your theme JSON, **Base64-encoded**.
-
-<Tip>
-To produce the value, take the theme JSON shown below and Base64-encode it (for
-example, `btoa(JSON.stringify(theme))` in a browser console), then place the result
-in `data-theme`. Any field you omit falls back to the IrisAgent default.
-</Tip>
+Pass a **Base64-encoded** theme JSON in the `data-theme` attribute. Encode it with `btoa(JSON.stringify(theme))` in a browser console. Omitted fields use IrisAgent defaults.
 
 ```html
 <script async
@@ -127,7 +79,7 @@ in `data-theme`. Any field you omit falls back to the IrisAgent default.
 </script>
 ```
 
-A theme object has the following top-level sections. Each is optional.
+The theme has these optional top-level sections:
 
 ```json
 {
@@ -141,8 +93,6 @@ A theme object has the following top-level sections. Each is optional.
 ```
 
 #### Launcher button (`button`)
-
-Controls the floating button and whether the window opens on its own.
 
 | Option | Description | Default |
 | --- | --- | --- |
@@ -158,8 +108,6 @@ Controls the floating button and whether the window opens on its own.
 | `autoWindowOpen.autoOpenOnMobile` | Also auto-open on mobile devices. | `false` |
 
 #### Proactive message (`tooltip`)
-
-A short message bubble shown next to the launcher when the chat is collapsed.
 
 | Option | Description | Default |
 | --- | --- | --- |
@@ -191,7 +139,7 @@ A short message bubble shown next to the launcher when the chat is collapsed.
 | `renderHTML` | Render HTML in bot responses. | `true` |
 | `showAgentMessages` | Show agent reasoning steps (for agent flows). | `true` |
 | `sourceDocsTitle` | Heading shown above cited sources. | `Sources:` |
-| `poweredByTextColor` | Color of the "powered by" text. | — |
+| `poweredByTextColor` | Color of the "powered by" text. | None |
 
 #### Message input (`chatWindow.textInput`)
 
@@ -215,8 +163,8 @@ A short message bubble shown next to the launcher when the chat is collapsed.
 | --- | --- | --- |
 | `backgroundColor` | Message bubble background. | `#f5f5f5` / `#0cb49e` |
 | `textColor` | Message text color. | `#303235` / `#ffffff` |
-| `showAvatar` | Show an avatar next to messages. | `true` / — |
-| `avatarSrc` | Avatar image URL. | IrisAgent logo / — |
+| `showAvatar` | Show an avatar next to messages. | `true` / none |
+| `avatarSrc` | Avatar image URL. | IrisAgent logo / none |
 
 #### Footer (`chatWindow.footer`)
 
@@ -224,7 +172,7 @@ A short message bubble shown next to the launcher when the chat is collapsed.
 | --- | --- | --- |
 | `showFooter` | Show the footer. | `true` |
 | `text` | Footer text. | `Powered by` |
-| `company` | Company name shown in the footer. | — |
+| `company` | Company name shown in the footer. | None |
 | `companyLink` | Link for the company name. | `https://irisagent.com` |
 | `textColor` | Footer text color. | `#303235` |
 
@@ -241,8 +189,6 @@ A short message bubble shown next to the launcher when the chat is collapsed.
 | `customCSS` | Raw CSS string for advanced visual overrides. | IrisAgent defaults |
 
 ### Full example
-
-<CodeGroup>
 
 ```json theme.json
 {
@@ -277,15 +223,3 @@ A short message bubble shown next to the launcher when the chat is collapsed.
   }
 }
 ```
-
-```html embed.html
-<script async
-  src="https://chatbot.irisagent.com/web.iife.js"
-  data-token="UNIQUE_IDENTIFIER"
-  data-host="https://api1.irisagent.com"
-  data-theme="BASE64_ENCODED_THEME_JSON"
->
-</script>
-```
-
-</CodeGroup>

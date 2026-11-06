@@ -4,11 +4,7 @@ sidebarTitle: "Macro recommendations"
 description: "AI-recommended Zendesk macros, ranked from macros your agents actually applied on similar tickets"
 ---
 
-## Introduction
-
-[Macros in Zendesk](https://support.zendesk.com/hc/en-us/articles/4408844187034-Creating-macros-for-repetitive-ticket-responses-and-actions) let agents apply a saved reply and a set of ticket actions in one click. As the macro list grows, picking the right one is the hard part.
-
-IrisAgent recommends the macro to apply on a Zendesk ticket from the Copilot sidebar. Suggestions turn on automatically once Zendesk tickets are connected.
+IrisAgent recommends which [Zendesk macro](https://support.zendesk.com/hc/en-us/articles/4408844187034-Creating-macros-for-repetitive-ticket-responses-and-actions) to apply, right in the Copilot sidebar. Suggestions turn on automatically once Zendesk tickets are connected.
 
 <img
   style={{ borderRadius:"0.5rem" }}
@@ -18,18 +14,15 @@ IrisAgent recommends the macro to apply on a Zendesk ticket from the Copilot sid
 
 ## How ranking works
 
-1. **Audit events first.** IrisAgent reads Zendesk `MacroReference` and `AgentMacroReference` events on the tickets it already pulls. Those exact macro applications are stored on the case. Suggestions rank macros that were actually applied on similar tickets.
-2. **Tags as fallback.** For older tickets that have no audit evidence, IrisAgent uses matching tags. Unique per-macro tags improve that fallback. They are not required for suggestions to run.
-3. **No extra LLM call.** Macro ranking does not add a model request.
+1. **Audit events first.** IrisAgent reads Zendesk `MacroReference` and `AgentMacroReference` events on tickets it already pulls, and ranks macros that were actually applied on similar tickets.
+2. **Tags as fallback.** For older tickets without audit events, IrisAgent matches tags. Unique per-macro tags help but are not required.
+3. **No extra LLM call.** Ranking adds no model request.
 
-Only **active**, non-suppressed macros with enough content are candidates. On the tag fallback, the macro must have been used at least once in the last 30 days. Votes come from **solved or closed** similar cases.
+Only **active**, non-suppressed macros with enough content are candidates. On the tag fallback, a macro must have been used at least once in the last 30 days. Votes come from **solved or closed** similar cases.
 
-## Optional: unique tags (helps historical tickets)
+## Optional: add unique tags
 
-If you want better fallback ranking on tickets that predate audit capture:
-
-1. Give each relevant Zendesk macro an action that adds a **unique** tag.
-2. Keep that tag one-to-one with the macro.
+To improve ranking on tickets from before audit capture, give each Zendesk macro an action that adds a **unique** tag, one tag per macro.
 
 <img
   style={{ borderRadius:"0.5rem" }}
@@ -37,9 +30,9 @@ If you want better fallback ranking on tickets that predate audit capture:
   alt="Add a unique tag on a Zendesk macro"
 />
 
-## Turning macros off
+## Turn off macro suggestions
 
-Macro suggestions stay on by default. If you need them off for your account, ask IrisAgent support.
+Suggestions are on by default. To turn them off, ask IrisAgent support.
 
 ## Related
 

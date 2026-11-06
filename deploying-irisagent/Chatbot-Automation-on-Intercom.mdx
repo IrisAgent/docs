@@ -1,82 +1,48 @@
 ---
 title: "Chatbot Automation on Intercom"
 sidebarTitle: "Intercom Messenger"
-description: "Deploy IrisAgent AI answers to your Intercom Chatbot"
+description: "Deploy IrisAgent AI answers to your Intercom chatbot"
 ---
 
-## **Introduction**
+IrisAgent answers customer questions in your Intercom Messenger. You connect Intercom in a few clicks; no private app or webhook setup is needed.
 
-\
-IrisAgent AI can answer customer queries right within your Intercom chatbot seamlessly using webhooks. This guide will help you integrate IrisAgent with your Intercom chatbot.
+**You need:** IrisAgent admin access, Intercom connected as your ticketing system in IrisAgent, and an Intercom admin account.
 
-## **Intercom App Configuration**
+## 1. Connect Intercom
 
-### **Step 1: Create a New Private App**
+1. In IrisAgent, go to **Deploy → Chat channels** and click the **Intercom Chat** card.
+2. Click **Connect Intercom Chatbot**, then sign in to Intercom and authorize IrisAgent.
 
-1. Navigate to the [Developer Hub](https://app.intercom.com/a/apps/_/developer-hub).
-2. Select the option to create a new private app.
+The card shows **Connected** when it's done.
 
-   <img
-     style={{ borderRadius:"0.5rem" }}
-     src="/images/IntercomDeveloperHub.png"
-     alt="IrisAgent app for Intercom Chat"
-   />
+## 2. Choose the teammate IrisAgent replies as
 
-Step 2: Set Permissions
+IrisAgent posts its answers as an Intercom teammate. Pick one (for example, a teammate named "IrisAgent") and copy their [user ID](https://developers.intercom.com/docs/references/rest-api/api.intercom.io/Models/contact_reply_intercom_user_id_request/):
 
-1. Access the Authentication menu in your app settings.
-2. Configure the necessary permissions as shown below.
+1. In Intercom, go to **Settings → Teammates** and click the teammate's name.
+2. Copy the ID at the end of the URL: `https://app.intercom.com/a/apps/intercom_id/admins/user_id`.
 
-   <img
-     style={{ borderRadius:"0.5rem" }}
-     src="/images/IntercomPermissions.png"
-     alt="IrisAgent app permissions for Intercom"
-   />
+## 3. Turn on chat automation
 
-### **Step 3: Configure Webhooks**
+1. On the **Intercom Chat** card, click the settings (gear) icon to open **Intercom Chat Configuration**.
+2. Turn on **Enable Chat Automation**.
+3. Enter the **Chatbot User ID** from step 2.
+4. Optional:
+   - **Hand-off Trigger:** stop answering when the conversation is assigned to an agent, or when an agent sends a message.
+   - **Escalation Routing:** when a customer asks for a person, assign the conversation to a teammate, team or tag (Teammate ID, Team ID, Tag ID).
+   - **Filters:** answer only the conversations that match your filter.
+5. Click **Save**.
 
-1. Go to the `Webhooks` menu in your app settings.
-2. Ensure you set up the following required topics:
-   - `conversation.user.created`
-   - `conversation.user.replied`
-3. Set the Endpoint URL to: `https://api1.irisagent.com/v1/webhooks/intercom/your_organization_id`. Note that `your_organization_id` can be found in the URL of the home page of your Intercom account as shown below:\
-   `https://app.intercom.com/a/apps/your_organization_id/home`
+<img
+  style={{ borderRadius:"0.5rem" }}
+  src="/images/intercom_config_page.png"
+  alt="IrisAgent Intercom configuration page"
+/>
 
-   <img
-     style={{ borderRadius:"0.5rem" }}
-     src="/images/IntercomWebhook.png"
-     alt="IrisAgent webhooks for Intercom"
-   />
+## Test it
 
-### **Step 4: Note Your ClientSecret and ClientID**
+Open your Intercom Messenger, ask a common question, and check that IrisAgent answers from your knowledge base.
 
-1. Find these credentials under the `Basic information` menu.
-2. The ClientSecret is vital for validating webhook requests from Intercom.
-
-   <img
-     style={{ borderRadius:"0.5rem" }}
-     src="/images/IntercomBasicInformation.png"
-     alt="IrisAgent basic information for Intercom"
-   />
-
-### **Step 5: Note the IrisAgent UserId**
-
-\
-Select an author who should be used by IrisAgent to send automated messages. Note this[User id](https://developers.intercom.com/docs/references/rest-api/api.intercom.io/Models/contact_reply_intercom_user_id_request/) that should be used as the author of IrisAgent AI comments. Your Intercom admin can get the user id for a given user from the Intercom dashboard by following the steps below:
-
-1. Navigate to Settings -\> Teammates.
-2. Click on the name of the user whose id you want to get
-3. The URL of the page would look like `https://app.intercom.com/a/apps/intercom_id/admins/user_id`. Share the `user_id` at the end of the URL.
-
-### **Step 6: Configure IrisAgent Integration**
-
-Configure the Intercom integration in your IrisAgent dashboard:
-
-1. In the IrisAgent dashboard, open **Deploy** → **Chat channels** from the left sidebar, then find the **Intercom Chat** card and click the settings (gear) icon to open its configuration panel.
-2. Enter the `ClientSecret` from Step 4.
-3. Enter the `User ID` from Step 5 that IrisAgent will use as the author for automated responses.
-    <img
-      style={{ borderRadius:"0.5rem" }}
-      src="/images/intercom_config_page.png"
-      alt="IrisAgent Intercom configuration page"
-    />
+<Note>
+The **Intercom Chat** card appears only when Intercom is connected as your ticketing system. See [Intercom](/data-sources/Intercom).
+</Note>

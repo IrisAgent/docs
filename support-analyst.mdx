@@ -1,178 +1,106 @@
 ---
 title: "Support Analyst"
-description: "Ask questions about your tickets in plain English. Support Analyst is IrisAgent's AI analyst for support data — natural-language search, sentiment, deep dives, analytics, and proactive alerts across your ticketing system."
+description: "Ask questions about your tickets in plain English and get tables, summaries and trends back. Covers search, sentiment, deep dives, analytics, QA and alerts."
 ---
 
-Support Analyst is an AI-powered analyst that sits on top of your ticket data. Instead of building dashboards or writing queries, support leaders and agents ask questions in plain English ("show me all open negative-sentiment tickets from last week") and get structured answers — tables, summaries, timelines, and trends — in seconds.
+Support Analyst is an AI analyst for your ticket data. Ask a question in plain English, such as "show me all open negative-sentiment tickets from last week", and get a table, summary, timeline or trend with links to the source tickets.
 
-It works on top of the ticket data IrisAgent has already ingested from Zendesk, Salesforce, Intercom, Freshworks, HubSpot, or Jira Service Desk. No additional configuration is required to start using it.
+It uses the ticket data IrisAgent already ingests from Zendesk, Salesforce, Intercom, Freshworks, HubSpot or Jira Service Desk. No extra setup is needed.
 
----
+## How it works
 
-## How It Works
+1. Ask a question in the Support Analyst chat.
+2. Support Analyst searches, aggregates and reads your ticket data.
+3. You get an answer with links back to the tickets.
 
-1. **Ask a question** in plain English from the Support Analyst chat surface.
-2. **Support Analyst plans** which tools to call — search, aggregate, fetch, evaluate — and runs them against your live ticket data.
-3. **A structured answer** is returned: a summary, a table, a list of tickets, or a chart, with links back to the underlying tickets in your ticketing system.
-
-You can ask follow-up questions in the same conversation. Support Analyst keeps context across turns, so you can drill from a high-level trend down to a single ticket without re-stating the question.
-
----
-
-## Capabilities
-
-### Natural Language Search
-
-Search tickets across any combination of keyword, status, priority, assignee, account, sentiment, category, and date range — using plain English. Examples:
-
-- "Find all open tickets from Acme Corp where the customer is frustrated."
-- "Show tickets created in the last 7 days mentioning 'rate limit' that are still unresolved."
-- "Which tickets did Jordan close yesterday?"
-
-Search runs against the full ticket text, comment thread, subject, tags, and metadata that IrisAgent has indexed for your account.
-
-### Ticket Deep Dives
-
-Pull up a single ticket and ask for the full story — the conversation timeline, who replied when, what the customer said, what the agent said, the current status, and how the ticket evolved. Support Analyst distinguishes agent replies from customer replies and surfaces the most relevant turns first.
-
-Useful when picking up a long-running ticket, briefing a manager before an escalation call, or auditing how a specific case was handled.
-
-### Sentiment Analysis
-
-Every ticket carries a sentiment score (Negative, Moderately Negative, Neutral, Moderately Positive, Positive) computed from customer messages. Support Analyst lets you query by sentiment directly:
-
-- "Top 10 negative-sentiment tickets opened this month"
-- "Which accounts have the worst average sentiment in the last 30 days?"
-- "Has Acme's sentiment trended down since their renewal date?"
-
-Sentiment is the fastest way to surface at-risk customers before churn.
-
-### Instant Analytics
-
-Get aggregate views without building a dashboard. Support Analyst can group, count, and break down ticket data on demand:
-
-- Volume by status, priority, assignee, account, sentiment, or category
-- **Module and tag breakdowns** — group counts by the ticket `Module` attribute and by tags. Missing values are reported as an unset count, not ranked as their own group. If Module is not populated on your tickets, the answer says it is unavailable instead of inventing a breakdown. Counts can exceed the ticket total because a ticket can carry several tags, so they do not convert to percentages. Only the top groups are shown.
-- Trends over time (this week vs. last week, month-over-month)
-- Top N accounts, top N categories, response-time distributions
-- Team and individual agent performance
-
-Results come back as tables or summaries, with the option to drill into any row.
-
-<Note>
-**Status questions use the ticket's current status, not status-transition history.** "How many tickets are on hold this month?" means tickets **created** in that period whose **current** status is hold (or your exact customer label). There is no queryable history of when a ticket moved into a status. Date ranges apply to ticket creation time. Agent filters match display name, email, or a full-name email alias, and only resolve a partial name when it matches exactly one agent.
-</Note>
-
-### Account Overview
-
-For any account you ask about, Support Analyst can produce a snapshot: open ticket count, total tickets, recent activity, top categories, average sentiment, and a health indicator. Useful before QBRs, executive escalations, or churn-risk reviews.
-
-### Conversation QA
-
-Run an AI quality-assurance evaluation against any ticket conversation using your customer-configured QA rules (greeting, tone, resolution, policy adherence, etc.). Support Analyst returns per-rule pass/fail and flags the specific comments that failed. This lets QA leads spot-check tickets the way they would manually, but in seconds.
-
-### Answer Grounding QA
-
-Grade an AI answer you have already delivered against the knowledge-base articles it cited. Ask Support Analyst "check the grounding of the AI answer for case 12345" (or use the **QA AI answer** skill), and it audits the answer the customer actually received, on two independent axes:
-
-- **Retrieval relevance** — were the cited articles actually about the question?
-- **Grounding faithfulness** — is every claim in the answer supported by those article bodies?
-
-It returns a single verdict (correct or defect) and, when it fails, the failure type:
-
-- **Hallucination** — a claim not found in any cited article. A generation problem.
-- **Wrong article** — the answer is faithful to an article that does not address the question. A retrieval problem, not a pass.
-- **Incomplete** — grounded and relevant, but missing a critical step present in the cited article.
-- **KB gap** — no cited article contains the answer. A knowledge-base coverage problem.
-
-<Note>
-An answer can be perfectly faithful to the wrong article: the AI quotes a real document word for word and still answers the wrong question. Support Analyst treats that as a retrieval defect, not a pass, so you can tell a retrieval problem (tune your knowledge base) apart from a hallucination (fix the model) per answer.
-</Note>
-
-Works on both case answers and chat answers. Provide a case number, a source case ID, or a chat ID (exactly one). This is the on-demand check; an always-on grounding audit across every AI answer is on the roadmap.
-
-### Audio Transcript Support
-
-Submit an audio transcript along with your query (for voice-channel tickets), and Support Analyst will analyze it as primary context — including auto-translation for non-English transcripts before evaluation.
-
-### Proactive Alerts
-
-Identify recurring or emerging issues before they become incidents. Ask Support Analyst to look across recent tickets for:
-
-- Spikes in a specific category or keyword
-- New issue patterns appearing in the last N hours
-- Recurring complaints across multiple accounts
-
-This is how teams catch outages, regressions, or policy gaps from inside the ticket stream.
-
-### Multi-Turn Conversation
-
-Support Analyst keeps conversation state per session. Ask a broad question, then narrow down without repeating context:
+Ask follow-ups in the same conversation. It keeps context, so you can drill from a trend down to one ticket:
 
 > "How many tickets did we close last week?"
 > "Of those, how many had negative sentiment?"
 > "Show me the top 5 by ticket age."
 
-Conversation memory persists for 24 hours per session.
+Conversation memory lasts 24 hours per session.
 
-### Multilingual Support
+## What you can ask
 
-Support Analyst handles non-English ticket content. Audio transcripts and ticket text in other languages are translated before analysis, so you can run QA and search across a global support operation from a single English-language interface.
+| Capability | What it does | Example |
+| --- | --- | --- |
+| **Search** | Filter by keyword, status, priority, assignee, account, sentiment, category and date. Searches ticket text, comments, subject, tags and metadata. | "Open tickets from Acme Corp where the customer is frustrated" |
+| **Ticket deep dive** | Full timeline of one ticket: who said what and when, current status, and how it evolved. | "Summarize ticket 4821" |
+| **Sentiment** | Query by sentiment: Negative, Moderately Negative, Neutral, Moderately Positive, Positive. | "Accounts with the worst sentiment in the last 30 days" |
+| **Analytics** | Volume by status, priority, assignee, account, sentiment, category, module or tag. Trends over time, top N lists, response times, agent performance. | "Ticket volume by priority this month vs last month" |
+| **Account overview** | Open and total tickets, recent activity, top categories, average sentiment and a health indicator. | "Give me an overview of Acme" |
+| **Conversation QA** | Grades a ticket against your QA rules and flags the comments that failed. | "QA ticket 4821" |
+| **Answer grounding QA** | Grades a delivered AI answer against the articles it cited. See below. | "Check the grounding of the AI answer for case 12345" |
+| **Proactive alerts** | Finds spikes, new issue patterns and recurring complaints across accounts. | "Any new issue patterns in the last 24 hours?" |
 
----
+### How analytics counts
 
-## Where You Can Use It
+- Status questions use the ticket's **current** status. There is no history of when a ticket changed status. Date ranges filter on ticket creation time.
+- Module and tag breakdowns show only the top groups. Missing values are reported as an unset count. If Module is not populated, the answer says so.
+- Tag counts can exceed the ticket total (a ticket can have several tags), so they are not shown as percentages.
+- Agent filters match display name, email or a full-name email alias. A partial name works only if it matches exactly one agent.
 
-Support Analyst is available:
+### Answer grounding QA
 
-- **In the IrisAgent web dashboard** — a dedicated chat surface for support leads, QA, and operations.
-- **As an API** — `POST /v1/ticket/query` for programmatic access. Useful for embedding analyst answers into Slack bots, internal dashboards, or scheduled reports. See the [API reference](https://docs.irisagent.com/api-reference/introduction) for details.
-- **With audio uploads** — `POST /v1/ticket/query/audio` for voice-channel transcripts.
+Ask "check the grounding of the AI answer for case 12345", or use the **Validate grounding** skill. Provide exactly one of: a case number, a source case ID or a chat ID. It works for case answers and chat answers.
 
----
+It checks two things:
 
-## Data Sources
+- **Retrieval relevance:** were the cited articles about the question?
+- **Grounding faithfulness:** is every claim supported by those articles?
 
-Support Analyst answers questions over the data IrisAgent has indexed for your account. The richer the connected sources, the more questions it can answer:
+It returns **correct** or **defect**, and for a defect, the type:
 
-- **Ticketing systems**: [Zendesk](/data-sources/Zendesk), [Salesforce](/data-sources/Salesforce), [Intercom](/data-sources/Intercom), [Freshworks](/data-sources/Freshworks), [HubSpot](/data-sources/Hubspot), [Jira Service Desk](/data-sources/Jira-Software-or-Service-Desk)
-- **Knowledge bases**: [Confluence](/data-sources/Confluence), [Public websites](/data-sources/Public-Websites), [Uploaded content](/data-sources/Upload-Content)
-- **CRM**: [Salesforce CRM](/data-sources/SalesforceCRM)
+| Type | Meaning |
+| --- | --- |
+| **Hallucination** | A claim is not in any cited article (a generation problem). |
+| **Wrong article** | The answer is faithful to an article that does not address the question (a retrieval problem, not a pass). |
+| **Incomplete** | Grounded and relevant, but missing a critical step from the cited article. |
+| **KB gap** | No cited article contains the answer (a knowledge-base coverage problem). |
 
----
+This is an on-demand check. An always-on audit of every AI answer is on the roadmap.
 
-## Security and Privacy
+### Voice and other languages
 
-- All queries are scoped to your customer account; Support Analyst never returns data from other customers.
+Submit an audio transcript with your query and Support Analyst uses it as primary context. Non-English transcripts and ticket text are translated before analysis, so you can search and run QA across languages from one English interface.
+
+## Where to use it
+
+- **IrisAgent dashboard:** the Support Analyst chat.
+- **API:** `POST /v1/ticket/query`, for Slack bots, internal dashboards or scheduled reports. See the [API reference](https://docs.irisagent.com/api-reference/introduction).
+- **Audio API:** `POST /v1/ticket/query/audio` for voice transcripts.
+
+## Data sources
+
+The more sources you connect, the more it can answer:
+
+- **Ticketing systems:** [Zendesk](/data-sources/Zendesk), [Salesforce](/data-sources/Salesforce), [Intercom](/data-sources/Intercom), [Freshworks](/data-sources/Freshworks), [HubSpot](/data-sources/Hubspot), [Jira Service Desk](/data-sources/Jira-Software-or-Service-Desk)
+- **Knowledge bases:** [Confluence](/data-sources/Confluence), [Public websites](/data-sources/Public-Websites), [Uploaded content](/data-sources/Upload-Content)
+- **CRM:** [Salesforce CRM](/data-sources/SalesforceCRM)
+
+## Security and privacy
+
+- Queries are scoped to your account. Support Analyst never returns other customers' data.
 - IrisAgent is SOC 2 Type II certified and GDPR compliant.
 - Data is encrypted at rest and in transit.
-- Conversation history is retained for 24 hours per session and is not used for cross-customer model training.
-
----
+- Conversation history is kept for 24 hours per session and is not used for cross-customer model training.
 
 ## FAQ
 
-**Do I need to configure anything to use Support Analyst?**
-No. As soon as IrisAgent has ingested ticket data from your ticketing system, Support Analyst is ready to use. There is no separate setup step.
+**Do I need to set anything up?**
+No. Once IrisAgent has ingested your tickets, Support Analyst is ready.
 
-**Can Support Analyst take actions on tickets — reply, change status, escalate?**
-Today, Support Analyst is read-only. It analyzes and reports on tickets but does not modify them. Action capabilities are on the roadmap.
+**Can it reply to, update or escalate tickets?**
+No. It is read-only today. Actions are on the roadmap.
 
-**How recent is the ticket data Support Analyst sees?**
-Support Analyst queries the same indexed data IrisAgent uses everywhere else. Sync cadence depends on your ticketing-system integration; in most cases, new tickets and comments are reflected within minutes.
+**How fresh is the data?**
+It uses the same indexed data as the rest of IrisAgent. In most cases new tickets and comments appear within minutes, depending on your integration.
 
-**Which AI model powers Support Analyst?**
-Support Analyst uses a tool-use loop with a configurable underlying LLM (OpenAI, Anthropic, or Google). The default model is GPT-4o. Customers on enterprise plans can request a model preference.
+**Which AI model does it use?**
+A configurable LLM (OpenAI, Anthropic or Google). Enterprise customers can request a model preference.
 
-**Can I query my voice tickets the same way?**
-Yes. Submit the audio transcript with your query, or call the audio endpoint directly. Non-English transcripts are auto-translated before analysis.
+**Does it hallucinate?**
+Answers are grounded in your indexed ticket data and include ticket IDs and links so you can check them. If data is missing, it says so instead of guessing.
 
-**Does Support Analyst hallucinate?**
-Every answer is grounded in your indexed ticket data. Support Analyst returns ticket IDs and links so you can verify answers against the source. If the underlying data is missing, Support Analyst will say so rather than guess.
-
-**Can Support Analyst tell me whether a specific AI answer was correct?**
-Yes. Use Answer Grounding QA (the "QA AI answer" skill, or ask "check the grounding of the AI answer for case 12345"). It grades the delivered answer against the articles it cited on two axes, retrieval relevance and grounding faithfulness, and returns a verdict with a failure type (hallucination, wrong article, incomplete, or KB gap). It distinguishes a retrieval problem from a model hallucination, so you know where the fix belongs.
-
----
-
-If you would like a walkthrough or help getting started, [email us](mailto:contact@irisagent.com).
+Want a walkthrough? [Email us](mailto:contact@irisagent.com).

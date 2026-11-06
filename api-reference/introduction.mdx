@@ -1,17 +1,9 @@
 ---
 title: "IrisAgent API Overview"
-description: "Reference for the public IrisAgent API endpoints used to ask questions, ingest content, and retrieve tags, sentiment, and summaries"
+description: "Public IrisAgent API endpoints to ask questions, ingest content, and get tags, sentiment, and summaries"
 ---
 
-## Welcome
-
-The IrisAgent API lets you use IrisAgent as a service from your own application.
-You can power intelligent conversations and search, and index and connect your
-internal and external knowledge articles, tickets, community forums, product
-documentation, and other informational content.
-
-We follow the OpenAPI specification, and the full machine-readable definition is
-published alongside these docs.
+Use the IrisAgent API to add AI answers and search to your own app, and to send IrisAgent your articles, tickets, and other content.
 
 <Card title="IrisAgent API Specification" icon="leaf" href="https://github.com/IrisAgent/docs/blob/main/api-reference/openapi.json">
   View the OpenAPI specification file
@@ -19,60 +11,45 @@ published alongside these docs.
 
 ## Base URL
 
-All requests are made against:
-
 ```
 https://api1.irisagent.com
 ```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens, which are provided by
-your IrisAgent point of contact. Pass the token in the `Authorization` header on
-every request:
+Send your API key as a Bearer token on every request:
 
 ```
 Authorization: Bearer YOUR_API_KEY
 ```
 
-Treat the key as a secret. Send it from your backend rather than from browser or
-mobile client code, and rotate it through your IrisAgent contact if it is ever
-exposed.
+Your key is the **Business ID** under **Deploy → API Keys** in the IrisAgent dashboard. Your IrisAgent contact can also provide it.
 
-## What the API covers
+Keep the key secret. Call the API from your backend, not from browser or mobile code. If the key is exposed, regenerate it on the API Keys page.
 
-The endpoints fall into three broad groups.
+## Endpoints
 
-### Asking and answering
+**Ask and answer**
 
-- `POST /v1/irisgpt/ask` returns a grounded answer to a customer or agent question
-- `POST /v1/summary` returns a summary
-- `POST /v1/feedback` records user feedback on an answer
+- `POST /v1/irisgpt/ask`: grounded answer to a customer or agent question
+- `POST /v1/summary`: summary
+- `POST /v1/feedback`: record feedback on an answer
 
-### Classification and analysis
+**Classify**
 
-- `POST /v1/tag` returns an AI-generated tag for a ticket
-- `POST /v1/sentiment` returns sentiment for a ticket
+- `POST /v1/tag`: AI tag for a ticket
+- `POST /v1/sentiment`: sentiment for a ticket
 
-### Ingesting and searching content
+**Ingest and search**
 
-- `POST /v1/articles` uploads knowledge articles, and `DELETE /v1/articles` removes them
-- `POST /v1/cases` uploads support cases
-- `POST /v1/incidents` uploads incidents
-- `POST /v1/search/cases` searches across cases
-- `GET /v1/community/search/articles` searches articles
+- `POST /v1/articles` uploads articles; `DELETE /v1/articles` removes them
+- `POST /v1/cases`: upload support cases
+- `POST /v1/incidents`: upload incidents
+- `POST /v1/search/cases`: search cases
+- `GET /v1/community/search/articles`: search articles
 
-Full request and response schemas for each endpoint are in the API reference
-pages generated from the specification.
+Request and response schemas are on each endpoint's reference page.
 
-## Choosing the API or an integration
+## API or integration?
 
-The API is the right choice when your content or your support workflow lives in a
-system IrisAgent does not integrate with directly, or when you are embedding
-IrisAgent inside your own product surface.
-
-If your content already lives in a supported platform, a native integration is
-usually less work and stays in sync automatically. See
-[Ticketing System KB](/data-sources/Ticketing-Provider-KB),
-[Public Websites](/data-sources/Public-Websites), and
-[Custom API](/data-sources/Custom-API) for those options.
+Use the API when your content or workflow lives in a system IrisAgent doesn't integrate with, or when you embed IrisAgent in your own product. If your content is already in a supported platform, a native integration is less work and syncs automatically. See [Ticketing System KB](/data-sources/Ticketing-Provider-KB), [Public Websites](/data-sources/Public-Websites), and [Custom API](/data-sources/Custom-API).

@@ -1,50 +1,35 @@
 ---
 title: "Upload Content"
 sidebarTitle: "Upload files"
-description: "Upload CSV and PDF files to IrisAgent so the AI can answer from content that does not live in a connected system"
+description: "Upload CSV and PDF files so the AI can answer from content that isn't in a connected system"
 ---
 
-## Overview
+Upload content that doesn't live in a connected system, such as product one-pagers, runbooks, policy documents, or FAQ spreadsheets. IrisAgent indexes it with your other sources and uses it in answers and article suggestions for agents and customers.
 
-Not every piece of useful support knowledge lives in a ticketing system or a
-knowledge base. Product one-pagers, internal runbooks, policy documents, and
-exported FAQ spreadsheets are often scattered across drives and wikis.
+If the content is already in a connected system, use that integration instead. It stays in sync automatically.
 
-File upload lets you bring that content into IrisAgent directly. Once uploaded,
-it is indexed alongside your other data sources and used to suggest articles and
-resolutions that match an incoming support case, for both support agents and
-customers.
+## Upload files
 
-Use this option when the content is not already reachable through one of the
-connected integrations. If the content does live in a connected system, prefer
-that integration instead, because it stays in sync automatically as the source
-is updated.
+1. Go to **Data Sources → Files** on the [IrisAgent dashboard](https://web.irisagent.com/).
+2. Open **CSV Articles** (UTF-8 encoded) or **PDF Documents**, select your file, and upload it.
 
-## Upload Custom Content
+The content is available to IrisAgent once indexing finishes.
 
-1. Go to **Data Sources** → **Files** on the [IrisAgent dashboard](https://web.irisagent.com/).
-2. Open **CSV Articles** or **PDF Documents**, select your file, and click the corresponding upload button.
+To add short questions and answers without a file, use the **Text Snippets** card on the same page.
 
-Uploaded files are processed and indexed after upload. Once indexing completes,
-the content becomes available to IrisAgent's answers and article suggestions.
+## Keep content current
 
-## Keeping uploaded content current
-
-Uploaded files are a point-in-time snapshot. They do not re-sync on their own, so
-re-upload the file whenever the underlying document changes materially. For
-content that changes often, a live integration is a better fit than a file upload.
+Uploaded files don't re-sync. Re-upload a file when the document changes. For content that changes often, use a live integration.
 
 ## Related data sources
 
-- [Ticketing System KB](/data-sources/Ticketing-Provider-KB) for the knowledge base built into your ticketing system
-- [Public Websites](/data-sources/Public-Websites) for documentation, tutorials, and blogs published on your site
-- [Confluence](/data-sources/Confluence) for internal knowledge held in Atlassian
+- [Ticketing System KB](/data-sources/Ticketing-Provider-KB): the knowledge base in your ticketing system
+- [Public Websites](/data-sources/Public-Websites): docs, tutorials, and blogs on your site
+- [Confluence](/data-sources/Confluence): internal knowledge in Atlassian
 
 ## Data governance and security
 
-Data between customer environments and IrisAgent's systems is always encrypted at
-rest and during transmission, authenticated at each endpoint, monitored for
-integrity, and protected by enterprise-grade security protocols.
+Data between customer environments and IrisAgent's systems is always encrypted at rest and in transit, authenticated at each endpoint, monitored for integrity, and protected by enterprise-grade security protocols.
 
 - IrisAgent removes PII data and does not store any PII data on our servers.
 - IrisAgent does not share any data with third parties.

@@ -1,100 +1,82 @@
 ---
 title: "Workflows"
-description: "Set up automated workflows using plain English or drag and drop interface to automate manual tasks and processes"
+description: "Automate conversations with plain-English procedures, and automate cases with drag-and-drop triggers"
 ---
 
-### Create Workflows or Procedures using plain English
+IrisAgent has two ways to automate work:
 
-<Note>
-  Plain-English procedures power IrisAgent's **AI Agent and Agent Assist**. The same procedures run for chat, voice, ticket auto-respond, and the copilot sidebar (Suggested Resolution and Dynamic Resolution). This is the fastest way to automate customer conversations and agent replies without building flowcharts or writing code.
-</Note>
+- **Plain-English procedures** for chat, voice, ticket auto-respond, and the Agent Assist copilot sidebar (Suggested and Dynamic Resolution).
+- **Case triggers** (drag and drop) for cases only.
+
+## Create procedures in plain English
+
+Describe the scenario and the steps, and IrisAgent learns to recognize the scenario and run the steps end to end. These are also called [SmartOps](https://irisagent.com/smart-operating-procedures/).
 
 <Warning>
-  **Procedures take precedence over answers from your trained knowledge base.** When a query matches a procedure's scenario, the AI Agent and Agent Assist follow the procedure's steps instead of generating a free-form answer from trained articles or past tickets. Use procedures whenever you want to enforce a specific flow (e.g. collect required fields, call an API, or hand off to a team).
+  Procedures take precedence over your knowledge base. When a query matches a procedure's scenario, the AI Agent and Agent Assist follow the procedure instead of answering from articles or past tickets. Use procedures to enforce a flow, such as collecting fields, calling an API, or handing off to a team.
 </Warning>
 
-You can [configure standard operating procedures by describing them in plain English](https://irisagent.com/smart-operating-procedures/) — also called **SmartOps**. Instead of designing a rigid decision tree, you simply describe the scenario and the steps the AI Agent should take, and IrisAgent trains a model to automatically recognize when the scenario applies and execute the workflow end-to-end.
+Example scenarios:
 
-**Common use cases:**
+- **Order status:** "When a customer asks about the status of their order, collect their order ID and look it up using the Order Status API."
+- **Refunds:** "If a customer requests a refund, verify the order is within the 30-day window, confirm the reason, and create a refund ticket in Zendesk."
+- **Account lockouts:** "When a user says they are locked out, verify their email, trigger a password reset link, and confirm once it has been sent."
+- **Plan changes:** "If a customer wants to change their plan, confirm the new tier, check eligibility, and hand off to billing if manual approval is needed."
 
-- **Order status lookups:** "When a customer asks about the status of their order, collect their order ID and look it up using the Order Status API."
-- **Refund and cancellation handling:** "If a customer requests a refund, verify the order is within the 30-day window, confirm the reason, and create a refund ticket in Zendesk."
-- **Password reset and account unlocks:** "When a user says they are locked out, verify their email, trigger a password reset link, and confirm once it has been sent."
-- **Subscription upgrades or downgrades:** "If a customer wants to change their plan, confirm the new tier, check eligibility, and hand off to billing if manual approval is needed."
-- **Appointment scheduling:** "When a customer asks to book a demo, collect their preferred date, time, and timezone, then create the calendar event."
-- **Troubleshooting known issues:** "If the customer reports login errors on the mobile app, ask for their app version and OS, then walk them through the standard fix."
+To create a procedure:
 
-**To create a plain-English procedure:**
-
-1. Go to **Automate** → **Procedures** on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories) and click **Create New Procedure / Q&A**.
-2. Enter a **name** at the top of the editor. Under **Scenario**, describe when the AI Agent should use the procedure, such as "When the customer asks for a refund." Add training examples if they would help define the scenario.
-3. Under **Action**, choose **Instructions for AI Agent** for a flow that asks questions or takes actions, or **Direct Answer** for a fixed reply. Write the steps or answer in the editor. For an instruction flow, add any **Information to collect**.
-4. Set **Availability** for the relevant products, channels, and assistants. Choose the intended **Status**, then click **Save**.
-
-The current editor is called **Procedures**. Older references to **Custom Answers** or **Customer-Provided Tags** refer to the same area in earlier versions of the dashboard.
+1. Go to **Automate → Procedures** on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories) and click **Create New Procedure / Q&A**.
+2. Enter a **name**. Under **Scenario**, describe when to use it, such as "When the customer asks for a refund." Add training examples if they help.
+3. Under **Action**, choose **Instructions for AI Agent** for a flow that asks questions or takes actions, or **Direct Answer** for a fixed reply. Write the steps or answer.
+4. Set **Availability** (products, channels, and assistants), choose a **Status**, and click **Save**.
 
 <Tip>
-  Write scenario descriptions the way you would brief a new agent — focus on the customer intent ("when a customer asks about…") rather than exact phrasing. IrisAgent's AI handles the wording variations, so you don't need to list every possible way a customer might phrase the request.
+  Describe the customer's intent ("when a customer asks about...") the way you would brief a new agent. You do not need to list every phrasing.
 </Tip>
 
-### Author the fields the AI should collect
+Older dashboard versions called this area **Custom Answers** or **Customer-Provided Tags**.
 
-The procedure editor has an **Information to collect** list. That is how you author the required fields the AI asks for, one at a time, before it calls an API or continues the steps.
+### Information to collect
 
-- Add, reorder, or remove fields. Labels become stable snake_case keys.
-- The list applies only to **Instructions for AI Agent** procedures (order ID, email, reason). A **Direct Answer** never interviews the customer, and the editor is hidden for that type.
+For **Instructions for AI Agent** procedures, the **Information to collect** list sets the fields the AI asks for, one at a time, before it calls an API or continues. Add, reorder, or remove fields. Labels become snake_case keys (for example, `caller_email`). The list is hidden for **Direct Answer**, which never asks questions.
 
-Custom API placeholders like `{{orderId}}` are still collected automatically if you do not list them here. Authoring the list is how you control the questions and their order.
+Custom API placeholders like `{{orderId}}` are collected automatically even if you do not list them. List them to control the questions and their order.
 
-### Scope a procedure to a product and a channel
+### Scope by product and channel
 
-On the same procedure:
+- **Product ID (optional):** limits the procedure to one or more products (comma-separated). A case or chat with a product gets procedures that share that product plus all unscoped procedures. A case or chat with no product gets every procedure. Leave empty for all products.
+- **Channels:** the Procedures table filters by Chat, Email, and Voice. A procedure with no channel scope runs on every channel. **Agent Assist uses the Email channel**, so unchecking Email also removes the procedure from the agent sidebar.
 
-- **Product ID (optional)** pins the procedure to one or more products. Separate multiple product IDs with commas. When a case or chat has a product scope, IrisAgent serves procedures that share any of those product IDs, plus every unscoped procedure. A case or chat with no product runs every procedure, scoped or not. Leave the field empty to run for all products.
-- The Procedures table **filters by channel**: Chat, Email, and Voice, with per-channel counts. A procedure with no channel scope runs on every channel. **Agent Assist uses the Email channel** (the copilot sidebar is served as email). Unchecking Email to keep a procedure out of ticket auto-replies also removes it from the agent sidebar.
-
-**Ticket Agent can prefill the product.** When you create a procedure from a Support Analyst recommendation, the Product ID field is filled from the source tickets so you do not retype it.
+When you create a procedure from a Support Analyst recommendation, Product ID is prefilled from the source tickets.
 
 ### Create Zendesk tickets from a procedure
 
-The built-in **Create Zendesk ticket** action creates a ticket in your connected Zendesk account using the information collected during the procedure. It is available automatically when Zendesk is your account's active ticketing provider. You do not need to create a Custom API, configure an endpoint, or add separate credentials.
-
-#### Add the ticket action
+The built-in **Create Zendesk ticket** action creates a ticket in your connected Zendesk account from the information the procedure collected. It is available when Zendesk is your active ticketing provider. No Custom API or extra credentials are needed.
 
 1. Open or create a procedure under **Automate → Procedures**.
-2. In **Availability**, choose the channels that should use it. For inbound calls, select **Voice** and **Inbound** under **Voice calls**.
-3. Choose **Instructions for AI Agent** in the **Action** section. Do not use **Direct Answer** for a procedure that needs follow-up questions or action execution.
-4. Add the fields you need to **Information to collect**. For a callback request, for example, add **Caller name**, **Caller email**, **Caller phone**, and **Issue summary**. Add other business-specific fields as needed and put them in the order you want the AI to ask for them.
-5. Place the cursor at the appropriate step in your instructions. Under **Actions → Connected actions**, click **Create Zendesk ticket**. This inserts `{{Create Zendesk ticket}}` into the instructions.
-6. Describe when to run the action and what the AI should do after it succeeds. The action can be a step in the conversation; it is not limited to the end of a procedure.
-7. Set **Status** to **Enabled** and save the procedure before testing it.
+2. In **Availability**, choose channels. For inbound calls, select **Voice** and **Inbound** under **Voice calls**.
+3. Under **Action**, choose **Instructions for AI Agent**.
+4. Add fields to **Information to collect** in the order the AI should ask, for example **Caller name**, **Caller email**, **Caller phone**, and **Issue summary**.
+5. Put the cursor at the right step and click **Actions → Connected actions → Create Zendesk ticket**. This inserts `{{Create Zendesk ticket}}`.
+6. Describe when to run the action and what to do after it succeeds. It can be any step, not just the last.
+7. Set **Status** to **Enabled** and save.
 
-<Note>
-  The built-in action does not impose a fixed list of required fields. Your procedure defines what to collect. If the action is missing, ask an administrator to verify that Zendesk is the active ticketing provider for your account.
-</Note>
+If the action is missing, ask an admin to confirm Zendesk is the active ticketing provider.
 
 #### What goes into the ticket
 
-| Ticket value | How it is populated |
+| Ticket value | Source |
 | --- | --- |
-| **Requester name** | From **Caller name**, **Requester name**, **Customer name**, **Full name**, or **Name**, in that order. Defaults to `IrisAgent customer` if none is collected. |
-| **Requester email** | From **Caller email**, **Requester email**, **Customer email**, **Email address**, or **Email**, in that order. |
-| **Subject** | From **Ticket subject**, **Issue summary**, **Subject**, **Summary**, or **Reason**, in that order. Otherwise, it uses `Customer request from` followed by the requester name. |
-| **Description** | Every non-empty field collected by the procedure, with its label and value. |
+| **Requester name** | First found of **Caller name**, **Requester name**, **Customer name**, **Full name**, **Name**. Defaults to `IrisAgent customer`. |
+| **Requester email** | First found of **Caller email**, **Requester email**, **Customer email**, **Email address**, **Email**. |
+| **Subject** | First found of **Ticket subject**, **Issue summary**, **Subject**, **Summary**, **Reason**. Otherwise `Customer request from` plus the requester name. |
+| **Description** | Every non-empty collected field, with label and value. |
 
-Field labels are normalized to keys such as `caller_email` and `issue_summary`. Use one of the recognized labels above when you want a value to populate the requester or subject. Other collected values, such as account number or service address, are included in the description.
+- Use a recognized email label if the ticket needs the customer's email. The action never substitutes the admin's email.
+- Collected fields are not mapped to Zendesk custom fields, and the transcript is not attached. For a custom payload, use a [Custom API](/data-sources/Custom-API) action.
+- On success the action returns `status: created` and `ticket_id`. Only tell the customer a ticket exists after success.
 
-<Warning>
-  Add **Caller email** or another recognized email field if the ticket needs the customer's email address. The action uses the email collected by the procedure; it does not substitute the connected administrator's email when that value is missing.
-</Warning>
-
-Collected fields are not automatically mapped to Zendesk custom ticket fields, and the action does not automatically attach the full conversation transcript. If you need custom-field IDs or a different ticket payload, use a [Custom API](/data-sources/Custom-API) action instead.
-
-After a successful call, the action returns `status: created` and `ticket_id`. Later instructions can use that result to confirm creation and share the ticket number. Only tell the customer that a ticket was created after the action succeeds.
-
-#### Example: collect a request for follow-up
-
-Add **Caller name**, **Caller email**, **Caller phone**, and **Issue summary** to **Information to collect**, then use instructions such as:
+#### Example instructions
 
 ```text
 1. Greet the caller and explain that you can record their request for the support team.
@@ -105,71 +87,56 @@ Add **Caller name**, **Caller email**, **Caller phone**, and **Issue summary** t
 6. If creation fails, do not claim that a ticket was created. Explain the problem and offer the configured alternative contact method.
 ```
 
-To create a ticket only when a human is needed, put the action inside that condition in the instructions. If you also want a live handoff, run the ticket action first, then use **Escalate to human**. That button inserts the plain keyword `escalate`, without curly brackets.
+Ticket creation and escalation are separate. To create a ticket and then hand off, run the ticket action first, then use **Escalate to human** (it inserts `[ESCALATE]`). For phone handoff, also set up [Voice AI call transfer](/deploying-irisagent/Voice-AI#transfer-calls-to-a-human).
+
+To test, start a conversation on a selected channel with your scenario. Check that the AI collects the fields, runs the action at the right step, and reports success only after creation. Then check the ticket in Zendesk. Tests create real tickets, so use test details.
+
+### Using Custom APIs in plain-English workflows
+
+Procedures can call your own APIs mid-conversation to look up live data, such as order status or account tier:
+
+1. A customer asks something that needs live data.
+2. IrisAgent matches the procedure and asks for any missing fields, one at a time.
+3. It calls your API with the collected data and ticket context.
+4. It turns the response into a plain-language answer.
+
+First set up the API under [Custom APIs](/data-sources/Custom-API). Any `{{variableName}}` placeholder in the URL or body that is not a built-in ticket variable (for example `{{orderId}}`) becomes a field to collect.
+
+For example, "When a customer asks about the status of their order, collect their order ID and look it up using the Order Status API" maps to your Order Status API, collects `{{orderId}}`, and replies with the result.
+
+## Create case workflows with drag and drop
 
 <Note>
-  Ticket creation and escalation are separate actions. Creating a ticket does not automatically transfer a call, and `escalate` does not automatically run **Create Zendesk ticket**. For phone handoff, also configure [Voice AI call transfer](/deploying-irisagent/Voice-AI#transfer-calls-to-a-human).
+  Case triggers apply to **cases (tickets)** only. For chat, voice, ticket auto-respond, and Agent Assist, use procedures.
 </Note>
 
-#### Verify the ticket flow
+Combine **Conditions** (AI category, AI sentiment, subject or description keywords, priority, channel, customer attributes) with **Actions** (assign to a team, add tags, set priority, post an internal note, send a notification). No code needed.
 
-Save the procedure with **Status: Enabled**, then start a conversation on a selected channel using the scenario you defined. Confirm that the AI collects the requested fields, runs the action at the intended step, and only reports success after creation. Open the resulting ticket in Zendesk and check its requester, subject, and description. A test that reaches this action creates a real ticket in the connected account; use appropriate test details.
+Examples:
 
-### Using Custom APIs in plain-English procedures
+- Tag cases `billing`, `refund`, or `outage` based on AI category.
+- Route `billing` cases to Finance, or "cancel my subscription" cases to retention.
+- Set priority to **Urgent** and notify a supervisor in Slack for `outage` cases.
+- Route enterprise or high-ARR customers to a dedicated team and tag them "VIP".
+- Send negative-sentiment cases to a senior agent.
 
-IrisAgent can call your own external APIs mid-conversation to look up live data — such as order status, account tier, or subscription details — and present the result to the customer in natural language, without any agent involvement.
+To create a trigger:
 
-**How it works:**
-
-1. A customer asks a question that requires real-time data (e.g. "What is the status of my order?").
-2. IrisAgent's AI identifies the relevant workflow and determines what information it needs to collect (e.g. the order number).
-3. The AI asks the customer follow-up questions, one at a time, until it has all required fields.
-4. IrisAgent automatically calls your configured API with the collected data and the ticket's context.
-5. The API response is handed back to the AI, which formats it into a natural-language answer for the customer.
-
-**Prerequisites:** You must first configure the API under [Custom APIs](/data-sources/Custom-API). During setup, any `{{variableName}}` placeholder you add to the URL or request body that is not a built-in ticket variable (e.g. `{{orderId}}`, `{{email}}`) is automatically treated as a field to collect from the customer.
-
-**Example:** A SmartOp for order status lookup might be described as:
-
-> "When a customer asks about the status of their order, collect their order ID and look it up using the Order Status API."
-
-IrisAgent maps "Order Status API" to the configured Custom API, collects `{{orderId}}` from the customer, calls the endpoint, and replies with the result — all without leaving the chat.
-
-### Create Workflows using drag and drop interface (only for cases)
-
-<Note>
-  This workflow builder applies to **cases (tickets)** only. For chat, voice, ticket auto-respond, and agent assist, use the plain-English procedures described above.
-</Note>
-
-Agents and supervisors spend manual effort in triaging and resolving cases that may already be known or solved previously. IrisAgent solves this with automated case workflows built on AI-powered tagging, AI-based answers to known issues, and configurable actions for ticket assignment and notifications. Using the drag and drop trigger builder, you can combine any number of **Conditions** (such as AI category, AI sentiment, keywords in the subject or description, priority, channel, or customer attributes) with **Actions** (such as assigning to a team, adding tags, setting priority, posting an internal note, or sending a notification) — no code required.
-
-**Common use cases:**
-
-- **Auto-tagging cases by AI category:** Automatically apply tags like `billing`, `refund`, or `outage` when IrisAgent's AI classifies an incoming case, so reports and views stay consistent without agent effort.
-- **Routing based on AI categories or keywords:** Send all cases tagged as `billing` to the Finance queue, or route any case mentioning "cancel my subscription" to a retention specialist.
-- **Priority escalation:** Automatically set priority to **Urgent** and notify a supervisor on Slack when a case is classified as an `outage` or contains churn-risk language.
-- **Known-issue auto-response:** When a case matches a known issue (e.g. a recurring bug), post IrisAgent's AI-generated answer as a private note so the agent can reply in one click.
-- **VIP handling:** Route cases from enterprise or high-ARR customers to a dedicated team and add a "VIP" tag.
-- **Sentiment-based escalation:** Flag cases with negative sentiment for supervisor review or auto-assign them to a senior agent.
-
-**To create a new case workflow:**
-
-1. Go to **Automate** → **Case Triggers** on the [IrisAgent dashboard](https://web.irisagent.com/triggers) and click **Create New Trigger**.
-2. Drag and drop any number of **Conditions** (e.g. AI category equals `billing`, subject contains `refund`) and **Actions** (e.g. assign to team, add tag, set priority, send notification) into your trigger. Conditions are evaluated with AND logic, so the trigger fires only when all conditions are met.
-3. Give your trigger a name by clicking on the pencil icon.
-4. Click on the **Add New Trigger** button to save the trigger. The workflow will start running on new incoming cases immediately.
+1. Go to **Automate → Case Triggers** on the [IrisAgent dashboard](https://web.irisagent.com/triggers) and click **Create New Trigger**.
+2. Drag in **Conditions** and **Actions**. All conditions must match (AND logic).
+3. Click the pencil icon to name the trigger.
+4. Click **Add New Trigger** to save. It runs on new incoming cases right away.
 
 <Tip>
-  Start with a narrow condition set (for example, one AI category plus one keyword) and review the first few cases it fires on before broadening the rule. This helps you validate the behavior without mis-routing a large volume of cases.
+  Start narrow (one AI category plus one keyword) and review the first few cases before broadening.
 </Tip>
 
 ## Enable AI insights as a private note in your ticketing system
 
-\
-You can show IrisAgent's AI insights as a private note on tickets so that it's front and center for your agents.
+Show IrisAgent's AI insights as a private note on tickets:
 
-1. Go to **Automate** → **Case Triggers** on the [IrisAgent dashboard](https://web.irisagent.com/triggers).
-2. Enable or disable the toggle on the top for Private Note
-3. Click on the gear icon on the Private Note card to select/unselect the AI insights you'd like to show as a private note.
+1. Go to **Automate → Case Triggers** on the [IrisAgent dashboard](https://web.irisagent.com/triggers).
+2. Turn the toggle on the **AI Private Notes** card on or off.
+3. Click the settings (gear) icon on that card to choose which insights appear.
 
-Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or require assistance with product onboarding.
+Need help? [Email us](mailto:contact@irisagent.com).

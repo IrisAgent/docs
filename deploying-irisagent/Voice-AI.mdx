@@ -1,146 +1,129 @@
 ---
 title: "Voice AI"
 sidebarTitle: "Voice AI overview"
-description: "Enable IrisAgent Voice AI, try it from the dashboard or over the phone, and configure what it does using procedures"
+description: "Turn on IrisAgent Voice AI, test it, and control what it does with procedures"
 ---
 
-IrisAgent Voice AI answers customer calls, understands what the caller needs, and resolves the request using your knowledge base, past tickets, and the procedures you define. This page covers getting Voice AI turned on and running your first conversation. To route calls from a number you already own, see the provider-specific guides listed at the end.
+IrisAgent Voice AI answers customer calls using your knowledge base, past tickets, and procedures.
 
 ## Enable Voice AI
 
-Voice AI is enabled for your account by the IrisAgent team. Reach out to your IrisAgent point of contact, or [email us](mailto:contact@irisagent.com), and we will turn it on and provision a phone number for you.
+The IrisAgent team turns on Voice AI and provisions a phone number for you. Contact your IrisAgent point of contact or [email us](mailto:contact@irisagent.com).
 
-## Run Voice AI
+## Try it
 
-Once Voice AI is enabled, go to the **Voice AI** page on the [IrisAgent dashboard](https://web.irisagent.com/voice-ai). You have two ways to start a conversation:
+Open the [Voice AI page](https://web.irisagent.com/voice-ai) and either:
 
-- **Click "Start Conversation"** to talk to the AI agent directly from your browser. This is the quickest way to test changes.
-- **Call the phone number shown on the page** to reach the same AI agent over a normal phone call.
+- Click **Start Conversation** to talk to the agent in your browser (fastest for testing), or
+- Call the phone number shown on the page.
 
-<Tip>
-You can give the provided phone number to your customers so they can reach the AI agent directly, without any additional setup on your side.
-</Tip>
+You can give this number to customers as is. No extra setup is needed.
 
 ## Configure the voice assistant
 
-After IrisAgent enables and provisions Voice AI, administrators can change how the assistant sounds and handles calls without asking IrisAgent to provision it again.
+1. Go to **Deploy** > **Voice channels** ([link](https://web.irisagent.com/manage-chatbot/voice)) and click **Configure** on the **Voice AI** card.
+2. On the **Inbound assistant** tab, update the settings below.
+3. Click **Save voice settings**. Changes apply to new calls.
 
-1. Go to **Manage Chatbot** in the [IrisAgent dashboard](https://web.irisagent.com/manage-chatbot/voice).
-2. Select **Voice AI**.
-3. Update the settings described below.
-4. Click **Save voice settings**.
-
-| Setting | What it controls |
+| Setting | What it does |
 | --- | --- |
-| **Voice** | The voice callers hear. Choose one of the supported voices in the list. |
-| **Language** | Use **English** for English-only calls, or **Multilingual (auto-detect)** to detect the caller's language, reply in that language, and follow the caller when they switch languages. Product names, URLs, and identifiers are preserved. |
-| **Allow callers to interrupt the greeting** | Lets a caller begin speaking before the initial greeting finishes. |
-| **Initial greeting** | The first message spoken at the start of a call. It is required and can contain up to 1,000 characters. |
-| **Response timing** | Controls how quickly the assistant replies after the caller stops speaking. Choose **Fast**, **Balanced**, or **Patient**. |
-| **Interruption sensitivity** | Controls how easily callers can speak over the assistant. Choose **Easy to interrupt**, **Balanced**, or **Resistant**. |
-| **End call after silence** | Ends an inactive call after 10–600 seconds. |
-| **Maximum call duration** | Ends a call after 1–720 minutes. |
-| **Record calls** | Stores call recordings for quality review and training. Make sure your use complies with applicable notice and consent laws. |
+| **Voice** | The voice callers hear. |
+| **Language** | **English**, **Multilingual (auto-detect)** (replies in the caller's language and follows switches), or **Arabic** (keeps every call in Arabic). |
+| **Allow callers to interrupt the greeting** | Lets callers speak before the greeting ends. |
+| **Initial greeting** | First message of the call. Required, up to 1,000 characters. |
+| **Response timing** | How fast the assistant replies: **Fast**, **Balanced**, or **Patient**. |
+| **Interruption sensitivity** | How easily callers can talk over it: **Easy to interrupt**, **Balanced**, or **Resistant**. |
+| **End call after silence** | 10 to 600 seconds. |
+| **Maximum call duration** | 1 to 720 minutes. |
+| **Record calls** | Stores recordings for review. Make sure you comply with notice and consent laws. |
 
-Changes apply to new calls as soon as they are saved. The settings page reads the current configuration from the provisioned voice assistant, so changes made after initial setup do not require the Voice AI setup command to be run again.
+If the assistant uses a custom or non-IrisAgent voice, it shows as unsupported. Pick a supported voice before saving other settings.
 
-<Warning>
-If the assistant was configured outside IrisAgent with a custom voice or another voice provider, the page labels that voice as unsupported. The existing configuration remains visible, but you must select a supported IrisAgent voice before saving other voice settings.
-</Warning>
+If someone else changes the assistant while you edit, IrisAgent will not overwrite their change. Review the reloaded settings, reapply your edits, and save.
 
-If another administrator or an external Vapi update changes the assistant while you are editing, IrisAgent does not overwrite the newer configuration. The page reloads the latest settings; review them, reapply your changes, and save again.
+## Control what Voice AI does with procedures
 
-## Configure what Voice AI does
+Voice AI answers from your knowledge base and past tickets by default. For specific scenarios (collect an order ID and look it up, check refund eligibility, hand off to a team), create a procedure:
 
-Voice AI answers from your knowledge base and past tickets out of the box. To handle a specific scenario a particular way, such as collecting an order ID and looking it up, verifying eligibility before a refund, or handing off to a team, create a procedure.
+1. Go to **Automate** > **Procedures** ([link](https://web.irisagent.com/automation/categories)) and click **Create New Procedure / Q&A**.
+2. Select **Voice** as the channel.
+3. Enter a name, when to use it, and the actions to take.
+4. Choose **Instructions for AI Agent** to collect information or run actions. Add fields to **Information to collect**.
+5. Select **Inbound** under **Voice calls**, set **Status** to **Enabled**, and click **Save**.
 
-1. Go to **Automate** → **Procedures** on the [IrisAgent dashboard](https://web.irisagent.com/automation/categories) and click **Create New Procedure / Q&A**.
-2. Select **Voice** as the channel so the procedure applies to voice conversations.
-3. Enter a **name**, a **short scenario description** (when the AI agent should use this procedure), and the **actions** it should take.
-4. Choose **Instructions for AI Agent** for procedures that collect information or run actions. Add the required fields to **Information to collect**.
-5. Select **Inbound** under **Voice calls** for the inbound assistant, set **Status** to **Enabled**, and click **Save**.
+Procedures override knowledge base answers when the caller's request matches. See [Workflows](/configuring-ai-and-automation/Workflows) for writing procedures and calling your own APIs.
 
-You describe procedures in plain English rather than building a flowchart, and IrisAgent recognizes when the scenario applies and runs the steps end to end. See [Workflows](/configuring-ai-and-automation/Workflows) for how to write them, including how to call your own APIs mid-conversation to pull in live data.
+## Create tickets from calls
 
-<Note>
-Procedures take precedence over answers from your trained knowledge base. When a caller's request matches a procedure's scenario, the AI agent follows the procedure's steps instead of generating a free-form answer.
-</Note>
+If Zendesk is your ticketing provider, procedures include **Create Zendesk ticket** under **Actions > Connected actions**. No Custom API is needed.
 
-## Create tickets from voice conversations
+1. Add fields such as **Caller name**, **Caller email**, **Caller phone**, and **Issue summary** to **Information to collect**.
+2. Insert `{{Create Zendesk ticket}}` where the ticket should be created.
 
-When Zendesk is your active ticketing provider, the procedure editor automatically includes **Create Zendesk ticket** under **Actions → Connected actions**. Use it to turn a caller's collected information into a support ticket without provisioning a Custom API.
-
-Add fields such as **Caller name**, **Caller email**, **Caller phone**, and **Issue summary** to **Information to collect**, then insert `{{Create Zendesk ticket}}` at the step where the ticket should be created. The collected email becomes the requester email, and all collected non-empty values are included in the ticket description.
-
-See [Create Zendesk tickets from a procedure](/configuring-ai-and-automation/Workflows#create-zendesk-tickets-from-a-procedure) for field mapping, example instructions, and testing. This is useful for an answering service that records requests for later follow-up without transferring the caller immediately.
+The collected email becomes the requester. All non-empty collected values go into the description. See [Create Zendesk tickets from a procedure](/configuring-ai-and-automation/Workflows#create-zendesk-tickets-from-a-procedure).
 
 ## Transfer calls to a human
 
-Call transfer connects a caller from the inbound Voice AI assistant to your support team when IrisAgent requests escalation. This can happen because a procedure calls for a human handoff or because IrisAgent cannot answer. It does not transfer every call just because the setting is enabled.
+Call transfer sends the caller to your team only when IrisAgent requests escalation (a procedure calls for it, or IrisAgent can't answer). Enabling it does not transfer every call.
 
 ### Enable call transfer
 
-1. Open the [inbound Voice AI settings](https://web.irisagent.com/manage-chatbot/voice) and select the **Call transfer** tab.
-2. Turn **Human handoff** on. Check that the switch shows **Enabled**.
-3. Enter the **Transfer phone number** in international format, including `+` and the country code, such as `+14155550188`.
-4. If needed, enter an **Extension** of 1–10 digits. The extension is dialed after the destination answers.
-5. Enter the **Message before transfer**. This is what the caller hears when the transfer starts. The default is “I'll connect you with a human agent now.” The message can contain up to 1,000 characters.
-6. Click **Save transfer settings** and wait for the save confirmation. Start a new call to use the saved configuration.
+1. In [Voice AI settings](https://web.irisagent.com/manage-chatbot/voice), open the **Call transfer** tab.
+2. Turn on **Human handoff**.
+3. Enter the **Transfer phone number** in international format (for example `+14155550188`).
+4. Optional: enter an **Extension** (up to 10 digits), dialed after the destination answers.
+5. Enter the **Message before transfer** (up to 1,000 characters). Default: "I'll connect you with a human agent now."
+6. Click **Save transfer settings**. New calls use the saved settings.
 
 <Warning>
-  Saving a phone number and message while **Human handoff** is disabled does not enable transfers. To turn transfers off later, switch **Human handoff** to **Disabled** and save again.
+  Saving a number while **Human handoff** is off does not enable transfers. Use a direct agent, ring group, or contact-center number. Never use the Voice AI number or any number that routes back to it, or you will create a call loop.
 </Warning>
 
-Use a direct agent, ring group, or contact-center number. Do not use the Voice AI inbound number, or another number whose routing sends the caller back to Voice AI. This can create a call loop.
-
-These settings apply to the **inbound** assistant. Outbound Voice AI uses a separate assistant managed by IrisAgent.
+These settings apply to the **inbound** assistant only.
 
 ### Request handoff in a procedure
 
-In a procedure with **Instructions for AI Agent**, place the cursor where handoff should occur and click **Actions → Agent actions → Escalate to human**. The button inserts `escalate` as plain text, without curly brackets. Explain the condition under which the AI should take that step.
-
-For example:
+In a procedure with **Instructions for AI Agent**, click **Actions > Agent actions > Escalate to human** where handoff should happen. This inserts `[ESCALATE]`. Write the condition next to it:
 
 ```text
 1. Ask the caller what they need help with.
-2. If they ask to speak with a person, escalate.
+2. If they ask to speak with a person, [ESCALATE]
 3. Otherwise, follow the troubleshooting steps for their issue.
-4. If the issue remains unresolved and the caller wants human help, escalate.
+4. If the issue is unresolved and the caller wants human help, [ESCALATE]
 ```
 
-Make sure the procedure includes **Voice** and **Inbound** in **Availability**, set **Status** to **Enabled**, and save it. The transfer setting supplies the destination and announcement; the procedure supplies the condition for requesting handoff. A sentence saying “I'll transfer you” alone is not a transfer action.
+The procedure must include **Voice** and **Inbound** and be **Enabled**. Writing "I'll transfer you" without the action does not transfer the call.
 
-### What happens during transfer
+### How transfer works
 
-IrisAgent uses an **immediate transfer**, also called a blind transfer. The assistant announces the transfer using your saved message and connects the caller to the configured destination. It does not first speak privately with a human agent or check that one is available.
+IrisAgent does an immediate (blind) transfer. It plays your message and connects the caller without checking that an agent is available.
 
-- Unanswered calls may go to the destination's voicemail, depending on your phone-system routing.
-- Configure business hours, queues, and unanswered-call handling in the destination phone system.
-- Additional telephony charges may apply.
-- Transferring a call does not automatically create a Zendesk ticket. If you need both, include **Create Zendesk ticket** before `escalate` in the procedure.
+- Unanswered calls follow your phone system's routing (for example voicemail). Set business hours and queues there.
+- Extra telephony charges may apply.
+- Transfers do not create a Zendesk ticket. To do both, put **Create Zendesk ticket** before the escalate action.
 
-### Verify call transfer
+### Test it
 
-1. Reopen the **Call transfer** tab and check that **Human handoff** is **Enabled** and the saved destination is correct.
-2. After saving, place a new phone call to the Voice AI number. Use a real phone call to verify the full telephone route; a browser conversation alone is not an end-to-end phone-transfer check.
-3. Trigger the handoff condition in your enabled procedure, for example by asking to speak with a person.
-4. Confirm that you hear the saved announcement and that the destination rings. If you configured an extension, verify that it reaches the intended recipient.
-5. Review the call in **Chat and Voice Logs**.
+1. Confirm **Human handoff** is on and the number is correct.
+2. Place a real phone call to the Voice AI number. A browser test does not check the phone route.
+3. Trigger your handoff condition (for example, ask for a person).
+4. Confirm you hear the message and the destination rings (and the extension works, if set).
+5. Review the call in **Activity** > **Conversations**.
 
-If no transfer occurs, check the saved toggle state, the procedure's status and inbound voice availability, and whether its escalation condition was reached. If the transfer starts but does not reach a person, check the destination number, extension, queue, and voicemail routing.
+No transfer? Check the toggle, the procedure's status and inbound voice availability, and whether the condition was met. Transfer starts but no one answers? Check the number, extension, queue, and voicemail routing.
 
-## Review conversations
+## Review calls
 
-Every call is logged under **Chat and Voice Logs** on the dashboard, where you can listen back, read the transcript, and see which procedures ran.
+Every call appears in **Activity** > **Conversations**, with the recording, transcript, and procedures that ran. See [Conversations inbox](/helpdesk/Conversations-Inbox).
 
-## Route your existing phone number
+## Use your existing phone number
 
-To have IrisAgent answer calls to a number your customers already dial, connect your telephony provider:
+Connect your telephony provider:
 
-- [Voice AI on 8x8](/deploying-irisagent/voice-ai-on-8x8)
-- [Voice AI on GoTo Connect](/deploying-irisagent/Voice-AI-on-GoTo-Connect)
-- [Voice AI on Ozonetel](/deploying-irisagent/Voice-AI-on-Ozonetel)
-- [Voice AI on Exotel](/deploying-irisagent/Voice-AI-on-Exotel)
-- [Voice AI on Puzzel](/deploying-irisagent/Voice-AI-on-Puzzel)
+- [8x8](/deploying-irisagent/voice-ai-on-8x8)
+- [GoTo Connect](/deploying-irisagent/Voice-AI-on-GoTo-Connect)
+- [Ozonetel](/deploying-irisagent/Voice-AI-on-Ozonetel)
+- [Exotel](/deploying-irisagent/Voice-AI-on-Exotel)
+- [Puzzel](/deploying-irisagent/Voice-AI-on-Puzzel)
 
-Feel free to [email us](mailto:contact@irisagent.com) if you encounter any issues or require assistance with product onboarding.
+Need help? [Email us](mailto:contact@irisagent.com).

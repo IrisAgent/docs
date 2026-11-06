@@ -1,32 +1,23 @@
 ---
 title: "Hubspot Service"
 sidebarTitle: "HubSpot Service Hub"
-description: "IrisAgent Installation Guide for Hubspot Service Software"
+description: "Connect HubSpot Service Hub to IrisAgent"
 ---
 
 ## Connect HubSpot to IrisAgent
 
-- Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
+1. Sign in to the [IrisAgent Dashboard](https://web.irisagent.com/).
+   <img
+     style={{ borderRadius: "0.5rem" }}
+     src="/images/web-login.png"
+     alt="IrisAgent web app login"
+   />
+2. Choose HubSpot as your ticket source:
+   - **During onboarding**: on **Connect your first data source**, choose **Ticketing system**, then **HubSpot**.
+   - **Later**: go to **Data Sources** > **Ticketing System** and pick **HubSpot**.
+3. Enter:
+   - **Hub ID** (Portal ID): in HubSpot, open the menu under your account name (top right), or copy it from your HubSpot URL.
+   - **Private App Access Token** with scopes **tickets**, **sales-email-read** (ticket comments), and **crm.objects.owners.read** (agents). See [Creating Private Apps](https://developers.hubspot.com/docs/api/private-apps).
+4. Click **Connect**.
 
-  <br />
-
-  <img
-    style={{ borderRadius:"0.5rem" }}
-    src="/images/web-login.png"
-    alt="IrisAgent web app login"
-  />
-
-<br />
-
-- Choose HubSpot as your ticket source:
-  - **During onboarding:** on the **Connect your first data source** step, choose **Ticketing system**, then pick **HubSpot**.
-  - **Later, or to add HubSpot alongside an existing source:** go to **Data Sources → Ticketing System** in the left navigation and pick **HubSpot**.
-- On the **Connect with HubSpot** form, enter the following information.
-  - **Find your Hub ID:** To find your Hub ID, log in to HubSpot and open the dropdown menu under your account name in the upper right. You can also find your Hub ID in your HubSpot account's URL.
-  - **Create a Private App Access Token**: Required scopes: **tickets**, **sales-email-read** (for ticket comments), and **crm.objects.owners.read** (for agents) \
-    [More info: Creating Private Apps](https://developers.hubspot.com/docs/api/private-apps)
-
-    <br />
-
-
-- To connect more platforms later, such as Jira, Confluence, or Salesforce, go to **Data Sources** in the left navigation and open the relevant section.
+To add other platforms (Jira, Confluence, Salesforce), open the matching section under **Data Sources**.

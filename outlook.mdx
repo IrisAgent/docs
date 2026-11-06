@@ -1,14 +1,12 @@
 ---
 title: "Connect Outlook"
 sidebarTitle: "Outlook mailbox"
-description: "IrisAgent Installation Guide for Outlook"
+description: "Connect an Outlook mailbox to IrisAgent as a ticket source"
 ---
 
 ## Sign in to IrisAgent
 
 Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Google, Microsoft, or Okta SSO.
-
-<br />
 
 <img
   style={{ borderRadius:"0.5rem" }}
@@ -16,83 +14,66 @@ Go to the [IrisAgent Dashboard](https://web.irisagent.com/) and sign in with Goo
   alt="IrisAgent web app login"
 />
 
-<br />
-
 ## Choose Outlook as your ticket source
 
-You can connect Outlook during onboarding or later from the dashboard.
-
-- **During onboarding:** on the **Connect your first data source** step, choose **Ticketing system**, then pick **Outlook** from the list of providers.
-- **Later, or to add Outlook alongside an existing source:** go to **Data Sources → Ticketing System** in the left navigation and pick **Outlook**.
-
-<br />
+- **During onboarding:** on **Connect your first data source**, choose **Ticketing system**, then **Outlook**.
+- **Later, or alongside another source:** go to **Data Sources → Ticketing System** and pick **Outlook**.
 
 ## Connect the mailbox
 
-On the **Connect with Outlook** form, provide the following details:
+On the **Connect with Outlook** form, enter:
 
-- **Mailbox Email**: The email address of the mailbox used for ticket ingestion, for example `support@yourcompany.com`. This can be a regular user mailbox or a shared mailbox.
-- **Tenant ID**: Your Azure account identifier. You can find your Tenant ID by following [Microsoft's guide](https://learn.microsoft.com/en-us/sharepoint/find-your-office-365-tenant-id).
+- **Mailbox Email:** the mailbox used for tickets, such as `support@yourcompany.com`. A regular or shared mailbox both work.
+- **Tenant ID:** your Azure tenant ID. See [Microsoft's guide](https://learn.microsoft.com/en-us/sharepoint/find-your-office-365-tenant-id).
 
-Click **Connect**. You will be redirected to Microsoft OAuth to authorize IrisAgent. The following permissions are requested:
+Click **Connect** and authorize IrisAgent in Microsoft. IrisAgent requests:
 
-- `Mail.ReadWrite` lets IrisAgent read incoming mail and save AI-generated replies in the Outlook **Drafts** folder.
-- `Mail.ReadWrite.Shared` and `Mail.Send.Shared` extend the same access to a shared mailbox that the signed-in account has permission on.
-- `Mail.Send` lets IrisAgent send a reply automatically when you choose that delivery method.
-- `offline_access` keeps the connection active without requiring you to sign in for every mailbox sync.
+- `Mail.ReadWrite`: read incoming mail and save AI replies in the Outlook **Drafts** folder
+- `Mail.ReadWrite.Shared` and `Mail.Send.Shared`: the same access for a shared mailbox the signed-in account can use
+- `Mail.Send`: send replies automatically, if you choose that delivery method
+- `offline_access`: keep the connection active between syncs
 
-If your organization requires admin approval for new apps, a Global Administrator (or Cloud Application Administrator) needs to approve IrisAgent. They can do this by signing in during the connect flow and checking **Consent on behalf of your organization**.
+If your organization requires admin approval for new apps, a Global Administrator (or Cloud Application Administrator) signs in during the connect flow and checks **Consent on behalf of your organization**.
 
 ### Which Microsoft account to sign in with
 
-IrisAgent uses the permissions of the Microsoft account that signs in, so that account must be able to open the mailbox you entered:
+The account that signs in must be able to open the mailbox you entered:
 
-- **Regular mailbox:** sign in as that mailbox, for example `support@yourcompany.com`.
-- **Shared mailbox:** shared mailboxes cannot sign in directly. Sign in with a licensed account (ideally a dedicated service account) that has **Full Access** and **Send As** permission on the shared mailbox. An Exchange admin can grant both in the Microsoft 365 admin center under **Teams & groups → Shared mailboxes**.
+- **Regular mailbox:** sign in as that mailbox.
+- **Shared mailbox:** shared mailboxes can't sign in. Use a licensed account, ideally a dedicated service account, with **Full Access** and **Send As** on the shared mailbox. An Exchange admin grants both in the Microsoft 365 admin center under **Teams & groups → Shared mailboxes**.
 
-Draft replies need **Full Access**. Automatic replies also need **Send As**. IrisAgent can only check read access when you connect, so if automatic replies fail, check Send As first: the error appears in the trigger's activity.
+Draft replies need **Full Access**. Automatic replies also need **Send As**. IrisAgent can only check read access when you connect, so if automatic replies fail, check Send As first. The error appears in the trigger's activity.
 
-An admin who only grants consent does not automatically get access to the mailbox. If an administrator signs in to approve the app, they also need access to the mailbox, or someone with access should run the connect flow again after consent is granted.
+An admin who only grants consent doesn't get mailbox access. If that admin can't open the mailbox, someone who can should run the connect flow again after consent.
 
 <Note>
-We recommend using a dedicated service account for the OAuth connection rather than a personal Microsoft account. This ensures uninterrupted access if the individual account owner leaves the organization.
+Use a dedicated service account rather than a personal account, so access continues if that person leaves.
 </Note>
 
-After you authorize, IrisAgent returns you to the dashboard and starts the initial backfill of your mailbox. Depending on volume this can take a few minutes to a few hours.
-
-<br />
+After you authorize, IrisAgent starts importing your mailbox. This can take a few minutes to a few hours.
 
 ## Reconnect an existing Outlook mailbox to enable drafts
 
-Outlook connections created before draft replies were available might not include the `Mail.ReadWrite` permission. If **Save as Outlook draft** is unavailable in **Automate → Case Triggers**, reconnect the existing mailbox once:
+Older Outlook connections may lack `Mail.ReadWrite`. If **Save as Outlook draft** is unavailable in **Automate → Case Triggers**, reconnect once:
 
-1. Open [Change Integration User](https://web.irisagent.com/manage-integration-user).
-2. Confirm the connected platform is **Outlook**.
-3. Enter the same mailbox email address and Tenant ID used by the existing connection.
-4. Click **Connect**, sign in to the existing Microsoft account, and approve the requested permissions.
+1. Open [Change Integration User](https://web.irisagent.com/manage-integration-user) and confirm the platform is **Outlook**.
+2. Enter the same mailbox email and Tenant ID as the existing connection.
+3. Click **Connect**, sign in with the same Microsoft account, and approve the permissions.
 
-Reconnect from the same IrisAgent dashboard. It updates the existing Outlook connection and does not create a second dashboard or move your data.
+This updates the existing connection. It doesn't create a second dashboard or move your data. Use the same mailbox and tenant unless you want to connect as a different integration user.
 
-<Note>
-Use the same mailbox and Microsoft tenant unless you intentionally want IrisAgent to connect as a different integration user.
-</Note>
-
-For reply configuration, see [Outlook AI Email Replies](/deploying-irisagent/Outlook).
-
-<br />
+For reply settings, see [Outlook AI Email Replies](/deploying-irisagent/Outlook).
 
 ## Troubleshooting
 
 ### "We couldn't access that mailbox"
 
-Microsoft approved the connection, but the account that signed in cannot read the mailbox you entered. Nothing was saved, so you can retry right away:
+Microsoft approved the connection, but the signed-in account can't read the mailbox. Nothing was saved, so you can retry right away:
 
-1. Check that the **Mailbox Email** is spelled correctly.
-2. Click **Connect** again and sign in as that mailbox, or, for a shared mailbox, with an account that has **Full Access** and **Send As** on it. See [Which Microsoft account to sign in with](#which-microsoft-account-to-sign-in-with).
-3. If you just granted the mailbox permission in Exchange, wait up to an hour for it to take effect before retrying.
-
-<br />
+1. Check the spelling of the **Mailbox Email**.
+2. Click **Connect** again and sign in as that mailbox, or, for a shared mailbox, with an account that has **Full Access** and **Send As**. See [Which Microsoft account to sign in with](#which-microsoft-account-to-sign-in-with).
+3. If you just granted mailbox permission in Exchange, wait up to an hour before retrying.
 
 ## Connect more data sources (optional)
 
-To connect more platforms, such as Jira, Confluence, or Salesforce, go to **Data Sources** in the left navigation and open the relevant section (Knowledge Bases, Development, CRM, and so on).
+To connect Jira, Confluence, Salesforce, or others, go to **Data Sources** and open the relevant section.

@@ -4,14 +4,7 @@ sidebarTitle: "Slack"
 description: "Install and use IrisGPT in your Slack workspace"
 ---
 
-## **Introduction**
-
-\
-IrisGPT for Slack is an AI-powered assistant that integrates directly into your Slack workspace. It answers common customer and employee questions, retrieves relevant information, and helps your team stay productive, all without leaving Slack.\
-\
-Ready to get started? [Contact us now](https://irisagent.com/get-a-demo/) to schedule a demo and bring IrisGPT to your team.
-
-<br />
+IrisGPT for Slack answers customer and employee questions inside your Slack workspace. [Contact us](https://irisagent.com/get-a-demo/) to get started.
 
 <img
   style={{ borderRadius: '0.5rem' }}
@@ -19,102 +12,77 @@ Ready to get started? [Contact us now](https://irisagent.com/get-a-demo/) to sch
   alt="IrisGPT bot responding to a question in Slack"
 />
 
-## **Getting Started**
+## Set up
 
-### **Step 1: Install IrisGPT in Your Slack Workspace**
+### Step 1: Install IrisGPT
 
-In IrisPortal, open your chatbot deployment settings, find the **Slack** card, and click **Add to Slack**. Authorize the app for your workspace when Slack prompts you.
-
-No additional setup is required. Your IrisAgent contact handles all app configuration on your behalf.
+In IrisPortal, go to **Deploy → Chat channels**, click **Configure** on the **Slack** card, then click **Add to Slack**. Approve the app when Slack asks. Your IrisAgent contact handles the rest of the app configuration.
 
 <Note>
-Depending on your workspace configuration, the bot may appear as **IrisGPT** or **IrisGPT Slackbot** in Slack. Both names refer to the same app.
+The bot may appear as **IrisGPT** or **IrisGPT Slackbot**. Both are the same app.
 </Note>
 
-### **Step 2: Choose a Deployment Mode**
+### Step 2: Choose a mode
 
-IrisGPT supports two deployment modes. Discuss your preferred mode with your IrisAgent contact during setup.
+Agree on a mode with your IrisAgent contact:
 
-#### **Option 1: Channel Auto-Reply Mode**
+- **Channel auto-reply:** IrisGPT answers every message in channels it's added to. Best for dedicated help channels.
+- **Mention:** IrisGPT answers only when mentioned with `@IrisGPT`. Best for general channels.
 
-IrisGPT automatically responds to messages in the channels where it is added. This mode is ideal for dedicated support or help channels where you want every question answered.
+### Step 3: Add IrisGPT to channels
 
-#### **Option 2: Mention Mode**
+The bot must be in a channel to respond there.
 
-IrisGPT only responds when explicitly mentioned with `@IrisGPT`. This mode is ideal for general channels where you want on-demand assistance without automatic replies.
+1. Open the channel and click its name to open **Channel Details**.
+2. Go to **Integrations**, click **Add Apps**, and select **IrisGPT**.
 
-### **Step 3: Add IrisGPT to Your Channels**
+## Use IrisGPT
 
-To add IrisGPT to a channel:
+- **`/askIrisGpt`:** ask privately. Only you see the reply.
 
-1. Open the channel where you want IrisGPT.
-2. Click the channel name at the top to open **Channel Details**.
-3. Go to the **Integrations** tab.
-4. Click **Add Apps**, then search for **IrisGPT** and select it.
+  ```
+  /askIrisGpt how do I reset my password?
+  ```
 
-The bot must be added to a channel before it can respond to messages there.
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/slack-slash-command.png"
+    alt="IrisGPT slash command with ephemeral reply"
+  />
 
-## **Using IrisGPT in Slack**
+- **`@IrisGPT`:** mention the bot in a channel it's in. It replies in a public thread.
 
-### **Slash Command: `/askIrisGpt`**
+  ```
+  @IrisGPT how do I reset my password?
+  ```
 
-Use the slash command to ask a question privately. The response is visible only to you.
+  <img
+    style={{ borderRadius: '0.5rem' }}
+    src="/images/slack-mention-reply.png"
+    alt="IrisGPT mention with threaded reply"
+  />
 
-```
-/askIrisGpt how do I reset my password?
-```
+- **App Home:** open the IrisGPT app to see a welcome message with a link to IrisAgent resources.
 
-<br />
+## Proactive notifications
 
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="/images/slack-slash-command.png"
-  alt="IrisGPT slash command with ephemeral reply"
-/>
+IrisGPT can post updates to a Slack channel:
 
-### **Mention: `@IrisGPT`**
+- **New & trending issue categories:** newly emerging or spiking issue categories
+- **New AutoKB articles:** new auto-generated knowledge base articles
+- **Weekly AI performance digest**
 
-Mention the bot in any channel where it has been invited. The response is posted as a public thread reply, visible to everyone in the channel.
+To turn them on:
 
-```
-@IrisGPT how do I reset my password?
-```
-
-<br />
-
-<img
-  style={{ borderRadius: '0.5rem' }}
-  src="/images/slack-mention-reply.png"
-  alt="IrisGPT mention with threaded reply"
-/>
-
-### **App Home Tab**
-
-Open the IrisGPT app in Slack to view the Home tab. It displays a welcome message with a link to the IrisAgent website for additional resources.
-
-## **Proactive Notifications**
-
-Beyond answering questions on demand, IrisGPT can proactively post updates to a Slack channel so your team sees important changes without checking the portal.
-
-### **What Gets Posted**
-
-- **New and trending issue categories:** when IrisAgent detects a newly emerging or spiking category of customer issues.
-- **New AutoKB articles:** when IrisAgent automatically generates a new knowledge base article.
-
-### **Enable Notifications**
-
-Notifications are configured in IrisPortal, on the same Slack card you used to connect your workspace.
-
-1. In IrisPortal, open your chatbot deployment settings and find the **Slack** card.
+1. Go to **Deploy → Chat channels** and click **Configure** on the **Slack** card.
 2. Turn on **Enable Slack notifications**.
-3. Choose the **channel** where updates should be posted.
-4. Select which updates to receive: **New & trending issue categories** and **New AutoKB articles**.
-5. Save your changes.
+3. Choose the **Channel** to post in.
+4. Select the updates you want, then save.
 
 <Note>
-The IrisGPT bot must be a member of the channel you select, otherwise posts cannot be delivered. If your channel is not listed or updates are not appearing, invite **@IrisGPT** to the channel and try again.
+The IrisGPT bot must be a member of the channel. If the channel isn't listed or posts don't arrive, invite **@IrisGPT** to it and try again.
 </Note>
 
-## **Need Help?**
+## Need help?
 
-If you have any questions or need further assistance, [don't hesitate to reach out](mailto:contact@irisagent.com).
+[Email us](mailto:contact@irisagent.com).

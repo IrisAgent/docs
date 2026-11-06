@@ -1,25 +1,24 @@
 ---
 title: "Change Integration User"
-description: "Update the primary integration user or token for connecting IrisAgent to your ticketing system"
+description: "Change the user or token IrisAgent uses to connect to your ticketing system"
 ---
 
-## **Introduction**
+The integration user is the account IrisAgent uses to write private notes and send replies in your ticketing system. By default, it is whoever first connected IrisAgent.
 
-The integration user of IrisAgent is used as an author for private notes and for sending replies to customers. By default, the user who first gave IrisAgent access to your ticketing system becomes the integration user.
+<Tip>
+Use a dedicated user (for example, "IrisAgent AI") rather than a personal account, so your team can tell which notes and insights come from IrisAgent.
+</Tip>
 
-## **Steps to change the integration user**
+## Change the integration user
 
-1. Go to the [Change Integration User](https://web.irisagent.com/manage-integration-user) page.
-2. Select the platform that needs the integration user rotation.
-3. When you connect your platform, sign in as the user you actually want IrisAgent to act as in your ticketing platform (for example, Zendesk). Whoever is signed in during the connection becomes the integration user.
-4. Follow the instructions relevant to your selected platform.
+1. Open the [Change Integration User](https://web.irisagent.com/manage-integration-user) page.
+2. Select your platform.
+3. Sign in to the platform as the user you want IrisAgent to act as. Whoever signs in becomes the integration user.
+4. Follow the steps for your platform.
 
-## **Salesforce: refreshing the integration token**
+## Salesforce
 
-If you connect IrisAgent to Salesforce, the self-serve "Change Integration User" page above does not apply. Signing in again with Salesforce will not replace your stored integration token on its own.
+The page above does not apply to Salesforce, and signing in again does not replace the stored token on its own.
 
-To rotate the integration user or refresh the token for a Salesforce connection, contact your IrisAgent point of contact or email [contact@irisagent.com](mailto:contact@irisagent.com) and ask them to add the `salesforceTokenRefresh` flag on your admin user. Once that flag is set, sign in again with Salesforce as the user you want IrisAgent to act as, and the integration token will be updated.
-
-## **Use a dedicated user for IrisAgent activity**
-
-We recommend connecting as a dedicated user (for example, one named "IrisAgent AI") rather than a personal account. This way, private notes and AI-generated insights are clearly attributed to that designated user, so your team immediately knows the insights are coming from IrisAgent.
+1. Ask your IrisAgent contact, or email [contact@irisagent.com](mailto:contact@irisagent.com), to add the `salesforceTokenRefresh` flag to your admin user.
+2. Sign in again with Salesforce as the user you want IrisAgent to act as. The token updates.

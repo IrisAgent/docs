@@ -1,28 +1,26 @@
 ---
 title: "AI Search on Website"
 sidebarTitle: "AI Search on your website"
-description: "Deploy AI-powered Search on any Website or Help Center"
+description: "Add AI Search to any website or help center"
 ---
 
-## **Introduction**
+AI Search adds a short AI answer above your website's search results, so customers get a direct answer instead of only a list of links.
 
-\
-IrisAgent's AI Search can power a quick and summarized AI answer along with the search results on your website. This makes your simple search more intelligent by directly answering questions instead of just providing links to articles. This can reduce the number of tickets customers open.
+## Set it up
 
-## **Getting Started and Integration Guide**
+1. Go to **AI Search**, click **Deployment settings**, then open the **Website Search Widget** card.
+2. Choose a mode: **Basic usage**, **Public product mode** or **Specific product ID** (then pick the product).
+3. Copy the generated snippet and paste it into the **body** of your website. The basic snippet looks like this:
 
-1. Go to **AI Products** → **AI Search**, click **Deployment settings**, then open the **Website Search Widget** card.
-
-2. Choose a deployment mode, then copy the generated code snippet and paste it into the **body** section of your website.
-
+   ```html
+   <div id="iris-widget"></div>
+   <script src="https://chatbot.irisagent.com/scripts/widget.iife.js"></script>
+   <script>
+     window.IrisSearchWidget.render({
+       apiKey: '<API_KEY>',
+       container: '#iris-widget',
+     });
+   </script>
    ```
-    <div id="iris-widget"></div>
-    <script src="https://chatbot.irisagent.com/scripts/widget.iife.js"></script>
-    <script>
-      window.IrisSearchWidget.render({
-      apiKey: <API_KEY>,
-      container: '#iris-widget',
-      });
-    </script>
-   ```
-5. That’s it, done! You should be seeing the AI Search widget on your website.
+
+The AI Search widget now appears on your website.
