@@ -103,6 +103,82 @@ The `data-token` in your website's embed snippet must belong to this configurati
 
 Handoff supports text only. File and image attachments are not available.
 
+## 6. Optional: Send pre-chat answers to your Omni-Channel flow
+
+Because IrisGPT uses a Custom Client deployment, Salesforce's own pre-chat form is not shown. Instead, an IrisGPT procedure asks your pre-chat questions before the handoff, and IrisAgent passes the answers to your Omni-Channel flow as routing attributes. Your flow can then branch on them exactly as it would on native pre-chat values, for example routing on an **I am a** answer.
+
+### Plan your fields
+
+List every value the flow needs. For each one, decide:
+
+- The **IrisAgent field key**: the snake_case key of the procedure field that collects it (for example, `i_am_a`).
+- The **Salesforce Channel Variable Name** it maps to.
+- The **exact values** the flow compares against, if it branches on the field.
+
+Example:
+
+| Question asked in IrisGPT | IrisAgent field key | Channel Variable Name | Flow values |
+| --- | --- | --- | --- |
+| I am a | `i_am_a` | `I_am_a` | `Participant`, `Retiree`, `Beneficiary`, `Other` |
+| First name | `first_name` | `_firstName` | Any |
+| Last name | `last_name` | `_lastName` | Any |
+| Email | `email` | `_email` | Any |
+| ID type | `id_type` | `ID_Type` | Your ID type options |
+| My question or issue is about | `question_topic` | `My_Question_or_issue_is_about` | Your topic options |
+
+### Set up Salesforce
+
+1. **Standard fields** (first name, last name, email, subject) use the built-in names `_firstName`, `_lastName`, `_email`, and `_subject`. Keep them enabled in the deployment's pre-chat settings. They need no parameter mapping.
+2. **Custom fields:** in Setup, open **Messaging Settings**, open your Enhanced Chat channel, and add a **Parameter Mapping** for each field. Each mapping has a **Parameter API Name** and a **Channel Variable Name**, and they can differ. IrisAgent sends the **Channel Variable Name**, so that is the name to send us.
+3. In the channel's Omni-Channel flow, create an input variable for each field. Make it **Text** and select **Available for input**, then map the channel variable to it.
+4. In **Embedded Service Deployments**, add each custom field to the deployment's pre-chat fields. Hidden fields work, since IrisGPT asks the questions. Then republish the deployment.
+
+Salesforce reference: [Pre-chat API](https://developer.salesforce.com/docs/service/messaging-web/references/m4w-reference/prechatAPI.html).
+
+### Create the intake procedure in IrisAgent
+
+1. Go to **Automate → Procedures** and create or edit the procedure that runs when a customer asks for a human. See [Workflows](/configuring-ai-and-automation/Workflows).
+2. Choose **Instructions for AI Agent**.
+3. Under **Information to collect**, add one field per row of your table, in the order the AI should ask. Check that each field's key matches your **IrisAgent field key** exactly.
+4. In the steps, give the exact allowed values for every field the flow branches on, and finish with the handoff. For example:
+
+   ```text
+   1. Ask: "Which best describes you: Participant, Retiree, Beneficiary, or Other?"
+      Record i_am_a as exactly one of: Participant, Retiree, Beneficiary, Other.
+      If the answer is unclear, ask once more with the options, then record Other.
+   2. Ask for their first name.
+   3. Ask for their last name.
+   4. Ask for their email address.
+   5. Ask what their question or issue is about.
+   After collecting everything, say "Thank you. I'm connecting you with a representative now."
+   Escalate the conversation.
+   ```
+
+5. Under **Availability**, select **Chat** so email and voice conversations do not get these questions, then save.
+
+<Warning>
+Spelling and capitalization must match your flow exactly. If the flow checks for `Participant` and IrisGPT sends `participant`, the flow takes its default path. Listing the allowed values in the steps is the most reliable way to get exact matches.
+</Warning>
+
+### Ask IrisAgent to turn it on
+
+The field mapping cannot be edited in the dashboard yet. Email [support@irisagent.com](mailto:support@irisagent.com) with your table's **IrisAgent field key** and **Channel Variable Name** columns, and say which chatbot or environment (for example, your sandbox) it is for. We will confirm once it is active.
+
+### How the answers are sent
+
+- Only the fields in your mapping are sent as routing attributes. Other answers the procedure collects are not.
+- Values are sent once, when the Salesforce session starts. Answers given after the handoff are not sent.
+- If a customer answered the same field more than once, the latest answer is sent.
+- Empty answers, and answers longer than 255 characters, are skipped.
+- The answers are not stored with the chat or shown in the widget.
+- The chat transcript passed to your agent still contains every message the customer typed, including answers to questions you did not map. Do not rely on the mapping to keep information out of Salesforce.
+
+### Test it
+
+1. Start a chat on your website (or sandbox), ask for a human, and answer every question.
+2. Accept the Messaging Session in Salesforce.
+3. Check that the session's fields are filled in, or use a Flow debug run, and that the flow took the expected branch.
+
 ## Troubleshooting
 
 **"No agents are available"**
@@ -121,6 +197,15 @@ Handoff supports text only. File and image attachments are not available.
 - Confirm all three values come from the same org and deployment.
 - If Salesforce says the deployment type is unsupported or must be `api`, create and publish a new Custom Client deployment.
 - If you see `Verification requires a valid reCAPTCHA token`, turn off **Use reCAPTCHA**, save the channel, republish, and wait up to 10 minutes.
+
+**Pre-chat values are empty in the flow**
+- Use the **Channel Variable Name** in the mapping, not the Parameter API Name.
+- The flow variable must be **Text** and **Available for input**, and the channel variable must be mapped to it.
+- Each custom field must be on the deployment's pre-chat field list, and the deployment must be republished.
+- The procedure must collect every field before it hands off. Values are only sent when the session starts.
+
+**The flow takes the default path**
+- The value IrisGPT sends must match the flow's comparison value exactly, including capitalization. List the allowed values in the procedure steps.
 
 **Messages do not appear in IrisGPT**
 - The Salesforce deployment must include the exact top-level domain where the widget runs.
