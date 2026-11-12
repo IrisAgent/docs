@@ -1,0 +1,159 @@
+---
+title: "Evals: test your AI agent before changes reach customers"
+sidebarTitle: "Evals"
+description: "Save real customer conversations as evals and replay them against your AI agent to catch regressions and answers your content doesn't back"
+---
+
+Evals replay customer conversations against your AI agent and score the result. Save the questions customers ask most, and the ones your agent got wrong, then run them after every change to catch regressions before customers see them.
+
+Each run checks up to three things:
+
+- **Success check:** did the agent do what you described? An AI judge decides, and explains why.
+- **Backed by sources:** is every claim in every reply supported by an article or procedure the reply cited? Unsupported claims are highlighted in the transcript.
+- **No handoff:** did the agent answer without handing the customer to a human?
+
+Evals never run actions, never create tickets, and never contact anyone. They don't appear in Chat activity, metrics, or QA Reviews.
+
+<Note>
+  Evals test your support AI agent. To score past conversations against quality rules, see [AutoQA](/configuring-ai-and-automation/AutoQA). To test the LLM calls your own apps make, see [AutoEval](/autoeval).
+</Note>
+
+## Create an eval
+
+Open **[Quality → Evals](https://web.irisagent.com/quality/evals)** and click **New eval**. Fill in:
+
+| Field | What to enter |
+|---|---|
+| **Name** | A short label, such as "Exchange after 30 days". |
+| **First customer message** | What the customer says first, in their words. |
+| **Customer goal** | Optional. One sentence on what the customer wants and how they behave, such as *"Wants a bigger size and pushes back once if told no."* With a goal, an AI customer keeps replying for up to 4 turns. Leave it blank for a one question eval. |
+| **Success check** | One outcome the AI judge can check from the conversation, such as *"The assistant explains the 30 day exchange window and offers a resizing option."* |
+| **Also check** | **Every claim is backed by a cited source** and **The agent doesn't hand off to a human**. Both are on by default. Turn off **No handoff** for evals where a handoff is the right answer. |
+
+Click **Save**, or **Save and run** to run it right away.
+
+<Tip>
+  Describe the outcome, not exact wording. *"Explains how to start a return and the time limit"* holds up across model and content changes. *"Says 'You can return items within 30 days'"* breaks on the first rephrase.
+</Tip>
+
+### Turn a real conversation into an eval
+
+The fastest way to build evals is from conversations your agent already had.
+
+1. Go to **Activity → Conversations** and open a chat.
+2. On any AI reply, click **Turn into eval** (next to **Revise**).
+3. IrisAgent drafts the name, first message, customer goal, and success check from the conversation up to that reply. Personal details such as names, emails, and order numbers are replaced with made up values.
+4. Review the draft, especially the success check, and click **Save** or **Save and run**.
+
+The success check is based on what the customer needed, not on what the agent said, so a draft from a wrong answer still tests for the right one.
+
+### Import evals from a CSV file
+
+1. Click **Import CSV** to see the expected format and download a template.
+2. Put one customer message per row in the first column. A header row such as `first_message` is optional, and other columns are ignored.
+3. Choose your file. You see how many messages were found and a preview of the first five.
+4. Click **Import**.
+
+Each row becomes a one question eval. IrisAgent drafts a name and success check for each row, so check them before you run. A file can hold up to 50 rows.
+
+## Run evals
+
+- **Run one eval:** click the run button on its row, or **Run again** in its results.
+- **Run several:** select them and click **Run selected**.
+
+Runs happen in the background, and results appear as each eval finishes. You can leave the page while they run.
+
+Each run uses your default chatbot configuration, its answer guidelines, and your enabled procedures and knowledge, just like a live chat.
+
+## Read the results
+
+The **Evals** list shows each eval's latest result:
+
+| Result | Meaning |
+|---|---|
+| **Passed** | Every check you turned on passed. |
+| **Failed: success check** | The agent didn't meet the success check. |
+| **Failed: unsupported claim** | At least one reply made a claim its cited sources don't back. |
+| **Failed: handed off** | The agent handed the customer to a human. |
+| **Running** | The eval is in progress. |
+| **Couldn't run** | The run didn't finish, for example because the model was unavailable. Run it again in a few minutes. This is not a failure of your agent. |
+| **Not run** | The eval hasn't run yet. |
+
+Click an eval's name to see its last run:
+
+- **Checks:** each check with **Passed** or **Failed** and the judge's reason.
+- **Transcript:** the AI customer's messages and your agent's replies, with the sources each reply cited and the procedure it matched. Claims that no cited source backs are highlighted in red and listed under the reply.
+- **Skipped actions:** if a procedure reached the point where a live chat would run its action (such as a refund or order lookup), the reply shows **Action skipped in this eval**. The judge knows the action didn't run.
+- **Handoffs:** a reply that would have handed off shows **Would have handed off to a human**.
+
+### How grounding is checked
+
+For each reply, the judge compares every factual claim with the text of the articles the reply cited and the procedure it matched. A claim passes only if one of those sources states it or clearly implies it. Asking a question, acknowledging the customer, or saying that the agent started a skipped action are not claims.
+
+See [Understanding grounded answers](/configuring-ai-and-automation/Understanding-Grounded-Answers) for how IrisAgent grounds answers in the first place.
+
+## Test a procedure change before you save it
+
+When you edit a procedure, the **Test your changes** panel has a **Run your evals** section.
+
+1. Make your edits. You don't need to save.
+2. Click **Run evals on this draft**. All your saved evals run against the agent with your unsaved procedure in place of the live one.
+3. Compare each eval's **Live** result with **This draft**:
+
+| Comparison | Meaning |
+|---|---|
+| **Fixed** | Failing on live, passing with your draft. |
+| **Regression** | Passing on live, failing with your draft. |
+| **Same** | No change. |
+| **No live result to compare** | The eval hasn't finished a live run yet. |
+
+If you edit the procedure again, the results are marked out of date until you run them again. Evals still running against an earlier draft are skipped, and the panel tells you to run again once they finish.
+
+**Live** is each eval's latest live result. If your live agent changed since then, run the evals on live first for an accurate comparison.
+
+## Edit and delete evals
+
+- **Edit:** click the edit button on the row, or **Edit** in the results. Saving clears the eval's old results, since they no longer describe it.
+- **Delete:** click the delete button on the row. The eval and its results are removed.
+
+## Limits and credits
+
+| Limit | Value |
+|---|---|
+| Evals per account | 50 |
+| Rows per CSV import | 50 |
+| Eval conversations per day | 200, reset at midnight UTC |
+| AI customer turns per eval | Up to 4 with a customer goal, 1 without |
+
+The Evals page shows how many eval conversations you've used today.
+
+On the free plan, each agent reply in an eval uses 1 credit, the same as a test chat in the dashboard. An eval without a customer goal uses 1 credit, and an eval with a goal uses up to 4. If a run could use more credits than you have left, it doesn't start.
+
+Only admins can create, edit, delete, import, and run evals. Everyone with dashboard access can view them and their results.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Do evals change anything for my customers?">
+    No. Evals don't run API actions, create tickets, hand off, send messages, or save chat history. They don't appear in Chat activity, AI Feedback, procedure metrics, or AutoQA.
+  </Accordion>
+  <Accordion title="Why did an eval fail on a correct answer?">
+    Read the judge's reason in the results. A common cause is a success check that asks for something the customer never asked about, or that names exact wording. Rewrite the check to describe the outcome, and run it again. If **Backed by sources** fails, check whether the cited article actually states the highlighted claim.
+  </Accordion>
+  <Accordion title="Why does an eval show Couldn't run?">
+    The conversation or its scoring didn't finish, for example because a model was briefly unavailable. Nothing is wrong with your agent. Run it again in a few minutes.
+  </Accordion>
+  <Accordion title="Why do two runs of the same eval sometimes differ?">
+    Your agent and the AI customer are language models, so wording can vary between runs. If an eval flips between pass and fail, tighten its success check or the procedure it tests.
+  </Accordion>
+  <Accordion title="Which chatbot do evals test?">
+    Your default chatbot configuration, with its answer guidelines, product filter, and the procedures mapped to it.
+  </Accordion>
+</AccordionGroup>
+
+## Related
+
+- [Revise chatbot answers](/configuring-ai-and-automation/Revise-Chatbot-Answers)
+- [Understanding grounded answers](/configuring-ai-and-automation/Understanding-Grounded-Answers)
+- [Hallucination Removal Engine](/configuring-ai-and-automation/Hallucination-Removal-Engine)
+- [AutoQA](/configuring-ai-and-automation/AutoQA)
