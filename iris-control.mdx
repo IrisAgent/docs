@@ -12,9 +12,9 @@ Iris Control sits between your applications and your LLM providers. Your apps ca
 - **Data scoping:** retrieval is limited to the call's product or tenant.
 - **Tool limits:** each workflow can call only the tools you allow.
 - **Grounding checks:** answers are checked against approved sources. Unsupported answers are flagged or replaced with your handoff message.
-- **Call log and evals:** every prompt, answer, model, and policy decision is logged, and [AutoEval](/autoeval) grades each output.
+- **Call log and evals:** every prompt, answer, model, and policy decision is logged, and [IrisEvals](/autoeval) scores each output.
 
-You can use AutoEval without routing traffic through Iris Control. See [Integration options](#integration-options).
+You can use IrisEvals without routing traffic through Iris Control. See [Integration options](#integration-options).
 
 <Tip>
   The [Iris Control live demo](https://irisagent.com/iris-control-demo/) runs failover, data scoping, and grounding checks on live models, with no signup.
@@ -34,8 +34,8 @@ Start with the lightest option. You can move down the table later without redoin
 
 | Option | What you send | On your request path? | What you get |
 | --- | --- | --- | --- |
-| Sample eval | 10 to 20 example calls (input and output) as a JSONL file | No | A sample AutoEval report: correctness and rule results, and a comparison with other models on the same inputs, with price |
-| Log export | A recurring export of your LLM call logs, in the [AutoEval log format](/autoeval#send-your-call-logs) | No | AutoEval grades, reports, and model comparisons on your own calls |
+| Sample eval | 10 to 20 example calls (input and output) as a JSONL file | No | A sample IrisEvals report: graded results with explanations, and a comparison with other models on the same inputs, with price |
+| Log export | A recurring export of your LLM call logs, in the [IrisEvals log format](/autoeval#send-your-call-logs) | No | IrisEvals scores, alerts, pull requests, and model comparisons on your own calls |
 | Endpoint | Your OpenAI-compatible client pointed at Iris Control | Yes | Everything above, plus routing, failover, data scoping, tool limits, and grounding checks |
 
 ### Architecture
@@ -294,9 +294,9 @@ Every call appears under **Call log** in the dashboard, with:
 
 Filter by use case, tenant, model, or grounding result, and export as CSV. Set retention with `logging.retention_days`, or turn off `logging.store_prompts` to keep only metadata.
 
-## AutoEval
+## IrisEvals
 
-AutoEval grades call log outputs for correctness against their own prompts and against rules you write. You can replay the same inputs on other models and compare grades, cost, and latency before changing a model chain. It reads the call log, so it adds nothing to the request path. See [AutoEval](/autoeval).
+IrisEvals drafts evaluation criteria for each use case, scores every call in the call log against them, alerts you when quality drops, and opens verified pull requests in your repo to fix failure patterns. You can also replay the same inputs on other models and compare scores, cost, and latency before changing a model chain. It reads the call log, so it adds nothing to the request path. See [IrisEvals](/autoeval).
 
 ## Errors
 

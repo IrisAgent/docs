@@ -1,28 +1,32 @@
 ---
-title: "AutoEval: generate evals from LLM traffic"
-sidebarTitle: "AutoEval"
-description: "Build a golden eval set from your LLM call logs, keep it current, and use it to catch regressions and compare models."
+title: "IrisEvals: evals on every production LLM call"
+sidebarTitle: "IrisEvals"
+description: "IrisEvals drafts evaluation criteria for each LLM workflow, scores every production call, and turns failures into verified pull requests in your repo. Reviews from your team are optional."
 ---
 
-AutoEval turns the LLM calls your apps already make into a **golden eval set** for each use case, and keeps it up to date as your traffic changes. Nobody has to write or maintain test prompts.
+IrisEvals is an always-on evaluation agent for the LLM features your apps run in production. It works out what a good answer is for each use case from your prompts, policies, and real conversations, scores every production call, and turns failure patterns into verified pull requests in your repo. You don't need a review team or a scoring guide to start. If your team does review conversations, IrisEvals learns from those reviews too.
 
-Use it to:
-
-- **Compare models** (including fine-tuned or self-hosted ones) on correctness, cost, and latency before you switch.
-- **Catch regressions** by scoring every production call in the [dashboard](#view-scores-in-the-dashboard).
-- **Test changes before release** from your test suite or CI with the [evaluate API](#evaluate-api).
-
-AutoEval is part of [Iris Control](/iris-control). Evals run after each call completes, never on your request path, so they add no latency. AutoEval never changes the models your app uses.
+IrisEvals is part of [Iris Control](/iris-control). It runs after each call completes, never on your request path, so it adds no latency. It never merges code or changes the models your app uses on its own.
 
 To test your IrisAgent support agent on saved customer conversations instead, see [Evals](/configuring-ai-and-automation/Evals).
 
 <Tip>
-  Try the AutoEval tab of the [Iris Control live demo](https://irisagent.com/iris-control-demo/#autoeval) before you connect anything.
+  Try the IrisEvals tab of the [Iris Control live demo](https://irisagent.com/iris-control-demo/#autoeval) before you connect anything.
 </Tip>
+
+## How IrisEvals works
+
+| Step | What happens |
+| --- | --- |
+| **Define** | IrisEvals drafts evaluation criteria for each use case from its system prompt, your policies, and real conversations. |
+| **Check** | Every verdict comes with a reason. Optional reviews from your team sharpen the criteria, and IrisEvals shows how often its verdicts match theirs. |
+| **Watch** | Every production call is scored against the learned criteria. Alerts go to Slack or email when quality drops. |
+| **Fix** | IrisEvals traces each failure pattern to its cause and opens a pull request with the fix, replayed on the failing conversations first. |
+| **Choose** | Replay the golden eval set on any model, with cost and latency, and get a ship or hold recommendation. |
 
 ## Get started
 
-AutoEval needs the input and output of each LLM call. Pick one option.
+IrisEvals needs the input and output of each LLM call. Pick one option.
 
 ### Option 1: Route calls through Iris Control (recommended)
 
@@ -46,54 +50,40 @@ Every call is captured automatically, and you also get Iris Control's routing, f
    )
    ```
 
-4. Optional: [add custom rules](#custom-rules).
+4. Optional: [invite reviewers](#optional-reviews-from-your-team) to sharpen the criteria.
 
-Calls appear in the [call log](/iris-control#call-log), and scores appear on the **AutoEval** page. For Node.js, cURL, and headers, see the [Iris Control quickstart](/iris-control#quickstart).
+Calls appear in the [call log](/iris-control#call-log), and scores appear on the **IrisEvals** page. For Node.js, cURL, and headers, see the [Iris Control quickstart](/iris-control#quickstart).
 
 ### Option 2: Send a copy of your call logs
 
-Your app keeps calling its providers as it does today. You send AutoEval a copy of the calls. See [Send your call logs](#send-your-call-logs).
+Your app keeps calling its providers as it does today. You send IrisEvals a copy of the calls. See [Send your call logs](#send-your-call-logs).
 
-## Golden eval set
+## Evaluation criteria
 
-AutoEval builds one set per use case from your traffic:
+IrisEvals drafts the criteria for each use case on its own, so you can start without reviewers.
 
-- Inputs come from real calls.
-- Duplicates and near-duplicates are removed.
-- The set is balanced across workflows, tenants, languages, and edge cases, and includes failed calls.
-- New use cases and workflows get their own slice. Inputs that no longer match your product are retired.
+- **Correctness check:** every output is checked for being a correct, complete answer to its own system prompt and user prompt, from the first call.
+- **Drafted criteria:** IrisEvals reads the use case's system prompt, any policy or help content you connect, and a sample of real conversations, and drafts criteria such as "Refund answers must check the plan type first and must not promise an amount or a timeline."
 
-You can also add specific calls from the call log, or upload a file of inputs every model must pass.
+Open **IrisEvals**, select a use case, and open **Criteria** to read, edit, or turn off any criterion. Each one shows where it came from.
 
-## Rules
+## Optional: reviews from your team
 
-### Default rules
+If anyone on your team already reviews conversations, such as a support lead, a compliance reviewer, or a product manager, their reviews make the criteria sharper. No review team is required.
 
-Every output is graded for correctness with no setup: is it a correct, complete answer to its own system prompt and user prompt? You get a verdict (`correct` or `defect`), a score from 0 to 5, and an explanation.
+1. Open **IrisEvals**, select a use case, and invite reviewers. They can review in the dashboard or in Slack.
+2. Reviewers mark an answer as good or bad with a short reason, for example: "Never promise a refund amount before checking the plan type."
+3. IrisEvals updates the matching criterion, or adds a new one, and links it to the reviews it came from.
 
-### Custom rules
+Even a few reviews a week help. Reviewers only see redacted conversations.
 
-Custom rules are plain-English checks, in the same format as [AutoQA](/configuring-ai-and-automation/AutoQA) rules. Each use case has its own rules.
+### Judge agreement
 
-To add one, open **AutoEval** in the Iris Control dashboard, select the use case, and click **Create rule**.
+When reviewers are active, IrisEvals compares its verdicts with theirs.
 
-| Field | Description |
-| --- | --- |
-| **Description** | What the output must or must not do. |
-| **Category** | Groups rules in reports, such as Format, Accuracy, Compliance, Tone, or Custom. |
-| **Severity** | `critical`, `warning`, or `info`. Critical failures show first. |
-
-Examples:
-
-| Category | Rule |
-| --- | --- |
-| Format | The output must include at least one link to a help center article. |
-| Format | The output must be valid JSON with the fields `intent` and `priority`. |
-| Language | Reply in the same language, or mix of languages, the user wrote in. |
-| Compliance | Never promise a refund amount or a delivery date. |
-| Accuracy | Never mention a product feature that is not described in the system prompt. |
-
-A rule returns `not_applicable` when it doesn't apply to a call (for example, a refund rule on a password question). These results are left out of the pass rate.
+- The **Agreement** tab shows the match rate per use case and per criterion, for example 47 of 50.
+- Disagreements update the criteria automatically. If agreement falls, IrisEvals asks reviewers to look at the conversations it is least sure about.
+- Without reviewers, every verdict still includes a plain-English reason, so you can spot-check any call.
 
 ## Results
 
@@ -111,9 +101,9 @@ Each graded output has one result:
   },
   "rules": [
     {
-      "ruleId": "include-link",
+      "ruleId": "refund-check-plan",
       "outcome": "fail",
-      "explanation": "The output contains no link."
+      "explanation": "The answer promised a $49 refund without checking the plan type."
     },
     {
       "ruleId": "same-language",
@@ -129,25 +119,68 @@ Each graded output has one result:
 | `correctness.verdict` | `correct` or `defect`. |
 | `correctness.score` | 0 to 5. Higher is more correct and complete. |
 | `correctness.explanation` | Why the judge gave that verdict. |
-| `rules[].outcome` | `pass`, `fail`, or `not_applicable`. |
-| `rules[].explanation` | Why the rule passed or failed. |
+| `rules[].outcome` | `pass`, `fail`, or `not_applicable`, for each learned criterion and each of [your own checks](#advanced-add-your-own-checks). |
+| `rules[].explanation` | Why the criterion passed or failed. |
+
+A criterion returns `not_applicable` when it doesn't apply to a call (for example, a refund criterion on a password question). These results are left out of the pass rate.
 
 ## View scores in the dashboard
 
-The **AutoEval** page shows scores as calls are graded:
+The **IrisEvals** page shows scores as calls are graded:
 
-- **Every call:** input, output, correctness verdict and score, and each rule result with explanations.
-- **Rollups:** correctness rate, average score, and each rule's pass rate, by use case, model, tenant, and rule. Critical failures show first.
+- **Every call:** input, output, correctness verdict and score, and each criterion's result with explanations.
+- **Rollups:** correctness rate, average score, and each criterion's pass rate, by use case, model, tenant, and criterion.
 - **Failures:** filter to failed calls to see the examples behind each number.
+
+## Alerts
+
+Get told when quality drops, instead of hearing it from a customer.
+
+1. Open **IrisEvals**, select a use case, and open **Alerts**.
+2. Choose a channel: a Slack channel or an email address.
+3. Set what triggers an alert: the correctness rate or a criterion's pass rate falling below a threshold, or dropping by a set amount compared with the previous period.
+
+Each alert names the use case and criterion, the size of the drop, when it started, and links to the failing conversations.
+
+## Fixes and pull requests
+
+When a failure pattern shows up, IrisEvals traces it to its cause, usually a prompt, an instruction, or a configuration value, and opens a pull request in your repo with the change.
+
+### Connect a repository
+
+1. Open **IrisEvals** and go to **Settings > Repositories**.
+2. Install the IrisEvals GitHub app and grant it access to the repositories that hold your prompts and LLM configuration.
+3. For each use case, set the files IrisEvals may change, such as `prompts/billing-agent.md`.
+
+IrisEvals only proposes changes to the files you allow, and only through pull requests.
+
+### What a pull request contains
+
+- The change, as a normal diff.
+- The failure pattern it fixes, with links to example conversations.
+- **Replay results:** how many of the failing conversations pass with the change, the golden eval set score before and after, and any criterion that got worse.
+
+IrisEvals opens a pull request only when the replay shows an improvement with no regressions. It never merges. Your engineers review, adjust, and merge like any other pull request.
+
+## Golden eval set
+
+IrisEvals builds one set per use case from your traffic:
+
+- Inputs come from real calls.
+- Duplicates and near-duplicates are removed.
+- The set is balanced across workflows, tenants, languages, and edge cases, and keeps past failures so they can't come back unnoticed.
+- New use cases and workflows get their own slice. Inputs that no longer match your product are retired.
+
+You can also add specific calls from the call log, or upload a file of inputs every model must pass. Pull request replays and model comparisons both run on this set.
 
 ## Compare models
 
-1. Open **AutoEval**, select a use case, and open **Compare models**.
+1. Open **IrisEvals**, select a use case, and open **Compare models**.
 2. Choose the eval set: the golden eval set (default), calls from the call log, a filter (such as the last 30 days, or only failed calls), or an uploaded file.
 3. Choose the models. Any model from your [providers](/iris-control#step-2-add-your-model-providers) works, including a self-hosted model with an OpenAI-compatible endpoint.
 4. Run the comparison.
 
-Each input goes to each model with its original system prompt. The report shows, per model: correctness rate and average score, each rule's pass rate, cost per call and total cost, and typical and slowest latency. Open any row to compare outputs side by side.
+Each input goes to each model with its original system prompt. The report shows, per model: correctness rate and average score, each criterion's pass rate, cost per call and total cost, and typical and slowest latency. Open any row to compare outputs side by side.
 
 ## Send your call logs
 
@@ -175,7 +208,7 @@ Send one JSONL record per LLM call:
 | `messages` | Yes | The input in OpenAI message format: system and user prompts, or the whole conversation before the output. |
 | `output` | Yes | The model's output. |
 | `model` | Yes | The model or model version that produced the output. |
-| `use_case` | No | Selects the rules to grade against. Defaults to `default`. |
+| `use_case` | No | Selects the criteria to grade against. Defaults to `default`. |
 | `timestamp`, `latency_ms` | No | Used in reports and filters. |
 | `metadata` | No | Tags to filter reports by, such as tenant, product, or language. |
 
@@ -185,7 +218,7 @@ To start, send a one-time file to your Iris Control point of contact. To stay cu
 
 ## Evaluate API
 
-Grade one output on demand, for example in CI before you ship a prompt change. Production scores don't need the API. Send `rules`, or send `use_case` to use that use case's rules.
+Grade one output on demand, for example in CI before you ship a prompt change. Production scores don't need the API. Send `use_case` to grade against that use case's learned criteria, or send `rules` to grade against specific checks.
 
 ```bash
 curl https://api1.irisagent.com/v1/control/autoeval/evaluate \
@@ -197,16 +230,26 @@ curl https://api1.irisagent.com/v1/control/autoeval/evaluate \
       {"role": "user", "content": "How do I export last month'\''s invoices?"}
     ],
     "output": "Go to Billing, then Invoice history, and select Export.",
-    "rules": [
-      {"id": "include-link", "description": "The output must include at least one link to a help center article.", "category": "Format", "severity": "critical"}
-    ]
+    "use_case": "support-answers"
   }'
 ```
 
 The response has the `correctness` and `rules` fields from [Results](#results). Send up to 100 rules per request.
 
+## Advanced: add your own checks
+
+Most teams rely on the criteria IrisEvals drafts. If you already know a hard requirement, such as a format or a phrase that must never appear, you can add it as a plain-English check next to the learned criteria. Open **IrisEvals**, select the use case, open **Criteria**, and click **Add check**.
+
+| Field | Description |
+| --- | --- |
+| **Description** | What the output must or must not do. |
+| **Category** | Groups checks in reports, such as Format, Accuracy, Compliance, Tone, or Custom. |
+| **Severity** | `critical`, `warning`, or `info`. Critical failures show first. |
+
+Examples: "The output must be valid JSON with the fields `intent` and `priority`." "Never promise a refund amount or a delivery date." Checks use the same format as [AutoQA](/configuring-ai-and-automation/AutoQA) rules.
+
 ## Data handling
 
-Inputs and outputs are redacted for PII and secrets before they are stored. Set retention with the use case's `logging.retention_days`. If prompts and outputs can't leave your environment, Iris Control and AutoEval can run in your own VPC. See the [customer VPC reference architecture](/security-and-compliance/Reference-Architecture-Customer-VPC).
+Inputs and outputs are redacted for PII and secrets before they are stored. Set retention with the use case's `logging.retention_days`. Reviewers only see redacted conversations. The GitHub app can only read and propose changes to the repositories and files you allow. If prompts and outputs can't leave your environment, Iris Control and IrisEvals can run in your own VPC. See the [customer VPC reference architecture](/security-and-compliance/Reference-Architecture-Customer-VPC).
 
 Questions? Email [contact@irisagent.com](mailto:contact@irisagent.com) or [book an Iris Control demo](https://irisagent.com/get-a-demo-iris-control/).
